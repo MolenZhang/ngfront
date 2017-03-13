@@ -3,22 +3,49 @@ package main
 import (
 	"NgFront/nodemanager/heart"
 	"NgFront/nodemanager/login"
+	"NgFront/nodemanager/nodes"
 	config "NgFront/startconfig"
-	"log"
+	//"log"
 	"net/http"
 )
 
-func main() {
-	var svc login.ServiceInfo
-	svc.Init()
-	svc.Register()
-	config.Init()
-	heart.Register()
+//NGFrontManager  ngfront 管理器
+type NGFrontManager struct {
+	LoginAPIServer login.ServiceInfo
+	HeartAPIServer heart.ServiceInfo
+	//JobZoneAPIServer  zone.ServiceInfo
+	//NodesAPIServer    nodes.ServiceInfo
+	//WatcherAPIServer  watcher.ServiceInfo
+	//NginxCfgAPIServer nginxcfg.ServiceInfo
+}
 
-	log.Println("默认监听端口:", config.StartConfig.ListenPort)
-	log.Println("默认心跳服务地址:", config.StartConfig.HeartServerAddr)
-	log.Println("默认心跳周期:", config.StartConfig.HeartCycle)
-	if err := http.ListenAndServe(":"+config.StartConfig.ListenPort, nil); err != nil {
+var ngFrontManager NGFrontManager
+
+func init() {
+	config.Init()
+
+	nodes.Init()
+
+	ngFrontManager.LoginAPIServer.Init()
+
+	ngFrontManager.HeartAPIServer.Init()
+
+	//ngFrontManager.JobZoneAPIServer.Init()
+
+	//ngFrontManager.NodesAPIServer.Init()
+
+	//ngFrontManager.WatcherAPIServer.Init()
+
+	//ngFrontManager.NginxCfgAPIServer.Init()
+
+	return
+}
+
+func main() {
+	err := http.ListenAndServe(":"+config.StartConfig.ListenPort, nil)
+	if err != nil {
 		panic(err)
 	}
+
+	return
 }
