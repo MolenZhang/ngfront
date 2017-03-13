@@ -29,7 +29,10 @@ type HeartRequestMsg struct {
 	ReqResult HeartRequestResult
 }
 
-var HeartCheckStatus int
+var (
+	HeartCheckStatus int
+	heartReqMsg      HeartRequestMsg
+)
 
 const (
 	HeartFailed = 0
@@ -37,7 +40,7 @@ const (
 )
 
 func heartCheck(request *restful.Request, response *restful.Response) {
-	heartReqMsg := HeartRequestMsg{}
+	heartReqMsg = HeartRequestMsg{}
 	if err := request.ReadEntity(&heartReqMsg); err != nil {
 		response.WriteErrorString(http.StatusInternalServerError, err.Error())
 		return
