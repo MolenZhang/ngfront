@@ -115,6 +115,8 @@ func (svc *ServiceInfo) login(request *restful.Request, response *restful.Respon
 
 	nodes.AddClientData(clientInfo) //将IP+clientID 为key add进map
 
+	// http GET---->AddWatcherData(clientInfo.CreateKey(), Value....) 存
+
 	log.Println(reqMsg)
 	response.WriteHeaderAndJson(200, reqMsg, "application/json")
 

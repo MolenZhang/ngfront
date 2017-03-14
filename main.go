@@ -4,6 +4,7 @@ import (
 	"NgFront/nodemanager/heart"
 	"NgFront/nodemanager/login"
 	"NgFront/nodemanager/nodes"
+	"NgFront/nodemanager/zone"
 	config "NgFront/startconfig"
 	//"log"
 	"net/http"
@@ -11,9 +12,9 @@ import (
 
 //NGFrontManager  ngfront 管理器
 type NGFrontManager struct {
-	LoginAPIServer login.ServiceInfo
-	HeartAPIServer heart.ServiceInfo
-	//JobZoneAPIServer  zone.ServiceInfo
+	LoginAPIServer   login.ServiceInfo
+	HeartAPIServer   heart.ServiceInfo
+	JobZoneAPIServer zone.ServiceInfo
 	//NodesAPIServer    nodes.ServiceInfo
 	//WatcherAPIServer  watcher.ServiceInfo
 	//NginxCfgAPIServer nginxcfg.ServiceInfo
@@ -30,7 +31,7 @@ func init() {
 
 	ngFrontManager.HeartAPIServer.Init()
 
-	//ngFrontManager.JobZoneAPIServer.Init()
+	ngFrontManager.JobZoneAPIServer.Init() //Home页面
 
 	//ngFrontManager.NodesAPIServer.Init()
 

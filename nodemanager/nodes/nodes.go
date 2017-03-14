@@ -67,7 +67,8 @@ func Init() {
 	return
 }
 
-func (clientInfo *ClientInfo) createKey() string {
+//CreateKey 构造key
+func (clientInfo *ClientInfo) CreateKey() string {
 	return clientInfo.NodeIP + "-" + clientInfo.ClientID
 }
 
@@ -77,7 +78,7 @@ func CheckClientInfo(client ClientInfo) bool {
 
 	defer allNodesInfo.mutexLock.Unlock()
 
-	key := client.createKey()
+	key := client.CreateKey()
 
 	//上线存进来的clientID 不存在 校验失败
 	if _, ok := allNodesInfo.allNodesInfoMap[key]; !ok {
@@ -114,7 +115,7 @@ func AddClientData(client ClientInfo) {
 
 	defer allNodesInfo.mutexLock.Unlock()
 
-	key := client.createKey()
+	key := client.CreateKey()
 
 	//ADD操作key = ClientID value = clientInfo
 	newNodeInfo := allNodesInfo.allNodesInfoMap[key]
@@ -145,7 +146,7 @@ func AddClientData(client ClientInfo) {
 }
 
 //AddWatcherData 保存监视器配置数据
-func AddWatcherData(key string, watcher WatchManagerCfg) {
+/*func AddWatcherData(key string, watcher WatchManagerCfg) {
 	allNodesInfo.mutexLock.Lock()
 
 	defer allNodesInfo.mutexLock.Unlock()
@@ -161,4 +162,15 @@ func GetWatcherData(key string) WatchManagerCfg {
 	defer allNodesInfo.mutexLock.Unlock()
 
 	//
+}
+*/
+//GetAllNodesInfo 在前端展示所有的Node的信息
+func GetAllNodesInfo() (allNodes map[string]NodeInfo) {
+	allNodesInfo.mutexLock.Lock()
+
+	defer allNodesInfo.mutexLock.Unlock()
+
+	allNodes = allNodesInfo.allNodesInfoMap
+
+	return
 }
