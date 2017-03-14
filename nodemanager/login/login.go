@@ -1,7 +1,7 @@
 package login
 
 import (
-	config "ngfront/startconfig"
+	"ngfront/config"
 	//"container/list"
 	"log"
 	"net/http"

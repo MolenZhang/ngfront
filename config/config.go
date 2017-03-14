@@ -1,4 +1,4 @@
-package startconfig
+package config
 
 import (
 	"flag"

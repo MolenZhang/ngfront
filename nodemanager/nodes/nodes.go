@@ -4,7 +4,7 @@ package nodes
 
 import (
 	"fmt"
-	config "ngfront/startconfig"
+	"ngfront/config"
 	"sync"
 	"time"
 )
