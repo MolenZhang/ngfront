@@ -40,7 +40,7 @@ func init() {
 }
 
 func main() {
-	err := http.ListenAndServe(":"+config.StartConfig.ListenPort, nil)
+	err := http.ListenAndServe(":"+config.NgFrontCfg.ListenPort, nil)
 	if err != nil {
 		panic(err)
 	}

@@ -55,9 +55,9 @@ type ServiceInfo struct {
 
 //Init 初始化函数
 func (svc *ServiceInfo) Init() {
-	svc.HeartCycle = config.StartConfig.HeartCycle
+	svc.HeartCycle = config.NgFrontCfg.HeartCycle
 	//svc.HeartServerAddr = "http://192.168.0.75:8083/ngfront/heart"
-	svc.HeartServerAddr = config.StartConfig.HeartServerAddr
+	svc.HeartServerAddr = config.NgFrontCfg.HeartServerAddr
 
 	svc.register()
 
@@ -117,7 +117,7 @@ func (svc *ServiceInfo) login(request *restful.Request, response *restful.Respon
 
 	// http GET---->AddWatcherData(clientInfo.CreateKey(), Value....) 存
 
-	log.Println(reqMsg)
+	log.Println("上线报文=", reqMsg)
 	response.WriteHeaderAndJson(200, reqMsg, "application/json")
 
 	return
