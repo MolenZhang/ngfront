@@ -1,12 +1,12 @@
 package watch
 
 import (
-	"NgFront/nodemanager/login"
-	"NgFront/nodemanager/node"
 	"container/list"
 	"encoding/json"
 	"log"
 	"net/http"
+	"ngfront/nodemanager/login"
+	"ngfront/nodemanager/node"
 )
 
 var watchCfg node.WatchManagerCfg

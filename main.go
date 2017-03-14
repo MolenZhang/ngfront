@@ -1,11 +1,11 @@
 package main
 
 import (
-	"NgFront/nodemanager/heart"
-	"NgFront/nodemanager/login"
-	"NgFront/nodemanager/nodes"
-	"NgFront/nodemanager/zone"
-	config "NgFront/startconfig"
+	"ngfront/nodemanager/heart"
+	"ngfront/nodemanager/login"
+	"ngfront/nodemanager/nodes"
+	"ngfront/nodemanager/zone"
+	config "ngfront/startconfig"
 	//"log"
 	"net/http"
 )

@@ -3,8 +3,8 @@ package nodes
 //关于Node的所有信息以及数据结构都在此保存 操作
 
 import (
-	config "NgFront/startconfig"
 	"fmt"
+	config "ngfront/startconfig"
 	"sync"
 	"time"
 )

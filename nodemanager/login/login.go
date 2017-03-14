@@ -1,11 +1,11 @@
 package login
 
 import (
-	config "NgFront/startconfig"
+	config "ngfront/startconfig"
 	//"container/list"
-	"NgFront/nodemanager/nodes"
 	"log"
 	"net/http"
+	"ngfront/nodemanager/nodes"
 	"time"
 
 	"github.com/emicklei/go-restful"

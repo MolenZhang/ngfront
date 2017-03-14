@@ -2,8 +2,9 @@ package zone
 
 //zone 就是Home
 import (
-	//"NgFront/nodemanager/nodes"
+	//"ngfront/nodemanager/nodes"
 	"fmt"
+	"html/template"
 	"net/http"
 )
 
@@ -18,7 +19,7 @@ func showHomePage(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err)
 		return
 	}
-	return
+	t.Execute(w, nil)
 }
 
 func getZoneInfo(w http.ResponseWriter, r *http.Request) {
