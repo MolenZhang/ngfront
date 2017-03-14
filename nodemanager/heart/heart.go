@@ -123,4 +123,6 @@ func (svc *ServiceInfo) register() {
 		Reads(RequestMsg{}))
 
 	restful.Add(ws)
+
+	return
 }

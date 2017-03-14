@@ -43,6 +43,8 @@ func main() {
 	err := http.ListenAndServe(":"+config.NgFrontCfg.ListenPort, nil)
 	if err != nil {
 		panic(err)
+
+		return
 	}
 
 	return

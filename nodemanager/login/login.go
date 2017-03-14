@@ -80,6 +80,8 @@ func (svc *ServiceInfo) register() {
 		Reads(RequestMsg{}))
 
 	restful.Add(ws)
+
+	return
 }
 
 func (svc *ServiceInfo) login(request *restful.Request, response *restful.Response) {
