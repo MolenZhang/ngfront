@@ -13,10 +13,11 @@ type ServiceInfo struct {
 
 func showHomePage(w http.ResponseWriter, r *http.Request) {
 	//tepmlate加载 respone exec
-
-	//response.WriteHeaderAndJson(200, nil, "application/json")
-	fmt.Println("------显示主页 加载模板----")
-
+	t, err := template.ParseFiles("template/html/zone/index.html")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 	return
 }
 
