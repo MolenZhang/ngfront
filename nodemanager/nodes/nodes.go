@@ -46,9 +46,9 @@ type ClientInfo struct {
 
 //NodeInfo 单个节点的所有信息
 type NodeInfo struct {
-	clientInfo ClientInfo
-	watcher    WatchManagerCfg
-	timer      *time.Timer
+	Client  ClientInfo
+	watcher WatchManagerCfg
+	timer   *time.Timer
 }
 
 //AllNodesInfo 所有节点信息
@@ -68,8 +68,8 @@ func Init() {
 }
 
 //CreateKey 构造key
-func (clientInfo *ClientInfo) CreateKey() string {
-	return clientInfo.NodeIP + "-" + clientInfo.ClientID
+func (client *ClientInfo) CreateKey() string {
+	return client.NodeIP + "-" + client.ClientID
 }
 
 //CheckClientInfo 检查客户端信息是否被删除
@@ -120,7 +120,7 @@ func AddClientData(client ClientInfo) {
 	//ADD操作key = ClientID value = clientInfo
 	newNodeInfo := allNodesInfo.allNodesInfoMap[key]
 
-	newNodeInfo.clientInfo = client
+	newNodeInfo.Client = client
 
 	newNodeInfo.timer = time.AfterFunc(config.DefaultHeartTimeout*time.Second, func() {
 

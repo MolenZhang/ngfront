@@ -13,8 +13,6 @@ import (
 type ServiceInfo struct {
 }
 
-var webRespMsgMap map[string]webRespMsg
-
 func showHomePage(w http.ResponseWriter, r *http.Request) {
 	//tepmlate加载 respone exec
 	t, err := template.ParseFiles("template/html/zone/index.html")
@@ -33,12 +31,19 @@ type webRespMsg struct {
 }
 
 func getZoneInfo(w http.ResponseWriter, r *http.Request) {
+	var webRespMsgMap map[string]webRespMsg
+
+	webRespMsgMap = make(map[string]webRespMsg, 0)
+
 	allNodes := nodes.GetAllNodesInfo()
 	for k, v := range allNodes {
-		webRespMsgMap[k].JobZoneType = v.clientInfo.JobZoneType
-		webRespMsgMap[k].ClientID = v.clientInfo.ClientID
-		webRespMsgMap[k].NodeName = v.clientInfo.NodeName
-		webRespMsgMap[k].NodeIP = v.clientInfo.NodeIP
+		msg := webRespMsg{}
+		msg.JobZoneType = v.Client.JobZoneType
+		msg.ClientID = v.Client.ClientID
+		msg.NodeName = v.Client.NodeName
+		msg.NodeIP = v.Client.NodeIP
+
+		webRespMsgMap[k] = msg
 	}
 
 	v, err := json.Marshal(webRespMsgMap)
@@ -46,11 +51,13 @@ func getZoneInfo(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err)
 		return
 	}
+
 	w.Write(v)
 }
 
 //Init 初始化函数
 func (svc *ServiceInfo) Init() {
+
 	http.HandleFunc("/ngfront", showHomePage)
 	http.HandleFunc("/zone", getZoneInfo)
 
