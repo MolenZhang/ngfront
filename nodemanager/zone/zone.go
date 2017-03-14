@@ -2,15 +2,18 @@ package zone
 
 //zone 就是Home
 import (
-	//"ngfront/nodemanager/nodes"
+	"encoding/json"
 	"fmt"
 	"html/template"
 	"net/http"
+	"ngfront/nodemanager/nodes"
 )
 
 //ServiceInfo 服务信息
 type ServiceInfo struct {
 }
+
+var webRespMsgMap map[string]webRespMsg
 
 func showHomePage(w http.ResponseWriter, r *http.Request) {
 	//tepmlate加载 respone exec
@@ -22,13 +25,28 @@ func showHomePage(w http.ResponseWriter, r *http.Request) {
 	t.Execute(w, nil)
 }
 
+type webRespMsg struct {
+	JobZoneType string
+	NodeName    string
+	NodeIP      string
+	ClientID    string
+}
+
 func getZoneInfo(w http.ResponseWriter, r *http.Request) {
-	//GetAllNodesInfo()  .... write  resp
+	allNodes := nodes.GetAllNodesInfo()
+	for k, v := range allNodes {
+		webRespMsgMap[k].JobZoneType = v.clientInfo.JobZoneType
+		webRespMsgMap[k].ClientID = v.clientInfo.ClientID
+		webRespMsgMap[k].NodeName = v.clientInfo.NodeName
+		webRespMsgMap[k].NodeIP = v.clientInfo.NodeIP
+	}
 
-	//response.WriteHeaderAndJson(200, nil, "application/json")
-	fmt.Println("------重定向 获取数据 返回给JS----")
-
-	return
+	v, err := json.Marshal(webRespMsgMap)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	w.Write(v)
 }
 
 //Init 初始化函数
