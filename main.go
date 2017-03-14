@@ -15,7 +15,6 @@ type NGFrontManager struct {
 	LoginAPIServer   login.ServiceInfo
 	HeartAPIServer   heart.ServiceInfo
 	JobZoneAPIServer zone.ServiceInfo
-	//NodesAPIServer    nodes.ServiceInfo
 	//WatcherAPIServer  watcher.ServiceInfo
 	//NginxCfgAPIServer nginxcfg.ServiceInfo
 }
@@ -32,8 +31,6 @@ func init() {
 	ngFrontManager.HeartAPIServer.Init()
 
 	ngFrontManager.JobZoneAPIServer.Init() //Home页面
-
-	//ngFrontManager.NodesAPIServer.Init()
 
 	//ngFrontManager.WatcherAPIServer.Init()
 
