@@ -1,5 +1,7 @@
 package nodes
 
+//关于Node的所有信息以及数据结构都在此保存 操作
+
 import (
 	config "NgFront/startconfig"
 	"fmt"
@@ -44,10 +46,9 @@ type ClientInfo struct {
 
 //NodeInfo 单个节点的所有信息
 type NodeInfo struct {
-	clientInfo   ClientInfo
-	watcher      WatchManagerCfg
-	timer        *time.Timer
-	isTimerReset bool
+	clientInfo ClientInfo
+	watcher    WatchManagerCfg
+	timer      *time.Timer
 }
 
 //AllNodesInfo 所有节点信息
@@ -141,4 +142,23 @@ func AddClientData(client ClientInfo) {
 	//timer.Create()
 
 	return
+}
+
+//AddWatcherData 保存监视器配置数据
+func AddWatcherData(key string, watcher WatchManagerCfg) {
+	allNodesInfo.mutexLock.Lock()
+
+	defer allNodesInfo.mutexLock.Unlock()
+
+	//
+
+}
+
+//GetWatcherData 获取监视器配置
+func GetWatcherData(key string) WatchManagerCfg {
+	allNodesInfo.mutexLock.Lock()
+
+	defer allNodesInfo.mutexLock.Unlock()
+
+	//
 }
