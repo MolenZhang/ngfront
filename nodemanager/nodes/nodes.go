@@ -7,6 +7,7 @@ import (
 	"time"
 )
 
+//WatchManagerCfg 监视器配置
 type WatchManagerCfg struct {
 	KubernetesMasterHost   string
 	KubernetesAPIVersion   string
@@ -41,7 +42,7 @@ type ClientInfo struct {
 	JobZoneType              string
 }
 
-//NodeInfo 节点的所有信息
+//NodeInfo 单个节点的所有信息
 type NodeInfo struct {
 	clientInfo   ClientInfo
 	watcher      WatchManagerCfg
@@ -49,6 +50,7 @@ type NodeInfo struct {
 	isTimerReset bool
 }
 
+//AllNodesInfo 所有节点信息
 type AllNodesInfo struct {
 	allNodesInfoMap map[string]NodeInfo
 	mutexLock       *sync.Mutex //只有读操作 可能不需要锁
@@ -64,45 +66,45 @@ func Init() {
 	return
 }
 
-//CheckClientInfo
+func (clientInfo *ClientInfo) createKey() string {
+	return clientInfo.NodeIP + "-" + clientInfo.ClientID
+}
+
+//CheckClientInfo 检查客户端信息是否被删除
 func CheckClientInfo(client ClientInfo) bool {
 	allNodesInfo.mutexLock.Lock()
 
 	defer allNodesInfo.mutexLock.Unlock()
 
-	//上线存进来的clientID 还在
-	if _, ok := allNodesInfo.allNodesInfoMap[client.ClientID]; ok {
+	key := client.createKey()
 
-		fmt.Println("------找到客户端信息 刷新定时器-----", allNodesInfo.allNodesInfoMap[client.ClientID].timer)
-
-		//allNodesInfo.allNodesInfoMap[client.ClientID].timer.Reset(config.DefaultHeartCycle)
-		//停止上一个定时器
-		allNodesInfo.allNodesInfoMap[client.ClientID].timer.Stop()
-
-		newNodeInfo := allNodesInfo.allNodesInfoMap[client.ClientID]
-
-		//开启器新的定时器 刷新超时时间
-		newNodeInfo.timer = time.AfterFunc(config.DefaultHeartTimeout*time.Second, deleteClientInfo)
-		//newNodeInfo.isTimerReset = false //新定时器 没有被刷新
-
-		allNodesInfo.allNodesInfoMap[client.ClientID] = newNodeInfo
-
-		return true
+	//上线存进来的clientID 不存在 校验失败
+	if _, ok := allNodesInfo.allNodesInfoMap[key]; !ok {
+		return false
 	}
 
-	return false
-}
+	//fmt.Println("------找到客户端信息 刷新定时器-----key =!", key)
 
-func deleteClientInfo() {
-	fmt.Println("------心跳超时 删除客户端信息----!")
+	//停止上一个定时器
+	allNodesInfo.allNodesInfoMap[key].timer.Stop()
 
-	allNodesInfo.mutexLock.Lock()
+	currentNodeInfo := allNodesInfo.allNodesInfoMap[key]
+	//开启器新的定时器 刷新超时时间
+	currentNodeInfo.timer = time.AfterFunc(config.DefaultHeartTimeout*time.Second, func() {
+		allNodesInfo.mutexLock.Lock()
 
-	defer allNodesInfo.mutexLock.Unlock()
+		defer allNodesInfo.mutexLock.Unlock()
 
-	//delete(allNodesInfo.allNodesInfoMap, )
+		delete(allNodesInfo.allNodesInfoMap, key)
 
-	return
+		fmt.Println("------心跳超时 删除客户端信息----key !", key)
+
+		return
+	})
+
+	allNodesInfo.allNodesInfoMap[key] = currentNodeInfo
+
+	return true
 }
 
 //AddClientData 添加一个客户端信息进NodesInfo
@@ -111,17 +113,30 @@ func AddClientData(client ClientInfo) {
 
 	defer allNodesInfo.mutexLock.Unlock()
 
+	key := client.createKey()
+
 	//ADD操作key = ClientID value = clientInfo
-	newNodeInfo := allNodesInfo.allNodesInfoMap[client.ClientID]
+	newNodeInfo := allNodesInfo.allNodesInfoMap[key]
 
 	newNodeInfo.clientInfo = client
 
-	newNodeInfo.timer = time.AfterFunc(config.DefaultHeartTimeout*time.Second, deleteClientInfo)
+	newNodeInfo.timer = time.AfterFunc(config.DefaultHeartTimeout*time.Second, func() {
+
+		allNodesInfo.mutexLock.Lock()
+
+		defer allNodesInfo.mutexLock.Unlock()
+
+		delete(allNodesInfo.allNodesInfoMap, key)
+
+		fmt.Println("------心跳超时 删除客户端信息----key =!", key)
+
+		return
+	})
 	//newNodeInfo.isTimerReset = false //新定时器 没有被刷新
 
-	allNodesInfo.allNodesInfoMap[client.ClientID] = newNodeInfo
+	allNodesInfo.allNodesInfoMap[key] = newNodeInfo
 
-	fmt.Println("------添加客户端信息 开启定时器-----", newNodeInfo.timer)
+	//fmt.Println("------添加客户端信息 开启定时器-----key = !", key)
 
 	//timer.Create()
 

@@ -10,31 +10,36 @@ import (
 
 //ServiceInfo 服务信息
 type ServiceInfo struct {
-	//heartReqMsg map[string]HeartRequestMsg
+	//heartReqMsg map[string]RequestMsg
 }
 
-type HeartRequestBody struct {
+//RequestBody 心跳请求body
+type RequestBody struct {
 	ClientID           string
 	ClientHealthyState int
 	ClientIP           string
 }
 
-type HeartRequestResult struct {
+//RequestResult 心跳请求结果
+type RequestResult struct {
 	ErrCode   int
 	ResultMsg string
 	ErrReason string
 }
 
-type HeartResponseBody struct {
+//ResponseBody 心跳回复body
+type ResponseBody struct {
 	HeartStatus int
 }
 
-type HeartRequestMsg struct {
-	ReqBody   HeartRequestBody
-	RespBody  HeartResponseBody
-	ReqResult HeartRequestResult
+//RequestMsg 心跳请求完整报文
+type RequestMsg struct {
+	ReqBody   RequestBody
+	RespBody  ResponseBody
+	ReqResult RequestResult
 }
 
+//HeartFailed 心跳失败，HeartSucess 心跳成功
 const (
 	HeartFailed = 0
 	HeartSucess = 1
@@ -57,33 +62,34 @@ func (svc *ServiceInfo) heart(request *restful.Request, response *restful.Respon
 }
 
 //心跳检查 校验
-func heartCheck(request *restful.Request, response *restful.Response) (HeartRequestMsg, bool) {
-	heartReqMsg := HeartRequestMsg{}
+func heartCheck(request *restful.Request, response *restful.Response) (RequestMsg, bool) {
+	heartReqMsg := RequestMsg{}
 	if err := request.ReadEntity(&heartReqMsg); err != nil {
 		response.WriteErrorString(http.StatusInternalServerError, err.Error())
 
 		return heartReqMsg, false
 	}
 
-	heartReqMsg.RespBody = HeartResponseBody{
+	heartReqMsg.RespBody = ResponseBody{
 		HeartStatus: HeartFailed,
 	}
 
-	heartReqMsg.ReqResult = HeartRequestResult{
+	heartReqMsg.ReqResult = RequestResult{
 		ErrCode:   0,
 		ResultMsg: "",
 		ErrReason: "",
 	}
 
 	clientInfo := nodes.ClientInfo{
-		ClientID: heartReqMsg.ReqBody.ClientID}
+		ClientID: heartReqMsg.ReqBody.ClientID,
+		NodeIP:   heartReqMsg.ReqBody.ClientIP}
 
 	//校验
 	if true != nodes.CheckClientInfo(clientInfo) {
 		return heartReqMsg, false
 	}
 
-	heartReqMsg.ReqResult = HeartRequestResult{
+	heartReqMsg.ReqResult = RequestResult{
 		ErrCode:   1,
 		ResultMsg: "",
 		ErrReason: "",
@@ -96,6 +102,8 @@ func heartCheck(request *restful.Request, response *restful.Response) (HeartRequ
 //Init 初始化
 func (svc *ServiceInfo) Init() {
 	svc.register()
+
+	//可以拓展添加其他功能
 
 	return
 }
@@ -111,7 +119,7 @@ func (svc *ServiceInfo) register() {
 	ws.Route(ws.POST("/").To(svc.heart).
 		Doc("heart check with kubeng").
 		Operation("heartCheck").
-		Reads(HeartRequestMsg{}))
+		Reads(RequestMsg{}))
 
 	restful.Add(ws)
 }

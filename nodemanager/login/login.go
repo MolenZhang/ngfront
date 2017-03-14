@@ -11,8 +11,8 @@ import (
 	"github.com/emicklei/go-restful"
 )
 
-//LoginRequestBody 请求报文体
-type LoginRequestBody struct {
+//RequestBody 请求报文体
+type RequestBody struct {
 	ClientID                 string
 	NodeName                 string
 	NodeIP                   string
@@ -25,28 +25,26 @@ type LoginRequestBody struct {
 	JobZoneType              string
 }
 
-//LoginRequestResult 回复成功与否报文原因
-type LoginRequestResult struct {
+//RequestResult 回复成功与否报文原因
+type RequestResult struct {
 	ErrCode   int
 	ResultMsg string
 	ErrReason string
 }
 
-//LoginResponseBody 回复报文体
-type LoginResponseBody struct {
+//ResponseBody 回复报文体
+type ResponseBody struct {
 	HeartServerAddr string
 	HeartCycle      time.Duration
 	LoginStatus     int
 }
 
-//LoginRequestMsg 回复登录信息
-type LoginRequestMsg struct {
-	ReqBody   LoginRequestBody
-	RespBody  LoginResponseBody
-	ReqResult LoginRequestResult
+//RequestMsg 回复登录信息
+type RequestMsg struct {
+	ReqBody   RequestBody
+	RespBody  ResponseBody
+	ReqResult RequestResult
 }
-
-//var reqMsg LoginRequestMsg
 
 //ServiceInfo 服务信息
 type ServiceInfo struct {
@@ -79,25 +77,25 @@ func (svc *ServiceInfo) register() {
 	ws.Route(ws.POST("/").To(svc.login).
 		Doc("show nginx configure to the web").
 		Operation("login").
-		Reads(LoginRequestMsg{}))
+		Reads(RequestMsg{}))
 
 	restful.Add(ws)
 }
 
 func (svc *ServiceInfo) login(request *restful.Request, response *restful.Response) {
-	reqMsg := LoginRequestMsg{}
+	reqMsg := RequestMsg{}
 	if err := request.ReadEntity(&reqMsg); err != nil {
 		response.WriteErrorString(http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	reqMsg.RespBody = LoginResponseBody{
+	reqMsg.RespBody = ResponseBody{
 		HeartServerAddr: svc.HeartServerAddr,
 		HeartCycle:      svc.HeartCycle,
 		LoginStatus:     1,
 	}
 
-	reqMsg.ReqResult = LoginRequestResult{
+	reqMsg.ReqResult = RequestResult{
 		ErrCode:   1,
 		ResultMsg: "",
 		ErrReason: "",
@@ -115,7 +113,7 @@ func (svc *ServiceInfo) login(request *restful.Request, response *restful.Respon
 		WatchManagerAPIServer:    reqMsg.ReqBody.WatchManagerAPIServer,
 		JobZoneType:              reqMsg.ReqBody.JobZoneType}
 
-	nodes.AddClientData(clientInfo) //将clientID 为key add进map
+	nodes.AddClientData(clientInfo) //将IP+clientID 为key add进map
 
 	log.Println(reqMsg)
 	response.WriteHeaderAndJson(200, reqMsg, "application/json")
