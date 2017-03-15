@@ -32,16 +32,16 @@ type WatchManagerCfg struct {
 
 //ClientInfo 客户端信息
 type ClientInfo struct {
-	NodeIP                   string
-	ClientID                 string
-	NodeName                 string
-	APIServerPort            string
-	NginxCfgsAPIServerPath   string
-	TestToolAPIServerPath    string
-	NodeInfoAPIServerPath    string
-	DownloadCfgAPIServerPath string
-	WatchManagerAPIServer    string
-	JobZoneType              string
+	NodeIP                    string
+	ClientID                  string
+	NodeName                  string
+	APIServerPort             string
+	NginxCfgsAPIServerPath    string
+	TestToolAPIServerPath     string
+	NodeInfoAPIServerPath     string
+	DownloadCfgAPIServerPath  string
+	WatchManagerAPIServerPath string
+	JobZoneType               string
 }
 
 //NodeInfo 单个节点的所有信息

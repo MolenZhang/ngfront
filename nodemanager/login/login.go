@@ -14,16 +14,16 @@ import (
 
 //RequestBody 请求报文体
 type RequestBody struct {
-	ClientID                 string
-	NodeName                 string
-	NodeIP                   string
-	APIServerPort            string
-	NginxCfgsAPIServerPath   string
-	TestToolAPIServerPath    string
-	NodeInfoAPIServerPath    string
-	DownloadCfgAPIServerPath string
-	WatchManagerAPIServer    string
-	JobZoneType              string
+	ClientID                  string
+	NodeName                  string
+	NodeIP                    string
+	APIServerPort             string
+	NginxCfgsAPIServerPath    string
+	TestToolAPIServerPath     string
+	NodeInfoAPIServerPath     string
+	DownloadCfgAPIServerPath  string
+	WatchManagerAPIServerPath string
+	JobZoneType               string
 }
 
 //RequestResult 回复成功与否报文原因
@@ -105,20 +105,20 @@ func (svc *ServiceInfo) login(request *restful.Request, response *restful.Respon
 	}
 
 	clientInfo := nodes.ClientInfo{
-		NodeIP:                   reqMsg.ReqBody.NodeIP,
-		ClientID:                 reqMsg.ReqBody.ClientID,
-		NodeName:                 reqMsg.ReqBody.NodeName,
-		APIServerPort:            reqMsg.ReqBody.APIServerPort,
-		NginxCfgsAPIServerPath:   reqMsg.ReqBody.NginxCfgsAPIServerPath,
-		TestToolAPIServerPath:    reqMsg.ReqBody.TestToolAPIServerPath,
-		NodeInfoAPIServerPath:    reqMsg.ReqBody.NodeInfoAPIServerPath,
-		DownloadCfgAPIServerPath: reqMsg.ReqBody.DownloadCfgAPIServerPath,
-		WatchManagerAPIServer:    reqMsg.ReqBody.WatchManagerAPIServer,
-		JobZoneType:              reqMsg.ReqBody.JobZoneType,
+		NodeIP:                    reqMsg.ReqBody.NodeIP,
+		ClientID:                  reqMsg.ReqBody.ClientID,
+		NodeName:                  reqMsg.ReqBody.NodeName,
+		APIServerPort:             reqMsg.ReqBody.APIServerPort,
+		NginxCfgsAPIServerPath:    reqMsg.ReqBody.NginxCfgsAPIServerPath,
+		TestToolAPIServerPath:     reqMsg.ReqBody.TestToolAPIServerPath,
+		NodeInfoAPIServerPath:     reqMsg.ReqBody.NodeInfoAPIServerPath,
+		DownloadCfgAPIServerPath:  reqMsg.ReqBody.DownloadCfgAPIServerPath,
+		WatchManagerAPIServerPath: reqMsg.ReqBody.WatchManagerAPIServerPath,
+		JobZoneType:               reqMsg.ReqBody.JobZoneType,
 	}
 
 	nodes.AddClientData(clientInfo) //将IP+clientID 为key add进map
-	url := "http://" + reqMsg.ReqBody.NodeIP + ":" + reqMsg.ReqBody.APIServerPort + reqMsg.ReqBody.WatchManagerAPIServer
+	url := "http://" + reqMsg.ReqBody.NodeIP + reqMsg.ReqBody.APIServerPort + "/" + reqMsg.ReqBody.WatchManagerAPIServerPath
 	getWatcherCfg(url)
 
 	// http GET---->AddWatcherData(clientInfo.CreateKey(), Value....) 存
@@ -130,6 +130,8 @@ func (svc *ServiceInfo) login(request *restful.Request, response *restful.Respon
 }
 
 func getWatcherCfg(url string) {
+	log.Println("-----请求watcher 数据 url=", url)
+
 	resp, err := http.Get(url)
 	if err != nil {
 		log.Println(err)
