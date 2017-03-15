@@ -1,10 +1,11 @@
 package login
 
 import (
-	"ngfront/config"
-	//"container/list"
+	"encoding/json"
+	"io/ioutil"
 	"log"
 	"net/http"
+	"ngfront/config"
 	"ngfront/nodemanager/nodes"
 	"time"
 
@@ -117,6 +118,8 @@ func (svc *ServiceInfo) login(request *restful.Request, response *restful.Respon
 	}
 
 	nodes.AddClientData(clientInfo) //将IP+clientID 为key add进map
+	url := "http://" + reqMsg.ReqBody.NodeIP + ":" + reqMsg.ReqBody.APIServerPort + reqMsg.ReqBody.WatchManagerAPIServer
+	getWatcherCfg(url)
 
 	// http GET---->AddWatcherData(clientInfo.CreateKey(), Value....) 存
 
@@ -124,4 +127,24 @@ func (svc *ServiceInfo) login(request *restful.Request, response *restful.Respon
 	response.WriteHeaderAndJson(200, reqMsg, "application/json")
 
 	return
+}
+
+func getWatcherCfg(url string) {
+	resp, err := http.Get(url)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	var watcherCfg nodes.WatchManagerCfg
+
+	json.Unmarshal(body, &watcherCfg)
+	log.Println(watcherCfg)
+
 }

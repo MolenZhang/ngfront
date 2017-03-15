@@ -146,22 +146,20 @@ func AddClientData(client ClientInfo) {
 }
 
 //AddWatcherData 保存监视器配置数据
-/*func AddWatcherData(key string, watcher WatchManagerCfg) {
+func AddWatcherData(key string, watcher WatchManagerCfg) {
 	allNodesInfo.mutexLock.Lock()
 
 	defer allNodesInfo.mutexLock.Unlock()
 
-	//
-
 }
 
+/*
 //GetWatcherData 获取监视器配置
 func GetWatcherData(key string) WatchManagerCfg {
 	allNodesInfo.mutexLock.Lock()
 
 	defer allNodesInfo.mutexLock.Unlock()
 
-	//
 }
 */
 //GetAllNodesInfo 在前端展示所有的Node的信息
