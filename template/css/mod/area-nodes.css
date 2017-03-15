@@ -1,0 +1,79 @@
+.aside-btn {
+    height: 60px;
+    position: relative;
+    padding: 0 20px;
+    background: #EAEEF1;
+}
+.aside-btn .btns-group {
+    position: absolute;
+    bottom: -1px;
+}
+.btns-group .btn-white {
+    background: #fff;
+    color: #3C7BCA;
+    width: 150px;
+}
+.item-obj {
+    background-color: #fff;
+    padding-top:16px;
+    height:100%;
+}
+.n-nodes{
+	width: 100%;
+	height: 800px;
+}
+.n-img{
+	text-align:center;
+}
+.n-nodeLeft{
+	width:50%;
+	float:left;
+}
+.n-nodeLeft img{
+	width:100px;
+	height:100px;
+	background-color:#ddd;
+}
+td.editItem{
+	display:none;
+}
+.fa-nodeSave,.fa-nodeTimes,.fa-nodeEdit{
+	float:right;
+	line-height:35px;
+}
+
+.n-nodes table{
+	width:96%;
+	margin: 0 auto;
+}
+.n-nodes table tr{
+	height: 35px;
+}
+.n-nodes table tr td{
+	line-height: 35px;
+	text-indent: 15px;
+	border-bottom:1px solid #ccc;
+}
+.n-nodes table tr td:nth-child(1){
+	background-color: #efefef;
+	
+}
+.n-nodes table tr td input{
+	line-height: 24px;
+}
+.n-nodeRight{
+	width: 49%;
+	float:right;
+}
+.table-tit{
+	padding-left:20px;
+	font-size:18px;
+	font-weight:bolder;
+}
+
+button.btn-info{
+	margin-left:10px;
+}
+button.btn-start{
+	margin-left:16px;
+}

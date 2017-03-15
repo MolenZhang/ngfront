@@ -16,12 +16,24 @@ type ServiceInfo struct {
 func showHomePage(w http.ResponseWriter, r *http.Request) {
 	//tepmlate加载 respone exec
 	t, err := template.ParseFiles("template/html/zone/index.html")
+	//t, err := template.ParseFiles("template/html/zone/index.html")
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 	t.Execute(w, nil)
 }
+
+//func getNginxCss(w http.ResponseWriter, r *http.Request) {
+//	//tepmlate加载 respone exec
+//	t, err := template.ParseFiles("template/css/mod/nginx.css")
+//	//t, err := template.ParseFiles("template/html/zone/index.html")
+//	if err != nil {
+//		fmt.Println(err)
+//		return
+//	}
+//	t.Execute(w, nil)
+//}
 
 //client 用于展示的客户端信息数据结构
 type client struct {
@@ -101,7 +113,8 @@ func getZoneInfo(w http.ResponseWriter, r *http.Request) {
 func (svc *ServiceInfo) Init() {
 
 	http.HandleFunc("/ngfront", showHomePage)
-	http.HandleFunc("/zone", getZoneInfo)
+	http.HandleFunc("/ngfront/zone", getZoneInfo)
+	//http.HandleFunc("/ngfront/template/css/mod/nginx.css", getNginxCss)
 
 	return
 }

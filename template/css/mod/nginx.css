@@ -1,0 +1,177 @@
+.nginxForm{
+	margin-top:10px;
+	margin-bottom:10px;
+}
+.item-obj{
+	background-color: #fff;
+}
+.nginx-label{
+	margin-top:5px;
+	margin-bottom:5px;
+}
+.nginx-label input:not(.serverCheckbox){
+	border-radius:4px;
+	margin-left:3px;
+	margin-right:3px;
+	width:200px;
+}
+.nginx-label select{
+	height:28px;
+	width:200px;
+	border-radius:4px;
+	margin-left:3px;
+	margin-right:3px;
+	border: 1px solid #ccc;
+}
+.addSerBtn,.delSerBtn{
+	margin-left: 10px;
+}
+.nginxBtns{
+	margin-top: 50px;
+	margin-bottom: 30px;
+}
+i.self_a {
+	color: #676a6c;
+}
+.aside-btn {
+    height: 60px;
+    position: relative;
+    padding: 0 20px;
+    background: #EAEEF1;
+}
+.aside-btn .btns-group {
+    position: absolute;
+    bottom: -1px;
+}
+.btns-group .btn-white {
+    background: #fff;
+    color: #3C7BCA;
+}
+.searchFun{
+    text-align: center;
+    margin: 0px 10px;
+    margin-top: 20px;
+    float: right;
+}
+/* ibox */
+.addNginxCfg{
+	padding-top:30px;
+}
+.addNginxStepRow{
+	width: 96%;
+    margin: 0 auto;
+    margin-top: 10px;
+}
+.addNginxStepRow .col-sm-12 .ibox-title{
+	border-top: 1px solid #dadada;
+	border-left: 4px solid #337ab7;
+	border-right: 1px solid #dadada;
+	border-bottom: 1px solid #dadada;
+}
+.addNginxStepRow .col-sm-12:nth-child(even){
+	
+}
+.addNginxStepRow .col-sm-12 .ibox-content{
+	border-left: 4px solid #337ab7;
+	border-right: 1px solid #dadada;
+	
+}
+.ibox-tools a {
+    cursor: pointer;
+    margin-left: 8px;
+    color: #3c7bca;
+}
+.ibox-tools{
+    font-sizi:16px!important;
+}
+form span{
+	font-weight:bolder;
+}
+input.serverCheckbox{
+	vertical-align: middle;
+    margin: 0 auto;
+    height:18px;
+}
+.nginx-label span{
+	margin-left: 5px;
+}
+.nginx-label span i.fa{
+	color: #3c7bca;
+}
+.nginxCfgBtns{
+	float: right;
+	line-height: 20px;
+	margin-top:10px;
+	margin-right: 51px;
+    font-size: 17px;
+    color:#3c7bca;
+}
+.nginxCfgBtns span i{
+	margin-left:5px;
+}
+.waringInfo{
+	width:90%;
+	margin: 0 auto;
+	text-align:left;
+}
+.waringInfo img{
+	width: 100px;
+}
+.waringInfo span{
+	margin-left:40px;
+}
+.alert-warning{
+	margin-bottom: 0px;
+}
+.areaNodes{
+	display: flex;
+	padding-right:20px;
+}
+.operationBtns i{
+	margin-left:10px;
+}
+.statusImg img{
+	width:27px;
+}
+/* area.jsp */
+.item-obj {
+    background-color: #fff;
+    height:600px;
+}
+#areas{
+	width:45%;
+	height:500px;
+	margin-top:20px;
+	margin-left:20px;
+	float:left;
+}
+.areasTable{
+	width:50%;
+	float:left;
+	margin-top:20px;
+}
+/* .areasTable table{
+	width:100%;
+	display:block;
+} */
+.areasTable table tr{
+	border-bottom:1px solid #ddd;
+}
+.areasTable table td{
+	text-indent:8px;
+	width:49%;
+}
+.center{
+	text-align:center;
+}
+a{
+	cursor:pointer;
+}
+#areaNodesTbody{
+	height: 480px;
+    /* display: block; */
+    width: 100%;
+}
+.tdType{
+	background-color:#f9f9f9;
+}
