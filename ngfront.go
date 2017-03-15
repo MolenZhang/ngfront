@@ -7,6 +7,7 @@ import (
 	"ngfront/nodemanager/nodes"
 	"ngfront/nodemanager/zone"
 	"ngfront/nodemanager/zone/clients"
+	"ngfront/nodemanager/zone/clients/watcher"
 	//"log"
 	"net/http"
 )
@@ -17,7 +18,7 @@ type NGFrontManager struct {
 	HeartAPIServer   heart.ServiceInfo
 	JobZoneAPIServer zone.ServiceInfo
 	ClientsAPIServer clients.ServiceInfo
-	//WatcherAPIServer  watcher.ServiceInfo
+	WatcherAPIServer watcher.ServiceInfo
 	//NginxCfgAPIServer nginxcfg.ServiceInfo
 }
 
@@ -36,7 +37,7 @@ func init() {
 
 	ngFrontManager.ClientsAPIServer.Init()
 
-	//ngFrontManager.WatcherAPIServer.Init()
+	ngFrontManager.WatcherAPIServer.Init()
 
 	//ngFrontManager.NginxCfgAPIServer.Init()
 
