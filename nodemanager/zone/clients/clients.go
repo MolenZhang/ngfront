@@ -12,12 +12,14 @@ type ServiceInfo struct {
 }
 
 func showClientsPage(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("---------------show clients page------")
 	//加载模板 显示内容是 批量操作client
-	t, err := template.ParseFiles("template/html/clients/index.html")
+	t, err := template.ParseFiles("template/views/nginx/clients.html")
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
+
 	t.Execute(w, nil)
 }
 
@@ -32,7 +34,7 @@ func getClientsInfo(w http.ResponseWriter, r *http.Request) {
 
 //Init 初始化函数
 func (svc *ServiceInfo) Init() {
-	http.HandleFunc("/ngfront/clients", showClientsPage)
+	http.HandleFunc("/ngfront/zone/clients", showClientsPage)
 	http.HandleFunc("/clients", getClientsInfo)
 
 	return

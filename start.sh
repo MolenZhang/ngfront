@@ -7,7 +7,7 @@ PORT=$2
 
 if [ $# = 0 ];then
         echo "使用默认IP+Port运行"
-        exit
+	./ngfront
 fi
 
 if [ $# != 2 ];then

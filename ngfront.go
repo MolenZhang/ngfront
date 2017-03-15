@@ -6,6 +6,7 @@ import (
 	"ngfront/nodemanager/login"
 	"ngfront/nodemanager/nodes"
 	"ngfront/nodemanager/zone"
+	"ngfront/nodemanager/zone/clients"
 	//"log"
 	"net/http"
 )
@@ -15,6 +16,7 @@ type NGFrontManager struct {
 	LoginAPIServer   login.ServiceInfo
 	HeartAPIServer   heart.ServiceInfo
 	JobZoneAPIServer zone.ServiceInfo
+	ClientsAPIServer clients.ServiceInfo
 	//WatcherAPIServer  watcher.ServiceInfo
 	//NginxCfgAPIServer nginxcfg.ServiceInfo
 }
@@ -31,6 +33,8 @@ func init() {
 	ngFrontManager.HeartAPIServer.Init()
 
 	ngFrontManager.JobZoneAPIServer.Init() //Home页面
+
+	ngFrontManager.ClientsAPIServer.Init()
 
 	//ngFrontManager.WatcherAPIServer.Init()
 
