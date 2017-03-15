@@ -32,16 +32,16 @@ type WatchManagerCfg struct {
 
 //ClientInfo 客户端信息
 type ClientInfo struct {
-	NodeIP                   string
-	ClientID                 string
-	NodeName                 string
-	APIServerPort            string
-	NginxCfgsAPIServerPath   string
-	TestToolAPIServerPath    string
-	NodeInfoAPIServerPath    string
-	DownloadCfgAPIServerPath string
-	WatchManagerAPIServer    string
-	JobZoneType              string
+	NodeIP                    string
+	ClientID                  string
+	NodeName                  string
+	APIServerPort             string
+	NginxCfgsAPIServerPath    string
+	TestToolAPIServerPath     string
+	NodeInfoAPIServerPath     string
+	DownloadCfgAPIServerPath  string
+	WatchManagerAPIServerPath string
+	JobZoneType               string
 }
 
 //NodeInfo 单个节点的所有信息
@@ -146,22 +146,20 @@ func AddClientData(client ClientInfo) {
 }
 
 //AddWatcherData 保存监视器配置数据
-/*func AddWatcherData(key string, watcher WatchManagerCfg) {
+func AddWatcherData(key string, watcher WatchManagerCfg) {
 	allNodesInfo.mutexLock.Lock()
 
 	defer allNodesInfo.mutexLock.Unlock()
 
-	//
-
 }
 
+/*
 //GetWatcherData 获取监视器配置
 func GetWatcherData(key string) WatchManagerCfg {
 	allNodesInfo.mutexLock.Lock()
 
 	defer allNodesInfo.mutexLock.Unlock()
 
-	//
 }
 */
 //GetAllNodesInfo 在前端展示所有的Node的信息
