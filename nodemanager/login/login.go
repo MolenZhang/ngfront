@@ -113,7 +113,8 @@ func (svc *ServiceInfo) login(request *restful.Request, response *restful.Respon
 		NodeInfoAPIServerPath:    reqMsg.ReqBody.NodeInfoAPIServerPath,
 		DownloadCfgAPIServerPath: reqMsg.ReqBody.DownloadCfgAPIServerPath,
 		WatchManagerAPIServer:    reqMsg.ReqBody.WatchManagerAPIServer,
-		JobZoneType:              reqMsg.ReqBody.JobZoneType}
+		JobZoneType:              reqMsg.ReqBody.JobZoneType,
+	}
 
 	nodes.AddClientData(clientInfo) //将IP+clientID 为key add进map
 
