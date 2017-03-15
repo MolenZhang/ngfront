@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<title>nginx</title>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css"
+	href="../../plugins/bootstrap-3.3.5/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css"
+	href="../../plugins/Font-Awesome-master/css/font-awesome.css" />
+<link rel="stylesheet" type="text/css"
+	href="../../css/core/base.css" />
+<link rel="stylesheet" type="text/css"
+	href="../../css/mod/nginx.css" />
+
+</head>
+<body>
+	<header class="header">
+	    <div class="navbar navbar-fixed-top">
+	        <div class="container">
+	            <div class="navbar-header">
+	                <a href="javascript:void(0);">
+	                    <h2>Nginx配置管理</h2>
+	                </a>
+	            </div>
+	            
+	        </div>
+	    </div>
+	</header>
+	<div class="page-container">
+		<article>
+			<div class="page-main">
+				<div class="contentTitle">
+					<ol class="breadcrumb">
+						<li><a href="javascript:void(0)"><i class="fa fa-home"></i>&nbsp;&nbsp;<span
+								id="nav1">控制台</span></a></li>
+						<li><i class="fa fa-angle-right"></i></li>
+						<li class="active" id="nav2" style="width:120px">Nginx节点管理</li>
+					</ol>
+				</div>
+				<div class="contentMain">
+					<div class="row">
+                    <div class="col-md-12">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <h5>
+										<i class="fa fa-map-marker" style="margin-right: 6px;"></i>Nginx节点管理
+									</h5>
+
+									<div class="ibox-tools">
+										<a href="javascript:void(0);"
+											id="nodePlayBtn"><i class="fa fa-play" title="刷新"></i></a>
+										<a href="javascript:void(0);"
+											id="userStopBtn"><i class="fa fa-power-off" title="刷新"></i></a>
+										<a href="javascript:window.location.reload(true);"
+											id="userReloadBtn"><i class="fa fa-repeat" title="刷新"></i></a>
+									</div>
+                            </div>
+                            <div class="ibox-content">
+                                <table class="table table-striped table-hover dataTables-example">
+                                    <thead>
+                                        <tr>
+											<th style="text-indent: 30px;">
+												<input type="checkbox" class="chkAll" id="checkallbox" /></th>
+											<th>监控状态</th>
+											<th>客户端ID</th>
+											<th>节点名称</th>
+											<th>节点IP</th>
+											<th>APIServer端口</th>
+											<th style="text-indent: 10px;">操作</th>
+										</tr>
+                                    </thead>
+                                    <tbody id="nodeList">
+                                    	<tr>
+                                    		<td style="text-indent: 30px;"><input
+															type="checkbox" class="chkItem" name="ids"
+															value=""></td>
+											<td class="statusImg"><img src="../../images/running.gif" alt=""/>&nbsp;工作中</td>
+                                    		<td>1111</td>
+                                    		<td>node1</td>
+                                    		<td>192.168.0.12</td>
+                                    		<td>80</td>
+                                    		<td class="operationBtns">
+                                    			<a><i class="fa fa-play"></i></a>
+                                    			<a><i class="fa fa-power-off"></i></a>
+                                    			<a href="file:///C:/Users/Administrator/Desktop/src/views/nginx/area-nodes.html"><i class="fa fa-gear"></i></a>
+                                    		</td>
+                                    	</tr>
+                                    	<tr>
+                                    		<td style="text-indent: 30px;"><input
+															type="checkbox" class="chkItem" name="ids"
+															value=""></td>
+											<td class="statusImg"><img src="../../images/stop.png" alt=""/>&nbsp;未工作</td>
+                                    		<td>1111</td>
+                                    		<td>node1</td>
+                                    		<td>192.168.0.12</td>
+                                    		<td>80</td>
+                                    		<td class="operationBtns">
+                                    			<a><i class="fa fa-play"></i></a>
+                                    			<a><i class="fa fa-power-off"></i></a>
+                                    			<a href="file:///C:/Users/Administrator/Desktop/src/views/nginx/area-nodes.html"><i class="fa fa-gear"></i></a>
+                                    		</td>
+                                    	</tr>
+											
+										</tbody>
+                                    	<tfoot class="hide">
+											<tr>
+												<td colspan="6">
+													<ul class="pagination pull-right"></ul>
+												</td>
+											</tr>
+										</tfoot>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+				
+				
+				
+				</div>
+			</div>
+		</article>
+	</div>
+
+	<script type="text/javascript" src="../../js/plugins/jquery-1.11.3.js"></script>
+	<script type="text/javascript" src="../../plugins/bootstrap-3.3.5/dist/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="../../js/nginx/k8snginxcfg.js"></script>
+	<script type="text/javascript">
+		 $('.dataTables-example').dataTable({
+			"aoColumnDefs" : [ {
+				"bSortable" : false,
+				"aTargets" : [ 0, 1,6 ]
+			} ],
+			//"aaSorting": [[ 5, "desc" ]]
+		});
+		$("#checkallbox").parent().removeClass("sorting_asc"); 
+	</script>
+</body>
+</html> 

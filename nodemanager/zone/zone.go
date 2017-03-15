@@ -3,10 +3,15 @@ package zone
 //zone 就是Home
 import (
 	"encoding/json"
+	//"flag"
 	"fmt"
 	"html/template"
+	//"io/ioutil"
+	//"log"
 	"net/http"
 	"ngfront/nodemanager/nodes"
+	//"os"
+	//"strings"
 )
 
 //ServiceInfo 服务信息
@@ -15,7 +20,7 @@ type ServiceInfo struct {
 
 func showHomePage(w http.ResponseWriter, r *http.Request) {
 	//tepmlate加载 respone exec
-	t, err := template.ParseFiles("template/html/zone/index.html")
+	t, err := template.ParseFiles("template/views/nginx/area.html")
 	//t, err := template.ParseFiles("template/html/zone/index.html")
 	if err != nil {
 		fmt.Println(err)
@@ -25,14 +30,23 @@ func showHomePage(w http.ResponseWriter, r *http.Request) {
 }
 
 //func getNginxCss(w http.ResponseWriter, r *http.Request) {
-//	//tepmlate加载 respone exec
-//	t, err := template.ParseFiles("template/css/mod/nginx.css")
-//	//t, err := template.ParseFiles("template/html/zone/index.html")
-//	if err != nil {
-//		fmt.Println(err)
-//		return
+
+//	path := r.URL.Path
+//	request_type := path[strings.LastIndex(path, "."):]
+//	switch request_type {
+//	case ".css":
+//		w.Header().Set("content-type", "text/css")
+//	case ".js":
+//		w.Header().Set("content-type", "text/javascript")
+//	default:
 //	}
-//	t.Execute(w, nil)
+//	fin, err := os.Open("/home/go_test/instance/sorter/src/ngfront/template/" + path)
+//	defer fin.Close()
+//	if err != nil {
+//		log.Fatal("static resource:", err)
+//	}
+//	fd, _ := ioutil.ReadAll(fin)
+//	w.Write(fd)
 //}
 
 //client 用于展示的客户端信息数据结构
@@ -111,6 +125,9 @@ func getZoneInfo(w http.ResponseWriter, r *http.Request) {
 
 //Init 初始化函数
 func (svc *ServiceInfo) Init() {
+	http.Handle("/css/", http.FileServer(http.Dir("template")))
+	http.Handle("/js/", http.FileServer(http.Dir("template")))
+	http.Handle("/plugins/", http.FileServer(http.Dir("template")))
 
 	http.HandleFunc("/ngfront", showHomePage)
 	http.HandleFunc("/ngfront/zone", getZoneInfo)
