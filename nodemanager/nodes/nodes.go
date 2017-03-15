@@ -47,7 +47,7 @@ type ClientInfo struct {
 //NodeInfo 单个节点的所有信息
 type NodeInfo struct {
 	Client  ClientInfo
-	watcher WatchManagerCfg
+	Watcher WatchManagerCfg
 	timer   *time.Timer
 }
 

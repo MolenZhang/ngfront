@@ -86,7 +86,6 @@ func convertZoneType(zoneType string) int {
 func getZoneInfo(w http.ResponseWriter, r *http.Request) {
 	//定义一个4个大小尺寸的结构体数组
 	var webMsg [maxZone]webRespMsg
-
 	//遍历 初始化各个成员的数组切片
 	for k, _ := range webMsg {
 		webMsg[k].Clients = make([]client, 0)
