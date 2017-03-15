@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head lang="en">
-<title>nginx</title>
+<title>nginx-KubeNG</title>
 <meta charset="utf-8">
 <link rel="stylesheet" type="text/css"
 	href="../../plugins/bootstrap-3.3.5/dist/css/bootstrap.min.css" />
 <link rel="stylesheet" type="text/css"
+	href="../../plugins/Font-Awesome-master/css/font-awesome.css" />
+<link rel="stylesheet" type="text/css"
 	href="../../css/core/base.css" />
 <link rel="stylesheet" type="text/css"
-	href="../../css/mod/area-nodes.css" />
+	href="../../css/mod/watcher.css" />
 </head>
 <body>
 	<header class="header">
@@ -122,7 +124,7 @@
 										</tr>
 										<tr>
 											<td>备用upstream服务器节点</td>
-											<td>1111111111111111111<i class="fa fa-edit fa-nodeEdit"></i></td>
+											<td>{{1.1.1.1},{2.2.2.2},{3.3.3.3}}<i class="fa fa-edit fa-nodeEdit"></i></td>
 											<td class="editItem"><input type="text"><i class="fa fa-save fa-nodeSave"></i><i class="fa fa-times fa-nodeTimes"></i></td>
 										</tr>
 										<tr>
@@ -169,7 +171,6 @@
 	<script type="text/javascript" src="../../js/plugins/jquery-1.11.3.js"></script>
 	<script type="text/javascript" src="../../plugins/bootstrap-3.3.5/dist/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../../js/plugins/echarts.common.min.js"></script>
-    <script type="text/javascript" src="../../js/plugins/echarts.common.min.js"></script>
-    <script type="text/javascript" src="../../js/nginx/area-nodes.js"></script>
+    <script type="text/javascript" src="../../js/nginx/watcher.js"></script>
 </body>
 </html> 

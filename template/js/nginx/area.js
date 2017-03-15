@@ -64,7 +64,7 @@ function test(option){
 					 option.series[0].data.push(optionDataNum);
 					 //table
 					 var countNum = "count"+areaNum;
-					 tbodyHtml = '<tr><td class="center tdType" rowspan="'+dataNum+'">'+dataType+'</td>';
+					 tbodyHtml = '<tr><td class="center tdType" rowspan="'+dataNum+'"><a href="javascript:showClients('+dataType+')">'+dataType+'</a></td>';
 					 tbodyHtml+='<td><a>'+objTest[areaNum].Clients[0].NodeIP+'</a></td>'
 						'</tr>';
 					 if(dataNum!=1){
@@ -79,7 +79,7 @@ function test(option){
 			 }
 			//画饼状图
 			 var myChart = echarts.init(document.getElementById('areas'));
-	 myChart.setOption(option);
+	 		myChart.setOption(option);
 	 
 		}
 	})

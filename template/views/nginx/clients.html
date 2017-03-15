@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head lang="en">
-<title>nginx</title>
+<title>nginx节点管理</title>
 <meta charset="utf-8">
 <link rel="stylesheet" type="text/css"
-	href="/plugins/bootstrap-3.3.5/dist/css/bootstrap.min.css" />
+	href="../../plugins/bootstrap-3.3.5/dist/css/bootstrap.min.css" />
 <link rel="stylesheet" type="text/css"
-	href="/plugins/Font-Awesome-master/css/font-awesome.css" />
+	href="../../css/core/dataTables.bootstrap.css" />
 <link rel="stylesheet" type="text/css"
-	href="/css/core/base.css" />
+	href="../../plugins/Font-Awesome-master/css/font-awesome.css" />
 <link rel="stylesheet" type="text/css"
-	href="/css/mod/nginx.css" />
+	href="../../css/core/base.css" />
+<link rel="stylesheet" type="text/css"
+	href="../../css/mod/nginx.css" />
 
 </head>
 <body>
@@ -69,8 +71,8 @@
 											<th style="text-indent: 10px;">操作</th>
 										</tr>
                                     </thead>
-                                    <tbody id="nodeList">
-                                    	<tr>
+                                    <tbody id="clientsList">
+                                    	<!-- <tr>
                                     		<td style="text-indent: 30px;"><input
 															type="checkbox" class="chkItem" name="ids"
 															value=""></td>
@@ -99,7 +101,7 @@
                                     			<a><i class="fa fa-power-off"></i></a>
                                     			<a href="file:///C:/Users/Administrator/Desktop/src/views/nginx/area-nodes.html"><i class="fa fa-gear"></i></a>
                                     		</td>
-                                    	</tr>
+                                    	</tr> -->
 											
 										</tbody>
                                     	<tfoot class="hide">
@@ -123,18 +125,20 @@
 		</article>
 	</div>
 
-	<script type="text/javascript" src="/js/plugins/jquery-1.11.3.js"></script>
-	<script type="text/javascript" src="/plugins/bootstrap-3.3.5/dist/js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="/js/nginx/k8snginxcfg.js"></script>
+	<script type="text/javascript" src="../../js/plugins/jquery-1.11.3.js"></script>
+	<script type="text/javascript" src="../../plugins/bootstrap-3.3.5/dist/js/bootstrap.min.js"></script>
+	<!-- <script type="text/javascript" src="../../js/plugins/dataTables.bootstrap.js"></script> -->
+	<script type="text/javascript" src="../../js/customer/custom.js"></script>
+	<script type="text/javascript" src="../../js/nginx/clients.js"></script>
 	<script type="text/javascript">
-		 $('.dataTables-example').dataTable({
-			"aoColumnDefs" : [ {
-				"bSortable" : false,
-				"aTargets" : [ 0, 1,6 ]
-			} ],
-			//"aaSorting": [[ 5, "desc" ]]
-		});
-		$("#checkallbox").parent().removeClass("sorting_asc"); 
+		//  $('.dataTables-example').dataTable({
+		// 	"aoColumnDefs" : [ {
+		// 		"bSortable" : false,
+		// 		"aTargets" : [ 0, 1,6 ]
+		// 	} ],
+		// 	//"aaSorting": [[ 5, "desc" ]]
+		// });
+		// $("#checkallbox").parent().removeClass("sorting_asc"); 
 	</script>
 </body>
 </html> 
