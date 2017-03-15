@@ -134,7 +134,7 @@ input.serverCheckbox{
 .statusImg img{
 	width:27px;
 }
-/* area.jsp */
+/* area.html */
 .item-obj {
     background-color: #fff;
     height:600px;
@@ -175,4 +175,15 @@ a{
 }
 .tdType{
 	background-color:#f9f9f9;
+}
+
+/* clients.html */
+i.status{
+	width: 18px;
+    height: 18px;
+    display: inline-block;
+    position: relative;
+    
+    background: url(../../images/running.gif) no-repeat;
+    background-position: 0 -45px;
 }

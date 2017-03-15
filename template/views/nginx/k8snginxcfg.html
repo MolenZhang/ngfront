@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head lang="en">
-<title>nginx</title>
+<title>nginx配置</title>
 <meta charset="utf-8">
 <link rel="stylesheet" type="text/css"
 	href="../../plugins/bootstrap-3.3.5/dist/css/bootstrap.min.css" />
@@ -10,7 +10,7 @@
 <link rel="stylesheet" type="text/css"
 	href="../../css/core/base.css" />
 <link rel="stylesheet" type="text/css"
-	href="<%=path%>/css/mod/nginx.css" />
+	href="../../css/mod/nginx.css" />
 </head>
 <body>
 	<header class="header">
@@ -57,7 +57,7 @@
 		                    </div>
 	                   </c:if>
 	                   
-	                   <%-- <c:if test="${user == 'root' }"> --%>
+	                   <c:if test="${user == 'root' }">
 	                        <div class="searchFun" style="float: left; text-align: center; margin: 0px 10px; margin-top:20px; float: right"
 	                                     align="right">
 	                                <label style="line-height: 35px">服务名:</label>
@@ -84,7 +84,7 @@
 	                                </c:forEach>
 	                            </select>
 	                       </div>
-	                   <%-- </c:if> --%>
+	                   </c:if>
 	                   <input type = "hidden" id = "userType" value = "${user }">
 	                </aside>
 	                
@@ -106,7 +106,7 @@
 						<div class="addNginxCfg">
 							<div class="row addNginxStepRow ">
 									<div class="col-sm-12">
-                                    <%-- <c:forEach items="${ngCfgsK8SList}" var="ngCfgs"> --%>
+                                    <!-- <c:forEach items="${ngCfgsK8SList}" var="ngCfgs"> -->
 										<div class="ibox float-e-margins">
 											<div class="ibox-title">
 												<h5>示例配置 ${ngCfgs.namespace} ${ngCfgs.appName} ${ngCfgs.serverName }:${ngCfgs.listenPort }</h5>
@@ -198,18 +198,18 @@
 												</div>
 											</div><!-- ibox-content -->
 										</div><!-- ibox -->
-										<%-- </c:forEach> --%>
+										<!-- </c:forEach> -->
 							            <c:forEach items="${ngCfgsEXTList}" var="ngCfgs">
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title">
                                                 <h5>${ngCfgs.namespace} ${ngCfgs.appName} ${ngCfgs.serverName }:${ngCfgs.listenPort }</h5>
                                                 <div class="ibox-tools">
+                                                	<a class="" onclick="nginxFormComm(this)">
+                                                        <i class="fa fa-save" ></i>
+                                                    </a>
                                                     <a class="" onclick="deleteOneNg(this)"
                                                     appName="${ngCfgs.appName}" namespace="${ngCfgs.namespace}" serverName="${ngCfgs.serverName }:${ngCfgs.listenPort }"  flag=1 >
                                                         <i class="fa fa-trash" ></i>
-                                                    </a>
-                                                    <a class="" onclick="nginxFormComm(this)">
-                                                        <i class="fa fa-save" ></i>
                                                     </a>
                                                     <a class="collapse-link" onclick="deployOneNg(this)"
                                                     appName="${ngCfgs.appName}" namespace="${ngCfgs.namespace}" serverName="${ngCfgs.serverName }:${ngCfgs.listenPort }" flag=1 >
