@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
+	//"ngfront/nodemanager/nodes"
 )
 
 //ServiceInfo 服务信息
@@ -25,6 +26,9 @@ func showWatcherPage(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
+func getWatcherInfo(w http.ResponseWriter, r *http.Request) {
+}
+
 //处理
 func dealWatcherInfo(w http.ResponseWriter, r *http.Request) {
 	//GetAllNodesInfo()  .... write  resp
@@ -34,7 +38,10 @@ func dealWatcherInfo(w http.ResponseWriter, r *http.Request) {
 		//data := getData()
 
 		fmt.Println("------重定向 获取数据 返回给JS----")
+		//nodes.GetWatcherData(key)
 		//w.Write(data)
+
+		getWatcherInfo(w, r)
 
 		return
 	}

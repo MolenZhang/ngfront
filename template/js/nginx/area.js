@@ -47,6 +47,7 @@ function test(option){
 	var areaIP = "192.168.252.133";
 	var areaPort = "8083";
 	var areaUrl = "http://"+areaIP+":"+areaPort+"/ngfront/zone";
+	var clientsUrl = "http://"+areaIP+":"+areaPort+"/ngfront/zone/clients?areaType=";
 	$.ajax({
 		"url":areaUrl,
 		"type":"get",
@@ -64,7 +65,7 @@ function test(option){
 					 option.series[0].data.push(optionDataNum);
 					 //table
 					 var countNum = "count"+areaNum;
-					 tbodyHtml = '<tr><td class="center tdType" rowspan="'+dataNum+'"><a href="javascript:showClients('+dataType+')">'+dataType+'</a></td>';
+					 tbodyHtml = '<tr><td class="center tdType" rowspan="'+dataNum+'"><a href="'+clientsUrl+dataType+'">'+dataType+'</a></td>';
 					 tbodyHtml+='<td><a>'+objTest[areaNum].Clients[0].NodeIP+'</a></td>'
 						'</tr>';
 					 if(dataNum!=1){
@@ -84,4 +85,10 @@ function test(option){
 		}
 	})
 }
+
+function loadClients(dataType){
+	window.location = ""
+}
+
+
 	

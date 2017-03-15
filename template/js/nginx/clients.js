@@ -1,45 +1,55 @@
  $(document).ready(function () {
-	 var clickType="user";
-	 showClients(clickType);
+	var locationUrl = window.location;
+	//http://192.168.252.133:8083/ngfront/zone/clients?areaType=user
+	
+	 var areaType=locationUrl.search.substring(locationUrl.search.indexOf("=")+1,locationUrl.search.length);
+	 showClients(areaType);
 	
  });/*reday*/
- 
-function showClients(clickType){
-	var objTest = [
-    {
-        "JobZoneType": "",
-        "Clients": []
-    },
-    {
-        "JobZoneType": "",
-        "Clients": []
-    },
-    {
-        "JobZoneType": "dmz1",
-        "Clients": [
-            {
-                "NodeIP": "192.168.252.133",
-                "NodeName": "192.168.252.133",
-                "ClientID": "8039",
-                "APIServerPort": ":8886",
-                "K8sWatcherStatus": "stop"
-            }
-        ]
-    },
-    {
-        "JobZoneType": "user",
-        "Clients": [
-            {
-                "NodeIP": "192.168.252.133",
-                "NodeName": "192.168.252.133",
-                "ClientID": "10230",
-                "APIServerPort": ":8888",
-                "K8sWatcherStatus": "start"
-            }
-        ]
-    }
-];
-	 var optionDataNum = "";
+// var objTest = [
+//    {
+//        "JobZoneType": "",
+//        "Clients": []
+//    },
+//    {
+//        "JobZoneType": "",
+//        "Clients": []
+//    },
+//    {
+//        "JobZoneType": "dmz1",
+//        "Clients": [
+//            {
+//                "NodeIP": "192.168.252.133",
+//                "NodeName": "192.168.252.133",
+//                "ClientID": "8039",
+//                "APIServerPort": ":8886",
+//                "K8sWatcherStatus": "stop"
+//            }
+//        ]
+//    },
+//    {
+//        "JobZoneType": "user",
+//        "Clients": [
+//            {
+//                "NodeIP": "192.168.252.133",
+//                "NodeName": "192.168.252.133",
+//                "ClientID": "10230",
+//                "APIServerPort": ":8888",
+//                "K8sWatcherStatus": "start"
+//            }
+//        ]
+//    }
+//];
+function showClients(areaType){
+	var areaIP = "192.168.252.133";
+	var areaPort = "8083";
+	var areaUrl = "http://"+areaIP+":"+areaPort+"/clients";
+	$.ajax({
+		"url":areaUrl,
+		"type":"get",
+		"success":function(data){
+			var objTest = eval("("+data+")");
+			var optionDataNum = "";
 	 var dataType = "";
 	 var dataNum = "";
 	 var tbodyHtml = "";
@@ -48,7 +58,7 @@ function showClients(clickType){
 		 if(dataType!=""){
 			 
 			 //第二个界面
-			 if(dataType == clickType){
+			 if(dataType == areaType){
 			 	var clientsVal = objTest[areaNum].Clients;
 			 	var clientsHtml = "";
 			 	for(var i=0; i<clientsVal.length;i++){
@@ -59,9 +69,9 @@ function showClients(clickType){
 			 		var K8sWatcherStatus = clientsVal[i].K8sWatcherStatus;
 			 		var statusHtml = "";
 			 		if(K8sWatcherStatus == "start"){
-			 			statusHtml = '<img src="../../images/running.gif" alt=""/>&nbsp;工作中';
+			 			statusHtml = '<img src="/images/running.gif" alt=""/>&nbsp;工作中';
 			 		}else{
-			 			statusHtml = '<img src="../../images/stop.png" alt=""/>&nbsp;工作中';
+			 			statusHtml = '<img src="/images/stop.png" alt=""/>&nbsp;工作中';
 			 		}
 			 		clientsHtml += '<tr>'+
                                     		'<td style="text-indent: 30px;">'+
@@ -84,5 +94,8 @@ function showClients(clickType){
 		 }
 		 
 	 }
+		}
+	})
+	 
 
 }

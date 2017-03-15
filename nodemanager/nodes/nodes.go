@@ -159,15 +159,28 @@ func AddWatcherData(key string, watcher WatchManagerCfg) {
 	log.Println("--------Addwatchercfg--------", allNodesInfo.allNodesInfoMap[key])
 }
 
-/*
 //GetWatcherData 获取监视器配置
 func GetWatcherData(key string) WatchManagerCfg {
 	allNodesInfo.mutexLock.Lock()
 
 	defer allNodesInfo.mutexLock.Unlock()
 
+	currentNodeInfo := allNodesInfo.allNodesInfoMap[key]
+
+	return currentNodeInfo.Watcher
 }
-*/
+
+//GetClientInfo 在前端展示client info
+func GetClientInfo(key string) ClientInfo {
+	allNodesInfo.mutexLock.Lock()
+
+	defer allNodesInfo.mutexLock.Unlock()
+
+	currentClientInfo := allNodesInfo.allNodesInfoMap[key].Client
+
+	return currentClientInfo
+}
+
 //GetAllNodesInfo 在前端展示所有的Node的信息
 func GetAllNodesInfo() (allNodes map[string]NodeInfo) {
 	allNodesInfo.mutexLock.Lock()

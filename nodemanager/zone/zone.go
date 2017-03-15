@@ -127,6 +127,7 @@ func (svc *ServiceInfo) Init() {
 	http.Handle("/css/", http.FileServer(http.Dir("template")))
 	http.Handle("/js/", http.FileServer(http.Dir("template")))
 	http.Handle("/plugins/", http.FileServer(http.Dir("template")))
+	http.Handle("/images/", http.FileServer(http.Dir("template")))
 
 	http.HandleFunc("/ngfront", showHomePage)
 	http.HandleFunc("/ngfront/zone", getZoneInfo)
