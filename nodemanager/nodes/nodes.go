@@ -4,6 +4,7 @@ package nodes
 
 import (
 	"fmt"
+	"log"
 	"ngfront/config"
 	"sync"
 	"time"
@@ -151,6 +152,11 @@ func AddWatcherData(key string, watcher WatchManagerCfg) {
 
 	defer allNodesInfo.mutexLock.Unlock()
 
+	currentNodeInfo := allNodesInfo.allNodesInfoMap[key]
+	currentNodeInfo.Watcher = watcher
+	allNodesInfo.allNodesInfoMap[key] = currentNodeInfo
+
+	log.Println("--------Addwatchercfg--------", allNodesInfo.allNodesInfoMap[key])
 }
 
 /*
