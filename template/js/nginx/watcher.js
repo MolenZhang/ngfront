@@ -17,11 +17,13 @@
 	 $(document).on('click','.btn-stop',function(){
 		 var stopSrc = '/images/stop.png';
 		 $(this).parent().find("img").attr("src",stopSrc);
+		 $(this).attr("disabled",true);
 	 });
-	//停止监控按钮
+	//开始监控按钮
 	$(document).on('click','.btn-start',function(){
 		 var startSrc = '/images/running.gif';
 		 $(this).parent().find("img").attr("src",startSrc);
+		 $(".btn-stop").attr("disabled",false);
 	 });
 	//进入Nginx配置管理界面
 	$(document).on('click','.btn-toNginx',function(){
@@ -97,8 +99,8 @@
  });/*reday*/
  
   function showWatcher(NodeIPInfo,ClientIDInfo){
-	var areaIP = "localhost";
-	var areaPort = "port";
+	var areaIP = "172.16.13.110";
+	var areaPort = "8083";
 	var watcherUrl = "http://"+areaIP+":"+areaPort+"/watcher";
 	$.ajax({
 		"url":watcherUrl,
@@ -108,72 +110,39 @@
 			"ClientID":ClientIDInfo
 		},
 		"success":function(data){
-			var data = eval("("+data+")");
-			alert(data);
-		}
-	});
-	var objTestWatcher = [
-				    {
-				    	"ClientInfo": {
-				    		"NodeIP": "192.168.252.133",
-				       		"NodeName": "192.168.252.133",
-		                	"ClientID": "35734",
-		               	 	"APIServerPort": ":8886"
-				    	},
-				        
-				        "WatchManagerCfg": {
-				                "KubernetesMasterHost": "http://192.168.0.75:8080",
-				                "KubernetesAPIVersion": "api/v1",
-				                "NginxReloadCommand": "nginx -s reload",
-				                "JobZoneType": "dmz",
-				                "NginxListenPort":"80",
-				                "WatchNamespaceSets":"全租户监控",
-				                "NginxRealCfgDirPath":"/etc/nginx/conf.d/real_cfg/",
-				                "NginxTestCfgDirPath":"/etc/nginx/conf.d/test_cfg/",
-				                "DownloadCfgDirPath":"/etc/nginx/conf.d/download_cfg/",
-				                "LogPrintLevel":"info",
-				                "DefaultNginxServerType":"domain",
-				                "DomainSuffix":"yz.local",
-				                "WorkMode":"k8snginx",
-				                "NginxTestCommand":"nginx -t",
-				                "StandbyUpstreamNodes":"{{1.1.1.1},{2.2.2.2},{3.3.3.3}}",
-				                "K8sWatcherStatus":"start",
-				            }
-				    }
-				];
+			var objTestWatcher = eval("("+data+")");
 
-	for(var i=0; i<objTestWatcher.length; i++){
-		var watcherNodeIP = objTestWatcher[i].ClientInfo.NodeIP;
-		var watcherClientID = objTestWatcher[i].ClientInfo.ClientID;
-		if(watcherNodeIP == NodeIPInfo && watcherClientID == ClientIDInfo){
-			var NodeName = objTestWatcher[i].ClientInfo.NodeName;
-			var APIServerPort = objTestWatcher[i].ClientInfo.APIServerPort.substring(1,objTestWatcher[i].ClientInfo.APIServerPort.length);
-			var K8sWatcherStatus = objTestWatcher[i].ClientInfo.K8sWatcherStatus;
+	
+		var watcherNodeIP = objTestWatcher.Client.NodeIP;
+		var watcherClientID = objTestWatcher.Client.ClientID;
+		var NodeName = objTestWatcher.Client.NodeName;
+		var APIServerPort = objTestWatcher.Client.APIServerPort.substring(1,objTestWatcher.Client.APIServerPort.length);
 			
-			var KubernetesMasterHost = objTestWatcher[i].WatchManagerCfg.KubernetesMasterHost;
-			var KubernetesAPIVersion = objTestWatcher[i].WatchManagerCfg.KubernetesAPIVersion;
-			var NginxReloadCommand = objTestWatcher[i].WatchManagerCfg.NginxReloadCommand;
-			var JobZoneType = objTestWatcher[i].WatchManagerCfg.JobZoneType;
-			var NginxListenPort = objTestWatcher[i].WatchManagerCfg.NginxListenPort;
-			var WatchNamespaceSets = objTestWatcher[i].WatchManagerCfg.WatchNamespaceSets;
-			var NginxRealCfgDirPath = objTestWatcher[i].WatchManagerCfg.NginxRealCfgDirPath;
-			var NginxTestCfgDirPath = objTestWatcher[i].WatchManagerCfg.NginxTestCfgDirPath;
-			var DownloadCfgDirPath = objTestWatcher[i].WatchManagerCfg.DownloadCfgDirPath;
-			var LogPrintLevel = objTestWatcher[i].WatchManagerCfg.LogPrintLevel;
-			var DefaultNginxServerType = objTestWatcher[i].WatchManagerCfg.DefaultNginxServerType;
-			var DomainSuffix = objTestWatcher[i].WatchManagerCfg.DomainSuffix;
-			var WorkMode = objTestWatcher[i].WatchManagerCfg.WorkMode;
-			var NginxTestCommand = objTestWatcher[i].WatchManagerCfg.NginxTestCommand;
-			var StandbyUpstreamNodes = objTestWatcher[i].WatchManagerCfg.StandbyUpstreamNodes;
-			var K8sWatcherStatus = objTestWatcher[i].WatchManagerCfg.K8sWatcherStatus;
-			var imgHtml = "";
+			
+		var KubernetesMasterHost = objTestWatcher.Watcher.KubernetesMasterHost;
+		var KubernetesAPIVersion = objTestWatcher.Watcher.KubernetesAPIVersion;
+		var NginxReloadCommand = objTestWatcher.Watcher.NginxReloadCommand;
+		var JobZoneType = objTestWatcher.Watcher.JobZoneType;
+		var NginxListenPort = objTestWatcher.Watcher.NginxListenPort;
+		var WatchNamespaceSets = objTestWatcher.Watcher.WatchNamespaceSets;
+		var NginxRealCfgDirPath = objTestWatcher.Watcher.NginxRealCfgDirPath;
+		var NginxTestCfgDirPath = objTestWatcher.Watcher.NginxTestCfgDirPath;
+		var DownloadCfgDirPath = objTestWatcher.Watcher.DownloadCfgDirPath;
+		var LogPrintLevel = objTestWatcher.Watcher.LogPrintLevel;
+		var DefaultNginxServerType = objTestWatcher.Watcher.DefaultNginxServerType;
+		var DomainSuffix = objTestWatcher.Watcher.DomainSuffix;
+		var WorkMode = objTestWatcher.Watcher.WorkMode;
+		var NginxTestCommand = objTestWatcher.Watcher.NginxTestCommand;
+		var StandbyUpstreamNodes = objTestWatcher.Watcher.StandbyUpstreamNodes;
+		var K8sWatcherStatus = objTestWatcher.Watcher.K8sWatcherStatus;
+		var imgHtml = "";
 			if(K8sWatcherStatus == "start"){
 				imgHtml = '<img src="/images/running.gif" alt=""/>'+
 							'<button class="btn btn-info btn-start">重启监控</button>'+
 							'<button class="btn btn-info btn-stop">停止监控</button>'+
 							'<button class="btn btn-info btn-toNginx">Nginx配置</button>';
 			}else{
-				imgHtml = '<img src="/images/stop.png" alt=""/>'
+				imgHtml = '<img src="/images/stop.png" alt=""/>'+
 							'<button class="btn btn-info btn-start">开始监控</button>'+
 							'<button class="btn btn-info btn-stop" disabled>停止监控</button>'+
 							'<button class="btn btn-info btn-toNginx">Nginx配置</button>';
@@ -280,5 +249,46 @@
 			$("#watcherBasicInfo").append(watcherBasicHtml);
 			
 		}
-	}
+	});
+	// var objTestWatcher = {
+	//     "Client": {
+	//         "NodeIP": "10.10.3.9",
+	//         "ClientID": "19500",
+	//         "NodeName": "10.10.3.9",
+	//         "APIServerPort": ":8887",
+	//         "NginxCfgsAPIServerPath": "nginxcfgs",
+	//         "TestToolAPIServerPath": "testtool",
+	//         "NodeInfoAPIServerPath": "nodeinfo",
+	//         "DownloadCfgAPIServerPath": "downloadcfgs",
+	//         "WatchManagerAPIServerPath": "watchmgr",
+	//         "JobZoneType": "user"
+	//     },
+	//     "Watcher": {
+	//         "KubernetesMasterHost": "http://192.168.0.75:8080",
+	//         "KubernetesAPIVersion": "api/v1",
+	//         "NginxReloadCommand": "nginx -s reload",
+	//         "JobZoneType": "",
+	//         "NginxListenPort": "80",
+	//         "WatchNamespaceSets": "",
+	//         "NginxRealCfgDirPath": "/etc/nginx/conf.d/real_cfg/",
+	//         "NginxTestCfgDirPath": "/etc/nginx/conf.d/test_cfg/",
+	//         "DownloadCfgDirPath": "/etc/nginx/conf.d/download_cfg/",
+	//         "LogPrintLevel": "info",
+	//         "DefaultNginxServerType": "domain",
+	//         "DomainSuffix": "yz.local",
+	//         "WorkMode": "k8snginx",
+	//         "Langurage": "",
+	//         "NginxTestCommand": "nginx -t",
+	//         "StandbyUpstreamNodes": [
+	//             "192.168.0.80",
+	//             "192.168.0.81",
+	//             "192.168.0.82"
+	//         ],
+	//         "K8sWatcherStatus": "stop"
+	//     }
+	// };
+
+			
+		
+	
 }
