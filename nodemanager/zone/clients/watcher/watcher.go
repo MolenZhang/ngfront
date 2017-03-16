@@ -14,7 +14,7 @@ type ServiceInfo struct {
 }
 
 func showWatcherPage(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("---------------show watcher page------")
+	fmt.Println("-----加载watcher页面----")
 	//加载模板 显示内容是 批量操作client
 	t, err := template.ParseFiles("template/views/nginx/watcher.html")
 	if err != nil {
@@ -53,7 +53,7 @@ func getWatcherInfo(w http.ResponseWriter, r *http.Request) {
 
 	w.Write(jsonTypeMsg)
 
-	fmt.Println("------------返回的数据为-----", webMsg)
+	//fmt.Println("------------返回的数据为-----", webMsg)
 
 	return
 }

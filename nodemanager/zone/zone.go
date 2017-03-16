@@ -20,6 +20,7 @@ type ServiceInfo struct {
 
 func showHomePage(w http.ResponseWriter, r *http.Request) {
 	//tepmlate加载 respone exec
+	fmt.Println("-----加载主页----")
 	t, err := template.ParseFiles("template/views/nginx/area.html")
 	//t, err := template.ParseFiles("template/html/zone/index.html")
 	if err != nil {
@@ -27,6 +28,8 @@ func showHomePage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	t.Execute(w, nil)
+
+	return
 }
 
 //func getNginxCss(w http.ResponseWriter, r *http.Request) {
