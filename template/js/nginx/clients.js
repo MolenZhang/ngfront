@@ -1,47 +1,13 @@
  $(document).ready(function () {
 	var locationUrl = window.location;
 	//http://192.168.252.133:8083/ngfront/zone/clients?areaType=user
-	
-	 var areaType=locationUrl.search.substring(locationUrl.search.indexOf("=")+1,locationUrl.search.length);
-	 showClients(areaType);
+	var areaType=locationUrl.search.substring(locationUrl.search.indexOf("=")+1,locationUrl.search.length); 
+	showClients(areaType);
 	
  });/*reday*/
-// var objTest = [
-//    {
-//        "JobZoneType": "",
-//        "Clients": []
-//    },
-//    {
-//        "JobZoneType": "",
-//        "Clients": []
-//    },
-//    {
-//        "JobZoneType": "dmz1",
-//        "Clients": [
-//            {
-//                "NodeIP": "192.168.252.133",
-//                "NodeName": "192.168.252.133",
-//                "ClientID": "8039",
-//                "APIServerPort": ":8886",
-//                "K8sWatcherStatus": "stop"
-//            }
-//        ]
-//    },
-//    {
-//        "JobZoneType": "user",
-//        "Clients": [
-//            {
-//                "NodeIP": "192.168.252.133",
-//                "NodeName": "192.168.252.133",
-//                "ClientID": "10230",
-//                "APIServerPort": ":8888",
-//                "K8sWatcherStatus": "start"
-//            }
-//        ]
-//    }
-//];
+
 function showClients(areaType){
-	var areaIP = "192.168.252.133";
+	var areaIP = "172.16.13.110";
 	var areaPort = "8083";
 	var areaUrl = "http://"+areaIP+":"+areaPort+"/clients";
 	$.ajax({
@@ -65,13 +31,13 @@ function showClients(areaType){
 			 		var NodeIP = clientsVal[i].NodeIP;
 			 		var NodeName = clientsVal[i].NodeName;
 			 		var ClientID = clientsVal[i].ClientID;
-			 		var APIServerPort = clientsVal[i].APIServerPort;
-			 		var K8sWatcherStatus = clientsVal[i].K8sWatcherStatus;
+			 		var APIServerPort = clientsVal[i].APIServerPort.substring(1,clientsVal[i].APIServerPort.length);;
+			 		var K8sWatcherStatus = clientsVal[i].K8sWatcherStatus
 			 		var statusHtml = "";
 			 		if(K8sWatcherStatus == "start"){
 			 			statusHtml = '<img src="/images/running.gif" alt=""/>&nbsp;工作中';
 			 		}else{
-			 			statusHtml = '<img src="/images/stop.png" alt=""/>&nbsp;工作中';
+			 			statusHtml = '<img src="/images/stop.png" alt=""/>&nbsp;未工作';
 			 		}
 			 		clientsHtml += '<tr>'+
                                     		'<td style="text-indent: 30px;">'+

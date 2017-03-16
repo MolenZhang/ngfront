@@ -37,14 +37,14 @@
 	 //滚动条
 	 $('#areaNodesTbody').niceScroll({ cursorcolor: "#ccc" });
 	 
-	  test(option);
+	  showAreaTable(option);
 	
 	
 	
  });/*reday*/
  
-function test(option){
-	var areaIP = "192.168.252.133";
+function showAreaTable(option){
+	var areaIP = "172.16.13.110";
 	var areaPort = "8083";
 	var areaUrl = "http://"+areaIP+":"+areaPort+"/ngfront/zone";
 	var clientsUrl = "http://"+areaIP+":"+areaPort+"/ngfront/zone/clients?areaType=";
@@ -65,14 +65,15 @@ function test(option){
 					 option.series[0].data.push(optionDataNum);
 					 //table
 					 var countNum = "count"+areaNum;
-					 tbodyHtml = '<tr><td class="center tdType" rowspan="'+dataNum+'"><a href="'+clientsUrl+dataType+'">'+dataType+'</a></td>';
-					 tbodyHtml+='<td><a>'+objTest[areaNum].Clients[0].NodeIP+'</a></td>'
+					 tbodyHtml = '<table class="table"><tbody ><tr><td class="center tdType table-tdFirst" rowspan="'+dataNum+'"><a href="'+clientsUrl+dataType+'">'+dataType+'</a></td>';
+					 tbodyHtml+='<td class="table-tdSec"><a>'+objTest[areaNum].Clients[0].NodeIP+'</a></td>'
 						'</tr>';
 					 if(dataNum!=1){
 						 for(countNum = 1; countNum< dataNum; countNum++){
-							 tbodyHtml+='<tr><td><a>'+objTest[areaNum].Clients[countNum].NodeIP+'</a></td></tr>';
+							 tbodyHtml+='<tr><td class="table-tdSec"><a>'+objTest[areaNum].Clients[countNum].NodeIP+'</a></td></tr>';
 						 }
 					 }
+					 tbodyHtml+= '</tbody></table>'
 					 $("#areaNodesTbody").append(tbodyHtml);
 					  
 				 }
@@ -86,9 +87,6 @@ function test(option){
 	})
 }
 
-function loadClients(dataType){
-	window.location = ""
-}
 
 
 	

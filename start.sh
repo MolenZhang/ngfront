@@ -16,6 +16,12 @@ if [ $# != 2 ];then
 fi
 
 sed -i 's/var areaIP = "localhost";/var areaIP = "'${HOSTIP}'";/g' template/js/nginx/area.js
+sed -i 's/var areaIP = "localhost";/var areaIP = "'${HOSTIP}'";/g' template/js/nginx/clients.js
+sed -i 's/var areaIP = "localhost";/var areaIP = "'${HOSTIP}'";/g' template/js/nginx/k8snginxcfg.js
+sed -i 's/var areaIP = "localhost";/var areaIP = "'${HOSTIP}'";/g' template/js/nginx/watcher.js
 sed -i 's/var areaPort = "port";/var areaPort = "'${PORT}'";/g' template/js/nginx/area.js
+sed -i 's/var areaPort = "port";/var areaPort = "'${PORT}'";/g' template/js/nginx/clients.js
+sed -i 's/var areaPort = "port";/var areaPort = "'${PORT}'";/g' template/js/nginx/k8snginxcfg.js
+sed -i 's/var areaPort = "port";/var areaPort = "'${PORT}'";/g' template/js/nginx/watcher.js
 
 ./ngfront

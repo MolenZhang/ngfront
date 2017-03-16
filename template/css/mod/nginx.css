@@ -158,10 +158,7 @@ input.serverCheckbox{
 .areasTable table tr{
 	border-bottom:1px solid #ddd;
 }
-.areasTable table td{
-	text-indent:8px;
-	width:49%;
-}
+
 .center{
 	text-align:center;
 }
@@ -170,20 +167,26 @@ a{
 }
 #areaNodesTbody{
 	height: 480px;
-    /* display: block; */
+    display: block;
     width: 100%;
+    border-bottom: 1px solid #ddd;
 }
 .tdType{
 	background-color:#f9f9f9;
 }
-
-/* clients.html */
-i.status{
-	width: 18px;
-    height: 18px;
-    display: inline-block;
-    position: relative;
-    
-    background: url(../../images/running.gif) no-repeat;
-    background-position: 0 -45px;
+.table-titleInfo{
+	width: 100%;
+}
+.table-title{
+	float: left;
+	height: 40px;
+	line-height: 40px;
+	border-bottom: 1px solid #ddd;
+}
+.table-tdFirst{
+	width: 35%;
+}
+.table-tdSec{
+	width: 64%;
+	text-indent:8px;
 }

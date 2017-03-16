@@ -87,64 +87,65 @@
 			};
 
 	 myChart.setOption(option);
-
-	 //test();
+	 var NodeIPInfo = "192.168.252.133";
+	 var ClientIDInfo = "8039";
+	 showWatcher(NodeIPInfo,ClientIDInfo);
+	 
  });/*reday*/
  
- function test(){
-//	 data_param = {
-//		"timeType" : "LAST_7_DAYS",
-//		"hostType" : "ALL_HOSTS"
-//	}
-	$.ajax({
-		url : "http://192.168.0.75:8080/api/v1/namespaces",
-		type : "GET",
-		data : JSON.stringify(data_param),
-		headers : {
-			"X-Auth-Token" : "open-sesame",
-			"Content-Type" : "application/json"
-		},
-		contentType : 'text/html; charset=UTF-8',
-		dataType : "json",
-		success : function(data) {
-			alert(data);
-		},
-		error : function(XMLHttpRequest, textStatus, errorThrown) {
-			alert(XMLHttpRequest.status);
-			alert(XMLHttpRequest.readyState);
-			alert(textStatus);
-		},
-		complete : function(XMLHttpRequest, textStatus) {
+  function showWatcher(NodeIPInfo,ClientIDInfo){
+	var objTestWatcher = [
+				    {
+				    	"ClientInfo": {
+				    		"NodeIP": "192.168.252.133",
+				       		"NodeName": "192.168.252.133",
+		                	"ClientID": "8039",
+		               	 	"APIServerPort": ":8886",
+		                	"K8sWatcherStatus": "stop",
+				    	},
+				        
+				        "WatchManagerCfg": {
+				                "KubernetesMasterHost": "http://192.168.0.75:8080",
+				                "KubernetesAPIVersion": "api/v1",
+				                "NginxReloadCommand": ":nginx -s reload",
+				                "JobZoneType": "dmz",
+				                "NginxListenPort":"80",
+				                "WatchNamespaceSets":"全租户监控",
+				                "NginxRealCfgDirPath":"/etc/nginx/conf.d/real_cfg/",
+				                "NginxTestCfgDirPath":"/etc/nginx/conf.d/test_cfg/",
+				                "DownloadCfgDirPath":"/etc/nginx/conf.d/download_cfg/",
+				                "LogPrintLevel":"info",
+				                "DefaultNginxServerType":"domain",
+				                "DomainSuffix":"yz.local",
+				                "WorkMode":"k8snginx",
+				                "NginxTestCommand":"nginx -t",
+				                "StandbyUpstreamNodes":"{{1.1.1.1},{2.2.2.2},{3.3.3.3}}",
+				                "K8sWatcherStatus":"stop",
+				            }
+				    }
+				];
+
+	for(var i=0; i<objTestWatcher.length; i++){
+		var watcherNodeIP = objTestWatcher[i].ClientInfo.NodeIP;
+		var watcherClientID = objTestWatcher[i].ClientInfo.ClientID;
+		if(watcherNodeIP == NodeIPInfo && watcherClientID == ClientIDInfo){
+			var KubernetesMasterHost = objTestWatcher[i].WatchManagerCfg.KubernetesMasterHost;
+			var KubernetesAPIVersion = objTestWatcher[i].WatchManagerCfg.KubernetesAPIVersion;
+			var NginxReloadCommand = objTestWatcher[i].WatchManagerCfg.NginxReloadCommand;
+			var JobZoneType = objTestWatcher[i].WatchManagerCfg.JobZoneType;
+			var NginxListenPort = objTestWatcher[i].WatchManagerCfg.NginxListenPort;
+			var WatchNamespaceSets = objTestWatcher[i].WatchManagerCfg.WatchNamespaceSets;
+			var NginxRealCfgDirPath = objTestWatcher[i].WatchManagerCfg.NginxRealCfgDirPath;
+			var NginxTestCfgDirPath = objTestWatcher[i].WatchManagerCfg.NginxTestCfgDirPath;
+			var DownloadCfgDirPath = objTestWatcher[i].WatchManagerCfg.DownloadCfgDirPath;
+			var LogPrintLevel = objTestWatcher[i].WatchManagerCfg.LogPrintLevel;
+			var DefaultNginxServerType = objTestWatcher[i].WatchManagerCfg.DefaultNginxServerType;
+			var DomainSuffix = objTestWatcher[i].WatchManagerCfg.DomainSuffix;
+			var WorkMode = objTestWatcher[i].WatchManagerCfg.WorkMode;
+			var NginxTestCommand = objTestWatcher[i].WatchManagerCfg.NginxTestCommand;
+			var StandbyUpstreamNodes = objTestWatcher[i].WatchManagerCfg.StandbyUpstreamNodes;
+			var K8sWatcherStatus = objTestWatcher[i].WatchManagerCfg.K8sWatcherStatus;
+			var watcherCfgHtml = "";
 		}
-	});
-	 
-//		$.ajax({
-//			type : "get",
-//	        async: false,
-//	        headers:{
-//	        	"X-Auth-Token":"open-sesame",
-//	        	"Content-Type":"application/json"
-//	        	},
-//	        contentType:"text/html;charset=UTF-8",
-//	        dataType: "json",
-//			url : "http://192.168.0.75:8080/api/v1/namespaces",
-//			success : function(data) {
-//				alert(data);
-//			}
-//		});
-	 
-//	 $.getJSON('http://192.168.0.75:8080/api/v1/namespaces/longlong', function(data){
-//		 alert(data);
-//		});
-
-//	 $.ajax({
-//		 url : "192.168.0.75:8080/api/v1/namespaces",
-//		 type : "get",
-//		 success : function(data){
-//			 var data = eval("(" + data + ")");
-//			 alert(data)
-//		 }
-//	 });
- }
-
-	
+	}
+}
