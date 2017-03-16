@@ -27,7 +27,7 @@ type webRespMsg struct {
 }
 
 func showClientsPage(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("---------------show clients page------")
+	fmt.Println("-----加载client页面----")
 	//加载模板 显示内容是 批量操作client
 	t, err := template.ParseFiles("template/views/nginx/clients.html")
 	if err != nil {
@@ -36,6 +36,8 @@ func showClientsPage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	t.Execute(w, nil)
+
+	return
 }
 
 //不同的区域存储在不同的成员中 all存储在第0个成员

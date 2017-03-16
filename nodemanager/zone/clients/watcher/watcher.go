@@ -14,7 +14,7 @@ type ServiceInfo struct {
 }
 
 func showWatcherPage(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("---------------show watcher page------")
+	fmt.Println("-----加载watcher页面----")
 	//加载模板 显示内容是 批量操作client
 	t, err := template.ParseFiles("template/views/nginx/watcher.html")
 	if err != nil {
@@ -27,7 +27,9 @@ func showWatcherPage(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
+//获取之前缓存在nodes包里面的watcher界面所需的信息
 func getWatcherInfo(w http.ResponseWriter, r *http.Request) {
+	//watcher界面所需展示的数据较多 不止是watcher 还有client的部分信息
 	webMsg := nodes.NodeInfo{}
 	r.ParseForm()
 
@@ -37,9 +39,6 @@ func getWatcherInfo(w http.ResponseWriter, r *http.Request) {
 	}
 
 	key := client.CreateKey()
-
-	//fmt.Println("------------r.NodeIp=", r.Form.Get("NodeIP"))
-	//fmt.Println("------------r.ClientID=", r.Form.Get("ClientID"))
 
 	webMsg.Client = nodes.GetClientInfo(key)
 	webMsg.Watcher = nodes.GetWatcherData(key)
@@ -53,32 +52,31 @@ func getWatcherInfo(w http.ResponseWriter, r *http.Request) {
 
 	w.Write(jsonTypeMsg)
 
-	fmt.Println("------------返回的数据为-----", webMsg)
+	return
+}
+
+//更新kubeng上的监视器信息
+func updateWatcherInfo(w http.ResponseWriter, r *http.Request) {
+	//解析表单
+	fmt.Println("------与kubeng通讯 更新watcher状态 ----")
 
 	return
 }
 
 //处理
 func dealWatcherInfo(w http.ResponseWriter, r *http.Request) {
-	//GetAllNodesInfo()  .... write  resp
-
 	//加载模板....redirect 拿数据 写回....
 	if r.Method == "GET" {
-		//data := getData()
-
 		fmt.Println("------重定向 获取数据 返回给JS----")
-		//nodes.GetWatcherData(key)
-		//w.Write(data)
 
 		getWatcherInfo(w, r)
 
 		return
 	}
 
-	//解析表单
-	fmt.Println("------与kubeng通讯 更新watcher状态 ----")
-
 	//response.WriteHeaderAndJson(200, nil, "application/json")
+
+	updateWatcherInfo(w, r)
 
 	return
 }
