@@ -11,6 +11,15 @@ import (
 )
 
 type NamespaceList struct {
+	Items []NamespaceObject
+}
+
+type NamespaceObject struct {
+	Metadata NamespaceMetadata
+}
+
+type NamespaceMetadata struct {
+	Name string
 }
 
 //从k8s获取集群namespaces
@@ -35,6 +44,12 @@ func getNamespacesFromK8s(url string) (namespaces []string) {
 	json.Unmarshal(body, &namespaceList)
 
 	//namespaceList ....解析 传给 namespaces
-
+	for _, object := range namespaceList.Items {
+		namespace := object.Metadata.Name
+		if namespace == "default" || namespace == "kube-system" {
+			continue
+		}
+		namespaces = append(namespaces, namespace)
+	}
 	return
 }
