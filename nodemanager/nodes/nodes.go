@@ -1,16 +1,18 @@
 package nodes
 
 //关于Node的所有信息以及数据结构都在此保存 操作
+//一个Node上 可以有多个kubeng 一个kubeng由client信息和watcherManagerCfg以及NginxCfg信息3个成员构成 目前仅实现了2个成员
 
 import (
-	"fmt"
-	"log"
+	//"fmt"
+	//"log"
 	"ngfront/config"
+	"ngfront/logdebug"
 	"sync"
 	"time"
 )
 
-//WatchManagerCfg 监视器配置
+//WatchManagerCfg 监视器配置(kubeng 的一个功能 就是监视k8s)
 type WatchManagerCfg struct {
 	KubernetesMasterHost   string
 	KubernetesAPIVersion   string
@@ -31,7 +33,7 @@ type WatchManagerCfg struct {
 	K8sWatcherStatus       string
 }
 
-//ClientInfo 客户端信息
+//ClientInfo 客户端信息(kubeng名义上是ngfront的客户端 实际上它提供了多个APIServer)
 type ClientInfo struct {
 	NodeIP                    string
 	ClientID                  string
@@ -86,8 +88,6 @@ func CheckClientInfo(client ClientInfo) bool {
 		return false
 	}
 
-	//fmt.Println("------找到客户端信息 刷新定时器-----key =!", key)
-
 	//停止上一个定时器
 	allNodesInfo.allNodesInfoMap[key].timer.Stop()
 
@@ -100,7 +100,7 @@ func CheckClientInfo(client ClientInfo) bool {
 
 		delete(allNodesInfo.allNodesInfoMap, key)
 
-		fmt.Println("------心跳超时 删除客户端信息----key !", key)
+		logdebug.Println(logdebug.LevelInfo, "------心跳超时 删除客户端信息----key !", key)
 
 		return
 	})
@@ -131,17 +131,13 @@ func AddClientData(client ClientInfo) {
 
 		delete(allNodesInfo.allNodesInfoMap, key)
 
-		fmt.Println("------心跳超时 删除客户端信息----key =!", key)
+		logdebug.Println(logdebug.LevelInfo, "------心跳超时 删除客户端信息----key =!", key)
 
 		return
 	})
 	//newNodeInfo.isTimerReset = false //新定时器 没有被刷新
 
 	allNodesInfo.allNodesInfoMap[key] = newNodeInfo
-
-	//fmt.Println("------添加客户端信息 开启定时器-----key = !", key)
-
-	//timer.Create()
 
 	return
 }
@@ -156,7 +152,7 @@ func AddWatcherData(key string, watcher WatchManagerCfg) {
 	currentNodeInfo.Watcher = watcher
 	allNodesInfo.allNodesInfoMap[key] = currentNodeInfo
 
-	log.Println("--------Addwatchercfg--------", allNodesInfo.allNodesInfoMap[key])
+	return
 }
 
 //GetWatcherData 获取监视器配置

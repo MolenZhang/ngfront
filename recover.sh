@@ -17,11 +17,11 @@ fi
 
 sed -i 's/var areaIP = "'${HOSTIP}'";/var areaIP = "localhost";/g' template/js/nginx/area.js
 sed -i 's/var areaIP = "'${HOSTIP}'";/var areaIP = "localhost";/g' template/js/nginx/clients.js
-sed -i 's/var areaIP = "'${HOSTIP}'";/var areaIP = "localhost";/g' template/js/nginx/k8snginxcfg.js
+sed -i 's/var areaIP = "'${HOSTIP}'";/var areaIP = "localhost";/g' template/js/nginx/nginxcfg.js
 sed -i 's/var areaIP = "'${HOSTIP}'";/var areaIP = "localhost";/g' template/js/nginx/watcher.js
 sed -i 's/var areaPort = "'${PORT}'";/var areaPort = "port";/g' template/js/nginx/area.js
 sed -i 's/var areaPort = "'${PORT}'";/var areaPort = "port";/g' template/js/nginx/clients.js
-sed -i 's/var areaPort = "'${PORT}'";/var areaPort = "port";/g' template/js/nginx/k8snginxcfg.js
+sed -i 's/var areaPort = "'${PORT}'";/var areaPort = "port";/g' template/js/nginx/nginxcfg.js
 sed -i 's/var areaPort = "'${PORT}'";/var areaPort = "port";/g' template/js/nginx/watcher.js
 
 echo "还原完成!"

@@ -8,18 +8,19 @@ import (
 	"ngfront/nodemanager/zone"
 	"ngfront/nodemanager/zone/clients"
 	"ngfront/nodemanager/zone/clients/watcher"
+	"ngfront/nodemanager/zone/clients/watcher/nginxcfg"
 	//"log"
 	"net/http"
 )
 
 //NGFrontManager  ngfront 管理器
 type NGFrontManager struct {
-	LoginAPIServer   login.ServiceInfo
-	HeartAPIServer   heart.ServiceInfo
-	JobZoneAPIServer zone.ServiceInfo
-	ClientsAPIServer clients.ServiceInfo
-	WatcherAPIServer watcher.ServiceInfo
-	//NginxCfgAPIServer nginxcfg.ServiceInfo
+	LoginAPIServer    login.ServiceInfo
+	HeartAPIServer    heart.ServiceInfo
+	JobZoneAPIServer  zone.ServiceInfo
+	ClientsAPIServer  clients.ServiceInfo
+	WatcherAPIServer  watcher.ServiceInfo
+	NginxCfgAPIServer nginxcfg.ServiceInfo
 }
 
 var ngFrontManager NGFrontManager
@@ -39,7 +40,7 @@ func init() {
 
 	ngFrontManager.WatcherAPIServer.Init()
 
-	//ngFrontManager.NginxCfgAPIServer.Init()
+	ngFrontManager.NginxCfgAPIServer.Init()
 
 	return
 }

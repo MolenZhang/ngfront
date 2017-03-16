@@ -101,8 +101,8 @@
  });/*reday*/
  
   function showWatcher(NodeIPInfo,ClientIDInfo){
-	var areaIP = "172.16.13.110";
-	var areaPort = "8083";
+	var areaIP = "localhost";
+	var areaPort = "port";
 	var watcherUrl = "http://"+areaIP+":"+areaPort+"/watcher";
 	$.ajax({
 		"url":watcherUrl,

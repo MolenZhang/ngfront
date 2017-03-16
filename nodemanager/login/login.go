@@ -3,9 +3,9 @@ package login
 import (
 	"encoding/json"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"ngfront/config"
+	"ngfront/logdebug"
 	"ngfront/nodemanager/nodes"
 	"time"
 
@@ -126,28 +126,29 @@ func (svc *ServiceInfo) login(request *restful.Request, response *restful.Respon
 	}
 	// http GET---->AddWatcherData(clientInfo.CreateKey(), Value....) 存
 
-	log.Println("上线报文=", reqMsg)
+	logdebug.Println(logdebug.LevelDebug, "上线报文=", reqMsg)
 	response.WriteHeaderAndJson(200, reqMsg, "application/json")
 
 	return
 }
 
 func getWatcherCfg(url string) (watcherCfg *nodes.WatchManagerCfg) {
-	log.Println("-----请求watcher 数据 url=", url)
+	//logdebug.Println(logdebug.LevelInfo,"-----请求watcher 数据 url=", url)
 
 	resp, err := http.Get(url)
 	if err != nil {
-		log.Println(err)
+		logdebug.Println(logdebug.LevelError, err)
 		return nil
 	}
 
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		log.Println(err)
+		logdebug.Println(logdebug.LevelError, err)
 		return nil
 	}
 
 	json.Unmarshal(body, &watcherCfg)
+
 	return
 }
