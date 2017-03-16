@@ -95,12 +95,14 @@
 	 var NodeIPInfo = locationUrl.search.substring(locationUrl.search.indexOf("NodeIP=")+7,locationUrl.search.indexOf("&"));
 	 var ClientIDInfo = locationUrl.search.substring(locationUrl.search.indexOf("ClientID=")+9,locationUrl.search.length);
 	 showWatcher(NodeIPInfo,ClientIDInfo);
+
+	
 	 
  });/*reday*/
  
   function showWatcher(NodeIPInfo,ClientIDInfo){
 	var areaIP = "localhost";
-	var areaPort = "8011";
+	var areaPort = "port";
 	var watcherUrl = "http://"+areaIP+":"+areaPort+"/watcher";
 	$.ajax({
 		"url":watcherUrl,
@@ -151,12 +153,12 @@
 			var watcherCfgHtml = '<tr>'+
 											'<td>k8s Master节点IP端口</td>'+
 											'<td>'+KubernetesMasterHost+'<i class="fa fa-edit fa-nodeEdit"></i></td>'+
-											'<td class="editItem"><input type="text" value="'+KubernetesMasterHost+'"><i class="fa fa-save fa-nodeSave"></i><i class="fa fa-times fa-nodeTimes"></i></td>'+
+											'<td class="editItem"><input id="KubernetesMasterHost" type="text" value="'+KubernetesMasterHost+'"><i class="fa fa-save fa-nodeSave"></i><i class="fa fa-times fa-nodeTimes"></i></td>'+
 										'</tr>'+
 										'<tr>'+
 											'<td>k8s Api 版本</td>'+
 											'<td>'+KubernetesAPIVersion+'<i class="fa fa-edit fa-nodeEdit"></i></td>'+
-											'<td class="editItem"><select><option>'+KubernetesAPIVersion+'</option></select><i class="fa fa-save fa-nodeSave"></i></td>'+
+											'<td class="editItem" id="apiVersion"></td>'+
 										'</tr>'+
 										'<tr>'+
 											'<td>nginx 重载命令</td>'+
@@ -229,6 +231,17 @@
 											'<td class="editItem"><input type="text" value="'+K8sWatcherStatus+'"><i class="fa fa-save fa-nodeSave"></i><i class="fa fa-times fa-nodeTimes"></i></td>'+
 										'</tr>';
 			$("#watcherCfgInfo").append(watcherCfgHtml);
+
+			
+			var apiVersionHtml = "";
+			if(KubernetesMasterHost != ""||KubernetesMasterHost!= null){
+				apiVersionHtml = '<select name="KubernetesAPIVersion">'+
+									'<option value="api/v1">api/v1</option>'+
+									'<option value="api">api</option>'+
+									'</select>'+
+									'<i class="fa fa-save fa-nodeSave"></i>';
+			}
+			$("#apiVersion").append(apiVersionHtml);
 			
 			var watcherBasicHtml = '<tr>'+
 											'<td>客户端ID</td>'+

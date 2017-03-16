@@ -45,7 +45,11 @@
  
 function showAreaTable(option){
 	var areaIP = "localhost";
-	var areaPort = "8011";
+<<<<<<< HEAD
+	var areaPort = "port";
+=======
+	var areaPort = "port";
+>>>>>>> c0d1bb714f015411fd8a4ddfe061d63bdce205b1
 	var areaUrl = "http://"+areaIP+":"+areaPort+"/ngfront/zone";
 	var clientsUrl = "http://"+areaIP+":"+areaPort+"/ngfront/zone/clients?areaType=";
 	$.ajax({
