@@ -133,7 +133,7 @@ func (svc *ServiceInfo) login(request *restful.Request, response *restful.Respon
 }
 
 func getWatcherCfg(url string) (watcherCfg *nodes.WatchManagerCfg) {
-	log.Println("-----请求watcher 数据 url=", url)
+	//log.Println("-----请求watcher 数据 url=", url)
 
 	resp, err := http.Get(url)
 	if err != nil {
