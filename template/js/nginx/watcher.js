@@ -100,7 +100,7 @@
  
   function showWatcher(NodeIPInfo,ClientIDInfo){
 	var areaIP = "localhost";
-	var areaPort = "8083";
+	var areaPort = "8011";
 	var watcherUrl = "http://"+areaIP+":"+areaPort+"/watcher";
 	$.ajax({
 		"url":watcherUrl,
