@@ -1,31 +1,30 @@
  $(document).ready(function () {
-	 $(".fa-nodeEdit").click(function(){
+	 $(document).on('click','.fa-nodeEdit',function(){
 		 $(this).parent().hide();
 		 $(this).parent().next().css("display","block");
 	 });
 	 
-	 $(".fa-nodeSave").click(function(){
+	 $(document).on('click','.fa-nodeSave',function(){
 		 $(this).parent().hide();
 		 $(this).parent().prev().show();
 	 });
-	 
-	 $(".fa-nodeTimes").click(function(){
+	 $(document).on('click','.fa-nodeTimes',function(){
 		 $(this).parent().hide();
 		 $(this).parent().prev().show();
 	 });
 	 
 	 //停止监控按钮
-	 $(".btn-stop").click(function(){
-		 var stopSrc = ctx +'/images/stop.png';
+	 $(document).on('click','.btn-stop',function(){
+		 var stopSrc = '/images/stop.png';
 		 $(this).parent().find("img").attr("src",stopSrc);
 	 });
 	//停止监控按钮
-	 $(".btn-start").click(function(){
-		 var startSrc = ctx +'/images/running.gif';
+	$(document).on('click','.btn-start',function(){
+		 var startSrc = '/images/running.gif';
 		 $(this).parent().find("img").attr("src",startSrc);
 	 });
 	//进入Nginx配置管理界面
-	 $(".btn-toNginx").click(function(){
+	$(document).on('click','.btn-toNginx',function(){
 		 location.href = "file:///C:/Users/Administrator/Desktop/src/views/nginx/k8snginxcfg.html" ;
 	 });
 	 
@@ -101,13 +100,13 @@
 				       		"NodeName": "192.168.252.133",
 		                	"ClientID": "8039",
 		               	 	"APIServerPort": ":8886",
-		                	"K8sWatcherStatus": "stop",
+		                	"K8sWatcherStatus": "start",
 				    	},
 				        
 				        "WatchManagerCfg": {
 				                "KubernetesMasterHost": "http://192.168.0.75:8080",
 				                "KubernetesAPIVersion": "api/v1",
-				                "NginxReloadCommand": ":nginx -s reload",
+				                "NginxReloadCommand": "nginx -s reload",
 				                "JobZoneType": "dmz",
 				                "NginxListenPort":"80",
 				                "WatchNamespaceSets":"全租户监控",
@@ -120,7 +119,7 @@
 				                "WorkMode":"k8snginx",
 				                "NginxTestCommand":"nginx -t",
 				                "StandbyUpstreamNodes":"{{1.1.1.1},{2.2.2.2},{3.3.3.3}}",
-				                "K8sWatcherStatus":"stop",
+				                "K8sWatcherStatus":"start",
 				            }
 				    }
 				];
@@ -129,6 +128,10 @@
 		var watcherNodeIP = objTestWatcher[i].ClientInfo.NodeIP;
 		var watcherClientID = objTestWatcher[i].ClientInfo.ClientID;
 		if(watcherNodeIP == NodeIPInfo && watcherClientID == ClientIDInfo){
+			var NodeName = objTestWatcher[i].ClientInfo.NodeName;
+			var APIServerPort = objTestWatcher[i].ClientInfo.APIServerPort.substring(1,objTestWatcher[i].ClientInfo.APIServerPort.length);
+			var K8sWatcherStatus = objTestWatcher[i].ClientInfo.K8sWatcherStatus;
+			
 			var KubernetesMasterHost = objTestWatcher[i].WatchManagerCfg.KubernetesMasterHost;
 			var KubernetesAPIVersion = objTestWatcher[i].WatchManagerCfg.KubernetesAPIVersion;
 			var NginxReloadCommand = objTestWatcher[i].WatchManagerCfg.NginxReloadCommand;
@@ -145,7 +148,119 @@
 			var NginxTestCommand = objTestWatcher[i].WatchManagerCfg.NginxTestCommand;
 			var StandbyUpstreamNodes = objTestWatcher[i].WatchManagerCfg.StandbyUpstreamNodes;
 			var K8sWatcherStatus = objTestWatcher[i].WatchManagerCfg.K8sWatcherStatus;
-			var watcherCfgHtml = "";
+			var imgHtml = "";
+			if(K8sWatcherStatus == "start"){
+				imgHtml = '<img src="/images/running.gif" alt=""/>'+
+							'<button class="btn btn-info btn-start">重启监控</button>'+
+							'<button class="btn btn-info btn-stop">停止监控</button>'+
+							'<button class="btn btn-info btn-toNginx">Nginx配置</button>';
+			}else{
+				imgHtml = '<img src="/images/stop.png" alt=""/>'
+							'<button class="btn btn-info btn-start">开始监控</button>'+
+							'<button class="btn btn-info btn-stop" disabled>停止监控</button>'+
+							'<button class="btn btn-info btn-toNginx">Nginx配置</button>';
+			}
+			$("#imgStatusInfo").append(imgHtml);
+			var watcherCfgHtml = '<tr>'+
+											'<td>k8s Master节点IP端口</td>'+
+											'<td>'+KubernetesMasterHost+'<i class="fa fa-edit fa-nodeEdit"></i></td>'+
+											'<td class="editItem"><input type="text" value="'+KubernetesMasterHost+'"><i class="fa fa-save fa-nodeSave"></i><i class="fa fa-times fa-nodeTimes"></i></td>'+
+										'</tr>'+
+										'<tr>'+
+											'<td>k8s Api 版本</td>'+
+											'<td>'+KubernetesAPIVersion+'<i class="fa fa-edit fa-nodeEdit"></i></td>'+
+											'<td class="editItem"><select><option>'+KubernetesAPIVersion+'</option></select><i class="fa fa-save fa-nodeSave"></i></td>'+
+										'</tr>'+
+										'<tr>'+
+											'<td>nginx 重载命令</td>'+
+											'<td>'+NginxReloadCommand+'<i class="fa fa-edit fa-nodeEdit"></i></td>'+
+											'<td class="editItem"><input type="text" value="'+NginxReloadCommand+'"><i class="fa fa-save fa-nodeSave"></i><i class="fa fa-times fa-nodeTimes"></i></td>'+
+										'</tr>'+
+										'<tr>'+
+											'<td>工作区类型</td>'+
+											'<td>'+JobZoneType+'</td>'+
+											
+										'</tr>'+
+										'<tr>'+
+											'<td>nginx监听端口</td>'+
+											'<td>'+NginxListenPort+'<i class="fa fa-edit fa-nodeEdit"></i></td>'+
+											'<td class="editItem"><select><option>'+NginxListenPort+'</option></select><i class="fa fa-save fa-nodeSave"></i></td>'+
+										'</tr>'+
+										'<tr>'+
+											'<td>监控租户集合</td>'+
+											'<td>'+WatchNamespaceSets+'<i class="fa fa-edit fa-nodeEdit"></i></td>'+
+											'<td class="editItem"><input type="text" value="'+WatchNamespaceSets+'"><i class="fa fa-save fa-nodeSave"></i><i class="fa fa-times fa-nodeTimes"></i></td>'+
+										'</tr>'+
+										'<tr>'+
+											'<td>真实配置文件生成路径</td>'+
+											'<td>'+NginxRealCfgDirPath+'<i class="fa fa-edit fa-nodeEdit"></i></td>'+
+											'<td class="editItem"><input type="text" value="'+NginxRealCfgDirPath+'"><i class="fa fa-save fa-nodeSave"></i><i class="fa fa-times fa-nodeTimes"></i></td>'+
+										'</tr>'+
+										'<tr>'+
+											'<td>测试配置文件生成路径</td>'+
+											'<td>'+NginxTestCfgDirPath+'<i class="fa fa-edit fa-nodeEdit"></i></td>'+
+											'<td class="editItem"><input type="text" value="'+NginxTestCfgDirPath+'"><i class="fa fa-save fa-nodeSave"></i><i class="fa fa-times fa-nodeTimes"></i></td>'+
+										'</tr>'+
+										'<tr>'+
+											'<td>配置下载路径</td>'+
+											'<td>'+DownloadCfgDirPath+'<i class="fa fa-edit fa-nodeEdit"></i></td>'+
+											'<td class="editItem"><input type="text" value="'+DownloadCfgDirPath+'"><i class="fa fa-save fa-nodeSave"></i><i class="fa fa-times fa-nodeTimes"></i></td>'+
+										'</tr>'+
+										'<tr>'+
+											'<td>日志打印级别</td>'+
+											'<td>'+LogPrintLevel+'<i class="fa fa-edit fa-nodeEdit"></i></td>'+
+											'<td class="editItem"><input type="text" value="'+LogPrintLevel+'"><i class="fa fa-save fa-nodeSave"></i><i class="fa fa-times fa-nodeTimes"></i></td>'+
+										'</tr>'+
+										'<tr>'+
+											'<td>nginx server类型</td>'+
+											'<td>'+DefaultNginxServerType+'<i class="fa fa-edit fa-nodeEdit"></i></td>'+
+											'<td class="editItem"><input type="text" vlaue="'+DefaultNginxServerType+'"><i class="fa fa-save fa-nodeSave"></i><i class="fa fa-times fa-nodeTimes"></i></td>'+
+										'</tr>'+
+										'<tr>'+
+											'<td>域名后缀</td>'+
+											'<td>'+DomainSuffix+'<i class="fa fa-edit fa-nodeEdit"></i></td>'+
+											'<td class="editItem"><input type="text" value="'+DomainSuffix+'"><i class="fa fa-save fa-nodeSave"></i><i class="fa fa-times fa-nodeTimes"></i></td>'+
+										'</tr>'+
+										'<tr>'+
+											'<td>工作模式</td>'+
+											'<td>'+WorkMode+'<i class="fa fa-edit fa-nodeEdit"></i></td>'+
+											'<td class="editItem"><input type="text" value="'+WorkMode+'"><i class="fa fa-save fa-nodeSave"></i><i class="fa fa-times fa-nodeTimes"></i></td>'+
+										'</tr>'+
+										'<tr>'+
+											'<td>nginx配置规则检查命令</td>'+
+											'<td>'+NginxTestCommand+'<i class="fa fa-edit fa-nodeEdit"></i></td>'+
+											'<td class="editItem"><input type="text" value="'+NginxTestCommand+'"><i class="fa fa-save fa-nodeSave"></i><i class="fa fa-times fa-nodeTimes"></i></td>'+
+										'</tr>'+
+										'<tr>'+
+											'<td>备用upstream服务器节点</td>'+
+											'<td>'+StandbyUpstreamNodes+'<i class="fa fa-edit fa-nodeEdit"></i></td>'+
+											'<td class="editItem"><input type="text" value="'+StandbyUpstreamNodes+'"><i class="fa fa-save fa-nodeSave"></i><i class="fa fa-times fa-nodeTimes"></i></td>'+
+										'</tr>'+
+										'<tr>'+
+											'<td>K8s监视器工作状态</td>'+
+											'<td>'+K8sWatcherStatus+'<i class="fa fa-edit fa-nodeEdit"></i></td>'+
+											'<td class="editItem"><input type="text" value="'+K8sWatcherStatus+'"><i class="fa fa-save fa-nodeSave"></i><i class="fa fa-times fa-nodeTimes"></i></td>'+
+										'</tr>';
+			$("#watcherCfgInfo").append(watcherCfgHtml);
+			
+			var watcherBasicHtml = '<tr>'+
+											'<td>客户端ID</td>'+
+											'<td>'+watcherClientID+'</td>'+
+										'</tr>'+
+										'<tr>'+
+											'<td>节点名称</td>'+
+											'<td>'+NodeName+'</td>'+
+										'</tr>'+
+										'<tr>'+
+											'<td>节点IP</td>'+
+											'<td>'+watcherNodeIP+'</td>'+
+										'</tr>'+
+										'<tr>'+
+											'<td>APIServer端口</td>'+
+											'<td>'+APIServerPort+'</td>'+
+										'</tr>';
+			$("#watcherBasicInfo").append(watcherBasicHtml);
+			
 		}
 	}
 }
