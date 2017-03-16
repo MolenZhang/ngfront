@@ -42,96 +42,13 @@
 	                <div class="item-obj">
 						<div class="n-nodes">
 							<div class="n-nodeLeft">
-								<p class="n-img">
-									<img src="../../images/running.gif" alt=""/>
-									<button class="btn btn-info btn-start">开始监控</button>
-									<button class="btn btn-info btn-stop">停止监控</button>
-									<button class="btn btn-info btn-toNginx">Nginx配置</button>
+								<p class="n-img" id="imgStatusInfo">
+									
 								</p>
 								
 								<p class="table-tit">相关配置</p>
 								<table>
 									<tbody id="watcherCfgInfo">
-										<tr>
-											<td>k8s Master节点IP端口</td>
-											<td>http://192.168.0.75:8080<i class="fa fa-edit fa-nodeEdit"></i></td>
-											<td class="editItem"><input type="text"><i class="fa fa-save fa-nodeSave"></i><i class="fa fa-times fa-nodeTimes"></i></td>
-										</tr>
-										<tr>
-											<td>k8s Api 版本</td>
-											<td>api/v1<i class="fa fa-edit fa-nodeEdit"></i></td>
-											<td class="editItem"><input type="text" value="api/v1"><i class="fa fa-save fa-nodeSave"></i><i class="fa fa-times fa-nodeTimes"></i></td>
-										</tr>
-										<tr>
-											<td>nginx 重载命令</td>
-											<td>nginx -s reload<i class="fa fa-edit fa-nodeEdit"></i></td>
-											<td class="editItem"><input type="text"><i class="fa fa-save fa-nodeSave"></i><i class="fa fa-times fa-nodeTimes"></i></td>
-										</tr>
-										<tr>
-											<td>工作区类型</td>
-											<td>dmz</td>
-											
-										</tr>
-										<tr>
-											<td>nginx监听端口</td>
-											<td>80<i class="fa fa-edit fa-nodeEdit"></i></td>
-											<td class="editItem"><input type="text"><i class="fa fa-save fa-nodeSave"></i><i class="fa fa-times fa-nodeTimes"></i></td>
-										</tr>
-										<tr>
-											<td>监控租户集合</td>
-											<td>全租户监控<i class="fa fa-edit fa-nodeEdit"></i></td>
-											<td class="editItem"><input type="text"><i class="fa fa-save fa-nodeSave"></i><i class="fa fa-times fa-nodeTimes"></i></td>
-										</tr>
-										<tr>
-											<td>真实配置文件生成路径</td>
-											<td>/etc/nginx/conf.d/real_cfg/<i class="fa fa-edit fa-nodeEdit"></i></td>
-											<td class="editItem"><input type="text"><i class="fa fa-save fa-nodeSave"></i><i class="fa fa-times fa-nodeTimes"></i></td>
-										</tr>
-										<tr>
-											<td>测试配置文件生成路径</td>
-											<td>/etc/nginx/conf.d/test_cfg/<i class="fa fa-edit fa-nodeEdit"></i></td>
-											<td class="editItem"><input type="text"><i class="fa fa-save fa-nodeSave"></i><i class="fa fa-times fa-nodeTimes"></i></td>
-										</tr>
-										<tr>
-											<td>配置下载路径</td>
-											<td>/etc/nginx/conf.d/download_cfg/<i class="fa fa-edit fa-nodeEdit"></i></td>
-											<td class="editItem"><input type="text"><i class="fa fa-save fa-nodeSave"></i><i class="fa fa-times fa-nodeTimes"></i></td>
-										</tr>
-										<tr>
-											<td>日志打印级别</td>
-											<td>debug<i class="fa fa-edit fa-nodeEdit"></i></td>
-											<td class="editItem"><input type="text"><i class="fa fa-save fa-nodeSave"></i><i class="fa fa-times fa-nodeTimes"></i></td>
-										</tr>
-										<tr>
-											<td>nginx server类型</td>
-											<td>domain<i class="fa fa-edit fa-nodeEdit"></i></td>
-											<td class="editItem"><input type="text"><i class="fa fa-save fa-nodeSave"></i><i class="fa fa-times fa-nodeTimes"></i></td>
-										</tr>
-										<tr>
-											<td>域名后缀</td>
-											<td>yz.local<i class="fa fa-edit fa-nodeEdit"></i></td>
-											<td class="editItem"><input type="text"><i class="fa fa-save fa-nodeSave"></i><i class="fa fa-times fa-nodeTimes"></i></td>
-										</tr>
-										<tr>
-											<td>工作模式</td>
-											<td>k8snginx<i class="fa fa-edit fa-nodeEdit"></i></td>
-											<td class="editItem"><input type="text"><i class="fa fa-save fa-nodeSave"></i><i class="fa fa-times fa-nodeTimes"></i></td>
-										</tr>
-										<tr>
-											<td>nginx配置规则检查命令</td>
-											<td>nginx -t<i class="fa fa-edit fa-nodeEdit"></i></td>
-											<td class="editItem"><input type="text"><i class="fa fa-save fa-nodeSave"></i><i class="fa fa-times fa-nodeTimes"></i></td>
-										</tr>
-										<tr>
-											<td>备用upstream服务器节点</td>
-											<td>1111111111<i class="fa fa-edit fa-nodeEdit"></i></td>
-											<td class="editItem"><input type="text"><i class="fa fa-save fa-nodeSave"></i><i class="fa fa-times fa-nodeTimes"></i></td>
-										</tr>
-										<tr>
-											<td>K8s监视器工作状态</td>
-											<td>start<i class="fa fa-edit fa-nodeEdit"></i></td>
-											<td class="editItem"><input type="text"><i class="fa fa-save fa-nodeSave"></i><i class="fa fa-times fa-nodeTimes"></i></td>
-										</tr>
 									</tbody>
 								</table>
 							</div>
@@ -139,22 +56,7 @@
 								<p class="table-tit">基本信息</p>
 								<table>
 									<tbody id="watcherBasicInfo">
-										<tr>
-											<td>客户端ID</td>
-											<td>111111</td>
-										</tr>
-										<tr>
-											<td>节点名称</td>
-											<td>192.168.0.10</td>
-										</tr>
-										<tr>
-											<td>节点IP</td>
-											<td>192.168.0.10</td>
-										</tr>
-										<tr>
-											<td>APIServer端口</td>
-											<td>8080</td>
-										</tr>
+										
 									</tbody>
 								</table>
 								<div id="main" style="width: 90%;height:400px;margin-top:20px;padding-left:16px;"></div>

@@ -7,8 +7,8 @@
  });/*reday*/
 
 function showClients(areaType){
-	var areaIP = "192.168.252.133";
-	var areaPort = "8083";
+	var areaIP = "localhost";
+	var areaPort = "port";
 	var areaUrl = "http://"+areaIP+":"+areaPort+"/clients";
 	$.ajax({
 		"url":areaUrl,
