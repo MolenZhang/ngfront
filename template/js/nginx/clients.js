@@ -10,6 +10,7 @@ function showClients(areaType){
 	var areaIP = "localhost";
 	var areaPort = "port";
 	var areaUrl = "http://"+areaIP+":"+areaPort+"/clients";
+	var watcherUrl = "http://"+areaIP+":"+areaPort+"/ngfront/zone/clients/watcher?NodeIP=";
 	$.ajax({
 		"url":areaUrl,
 		"type":"get",
@@ -50,7 +51,7 @@ function showClients(areaType){
                                     		'<td class="operationBtns">'+
                                     			'<a><i class="fa fa-play"></i></a>'+
                                     			'<a><i class="fa fa-power-off"></i></a>'+
-                                    			'<a href="file:///C:/Users/Administrator/Desktop/src/views/nginx/area-nodes.html"><i class="fa fa-gear"></i></a>'+
+                                    			'<a href="'+watcherUrl+NodeIP+'&ClientID='+ClientID+'"><i class="fa fa-gear"></i></a>'+
                                     		'</td>'+
                                     	'</tr>';
 			 	}

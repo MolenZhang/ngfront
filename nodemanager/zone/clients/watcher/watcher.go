@@ -2,10 +2,11 @@ package watcher
 
 //watcher页面 展示具体的某一台client下的监视器信息 可以编辑
 import (
+	"encoding/json"
 	"fmt"
 	"html/template"
 	"net/http"
-	//"ngfront/nodemanager/nodes"
+	"ngfront/nodemanager/nodes"
 )
 
 //ServiceInfo 服务信息
@@ -27,6 +28,34 @@ func showWatcherPage(w http.ResponseWriter, r *http.Request) {
 }
 
 func getWatcherInfo(w http.ResponseWriter, r *http.Request) {
+	webMsg := nodes.NodeInfo{}
+	r.ParseForm()
+
+	client := nodes.ClientInfo{
+		NodeIP:   r.Form.Get("NodeIP"),
+		ClientID: r.Form.Get("ClientID"),
+	}
+
+	key := client.CreateKey()
+
+	//fmt.Println("------------r.NodeIp=", r.Form.Get("NodeIP"))
+	//fmt.Println("------------r.ClientID=", r.Form.Get("ClientID"))
+
+	webMsg.Client = nodes.GetClientInfo(key)
+	webMsg.Watcher = nodes.GetWatcherData(key)
+
+	//通信结构 json格式转换
+	jsonTypeMsg, err := json.Marshal(webMsg)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	w.Write(jsonTypeMsg)
+
+	fmt.Println("------------返回的数据为-----", webMsg)
+
+	return
 }
 
 //处理

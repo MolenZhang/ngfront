@@ -86,21 +86,39 @@
 			};
 
 	 myChart.setOption(option);
-	 var NodeIPInfo = "192.168.252.133";
-	 var ClientIDInfo = "8039";
+	
+	var locationUrl = window.location;
+	//http://192.168.252.133:8083/ngfront/zone/clients/watcher?NodeIP=192.168.252.133&ClientID=35734
+	//var areaType=locationUrl.search.substring(locationUrl.search.indexOf("NodeIP=")+1,locationUrl.search.indexOf("&")); 
+	 var NodeIPInfo = locationUrl.search.substring(locationUrl.search.indexOf("NodeIP=")+7,locationUrl.search.indexOf("&"));
+	 var ClientIDInfo = locationUrl.search.substring(locationUrl.search.indexOf("ClientID=")+9,locationUrl.search.length);
 	 showWatcher(NodeIPInfo,ClientIDInfo);
 	 
  });/*reday*/
  
   function showWatcher(NodeIPInfo,ClientIDInfo){
+	var areaIP = "localhost";
+	var areaPort = "port";
+	var watcherUrl = "http://"+areaIP+":"+areaPort+"/watcher";
+	$.ajax({
+		"url":watcherUrl,
+		"type":"get",
+		"data":{
+			"NodeIP":NodeIPInfo,
+			"ClientID":ClientIDInfo
+		},
+		"success":function(data){
+			var data = eval("("+data+")");
+			alert(data);
+		}
+	});
 	var objTestWatcher = [
 				    {
 				    	"ClientInfo": {
 				    		"NodeIP": "192.168.252.133",
 				       		"NodeName": "192.168.252.133",
-		                	"ClientID": "8039",
-		               	 	"APIServerPort": ":8886",
-		                	"K8sWatcherStatus": "start",
+		                	"ClientID": "35734",
+		               	 	"APIServerPort": ":8886"
 				    	},
 				        
 				        "WatchManagerCfg": {
