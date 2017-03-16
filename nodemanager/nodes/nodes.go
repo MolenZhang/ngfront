@@ -4,9 +4,10 @@ package nodes
 //一个Node上 可以有多个kubeng 一个kubeng由client信息和watcherManagerCfg以及NginxCfg信息3个成员构成 目前仅实现了2个成员
 
 import (
-	"fmt"
+	//"fmt"
 	//"log"
 	"ngfront/config"
+	"ngfront/logdebug"
 	"sync"
 	"time"
 )
@@ -87,8 +88,6 @@ func CheckClientInfo(client ClientInfo) bool {
 		return false
 	}
 
-	//fmt.Println("------找到客户端信息 刷新定时器-----key =!", key)
-
 	//停止上一个定时器
 	allNodesInfo.allNodesInfoMap[key].timer.Stop()
 
@@ -101,7 +100,7 @@ func CheckClientInfo(client ClientInfo) bool {
 
 		delete(allNodesInfo.allNodesInfoMap, key)
 
-		fmt.Println("------心跳超时 删除客户端信息----key !", key)
+		logdebug.Println(logdebug.LevelInfo, "------心跳超时 删除客户端信息----key !", key)
 
 		return
 	})
@@ -132,17 +131,13 @@ func AddClientData(client ClientInfo) {
 
 		delete(allNodesInfo.allNodesInfoMap, key)
 
-		fmt.Println("------心跳超时 删除客户端信息----key =!", key)
+		logdebug.Println(logdebug.LevelInfo, "------心跳超时 删除客户端信息----key =!", key)
 
 		return
 	})
 	//newNodeInfo.isTimerReset = false //新定时器 没有被刷新
 
 	allNodesInfo.allNodesInfoMap[key] = newNodeInfo
-
-	//fmt.Println("------添加客户端信息 开启定时器-----key = !", key)
-
-	//timer.Create()
 
 	return
 }
@@ -156,8 +151,6 @@ func AddWatcherData(key string, watcher WatchManagerCfg) {
 	currentNodeInfo := allNodesInfo.allNodesInfoMap[key]
 	currentNodeInfo.Watcher = watcher
 	allNodesInfo.allNodesInfoMap[key] = currentNodeInfo
-
-	//log.Println("--------Addwatchercfg--------", allNodesInfo.allNodesInfoMap[key])
 
 	return
 }

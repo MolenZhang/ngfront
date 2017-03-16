@@ -10,11 +10,11 @@ import (
 
 //LevelInfo 提示级别
 const (
-	LevelInfo  = 1 //提示级别
-	LevelDebug = 2 //调试级别
+	LevelInfo  = 5 //提示级别
+	LevelDebug = 4 //调试级别
 	LevelWarn  = 3 //警告级别
-	LevelError = 4 //错误级别
-	LevelFatal = 5 //致命级别
+	LevelError = 2 //错误级别
+	LevelFatal = 1 //致命级别
 )
 
 var printLevelConvertMap = map[int]string{

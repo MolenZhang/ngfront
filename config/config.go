@@ -3,7 +3,7 @@ package config
 import (
 	"flag"
 	//	"fmt"
-	"sync"
+	//"sync"
 	"time"
 )
 
@@ -13,7 +13,7 @@ type NgFrontCfgInfo struct {
 	HeartCycle      time.Duration
 	HeartServerAddr string
 	LogLevel        string
-	nutexLock       *sync.Mutex
+	//nutexLock       *sync.Mutex
 }
 
 //NgFrontCfg ngfront程序配置信息对象
@@ -47,9 +47,10 @@ func Init() {
 	return
 }
 
+//GetLogPrintLevel 获取当前log级别
 func GetLogPrintLevel() string {
-	NgFrontCfg.nutexLock.Lock()
-	defer NgFrontCfg.nutexLock.Unlock()
+	//NgFrontCfg.nutexLock.Lock()
+	//defer NgFrontCfg.nutexLock.Unlock()
 
 	logPrintlnLevel := NgFrontCfg.LogLevel
 	return logPrintlnLevel

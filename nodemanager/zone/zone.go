@@ -3,15 +3,10 @@ package zone
 //zone 就是Home
 import (
 	"encoding/json"
-	//"flag"
-	"fmt"
 	"html/template"
-	//"io/ioutil"
-	//"log"
 	"net/http"
+	"ngfront/logdebug"
 	"ngfront/nodemanager/nodes"
-	//"os"
-	//"strings"
 )
 
 //ServiceInfo 服务信息
@@ -19,38 +14,19 @@ type ServiceInfo struct {
 }
 
 func showHomePage(w http.ResponseWriter, r *http.Request) {
-	//tepmlate加载 respone exec
-	fmt.Println("-----加载主页----")
+	logdebug.Println(logdebug.LevelInfo, "-----加载主页----")
+
 	t, err := template.ParseFiles("template/views/nginx/area.html")
-	//t, err := template.ParseFiles("template/html/zone/index.html")
 	if err != nil {
-		fmt.Println(err)
+		logdebug.Println(logdebug.LevelError, err)
+
 		return
 	}
+
 	t.Execute(w, nil)
 
 	return
 }
-
-//func getNginxCss(w http.ResponseWriter, r *http.Request) {
-
-//	path := r.URL.Path
-//	request_type := path[strings.LastIndex(path, "."):]
-//	switch request_type {
-//	case ".css":
-//		w.Header().Set("content-type", "text/css")
-//	case ".js":
-//		w.Header().Set("content-type", "text/javascript")
-//	default:
-//	}
-//	fin, err := os.Open("/home/go_test/instance/sorter/src/ngfront/template/" + path)
-//	defer fin.Close()
-//	if err != nil {
-//		log.Fatal("static resource:", err)
-//	}
-//	fd, _ := ioutil.ReadAll(fin)
-//	w.Write(fd)
-//}
 
 //client 用于展示的客户端信息数据结构
 type client struct {
@@ -90,7 +66,7 @@ func getZoneInfo(w http.ResponseWriter, r *http.Request) {
 	//定义一个4个大小尺寸的结构体数组
 	var webMsg [maxZone]webRespMsg
 	//遍历 初始化各个成员的数组切片
-	for k, _ := range webMsg {
+	for k := range webMsg {
 		webMsg[k].Clients = make([]client, 0)
 	}
 
@@ -116,7 +92,8 @@ func getZoneInfo(w http.ResponseWriter, r *http.Request) {
 	//通信结构 json格式转换
 	jsonTypeMsg, err := json.Marshal(webMsg)
 	if err != nil {
-		fmt.Println(err)
+		logdebug.Println(logdebug.LevelError, err)
+
 		return
 	}
 
@@ -134,7 +111,6 @@ func (svc *ServiceInfo) Init() {
 
 	http.HandleFunc("/ngfront", showHomePage)
 	http.HandleFunc("/ngfront/zone", getZoneInfo)
-	//http.HandleFunc("/ngfront/template/css/mod/nginx.css", getNginxCss)
 
 	return
 }

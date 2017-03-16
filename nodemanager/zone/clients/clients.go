@@ -3,9 +3,9 @@ package clients
 //clients页面 展示 一个区域内的所有client信息 可以批量操作
 import (
 	"encoding/json"
-	"fmt"
 	"html/template"
 	"net/http"
+	"ngfront/logdebug"
 	"ngfront/nodemanager/nodes"
 )
 
@@ -27,11 +27,13 @@ type webRespMsg struct {
 }
 
 func showClientsPage(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("-----加载client页面----")
+	logdebug.Println(logdebug.LevelInfo, "-----加载client页面----")
+
 	//加载模板 显示内容是 批量操作client
 	t, err := template.ParseFiles("template/views/nginx/clients.html")
 	if err != nil {
-		fmt.Println(err)
+		logdebug.Println(logdebug.LevelError, err)
+
 		return
 	}
 
@@ -67,7 +69,7 @@ func getClientsInfo(w http.ResponseWriter, r *http.Request) {
 	//定义一个4个大小尺寸的结构体数组
 	var webMsg [maxZone]webRespMsg
 	//遍历 初始化各个成员的数组切片
-	for k, _ := range webMsg {
+	for k := range webMsg {
 		webMsg[k].Clients = make([]client, 0)
 	}
 
@@ -96,7 +98,8 @@ func getClientsInfo(w http.ResponseWriter, r *http.Request) {
 	//通信结构 json格式转换
 	jsonTypeMsg, err := json.Marshal(webMsg)
 	if err != nil {
-		fmt.Println(err)
+		logdebug.Println(logdebug.LevelError, err)
+
 		return
 	}
 

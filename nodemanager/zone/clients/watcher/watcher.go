@@ -3,9 +3,9 @@ package watcher
 //watcher页面 展示具体的某一台client下的监视器信息 可以编辑
 import (
 	"encoding/json"
-	"fmt"
 	"html/template"
 	"net/http"
+	"ngfront/logdebug"
 	"ngfront/nodemanager/nodes"
 )
 
@@ -14,11 +14,11 @@ type ServiceInfo struct {
 }
 
 func showWatcherPage(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("-----加载watcher页面----")
+	logdebug.Println(logdebug.LevelInfo, "-----加载watcher页面----")
 	//加载模板 显示内容是 批量操作client
 	t, err := template.ParseFiles("template/views/nginx/watcher.html")
 	if err != nil {
-		fmt.Println(err)
+		logdebug.Println(logdebug.LevelError, err)
 		return
 	}
 
@@ -46,7 +46,7 @@ func getWatcherInfo(w http.ResponseWriter, r *http.Request) {
 	//通信结构 json格式转换
 	jsonTypeMsg, err := json.Marshal(webMsg)
 	if err != nil {
-		fmt.Println(err)
+		logdebug.Println(logdebug.LevelError, err)
 		return
 	}
 
@@ -58,7 +58,7 @@ func getWatcherInfo(w http.ResponseWriter, r *http.Request) {
 //更新kubeng上的监视器信息
 func updateWatcherInfo(w http.ResponseWriter, r *http.Request) {
 	//解析表单
-	fmt.Println("------与kubeng通讯 更新watcher状态 ----")
+	logdebug.Println(logdebug.LevelInfo, "------与kubeng通讯 更新watcher状态 ----")
 
 	return
 }
@@ -67,7 +67,7 @@ func updateWatcherInfo(w http.ResponseWriter, r *http.Request) {
 func dealWatcherInfo(w http.ResponseWriter, r *http.Request) {
 	//加载模板....redirect 拿数据 写回....
 	if r.Method == "GET" {
-		fmt.Println("------重定向 获取数据 返回给JS----")
+		logdebug.Println(logdebug.LevelInfo, "------重定向 获取数据 返回给JS----")
 
 		getWatcherInfo(w, r)
 
