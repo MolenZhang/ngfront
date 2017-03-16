@@ -68,7 +68,7 @@ func updateWatcherInfo(w http.ResponseWriter, r *http.Request) {
 func dealWatcherInfo(w http.ResponseWriter, r *http.Request) {
 	//加载模板....redirect 拿数据 写回....
 	if r.Method == "GET" {
-		logdebug.Println(logdebug.LevelInfo, "------重定向 获取数据 返回给JS----")
+		logdebug.Println(logdebug.LevelInfo, "------重定向 获取数据 返回给JS----", *r)
 
 		getWatcherInfo(w, r)
 

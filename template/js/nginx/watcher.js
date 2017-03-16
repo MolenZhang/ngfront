@@ -29,65 +29,10 @@
 	$(document).on('click','.btn-toNginx',function(){
 		 location.href = "file:///C:/Users/Administrator/Desktop/src/views/nginx/k8snginxcfg.html" ;
 	 });
+	
+	
 	 
 	 
-	 var myChart = echarts.init(document.getElementById('main'));
-	 option = {
-			    color: ['#3398DB'],
-			    title: {
-			        text: '该节点各租户中服务个数'
-			    },
-			    tooltip : {
-			        trigger: 'axis',
-			        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
-			            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-			        }
-			    },
-			    grid: {
-			        left: '3%',
-			        right: '4%',
-			        bottom: '12%',
-			        containLabel: true
-			    },
-			    dataZoom: [
-			               {
-			                   show: true,
-			                   realtime: true,
-			                   start: 0,
-			                   end: 30
-			               },
-			               {
-			                   type: 'inside',
-			                   realtime: true,
-			                   start: 0,
-			                   end: 30
-			               }
-			           ],
-			    xAxis : [
-			        {
-			            type : 'category',
-			            data : ['user1', 'user2', 'user3', 'user4', 'user5','user1', 'user2', 'user3', 'user4', 'user5','user1', 'user2', 'user3', 'user4', 'user5','user1', 'user2', 'user3', 'user4', 'user5'],
-			            axisTick: {
-			                alignWithLabel: true
-			            }
-			        }
-			    ],
-			    yAxis : [
-			        {
-			            type : 'value'
-			        }
-			    ],
-			    series : [
-			        {
-			            name:'服务个数',
-			            type:'bar',
-			            barWidth: '60%',
-			            data:[3, 4, 6, 1, 7,3, 4, 6, 1, 7,3, 4, 6, 1, 7,3, 4, 6, 1, 7]
-			        }
-			    ]
-			};
-
-	 myChart.setOption(option);
 	
 	var locationUrl = window.location;
 	//http://192.168.252.133:8083/ngfront/zone/clients/watcher?NodeIP=192.168.252.133&ClientID=35734
@@ -95,11 +40,18 @@
 	 var NodeIPInfo = locationUrl.search.substring(locationUrl.search.indexOf("NodeIP=")+7,locationUrl.search.indexOf("&"));
 	 var ClientIDInfo = locationUrl.search.substring(locationUrl.search.indexOf("ClientID=")+9,locationUrl.search.length);
 	 showWatcher(NodeIPInfo,ClientIDInfo);
-
+	
+	//apiVersionSave(KubernetesMasterHost,KubernetesAPIVersion);
+	
+	//进入Nginx配置管理界面
+	$(document).on('click','#apiVersionSave',function(){
+		 apiVersionSave(KubernetesMasterHost,KubernetesAPIVersion);
+	 });
 	
 	 
  });/*reday*/
- 
+var KubernetesMasterHost= "";
+var KubernetesAPIVersion=""; 
   function showWatcher(NodeIPInfo,ClientIDInfo){
 	var areaIP = "localhost";
 	var areaPort = "port";
@@ -121,8 +73,8 @@
 		var APIServerPort = objTestWatcher.Client.APIServerPort.substring(1,objTestWatcher.Client.APIServerPort.length);
 			
 			
-		var KubernetesMasterHost = objTestWatcher.Watcher.KubernetesMasterHost;
-		var KubernetesAPIVersion = objTestWatcher.Watcher.KubernetesAPIVersion;
+		KubernetesMasterHost = objTestWatcher.Watcher.KubernetesMasterHost;
+		KubernetesAPIVersion = objTestWatcher.Watcher.KubernetesAPIVersion;
 		var NginxReloadCommand = objTestWatcher.Watcher.NginxReloadCommand;
 		var JobZoneType = objTestWatcher.Watcher.JobZoneType;
 		var NginxListenPort = objTestWatcher.Watcher.NginxListenPort;
@@ -235,11 +187,11 @@
 			
 			var apiVersionHtml = "";
 			if(KubernetesMasterHost != ""||KubernetesMasterHost!= null){
-				apiVersionHtml = '<select name="KubernetesAPIVersion">'+
-									'<option value="api/v1">api/v1</option>'+
-									'<option value="api">api</option>'+
-									'</select>'+
-									'<i class="fa fa-save fa-nodeSave"></i>';
+				apiVersionHtml = "<select name='KubernetesAPIVersion' id='KubernetesAPIVersion'>"+
+									"<option value='api/v1'>api/v1</option>"+
+									"<option value='api'>api</option>"+
+									"</select>"+
+									"<i class='fa fa-save fa-nodeSave' id='apiVersionSave'></i>";
 			}
 			$("#apiVersion").append(apiVersionHtml);
 			
@@ -300,8 +252,79 @@
 	//         "K8sWatcherStatus": "stop"
 	//     }
 	// };
+}
 
+//点击apiVersion按钮生成监控列表
+function apiVersionSave(KubernetesMasterHost,KubernetesAPIVersion){
+	var areaIP = "localhost";
+	var areaPort = "port";
+	var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/namespaces";
+	$.ajax({
+		"url":apiVersionUrl,
+		"type":"get",
+		"data":{
+			"KubernetesMasterHost":KubernetesMasterHost,
+			"KubernetesAPIVersion":KubernetesAPIVersion
+		},
+		"success":function(data){
+			var optionxAxisData = eval("("+data+")");
 			
-		
-	
+			var myChart = echarts.init(document.getElementById('main'));
+			option = {
+					    color: ['#3398DB'],
+					    title: {
+					        text: '该节点各租户中服务个数'
+					    },
+					    tooltip : {
+					        trigger: 'axis',
+					        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+					            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+					        }
+					    },
+					    grid: {
+					        left: '3%',
+					        right: '4%',
+					        bottom: '12%',
+					        containLabel: true
+					    },
+					    dataZoom: [
+					               {
+					                   show: true,
+					                   realtime: true,
+					                   start: 0,
+					                   end: 30
+					               },
+					               {
+					                   type: 'inside',
+					                   realtime: true,
+					                   start: 0,
+					                   end: 30
+					               }
+					           ],
+					    xAxis : [],
+					    yAxis : [
+					        {
+					            type : 'value'
+					        }
+					    ],
+					    series : [
+					        {
+					            name:'服务个数',
+					            type:'bar',
+					            barWidth: '60%',
+					            data:[3, 4, 6, 1, 7,3, 4, 6, 1]
+					        }
+					    ]
+					};
+					var optionxAxis = {
+					            type : 'category',
+					            data : optionxAxisData,
+					            axisTick: {
+					                alignWithLabel: true
+					            }
+					        }
+			option.xAxis.push(optionxAxis);
+			myChart.setOption(option);
+		}
+	});
 }
