@@ -28,7 +28,7 @@ type NamespaceMetadata struct {
 //NamespacesDetailInfo 租户列表详细信息
 type NamespacesDetailInfo struct {
 	NamespacesList      []string
-	NamespacesAppCounts []int
+	NamespacesAppCounts []string
 }
 
 //从k8s获取集群namespaces
