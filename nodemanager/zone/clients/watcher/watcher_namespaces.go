@@ -13,14 +13,28 @@ type NamespaceList struct {
 	Items []NamespaceObject
 }
 
+<<<<<<< HEAD
 //NamespaceObject 租户列表元数据
+=======
+//NamespaceObject 单个租户对象
+>>>>>>> b0efe6b0037c3d812f3313a21a26ad031cb1a0ba
 type NamespaceObject struct {
 	Metadata NamespaceMetadata
 }
 
+<<<<<<< HEAD
 // NamespaceMetadata 租户名
+=======
+//NamespaceMetadata 租户对象元数据
+>>>>>>> b0efe6b0037c3d812f3313a21a26ad031cb1a0ba
 type NamespaceMetadata struct {
 	Name string
+}
+
+//NamespacesDetailInfo 租户列表详细信息
+type NamespacesDetailInfo struct {
+	NamespacesList      []string
+	NamespacesAppCounts []int
 }
 
 //从k8s获取集群namespaces
@@ -52,5 +66,20 @@ func getNamespacesFromK8s(url string) (namespaces []string) {
 		}
 		namespaces = append(namespaces, namespace)
 	}
+
 	return
+}
+
+//从k8s集群获取租户的详细信息
+func getNamespacesDetailInfoFromK8s(getNamespacesURL string) (namespacesDetail NamespacesDetailInfo) {
+	namespacesList := getNamespacesFromK8s(getNamespacesURL)
+
+	for _, namespace := range namespacesList {
+		getEndpointsURL := getNamespacesURL + "/" + namespace + "/endpoints"
+		//Get 统计
+		logdebug.Println(logdebug.LevelInfo, getEndpointsURL)
+	}
+
+	return
+
 }

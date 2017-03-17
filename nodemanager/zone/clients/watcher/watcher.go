@@ -82,16 +82,16 @@ func dealWatcherInfo(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
-//使用界面传过来的IP VERSION获取所要监控的k8s集群租户
-func getWatchNamespaces(w http.ResponseWriter, r *http.Request) {
+//使用界面传过来的IP VERSION获取所要监控的k8s集群租户的详细信息(统计有多少服务)
+func getWatchNamespacesDetailInfo(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 
 	kubernetesMasterHost := r.Form.Get("KubernetesMasterHost")
 	kubernetesAPIVersion := r.Form.Get("KubernetesAPIVersion")
 
-	getNamespacesUrl := kubernetesMasterHost + "/" + kubernetesAPIVersion + "/namespaces"
+	getNamespacesURL := kubernetesMasterHost + "/" + kubernetesAPIVersion + "/namespaces"
 
-	namespaces := getNamespacesFromK8s(getNamespacesUrl)
+	namespaces := getNamespacesDetailInfoFromK8s(getNamespacesURL)
 
 	logdebug.Println(logdebug.LevelInfo, "*****************************", namespaces)
 	//通信结构 json格式转换
@@ -110,7 +110,7 @@ func getWatchNamespaces(w http.ResponseWriter, r *http.Request) {
 func (svc *ServiceInfo) Init() {
 	http.HandleFunc("/ngfront/zone/clients/watcher", showWatcherPage)
 	http.HandleFunc("/watcher", dealWatcherInfo)
-	http.HandleFunc("/namespaces", getWatchNamespaces)
+	http.HandleFunc("/namespaces", getWatchNamespacesDetailInfo)
 
 	return
 }
