@@ -60,7 +60,8 @@ var KubernetesAPIVersion="";
 	$(document).on('click','#KubernetesAPIVersionSaveBtn',function(){
 		var changeVal = $("#KubernetesAPIVersionInfo").val();
 		$("#KubernetesAPIVersionOldVal").empty().append(changeVal);
-		 apiVersionSave(KubernetesMasterHost,KubernetesAPIVersion);
+		var KubernetesMasterHostVal = $("#KubernetesMasterHostOldVal").html();
+		apiVersionSave(KubernetesMasterHostVal,changeVal);
 	 });
 	//日志打印级别  保存按钮
 	$(document).on('click','#LogPrintLevelSaveBtn',function(){
@@ -311,11 +312,12 @@ var KubernetesAPIVersion="";
 	});
 }
 
-//点击apiVersion按钮生成监控列表
+//点击apiVersion按钮生成监控echart
 function apiVersionSave(KubernetesMasterHost,KubernetesAPIVersion){
 	var areaIP = "192.168.85.130";
 	var areaPort = "8083";
 	var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/namespaces";
+	loadNamespaces(KubernetesMasterHost,KubernetesAPIVersion);
 	$.ajax({
 		"url":apiVersionUrl,
 		"type":"get",
@@ -388,8 +390,9 @@ function apiVersionSave(KubernetesMasterHost,KubernetesAPIVersion){
 
 //生成监控租户集合
 function loadNamespaces(KubernetesMasterHost,KubernetesAPIVersion){
-	var areaIP = "192.168.85.130";
-	var areaPort = "8083";
+	$("#namespacesInfo").empty();
+	var areaIP = "localhost";
+	var areaPort = "port";
 	var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/namespaces";
 	$.ajax({
 		"url":apiVersionUrl,
@@ -401,11 +404,15 @@ function loadNamespaces(KubernetesMasterHost,KubernetesAPIVersion){
 		"success":function(data){
 			var namespacesData = eval("("+data+")");
 			var namespacesHtml = "";
-			for(var i=0; i<namespacesData.length; i++){
-				var eveNamespace = namespacesData[i];
-				namespacesHtml += '<label class="namespacesLabel"><input type="checkbox" class="namespacesChk" value="'+eveNamespace+'">'+eveNamespace+'</label>';
+			var NamespacesList = namespacesData.NamespacesList;
+			if(NamespacesList != null){
+				for(var i=0; i<NamespacesList.length; i++){
+					var eveNamespace = NamespacesList[i];
+					namespacesHtml += '<label class="namespacesLabel"><input type="checkbox" class="namespacesChk" value="'+eveNamespace+'">'+eveNamespace+'</label>';
+				}
+				$("#namespacesInfo").append(namespacesHtml);
 			}
-			$("#namespacesInfo").append(namespacesHtml);
+			
 		}
 	})
 }
