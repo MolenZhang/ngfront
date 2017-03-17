@@ -3,21 +3,22 @@ package watcher
 //watcher页面 展示具体的某一台client下的监视器信息 可以编辑
 import (
 	"encoding/json"
-	//"html/template"
 	"io/ioutil"
 	"net/http"
 	"ngfront/logdebug"
-	//"ngfront/nodemanager/nodes"
 )
 
+//NamespaceList 租户列表
 type NamespaceList struct {
 	Items []NamespaceObject
 }
 
+//NamespaceObject 租户列表元数据
 type NamespaceObject struct {
 	Metadata NamespaceMetadata
 }
 
+// NamespaceMetadata 租户名
 type NamespaceMetadata struct {
 	Name string
 }
