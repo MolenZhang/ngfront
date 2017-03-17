@@ -9,8 +9,48 @@ import (
 	//"ngfront/nodemanager/nodes"
 )
 
+//UserDefinedNginxRules 用户自定义nginx规则
+type UserDefinedNginxRules struct {
+	RulesSet      map[string][]string
+	OperationType string //操作类型(本字段尚未启用)
+}
+
+//LogRulesInfo log规则信息
+type LogRulesInfo struct {
+	LogRuleName     string //log 规则名
+	LogFileDirPath  string //log 产生日志路径
+	LogTemplateName string //log 模板名
+}
+
+//AppSrcTypeKubernetes 服务源于k8s
+const (
+	AppSrcTypeKubernetes = "k8s"
+	AppSrcTypeExtern     = "extern"
+)
+
 //Config nginx 配置
 type Config struct {
+	ServerName            string                //nginx配置server_name选项(域名 IP方式均可)
+	ListenPort            string                //nginx配置listen选项
+	RealServerPath        string                //真实提供服务的路径
+	Namespace             string                //namespace租户 应该从k8s集群获得
+	AppName               string                //app名字 用于制作路径 文件名等 应从k8s集群获得
+	Location              string                //nginx配置loction选项(相当于原来的proxy_path)
+	ProxyRedirectSrcPath  string                //nginx配置proxy_redirect选项 源路径
+	ProxyRedirectDestPath string                //nginx配置proxy_redirect选项 目路径
+	UpstreamIPs           []string              //nginx配置upstream IP (不支持界面配置该选项 但支持获取该选项)
+	UpstreamPort          string                //nginx配置upstream Port (不支持界面配置该选项 但支持获取该选项)
+	IsUpstreamIPHash      bool                  //是否需要ip_hash
+	IsAppActivity         bool                  //app活动位
+	OperationType         string                //操作类型
+	IsK8sNotify           bool                  //k8s通知位
+	UpstreamUserRules     UserDefinedNginxRules //保留字段 用于用户自定义nginx规则
+	ServerUserRules       UserDefinedNginxRules //保留字段 用于用户自定义nginx规则
+	LocationUserRules     UserDefinedNginxRules //保留字段 用于用户自定义nginx规则
+	LogRule               LogRulesInfo          //日志规则相关信息
+	DeleteUserCfgs        bool                  //应用停止时 是否删除个性化配置
+	IsDefaultCfg          bool                  //本条配置是否是默认配置
+	AppSrcType            string                //服务来源类型 k8s 或者 extern 根据访问的路径填充
 }
 
 //ServiceInfo 服务信息
