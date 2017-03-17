@@ -60,7 +60,8 @@ var KubernetesAPIVersion="";
 	$(document).on('click','#KubernetesAPIVersionSaveBtn',function(){
 		var changeVal = $("#KubernetesAPIVersionInfo").val();
 		$("#KubernetesAPIVersionOldVal").empty().append(changeVal);
-		 apiVersionSave(KubernetesMasterHost,KubernetesAPIVersion);
+		var KubernetesMasterHostVal = $("#KubernetesMasterHostOldVal").html();
+		apiVersionSave(KubernetesMasterHostVal,changeVal);
 	 });
 	//日志打印级别  保存按钮
 	$(document).on('click','#LogPrintLevelSaveBtn',function(){
@@ -401,11 +402,14 @@ function loadNamespaces(KubernetesMasterHost,KubernetesAPIVersion){
 		"success":function(data){
 			var namespacesData = eval("("+data+")");
 			var namespacesHtml = "";
-			for(var i=0; i<namespacesData.length; i++){
-				var eveNamespace = namespacesData[i];
-				namespacesHtml += '<label class="namespacesLabel"><input type="checkbox" class="namespacesChk" value="'+eveNamespace+'">'+eveNamespace+'</label>';
+			if(namespacesData != null){
+				for(var i=0; i<namespacesData.length; i++){
+					var eveNamespace = namespacesData[i];
+					namespacesHtml += '<label class="namespacesLabel"><input type="checkbox" class="namespacesChk" value="'+eveNamespace+'">'+eveNamespace+'</label>';
+				}
+				$("#namespacesInfo").append(namespacesHtml);
 			}
-			$("#namespacesInfo").append(namespacesHtml);
+			
 		}
 	})
 }
