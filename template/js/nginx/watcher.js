@@ -53,8 +53,8 @@
 var KubernetesMasterHost= "";
 var KubernetesAPIVersion=""; 
   function showWatcher(NodeIPInfo,ClientIDInfo){
-	var areaIP = "localhost";
-	var areaPort = "port";
+	var areaIP = "172.16.13.110";
+	var areaPort = "8083";
 	var watcherUrl = "http://"+areaIP+":"+areaPort+"/watcher";
 	$.ajax({
 		"url":watcherUrl,
@@ -256,8 +256,8 @@ var KubernetesAPIVersion="";
 
 //点击apiVersion按钮生成监控列表
 function apiVersionSave(KubernetesMasterHost,KubernetesAPIVersion){
-	var areaIP = "localhost";
-	var areaPort = "port";
+	var areaIP = "172.16.13.110";
+	var areaPort = "8083";
 	var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/namespaces";
 	$.ajax({
 		"url":apiVersionUrl,
