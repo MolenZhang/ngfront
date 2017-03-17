@@ -10,16 +10,25 @@ import (
 	//"ngfront/nodemanager/nodes"
 )
 
+//NamespaceList 租户列表
 type NamespaceList struct {
 	Items []NamespaceObject
 }
 
+//NamespaceObject 单个租户对象
 type NamespaceObject struct {
 	Metadata NamespaceMetadata
 }
 
+//NamespaceMetadata 租户对象元数据
 type NamespaceMetadata struct {
 	Name string
+}
+
+//NamespacesDetailInfo 租户列表详细信息
+type NamespacesDetailInfo struct {
+	NamespacesList      []string
+	NamespacesAppCounts []string
 }
 
 //从k8s获取集群namespaces
@@ -51,5 +60,20 @@ func getNamespacesFromK8s(url string) (namespaces []string) {
 		}
 		namespaces = append(namespaces, namespace)
 	}
+
 	return
+}
+
+//从k8s集群获取租户的详细信息
+func getNamespacesDetailInfoFromK8s(getNamespacesURL string) (namespacesDetail NamespacesDetailInfo) {
+	namespacesList := getNamespacesFromK8s(getNamespacesURL)
+
+	for _, namespace := range namespacesList {
+		getEndpointsURL := getNamespacesURL + "/" + namespace + "/endpoints"
+		//Get 统计
+		logdebug.Println(logdebug.LevelInfo, getEndpointsURL)
+	}
+
+	return
+
 }
