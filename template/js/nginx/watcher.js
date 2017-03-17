@@ -144,11 +144,7 @@ $(document).ready(function () {
 
   function showWatcher(NodeIPInfo,ClientIDInfo){
 	var areaIP = "localhost";
-<<<<<<< HEAD
-	var areaPort = "8083";
-=======
 	var areaPort = "port";
->>>>>>> d2f3c8575d0bf525ec6f7a185a5b66c0dc6bb245
 	var watcherUrl = "http://"+areaIP+":"+areaPort+"/watcher";
 	$.ajax({
 		"url":watcherUrl,
@@ -317,11 +313,7 @@ $(document).ready(function () {
 //生成监控echart图
 function apiVersionSave(KubernetesMasterHost,KubernetesAPIVersion){
 	var areaIP = "localhost";
-<<<<<<< HEAD
-	var areaPort = "8083";
-=======
 	var areaPort = "port";
->>>>>>> d2f3c8575d0bf525ec6f7a185a5b66c0dc6bb245
 	var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/namespaces";
 	
 	$.ajax({
