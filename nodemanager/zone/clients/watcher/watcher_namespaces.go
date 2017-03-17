@@ -28,7 +28,7 @@ type NamespaceMetadata struct {
 //NamespacesDetailInfo 租户列表详细信息
 type NamespacesDetailInfo struct {
 	NamespacesList      []string
-	NamespacesAppCounts []string
+	NamespacesAppCounts [][]string
 }
 
 //从k8s获取集群namespaces
@@ -67,11 +67,19 @@ func getNamespacesFromK8s(url string) (namespaces []string) {
 //从k8s集群获取租户的详细信息
 func getNamespacesDetailInfoFromK8s(getNamespacesURL string) (namespacesDetail NamespacesDetailInfo) {
 	namespacesList := getNamespacesFromK8s(getNamespacesURL)
+	namespacesDetail.NamespacesList = namespacesList
 
 	for _, namespace := range namespacesList {
 		getEndpointsURL := getNamespacesURL + "/" + namespace + "/endpoints"
 		//Get 统计
 		logdebug.Println(logdebug.LevelInfo, getEndpointsURL)
+
+	}
+
+	namespacesDetail.NamespacesAppCounts = [][]string{
+		{"服务1", "服务2", "服务3"},
+		{"服务21", "服务22", "服务23"},
+		{"服务31", "服务32", "服务33"},
 	}
 
 	return

@@ -312,11 +312,12 @@ var KubernetesAPIVersion="";
 	});
 }
 
-//点击apiVersion按钮生成监控列表
+//点击apiVersion按钮生成监控echart
 function apiVersionSave(KubernetesMasterHost,KubernetesAPIVersion){
 	var areaIP = "localhost";
 	var areaPort = "port";
 	var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/namespaces";
+	loadNamespaces(KubernetesMasterHost,KubernetesAPIVersion);
 	$.ajax({
 		"url":apiVersionUrl,
 		"type":"get",
@@ -389,6 +390,7 @@ function apiVersionSave(KubernetesMasterHost,KubernetesAPIVersion){
 
 //生成监控租户集合
 function loadNamespaces(KubernetesMasterHost,KubernetesAPIVersion){
+	$("#namespacesInfo").empty();
 	var areaIP = "localhost";
 	var areaPort = "port";
 	var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/namespaces";
@@ -402,9 +404,10 @@ function loadNamespaces(KubernetesMasterHost,KubernetesAPIVersion){
 		"success":function(data){
 			var namespacesData = eval("("+data+")");
 			var namespacesHtml = "";
-			if(namespacesData != null){
-				for(var i=0; i<namespacesData.length; i++){
-					var eveNamespace = namespacesData[i];
+			var NamespacesList = namespacesData.NamespacesList;
+			if(NamespacesList != null){
+				for(var i=0; i<NamespacesList.length; i++){
+					var eveNamespace = NamespacesList[i];
 					namespacesHtml += '<label class="namespacesLabel"><input type="checkbox" class="namespacesChk" value="'+eveNamespace+'">'+eveNamespace+'</label>';
 				}
 				$("#namespacesInfo").append(namespacesHtml);
