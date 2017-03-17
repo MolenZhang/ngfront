@@ -51,7 +51,7 @@ td.editItem{
 }
 .n-nodes table tr td{
 	line-height: 35px;
-	text-indent: 15px;
+	padding-left: 12px;
 	border-bottom:1px solid #ccc;
 }
 .n-nodes table tr td:nth-child(1){
@@ -76,4 +76,14 @@ button.btn-info{
 }
 button.btn-start{
 	margin-left:16px;
+}
+.namespacesLabel{
+	width: 20%;
+}
+#saveNamespaces,#editNamespaces{
+	float: right;
+	line-height: 35px;
+}
+.editInput{
+	width:60%;
 }
