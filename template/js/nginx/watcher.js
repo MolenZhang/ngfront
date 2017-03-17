@@ -134,8 +134,8 @@ var KubernetesAPIVersion="";
  });/*reday*/
 
   function showWatcher(NodeIPInfo,ClientIDInfo){
-	var areaIP = "192.168.252.133";
-	var areaPort = "8011";
+	var areaIP = "localhost";
+	var areaPort = "port";
 	var watcherUrl = "http://"+areaIP+":"+areaPort+"/watcher";
 	$.ajax({
 		"url":watcherUrl,
@@ -313,8 +313,8 @@ var KubernetesAPIVersion="";
 
 //点击apiVersion按钮生成监控列表
 function apiVersionSave(KubernetesMasterHost,KubernetesAPIVersion){
-	var areaIP = "192.168.252.133";
-	var areaPort = "8011";
+	var areaIP = "localhost";
+	var areaPort = "port";
 	var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/namespaces";
 	$.ajax({
 		"url":apiVersionUrl,
@@ -388,8 +388,8 @@ function apiVersionSave(KubernetesMasterHost,KubernetesAPIVersion){
 
 //生成监控租户集合
 function loadNamespaces(KubernetesMasterHost,KubernetesAPIVersion){
-	var areaIP = "192.168.252.133";
-	var areaPort = "8011";
+	var areaIP = "localhost";
+	var areaPort = "port";
 	var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/namespaces";
 	$.ajax({
 		"url":apiVersionUrl,
