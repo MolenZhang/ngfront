@@ -68,6 +68,7 @@ func getNamespacesFromK8s(url string) (namespaces []string) {
 func getNamespacesDetailInfoFromK8s(getNamespacesURL string) (namespacesDetail NamespacesDetailInfo) {
 	namespacesList := getNamespacesFromK8s(getNamespacesURL)
 	namespacesDetail.NamespacesList = namespacesList
+	namespacesDetail.NamespacesList = []string{"租户1", "租户2", "租户3"}
 
 	for _, namespace := range namespacesList {
 		getEndpointsURL := getNamespacesURL + "/" + namespace + "/endpoints"
