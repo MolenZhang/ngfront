@@ -1,9 +1,10 @@
-var KubernetesMasterHost= "";
-var KubernetesAPIVersion=""; 
- $(document).ready(function () {
+var KubernetesMasterHost = "";
+var KubernetesAPIVersion = ""; 
+var JobZoneType = "";
+$(document).ready(function () {
 	 $(document).on('click','.fa-nodeEdit',function(){
 		 $(this).parent().hide();
-		 $(this).parent().next().css("display","block");
+		 $(this).parent().next().show();
 	 });
 	 
 	 $(document).on('click','.fa-nodeSave',function(){
@@ -26,6 +27,7 @@ var KubernetesAPIVersion="";
 		 var startSrc = '/images/running.gif';
 		 $(this).parent().find("img").attr("src",startSrc);
 		 $(".btn-stop").attr("disabled",false);
+		 $("#K8sWatcherStatus").empty().append("start");
 	 });
 	//进入Nginx配置管理界面
 	$(document).on('click','.btn-toNginx',function(){
@@ -42,7 +44,7 @@ var KubernetesAPIVersion="";
 				//namespacesChk[namespacesNum].getAttribute("value");
 				namespacesSaveHtml += namespacesChk[namespacesNum].getAttribute("value")+',';
 			}
-			namespacesSaveHtml = namespacesSaveHtml.substring(1,namespacesSaveHtml.length-1);
+			namespacesSaveHtml = namespacesSaveHtml.substring(0,namespacesSaveHtml.length-1);
 			$("#namespacesSaveInfo").append(namespacesSaveHtml);
 			$(this).parent().hide();
 			$(this).parent().next().show();
@@ -61,6 +63,8 @@ var KubernetesAPIVersion="";
 		var changeVal = $("#KubernetesAPIVersionInfo").val();
 		$("#KubernetesAPIVersionOldVal").empty().append(changeVal);
 		var KubernetesMasterHostVal = $("#KubernetesMasterHostOldVal").html();
+		$("#namespacesInfo").empty();
+		loadNamespaces(KubernetesMasterHostVal,changeVal);
 		apiVersionSave(KubernetesMasterHostVal,changeVal);
 	 });
 	//日志打印级别  保存按钮
@@ -84,6 +88,12 @@ var KubernetesAPIVersion="";
 		var changeVal = $("#KubernetesMasterHostInfo").val();
 		$("#KubernetesMasterHostOldVal").empty().append(changeVal);
 	});
+	//nginx监听端口
+	$(document).on('click','#NginxListenPortSaveBtn',function(){
+		var changeVal = $("#NginxListenPortInfo").val();
+		$("#NginxListenPortOldVal").empty().append(changeVal);
+	});
+	
 	//nginx 重载命令 保存按钮
 	$(document).on('click','#NginxReloadCommandSaveBtn',function(){
 		var changeVal = $("#NginxReloadCommandInfo").val();
@@ -91,52 +101,50 @@ var KubernetesAPIVersion="";
 	});
 	//真实配置文件生成路径 保存按钮
 	$(document).on('click','#NginxRealCfgDirPathSaveBtn',function(){
-		var changeVal = $("#NginxRealCfgDirPathOldVal").val();
+		var changeVal = $("#NginxRealCfgDirPathInfo").val();
 		$("#NginxRealCfgDirPathOldVal").empty().append(changeVal);
 	});
 	//测试配置文件生成路径 保存按钮
 	$(document).on('click','#NginxTestCfgDirPathSaveBtn',function(){
-		var changeVal = $("#NginxTestCfgDirPathOldVal").val();
+		var changeVal = $("#NginxTestCfgDirPathInfo").val();
 		$("#NginxTestCfgDirPathOldVal").empty().append(changeVal);
 	});
 	//配置下载路径 保存按钮
 	$(document).on('click','#DownloadCfgDirPathSaveBtn',function(){
-		var changeVal = $("#DownloadCfgDirPathOldVal").val();
+		var changeVal = $("#DownloadCfgDirPathInfo").val();
 		$("#DownloadCfgDirPathOldVal").empty().append(changeVal);
 	});
 	//域名后缀 保存按钮
 	$(document).on('click','#DomainSuffixSaveBtn',function(){
-		var changeVal = $("#DomainSuffixOldVal").val();
+		var changeVal = $("#DomainSuffixInfo").val();
 		$("#DomainSuffixOldVal").empty().append(changeVal);
 	});
 	//nginx配置规则检查命令  保存按钮
 	$(document).on('click','#NginxTestCommandSaveBtn',function(){
-		var changeVal = $("#NginxTestCommandOldVal").val();
+		var changeVal = $("#NginxTestCommandInfo").val();
 		$("#NginxTestCommandOldVal").empty().append(changeVal);
 	});
 	//备用upstream服务器节点 保存按钮
 	$(document).on('click','#StandbyUpstreamNodesSaveBtn',function(){
-		var changeVal = $("#StandbyUpstreamNodesOldVal").val();
+		var changeVal = $("#StandbyUpstreamNodesInfo").val();
 		$("#StandbyUpstreamNodesOldVal").empty().append(changeVal);
 	});
 	
-	
-	
-	
 	var locationUrl = window.location;
 	//http://192.168.252.133:8083/ngfront/zone/clients/watcher?NodeIP=192.168.252.133&ClientID=35734
-	 var NodeIPInfo = locationUrl.search.substring(locationUrl.search.indexOf("NodeIP=")+7,locationUrl.search.indexOf("&"));
-	 var ClientIDInfo = locationUrl.search.substring(locationUrl.search.indexOf("ClientID=")+9,locationUrl.search.length);
-	 showWatcher(NodeIPInfo,ClientIDInfo);
+	var NodeIPInfo = locationUrl.search.substring(locationUrl.search.indexOf("NodeIP=")+7,locationUrl.search.indexOf("&"));
+	var ClientIDInfo = locationUrl.search.substring(locationUrl.search.indexOf("ClientID=")+9,locationUrl.search.length);
 	
-	
-	
+	showWatcher(NodeIPInfo,ClientIDInfo);
+	//apiVersionSave(KubernetesMasterHost,KubernetesAPIVersion);
+	loadNamespaces(NodeIPInfo,ClientIDInfo);
+	apiVersionSave(NodeIPInfo,ClientIDInfo);
 	 
  });/*reday*/
 
   function showWatcher(NodeIPInfo,ClientIDInfo){
-	var areaIP = "localhost";
-	var areaPort = "port";
+	var areaIP = "172.16.13.110";
+	var areaPort = "8083";
 	var watcherUrl = "http://"+areaIP+":"+areaPort+"/watcher";
 	$.ajax({
 		"url":watcherUrl,
@@ -146,31 +154,31 @@ var KubernetesAPIVersion="";
 			"ClientID":ClientIDInfo
 		},
 		"success":function(data){
-		var objTestWatcher = eval("("+data+")");
-	
-		var watcherNodeIP = objTestWatcher.Client.NodeIP;
-		var watcherClientID = objTestWatcher.Client.ClientID;
-		var NodeName = objTestWatcher.Client.NodeName;
-		var APIServerPort = objTestWatcher.Client.APIServerPort.substring(1,objTestWatcher.Client.APIServerPort.length);
-			
-			
-		KubernetesMasterHost = objTestWatcher.Watcher.KubernetesMasterHost;
-		KubernetesAPIVersion = objTestWatcher.Watcher.KubernetesAPIVersion;
-		var NginxReloadCommand = objTestWatcher.Watcher.NginxReloadCommand;
-		var JobZoneType = objTestWatcher.Watcher.JobZoneType;
-		var NginxListenPort = objTestWatcher.Watcher.NginxListenPort;
-		var WatchNamespaceSets = objTestWatcher.Watcher.WatchNamespaceSets;
-		var NginxRealCfgDirPath = objTestWatcher.Watcher.NginxRealCfgDirPath;
-		var NginxTestCfgDirPath = objTestWatcher.Watcher.NginxTestCfgDirPath;
-		var DownloadCfgDirPath = objTestWatcher.Watcher.DownloadCfgDirPath;
-		var LogPrintLevel = objTestWatcher.Watcher.LogPrintLevel;
-		var DefaultNginxServerType = objTestWatcher.Watcher.DefaultNginxServerType;
-		var DomainSuffix = objTestWatcher.Watcher.DomainSuffix;
-		var WorkMode = objTestWatcher.Watcher.WorkMode;
-		var NginxTestCommand = objTestWatcher.Watcher.NginxTestCommand;
-		var StandbyUpstreamNodes = objTestWatcher.Watcher.StandbyUpstreamNodes;
-		var K8sWatcherStatus = objTestWatcher.Watcher.K8sWatcherStatus;
-		var imgHtml = "";
+			var objTestWatcher = eval("("+data+")");
+		
+			var watcherNodeIP = objTestWatcher.Client.NodeIP;
+			var watcherClientID = objTestWatcher.Client.ClientID;
+			var NodeName = objTestWatcher.Client.NodeName;
+			var APIServerPort = objTestWatcher.Client.APIServerPort.substring(1,objTestWatcher.Client.APIServerPort.length);
+				
+				
+			KubernetesMasterHost = objTestWatcher.Watcher.KubernetesMasterHost;
+			KubernetesAPIVersion = objTestWatcher.Watcher.KubernetesAPIVersion;
+			var NginxReloadCommand = objTestWatcher.Watcher.NginxReloadCommand;
+			JobZoneType = objTestWatcher.Watcher.JobZoneType;
+			var NginxListenPort = objTestWatcher.Watcher.NginxListenPort;
+			var WatchNamespaceSets = objTestWatcher.Watcher.WatchNamespaceSets;
+			var NginxRealCfgDirPath = objTestWatcher.Watcher.NginxRealCfgDirPath;
+			var NginxTestCfgDirPath = objTestWatcher.Watcher.NginxTestCfgDirPath;
+			var DownloadCfgDirPath = objTestWatcher.Watcher.DownloadCfgDirPath;
+			var LogPrintLevel = objTestWatcher.Watcher.LogPrintLevel;
+			var DefaultNginxServerType = objTestWatcher.Watcher.DefaultNginxServerType;
+			var DomainSuffix = objTestWatcher.Watcher.DomainSuffix;
+			var WorkMode = objTestWatcher.Watcher.WorkMode;
+			var NginxTestCommand = objTestWatcher.Watcher.NginxTestCommand;
+			var StandbyUpstreamNodes = objTestWatcher.Watcher.StandbyUpstreamNodes;
+			var K8sWatcherStatus = objTestWatcher.Watcher.K8sWatcherStatus;
+			var imgHtml = "";
 			if(K8sWatcherStatus == "start"){
 				imgHtml = '<img src="/images/running.gif" alt=""/>'+
 							'<button class="btn btn-info btn-start">重启监控</button>'+
@@ -184,7 +192,7 @@ var KubernetesAPIVersion="";
 			}
 			$("#imgStatusInfo").append(imgHtml);
 			var watcherCfgHtml = '<tr>'+
-											'<td>k8s Master节点IP端口</td>'+
+									'<td>k8s Master节点IP端口</td>'+
 											'<td><span id="KubernetesMasterHostOldVal">'+KubernetesMasterHost+'</span><i class="fa fa-edit fa-nodeEdit"></i></td>'+
 											'<td class="editItem"><input class="editInput" id="KubernetesMasterHostInfo" type="text" placeholder="" value="'+KubernetesMasterHost+'">'+
 											'<i class="fa fa-save fa-nodeSave" id="KubernetesMasterHostSaveBtn"></i><i class="fa fa-times fa-nodeTimes"></i></td>'+
@@ -210,12 +218,13 @@ var KubernetesAPIVersion="";
 										'</tr>'+
 										'<tr>'+
 											'<td>nginx监听端口</td>'+
-											'<td>'+NginxListenPort+'<i class="fa fa-edit fa-nodeEdit"></i></td>'+
-											'<td class="editItem"><select><option>'+NginxListenPort+'</option></select><i class="fa fa-save fa-nodeSave"></i></td>'+
+											'<td><span id="NginxListenPortOldVal">'+NginxListenPort+'</span><i class="fa fa-edit fa-nodeEdit"></i></td>'+
+											'<td class="editItem"><input type="number" class="editInput" id="NginxListenPortInfo" type="text" value="'+NginxListenPort+'">'+
+											'<i class="fa fa-save fa-nodeSave" id="NginxListenPortSaveBtn"></i><i class="fa fa-times fa-nodeTimes"></i></td>'+
 										'</tr>'+
 										'<tr>'+
 											'<td>监控租户集合</td>'+
-											'<td><span id="namespacesInfo"></span>'+WatchNamespaceSets+'<i class="fa fa-save" id="saveNamespaces"></i></td>'+
+											'<td><span id="namespacesInfo"></span><i class="fa fa-save" id="saveNamespaces"></i></td>'+
 											'<td class="editItem editNamespacesTd"><span id="namespacesSaveInfo"></span><i class="fa fa-edit" id="editNamespaces"></i></td>'+
 										'</tr>'+
 										'<tr>'+
@@ -263,7 +272,7 @@ var KubernetesAPIVersion="";
 										'<tr>'+
 											'<td>nginx配置规则检查命令</td>'+
 											'<td><span id="NginxTestCommandOldVal">'+NginxTestCommand+'</span><i class="fa fa-edit fa-nodeEdit"></i></td>'+
-											'<td class="editItem"><inpu class="editInput" id="NginxTestCommandInfo" type="text" value="'+NginxTestCommand+'">'+
+											'<td class="editItem"><input class="editInput" id="NginxTestCommandInfo" type="text" value="'+NginxTestCommand+'">'+
 											'<i class="fa fa-save fa-nodeSave" id="NginxTestCommandSaveBtn"></i><i class="fa fa-times fa-nodeTimes"></i></td>'+
 										'</tr>'+
 										'<tr>'+
@@ -277,20 +286,9 @@ var KubernetesAPIVersion="";
 											'<td><span id="K8sWatcherStatus">'+K8sWatcherStatus+'<span></td>'+
 										'</tr>';
 			$("#watcherCfgInfo").append(watcherCfgHtml);
-
-			
-//			var apiVersionHtml = "";
-//			if(KubernetesMasterHost != ""||KubernetesMasterHost!= null){
-//				apiVersionHtml = "<select name='KubernetesAPIVersion' id='KubernetesAPIVersion'>"+
-//									"<option value='api/v1'>api/v1</option>"+
-//									"<option value='api'>api</option>"+
-//									"</select>"+
-//									"<i class='fa fa-save fa-nodeSave' id='apiVersionSave'></i>";
-//			}
-//			$("#apiVersion").append(apiVersionHtml);
 			
 			var watcherBasicHtml = '<tr>'+
-											'<td>客户端ID</td>'+
+										'<td>客户端ID</td>'+
 											'<td>'+watcherClientID+'</td>'+
 										'</tr>'+
 										'<tr>'+
@@ -306,28 +304,30 @@ var KubernetesAPIVersion="";
 											'<td>'+APIServerPort+'</td>'+
 										'</tr>';
 			$("#watcherBasicInfo").append(watcherBasicHtml);
-			loadNamespaces(KubernetesMasterHost,KubernetesAPIVersion)
-			apiVersionSave(KubernetesMasterHost,KubernetesAPIVersion);
+			
+			//apiVersionSave(KubernetesMasterHost,KubernetesAPIVersion);
 		}
 	});
 }
 
-//点击apiVersion按钮生成监控echart
+//生成监控echart图
 function apiVersionSave(KubernetesMasterHost,KubernetesAPIVersion){
-	var areaIP = "localhost";
-	var areaPort = "port";
+	var areaIP = "172.16.13.110";
+	var areaPort = "8083";
 	var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/namespaces";
-	loadNamespaces(KubernetesMasterHost,KubernetesAPIVersion);
+	
 	$.ajax({
 		"url":apiVersionUrl,
 		"type":"get",
 		"data":{
 			"KubernetesMasterHost":KubernetesMasterHost,
-			"KubernetesAPIVersion":KubernetesAPIVersion
+			"KubernetesAPIVersion":KubernetesAPIVersion,
+			"JobZoneType":JobZoneType
 		},
 		"success":function(data){
-			var optionxAxisData = eval("("+data+")");
-			
+			var data = eval("("+data+")");
+			var optionxAxisData = data.NamespacesList;
+			var NamespacesAppCounts = data.NamespacesAppCounts;
 			var myChart = echarts.init(document.getElementById('main'));
 			option = {
 					    color: ['#3398DB'],
@@ -351,13 +351,13 @@ function apiVersionSave(KubernetesMasterHost,KubernetesAPIVersion){
 					                   show: true,
 					                   realtime: true,
 					                   start: 0,
-					                   end: 30
+					                   end: 100
 					               },
 					               {
 					                   type: 'inside',
 					                   realtime: true,
 					                   start: 0,
-					                   end: 30
+					                   end: 100
 					               }
 					           ],
 					    xAxis : [],
@@ -366,16 +366,10 @@ function apiVersionSave(KubernetesMasterHost,KubernetesAPIVersion){
 					            type : 'value'
 					        }
 					    ],
-					    series : [
-					        {
-					            name:'服务个数',
-					            type:'bar',
-					            barWidth: '60%',
-					            data:[3, 4, 6, 1, 7,3, 4, 6, 1]
-					        }
-					    ]
+					    series : []
 					};
-					var optionxAxis = {
+			//node上租户的个数
+			var optionxAxis = {
 					            type : 'category',
 					            data : optionxAxisData,
 					            axisTick: {
@@ -383,6 +377,19 @@ function apiVersionSave(KubernetesMasterHost,KubernetesAPIVersion){
 					            }
 					        }
 			option.xAxis.push(optionxAxis);
+			//租户中服务的个数
+			var NamespacesSerNum = new Array();
+			for(var i = 0; i<NamespacesAppCounts.length; i++){
+				var eveNamespacesNum = NamespacesAppCounts[i].length;
+				NamespacesSerNum.push(eveNamespacesNum);
+			}
+			var optionSeries = {
+					        name:'服务个数',
+					        type:'bar',
+					        barWidth: '60%',
+					        data: NamespacesSerNum 
+					    };
+			option.series.push(optionSeries);
 			myChart.setOption(option);
 		}
 	});
@@ -390,16 +397,16 @@ function apiVersionSave(KubernetesMasterHost,KubernetesAPIVersion){
 
 //生成监控租户集合
 function loadNamespaces(KubernetesMasterHost,KubernetesAPIVersion){
-	$("#namespacesInfo").empty();
-	var areaIP = "localhost";
-	var areaPort = "port";
+	var areaIP = "172.16.13.110";
+	var areaPort = "8083";
 	var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/namespaces";
 	$.ajax({
 		"url":apiVersionUrl,
 		"type":"get",
 		"data":{
 			"KubernetesMasterHost":KubernetesMasterHost,
-			"KubernetesAPIVersion":KubernetesAPIVersion
+			"KubernetesAPIVersion":KubernetesAPIVersion,
+			"JobZoneType":JobZoneType
 		},
 		"success":function(data){
 			var namespacesData = eval("("+data+")");
@@ -410,7 +417,7 @@ function loadNamespaces(KubernetesMasterHost,KubernetesAPIVersion){
 					var eveNamespace = NamespacesList[i];
 					namespacesHtml += '<label class="namespacesLabel"><input type="checkbox" class="namespacesChk" value="'+eveNamespace+'">'+eveNamespace+'</label>';
 				}
-				$("#namespacesInfo").append(namespacesHtml);
+				$("#namespacesInfo").empty().append(namespacesHtml);
 			}
 			
 		}
