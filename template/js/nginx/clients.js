@@ -7,7 +7,7 @@
  });/*reday*/
 
 function showClients(areaType){
-	var areaIP = "192.168.85.130";
+	var areaIP = "localhost";
 	var areaPort = "8083";
 	var areaUrl = "http://"+areaIP+":"+areaPort+"/clients";
 	var watcherUrl = "http://"+areaIP+":"+areaPort+"/ngfront/zone/clients/watcher?NodeIP=";
