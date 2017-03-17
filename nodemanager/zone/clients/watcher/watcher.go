@@ -93,7 +93,7 @@ func getWatchNamespacesDetailInfo(w http.ResponseWriter, r *http.Request) {
 
 	namespaces := getNamespacesDetailInfoFromK8s(getNamespacesURL)
 
-	logdebug.Println(logdebug.LevelInfo, "*****************************", namespaces)
+	logdebug.Println(logdebug.LevelInfo, "***********namespace detailInfo******************", namespaces)
 	//通信结构 json格式转换
 	jsonTypeMsg, err := json.Marshal(namespaces)
 	if err != nil {
