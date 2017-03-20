@@ -41,6 +41,9 @@ td.editItem{
 	float:right;
 	line-height:35px;
 }
+.fa-nodeTimes{
+	margin-right: 10px;
+}
 
 .n-nodes table{
 	width:96%;

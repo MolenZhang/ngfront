@@ -1,6 +1,7 @@
 var KubernetesMasterHost = "";
 var KubernetesAPIVersion = ""; 
 var JobZoneType = "";
+var WatchNamespaceSets = "";
 $(document).ready(function () {
 	var locationUrl = window.location;
 	//http://172.16.13.110:8083/ngfront/zone/clients/watcher?NodeIP=10.10.3.9&ClientID=21343&areaType=user
@@ -30,7 +31,8 @@ $(document).ready(function () {
 		 $("#K8sWatcherStatus").empty().append("stop");
 	 });
 	//开始监控按钮
-	$(document).on('click','.btn-start',function(){
+	$(document).on('click','.btn-start',function(e){
+		event.stopPropagation();
 		 var startSrc = '/images/running.gif';
 		 $(this).parent().find("img").attr("src",startSrc);
 		 $(".btn-stop").attr("disabled",false);
@@ -44,27 +46,32 @@ $(document).ready(function () {
 	 });
 	
 	//租户监控checkbox   保存按钮
-	$(document).on('click','#saveNamespaces',function(){
-		$("#namespacesSaveInfo").empty();
-		var namespacesChk = $(".namespacesChk:checked");
-		if(namespacesChk.length != 0){
-			var namespacesSaveHtml = "";
-			for(var namespacesNum = 0; namespacesNum<namespacesChk.length; namespacesNum++){
-				//namespacesChk[namespacesNum].getAttribute("value");
-				namespacesSaveHtml += namespacesChk[namespacesNum].getAttribute("value")+',';
+	
+	$(document).on('click','#watcherCfgHtmlSaveBtn',function(){
+		
+			$("#WatchNamespaceSetsOldVal").empty();
+			var namespacesChk = $(".namespacesChk:checked");
+			if(namespacesChk.length != 0){
+				var namespacesSaveHtml = "";
+				for(var namespacesNum = 0; namespacesNum<namespacesChk.length; namespacesNum++){
+					//namespacesChk[namespacesNum].getAttribute("value");
+					namespacesSaveHtml += namespacesChk[namespacesNum].getAttribute("value")+',';
+				}
+				namespacesSaveHtml = namespacesSaveHtml.substring(0,namespacesSaveHtml.length-1);
+				$("#WatchNamespaceSetsOldVal").append(namespacesSaveHtml);
+				$(this).parent().hide();
+				$(this).parent().prev().show();
+			}else{
+				alert("请选择租户");
 			}
-			namespacesSaveHtml = namespacesSaveHtml.substring(0,namespacesSaveHtml.length-1);
-			$("#namespacesSaveInfo").append(namespacesSaveHtml);
-			$(this).parent().hide();
-			$(this).parent().next().show();
-		}else{
-			alert("请选择租户");
-		}
+		
+		
 	}); 
 	//编辑租户监控checkbox
-	$(document).on('click','#editNamespaces',function(){
+	$(document).on('click','#editNamespacesBtn',function(){
+		loadNamespaces(KubernetesMasterHost,KubernetesAPIVersion);
 		$(this).parent().hide();
-		$(this).parent().prev().show();
+		$(this).parent().next().show();
 	});
 	
 	//k8s Api 版本  保存按钮
@@ -137,7 +144,7 @@ $(document).ready(function () {
 		var changeVal = $("#StandbyUpstreamNodesInfo").val();
 		$("#StandbyUpstreamNodesOldVal").empty().append(changeVal);
 	});
-
+	
 	showWatcher(NodeIPInfo,ClientIDInfo);
 	
 	 
@@ -155,7 +162,8 @@ $(document).ready(function () {
 			"ClientID":ClientIDInfo
 		},
 		"success":function(data){
-			var objTestWatcher = eval("("+data+")");
+			var objTestWatcher = data;
+			//var objTestWatcher = eval("("+data+")");
 		
 			var watcherNodeIP = objTestWatcher.Client.NodeIP;
 			var watcherClientID = objTestWatcher.Client.ClientID;
@@ -168,7 +176,7 @@ $(document).ready(function () {
 			var NginxReloadCommand = objTestWatcher.Watcher.NginxReloadCommand;
 			JobZoneType = objTestWatcher.Watcher.JobZoneType;
 			var NginxListenPort = objTestWatcher.Watcher.NginxListenPort;
-			var WatchNamespaceSets = objTestWatcher.Watcher.WatchNamespaceSets;
+			WatchNamespaceSets = objTestWatcher.Watcher.WatchNamespaceSets;
 			var NginxRealCfgDirPath = objTestWatcher.Watcher.NginxRealCfgDirPath;
 			var NginxTestCfgDirPath = objTestWatcher.Watcher.NginxTestCfgDirPath;
 			var DownloadCfgDirPath = objTestWatcher.Watcher.DownloadCfgDirPath;
@@ -192,16 +200,17 @@ $(document).ready(function () {
 							'<button class="btn btn-info btn-toNginx">Nginx配置</button>';
 			}
 			$("#imgStatusInfo").append(imgHtml);
-			var watcherCfgHtml = '<tr>'+
+			var watcherCfgHtml = '';
+			watcherCfgHtml += '<tr>'+
 									'<td>k8s Master节点IP端口</td>'+
-											'<td class="firstTd"><span id="KubernetesMasterHostOldVal">'+KubernetesMasterHost+'</span><i class="fa fa-edit fa-nodeEdit"></i></td>'+
-											'<td class="editItem"><input class="editInput" id="KubernetesMasterHostInfo" type="text" placeholder="" value="'+KubernetesMasterHost+'">'+
+											'<td class="firstTd"><span id="KubernetesMasterHostOldVal" name="KubernetesMasterHost" value="'+KubernetesMasterHost+'">'+KubernetesMasterHost+'</span><i class="fa fa-edit fa-nodeEdit"></i></td>'+
+											'<td class="editItem"><input class="editInput" id="KubernetesMasterHostInfo" type="text" placeholder="" name="KubernetesMasterHost" value="111111">'+
 											'<i class="fa fa-save fa-nodeSave" id="KubernetesMasterHostSaveBtn"></i><i class="fa fa-times fa-nodeTimes"></i></td>'+
 										'</tr>'+
 										'<tr>'+
 											'<td class="firstTd">k8s Api 版本</td>'+
 											'<td><span id="KubernetesAPIVersionOldVal">'+KubernetesAPIVersion+'</span><i class="fa fa-edit fa-nodeEdit"></i></td>'+
-											'<td class="editItem" id="apiVersion"><select id="KubernetesAPIVersionInfo">'+
+											'<td class="editItem" id="apiVersion"><select name="KubernetesAPIVersion" id="KubernetesAPIVersionInfo">'+
 											'<option value="api/v1">api/v1</option>'+
 											'<option value="api">api</option>'+
 											'</select>'+
@@ -225,8 +234,9 @@ $(document).ready(function () {
 										'</tr>'+
 										'<tr>'+
 											'<td class="firstTd">监控租户集合</td>'+
-											'<td><span id="namespacesInfo"></span><i class="fa fa-save" id="saveNamespaces"></i></td>'+
-											'<td class="editItem editNamespacesTd"><span id="namespacesSaveInfo"></span><i class="fa fa-edit" id="editNamespaces"></i></td>'+
+											'<td><span id="WatchNamespaceSetsOldVal">'+WatchNamespaceSets+'</span><i class="fa fa-edit fa-nodeEdit" id="editNamespacesBtn"></i></td>'+
+											'<td class="editItem editNamespacesTd"><span id="namespacesInfo"></span>'+
+											'<i class="fa fa-save fa-nodeSave" id="watcherCfgHtmlSaveBtn"></i></i><i class="fa fa-times fa-nodeTimes"></i></td>'+
 										'</tr>'+
 										'<tr>'+
 											'<td class="firstTd">真实配置文件生成路径</td>'+
@@ -329,14 +339,8 @@ function showNamespacesEcharts(KubernetesMasterHost,KubernetesAPIVersion,JobZone
 			var data = eval("("+data+")");
 			var NamespacesList = data.NamespacesList;
 			var NamespacesAppCounts = data.NamespacesAppList;
-			var namespacesHtml = "";
-			if(NamespacesList != null){
-				for(var i=0; i<NamespacesList.length; i++){
-					var	eveNamespace = NamespacesList[i];
-					namespacesHtml += '<label class="namespacesLabel"><input type="checkbox" class="namespacesChk" value="'+eveNamespace+'">'+eveNamespace+'</label>';
-				}
-				$("#namespacesInfo").empty().append(namespacesHtml);
-			}
+			//生成配置中的租户项
+			//showNamespaces(NamespacesList);
 			//echart画图位置
 			var myChart = echarts.init(document.getElementById('main'));
 			option = {
@@ -410,7 +414,39 @@ function showNamespacesEcharts(KubernetesMasterHost,KubernetesAPIVersion,JobZone
 		}
 	});
 }
+//生成配置中的租户项
+function showNamespaces(NamespacesList){
+	var namespacesHtml = "";
+	if(NamespacesList != null){
+		for(var i=0; i<NamespacesList.length; i++){
+			var	eveNamespace = NamespacesList[i];
+			namespacesHtml += '<label class="namespacesLabel"><input type="checkbox" class="namespacesChk" value="'+eveNamespace+'">'+eveNamespace+'</label>';
+		}
+		$("#namespacesInfo").empty().append(namespacesHtml);
+	}
+}
 
+function loadNamespaces(KubernetesMasterHost,KubernetesAPIVersion){
+	var areaIP = "localhost";
+	var areaPort = "port";
+	var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/namespaces";
+	
+	$.ajax({
+		"url":apiVersionUrl,
+		"type":"get",
+		"data":{
+			"KubernetesMasterHost":KubernetesMasterHost,
+			"KubernetesAPIVersion":KubernetesAPIVersion,
+			"JobZoneType":JobZoneType
+		},
+		"success":function(data){
+			var data = eval("("+data+")");
+			var NamespacesList = data.NamespacesList;
+			showNamespaces(NamespacesList);
+		}
+	});
+}
+			
 
 //提交watcher表单
 function watcherSubmit(NodeIPInfo,ClientIDInfo){
@@ -418,22 +454,7 @@ function watcherSubmit(NodeIPInfo,ClientIDInfo){
 	var areaPort = "port";
 	var submitUrl = "http://"+areaIP+":"+areaPort+"/watcher";
 	$.ajax({
-    		url : submitUrl,
-    		type: "POST",
-    		data:{
-    			"NodeIP":NodeIPInfo,
-				"ClientID":ClientIDInfo
-    		},
-    		success : function(data) {
-    			$("#buildService").submit();
-    			/*data = eval("(" + data + ")");
-    			if (data.status=="400") {
-    				
-    			} else if (data.status=="500") {
-    				
-    			}else {
-    				
-    			}*/
+    		
     		}
     	});
 }
