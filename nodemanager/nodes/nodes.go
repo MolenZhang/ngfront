@@ -19,7 +19,7 @@ type WatchManagerCfg struct {
 	NginxReloadCommand     string
 	JobZoneType            string
 	NginxListenPort        string
-	WatchNamespaceSets     string
+	WatchNamespaceSets     []string
 	NginxRealCfgDirPath    string
 	NginxTestCfgDirPath    string
 	DownloadCfgDirPath     string
