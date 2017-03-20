@@ -44,8 +44,8 @@
  });/*reday*/
  
 function showAreaTable(option){
-	var areaIP = "localhost";
-	var areaPort = "port";
+	var areaIP = "172.16.13.110";
+	var areaPort = "8083";
 	var areaUrl = "http://"+areaIP+":"+areaPort+"/ngfront/zone";
 	var clientsUrl = "http://"+areaIP+":"+areaPort+"/ngfront/zone/clients?areaType=";
 	$.ajax({

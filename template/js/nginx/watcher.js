@@ -21,6 +21,7 @@ $(document).ready(function () {
 		 var stopSrc = '/images/stop.png';
 		 $(this).parent().find("img").attr("src",stopSrc);
 		 $(this).attr("disabled",true);
+		 $("#K8sWatcherStatus").empty().append("stop");
 	 });
 	//开始监控按钮
 	$(document).on('click','.btn-start',function(){
@@ -64,7 +65,7 @@ $(document).ready(function () {
 		$("#KubernetesAPIVersionOldVal").empty().append(changeVal);
 		var KubernetesMasterHostVal = $("#KubernetesMasterHostOldVal").html();
 		$("#namespacesInfo").empty();
-		loadNamespaces(KubernetesMasterHostVal,changeVal);
+		loadNamespaces(KubernetesMasterHostVal,KubernetesAPIVersion,changeVal);
 		apiVersionSave(KubernetesMasterHostVal,changeVal);
 	 });
 	//日志打印级别  保存按钮
@@ -131,20 +132,22 @@ $(document).ready(function () {
 	});
 	
 	var locationUrl = window.location;
-	//http://192.168.252.133:8083/ngfront/zone/clients/watcher?NodeIP=192.168.252.133&ClientID=35734
-	var NodeIPInfo = locationUrl.search.substring(locationUrl.search.indexOf("NodeIP=")+7,locationUrl.search.indexOf("&"));
-	var ClientIDInfo = locationUrl.search.substring(locationUrl.search.indexOf("ClientID=")+9,locationUrl.search.length);
-	
+	//http://172.16.13.110:8083/ngfront/zone/clients/watcher?NodeIP=10.10.3.9&ClientID=21343&areaType=user
+	var NodeIPInfo = locationUrl.search.substring(locationUrl.search.indexOf("NodeIP=")+7,locationUrl.search.indexOf("&C"));
+	var ClientIDInfo = locationUrl.search.substring(locationUrl.search.indexOf("ClientID=")+9,locationUrl.search.indexOf("&a"));
+	var areaTypeInfo = locationUrl.search.substring(locationUrl.search.indexOf("areaType=")+9,locationUrl.search.length);
+
 	showWatcher(NodeIPInfo,ClientIDInfo);
 	//apiVersionSave(KubernetesMasterHost,KubernetesAPIVersion);
-	loadNamespaces(NodeIPInfo,ClientIDInfo);
-	apiVersionSave(NodeIPInfo,ClientIDInfo);
+
+	//loadNamespaces(KubernetesMasterHost,areaTypeInfo);
+	//apiVersionSave(NodeIPInfo,ClientIDInfo);
 	 
  });/*reday*/
 
   function showWatcher(NodeIPInfo,ClientIDInfo){
-	var areaIP = "localhost";
-	var areaPort = "port";
+	var areaIP = "172.16.13.110";
+	var areaPort = "8083";
 	var watcherUrl = "http://"+areaIP+":"+areaPort+"/watcher";
 	$.ajax({
 		"url":watcherUrl,
@@ -193,12 +196,12 @@ $(document).ready(function () {
 			$("#imgStatusInfo").append(imgHtml);
 			var watcherCfgHtml = '<tr>'+
 									'<td>k8s Master节点IP端口</td>'+
-											'<td><span id="KubernetesMasterHostOldVal">'+KubernetesMasterHost+'</span><i class="fa fa-edit fa-nodeEdit"></i></td>'+
+											'<td class="firstTd"><span id="KubernetesMasterHostOldVal">'+KubernetesMasterHost+'</span><i class="fa fa-edit fa-nodeEdit"></i></td>'+
 											'<td class="editItem"><input class="editInput" id="KubernetesMasterHostInfo" type="text" placeholder="" value="'+KubernetesMasterHost+'">'+
 											'<i class="fa fa-save fa-nodeSave" id="KubernetesMasterHostSaveBtn"></i><i class="fa fa-times fa-nodeTimes"></i></td>'+
 										'</tr>'+
 										'<tr>'+
-											'<td>k8s Api 版本</td>'+
+											'<td class="firstTd">k8s Api 版本</td>'+
 											'<td><span id="KubernetesAPIVersionOldVal">'+KubernetesAPIVersion+'</span><i class="fa fa-edit fa-nodeEdit"></i></td>'+
 											'<td class="editItem" id="apiVersion"><select id="KubernetesAPIVersionInfo">'+
 											'<option value="api/v1">api/v1</option>'+
@@ -207,82 +210,82 @@ $(document).ready(function () {
 											'<i class="fa fa-save fa-nodeSave" id="KubernetesAPIVersionSaveBtn"></i><i class="fa fa-times fa-nodeTimes"></i></td>'+
 										'</tr>'+
 										'<tr>'+
-											'<td>nginx 重载命令</td>'+
+											'<td class="firstTd">nginx 重载命令</td>'+
 											'<td><span id="NginxReloadCommandOldVal">'+NginxReloadCommand+'</span><i class="fa fa-edit fa-nodeEdit"></i></td>'+
 											'<td class="editItem"><input class="editInput" id="NginxReloadCommandInfo" type="text" value="'+NginxReloadCommand+'">'+
 											'<i class="fa fa-save fa-nodeSave" id="NginxReloadCommandSaveBtn"></i><i class="fa fa-times fa-nodeTimes"></i></td>'+
 										'</tr>'+
 										'<tr>'+
-											'<td>工作区类型</td>'+
+											'<td class="firstTd">工作区类型</td>'+
 											'<td>'+JobZoneType+'</td>'+
 										'</tr>'+
 										'<tr>'+
-											'<td>nginx监听端口</td>'+
+											'<td class="firstTd">nginx监听端口</td>'+
 											'<td><span id="NginxListenPortOldVal">'+NginxListenPort+'</span><i class="fa fa-edit fa-nodeEdit"></i></td>'+
 											'<td class="editItem"><input type="number" class="editInput" id="NginxListenPortInfo" type="text" value="'+NginxListenPort+'">'+
 											'<i class="fa fa-save fa-nodeSave" id="NginxListenPortSaveBtn"></i><i class="fa fa-times fa-nodeTimes"></i></td>'+
 										'</tr>'+
 										'<tr>'+
-											'<td>监控租户集合</td>'+
+											'<td class="firstTd">监控租户集合</td>'+
 											'<td><span id="namespacesInfo"></span><i class="fa fa-save" id="saveNamespaces"></i></td>'+
 											'<td class="editItem editNamespacesTd"><span id="namespacesSaveInfo"></span><i class="fa fa-edit" id="editNamespaces"></i></td>'+
 										'</tr>'+
 										'<tr>'+
-											'<td>真实配置文件生成路径</td>'+
+											'<td class="firstTd">真实配置文件生成路径</td>'+
 											'<td><span id="NginxRealCfgDirPathOldVal">'+NginxRealCfgDirPath+'</span><i class="fa fa-edit fa-nodeEdit"></i></td>'+
 											'<td class="editItem"><input class="editInput" id="NginxRealCfgDirPathInfo" type="text" value="'+NginxRealCfgDirPath+'">'+
 											'<i class="fa fa-save fa-nodeSave" id="NginxRealCfgDirPathSaveBtn"></i><i class="fa fa-times fa-nodeTimes"></i></td>'+
 										'</tr>'+
 										'<tr>'+
-											'<td>测试配置文件生成路径</td>'+
+											'<td class="firstTd">测试配置文件生成路径</td>'+
 											'<td><span id="NginxTestCfgDirPathOldVal">'+NginxTestCfgDirPath+'</span><i class="fa fa-edit fa-nodeEdit"></i></td>'+
 											'<td class="editItem"><input class="editInput" id="NginxTestCfgDirPathInfo" type="text" value="'+NginxTestCfgDirPath+'">'+
 											'<i class="fa fa-save fa-nodeSave" id="NginxTestCfgDirPathSaveBtn"></i><i class="fa fa-times fa-nodeTimes"></i></td>'+
 										'</tr>'+
 										'<tr>'+
-											'<td>配置下载路径</td>'+
+											'<td class="firstTd">配置下载路径</td>'+
 											'<td><span id="DownloadCfgDirPathOldVal">'+DownloadCfgDirPath+'</span><i class="fa fa-edit fa-nodeEdit"></i></td>'+
 											'<td class="editItem"><input class="editInput" id="DownloadCfgDirPathInfo" type="text" value="'+DownloadCfgDirPath+'">'+
 											'<i class="fa fa-save fa-nodeSave" id="DownloadCfgDirPathSaveBtn"></i><i class="fa fa-times fa-nodeTimes"></i></td>'+
 										'</tr>'+
 										'<tr>'+
-											'<td>日志打印级别</td>'+
+											'<td class="firstTd">日志打印级别</td>'+
 											'<td><span id="LogPrintLevelOldVal">'+LogPrintLevel+'</span><i class="fa fa-edit fa-nodeEdit"></i></td>'+
 											'<td class="editItem"><select id="LogPrintLevelInfo"><option vlaue="info">info</option><option value="debug">debug</option><option value="warn">warn</option><option value="error">error</option><option value="fatal">fatal</option></select>'+
 											'<i class="fa fa-save fa-nodeSave" id="LogPrintLevelSaveBtn"></i><i class="fa fa-times fa-nodeTimes"></i></td>'+
 										'</tr>'+
 										'<tr>'+
-											'<td>nginx server类型</td>'+
+											'<td class="firstTd">nginx server类型</td>'+
 											'<td><span id="DefaultNginxServerTypeOldVal">'+DefaultNginxServerType+'</span><i class="fa fa-edit fa-nodeEdit"></i></td>'+
 											'<td class="editItem"><select id="DefaultNginxServerTypeInfo"><option value="domain">domain</option><option value="ip">ip</option></select>'+
 											'<i class="fa fa-save fa-nodeSave" id="DefaultNginxServerTypeSaveBtn"></i><i class="fa fa-times fa-nodeTimes"></i></td>'+
 										'</tr>'+
 										'<tr>'+
-											'<td>域名后缀</td>'+
+											'<td class="firstTd">域名后缀</td>'+
 											'<td><span id="DomainSuffixOldVal">'+DomainSuffix+'</span><i class="fa fa-edit fa-nodeEdit"></i></td>'+
 											'<td class="editItem"><input class="editInput" id="DomainSuffixInfo" type="text" value="'+DomainSuffix+'">'+
 											'<i class="fa fa-save fa-nodeSave" id="DomainSuffixSaveBtn"></i><i class="fa fa-times fa-nodeTimes"></i></td>'+
 										'</tr>'+
 										'<tr>'+
-											'<td>工作模式</td>'+
+											'<td class="firstTd">工作模式</td>'+
 											'<td><span id="WorkModeOldVal">'+WorkMode+'</span><i class="fa fa-edit fa-nodeEdit"></i></td>'+
 											'<td class="editItem"><select id="WorkModeInfo"><option value="k8snginx">k8snginx</option><option value="kubeng">kubeng</option></select>'+
 											'<i class="fa fa-save fa-nodeSave" id="WorkModeSaveBtn"></i><i class="fa fa-times fa-nodeTimes"></i></td>'+
 										'</tr>'+
 										'<tr>'+
-											'<td>nginx配置规则检查命令</td>'+
+											'<td class="firstTd">nginx配置规则检查命令</td>'+
 											'<td><span id="NginxTestCommandOldVal">'+NginxTestCommand+'</span><i class="fa fa-edit fa-nodeEdit"></i></td>'+
 											'<td class="editItem"><input class="editInput" id="NginxTestCommandInfo" type="text" value="'+NginxTestCommand+'">'+
 											'<i class="fa fa-save fa-nodeSave" id="NginxTestCommandSaveBtn"></i><i class="fa fa-times fa-nodeTimes"></i></td>'+
 										'</tr>'+
 										'<tr>'+
-											'<td>备用upstream服务器节点</td>'+
+											'<td class="firstTd">备用upstream服务器节点</td>'+
 											'<td><span id="StandbyUpstreamNodesOldVal">'+StandbyUpstreamNodes+'</span><i class="fa fa-edit fa-nodeEdit"></i></td>'+
 											'<td class="editItem"><input class="editInput" id="StandbyUpstreamNodesInfo" type="text" value="'+StandbyUpstreamNodes+'">'+
 											'<i class="fa fa-save fa-nodeSave" id="StandbyUpstreamNodesSaveBtn"></i><i class="fa fa-times fa-nodeTimes"></i></td>'+
 										'</tr>'+
 										'<tr>'+
-											'<td>K8s监视器工作状态</td>'+
+											'<td class="firstTd">K8s监视器工作状态</td>'+
 											'<td><span id="K8sWatcherStatus">'+K8sWatcherStatus+'<span></td>'+
 										'</tr>';
 			$("#watcherCfgInfo").append(watcherCfgHtml);
@@ -305,15 +308,16 @@ $(document).ready(function () {
 										'</tr>';
 			$("#watcherBasicInfo").append(watcherBasicHtml);
 			
-			//apiVersionSave(KubernetesMasterHost,KubernetesAPIVersion);
+			loadNamespaces(KubernetesMasterHost,KubernetesAPIVersion,JobZoneType);
+			apiVersionSave(KubernetesMasterHost,KubernetesAPIVersion);
 		}
 	});
 }
 
 //生成监控echart图
 function apiVersionSave(KubernetesMasterHost,KubernetesAPIVersion){
-	var areaIP = "localhost";
-	var areaPort = "port";
+	var areaIP = "172.16.13.110";
+	var areaPort = "8083";
 	var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/namespaces";
 	
 	$.ajax({
@@ -379,26 +383,29 @@ function apiVersionSave(KubernetesMasterHost,KubernetesAPIVersion){
 			option.xAxis.push(optionxAxis);
 			//租户中服务的个数
 			var NamespacesSerNum = new Array();
-			for(var i = 0; i<NamespacesAppCounts.length; i++){
-				var eveNamespacesNum = NamespacesAppCounts[i].length;
-				NamespacesSerNum.push(eveNamespacesNum);
+			if(NamespacesAppCounts != null){
+				for(var i = 0; i<NamespacesAppCounts.length; i++){
+					var eveNamespacesNum = NamespacesAppCounts[i].length;
+					NamespacesSerNum.push(eveNamespacesNum);
+				}
+				var optionSeries = {
+						        name:'服务个数',
+						        type:'bar',
+						        barWidth: '60%',
+						        data: NamespacesSerNum 
+						    };
+				option.series.push(optionSeries);
+				myChart.setOption(option);
 			}
-			var optionSeries = {
-					        name:'服务个数',
-					        type:'bar',
-					        barWidth: '60%',
-					        data: NamespacesSerNum 
-					    };
-			option.series.push(optionSeries);
-			myChart.setOption(option);
+			
 		}
 	});
 }
 
 //生成监控租户集合
-function loadNamespaces(KubernetesMasterHost,KubernetesAPIVersion){
-	var areaIP = "localhost";
-	var areaPort = "port";
+function loadNamespaces(KubernetesMasterHost,KubernetesAPIVersion,JobZoneType){
+	var areaIP = "172.16.13.110";
+	var areaPort = "8083";
 	var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/namespaces";
 	$.ajax({
 		"url":apiVersionUrl,
@@ -423,3 +430,29 @@ function loadNamespaces(KubernetesMasterHost,KubernetesAPIVersion){
 		}
 	})
 }
+
+//提交watcher表单
+// function watcherSubmit(){
+// 	var areaIP = "172.16.13.110";
+// 	var areaPort = "8083";
+// 	var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/watcher";
+// 	$.ajax({
+//     		url : ,
+//     		type: "POST",
+//     		data:{
+//     			"proxyPath":proxyPath,
+//     			"serviceName":serviceName
+//     		},
+//     		success : function(data) {
+//     			$("#buildService").submit();
+//     			/*data = eval("(" + data + ")");
+//     			if (data.status=="400") {
+    				
+//     			} else if (data.status=="500") {
+    				
+//     			}else {
+    				
+//     			}*/
+//     		}
+//     	});
+// }
