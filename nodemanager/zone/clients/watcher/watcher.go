@@ -82,16 +82,34 @@ func dealWatcherInfo(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
+//测试数据
+func getTestNamespacesDetailInfo() (namespacesDetail NamespacesDetailInfo) {
+	namespacesDetail = NamespacesDetailInfo{
+		NamespacesList: []string{"租户1", "租户2", "租户3", "租户4"},
+		NamespacesAppList: [][]string{
+			{"租户1-服务1", "租户1-服务2", "租户1-服务3"},
+			{"租户2-服务1", "租户2-服务2", "租户2-服务3"},
+			{"租户3-服务1", "租户3-服务2", "租户3-服务3"},
+			{"租户4-服务1", "租户4-服务2", "租户4-服务3"},
+		},
+	}
+
+	return
+}
+
 //使用界面传过来的IP VERSION获取所要监控的k8s集群租户的详细信息(统计有多少服务)
 func getWatchNamespacesDetailInfo(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 
 	kubernetesMasterHost := r.Form.Get("KubernetesMasterHost")
 	kubernetesAPIVersion := r.Form.Get("KubernetesAPIVersion")
+	jobZoneType := r.Form.Get("JobZoneType")
 
 	getNamespacesURL := kubernetesMasterHost + "/" + kubernetesAPIVersion + "/namespaces"
 
-	namespaces := getNamespacesDetailInfoFromK8s(getNamespacesURL)
+	namespaces := getNamespacesDetailInfoFromK8s(getNamespacesURL, jobZoneType)
+
+	namespaces = getTestNamespacesDetailInfo()
 
 	logdebug.Println(logdebug.LevelInfo, "***********namespace detailInfo******************", namespaces)
 	//通信结构 json格式转换

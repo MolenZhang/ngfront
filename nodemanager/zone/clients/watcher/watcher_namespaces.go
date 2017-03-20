@@ -25,7 +25,6 @@ type NamespaceMetadata struct {
 
 //NamespacesDetailInfo 租户列表详细信息
 type NamespacesDetailInfo struct {
-<<<<<<< HEAD
 	NamespacesList    []string
 	NamespacesAppList [][]string
 }
@@ -42,6 +41,7 @@ type EndpointObject struct {
 type EndpointMetadata struct {
 	Name      string
 	Namespace string
+	Labels    map[string]string
 }
 
 type EndpointSubset struct {
@@ -55,10 +55,6 @@ type AddressObject struct {
 
 type PortsObject struct {
 	Port int
-=======
-	NamespacesList      []string
-	NamespacesAppCounts [][]string
->>>>>>> 20b58e004a2c9588577d8c34c8b249ae101b959a
 }
 
 //从k8s获取集群namespaces
@@ -94,7 +90,7 @@ func getNamespacesFromK8s(url string) (namespaces []string) {
 	return
 }
 
-func getAppName(obj EndpointObject) (appName string) {
+func getAppName(obj EndpointObject, jobZoneType string) (appName string) {
 	if len(obj.Subsets) == 0 {
 		return
 	}
@@ -103,19 +99,17 @@ func getAppName(obj EndpointObject) (appName string) {
 		return
 	}
 
-	//	zone := getZoneType() //"dmz"
-
-	//	if obj.Metadata.Labels[zone] == zone {
-	appName = obj.Metadata.Name
-	//	}
+	if obj.Metadata.Labels[jobZoneType] == jobZoneType {
+		appName = obj.Metadata.Name
+	}
 
 	return
 }
 
-func getAppListFromEpList(epList EndpointsList) (appList []string) {
+func getAppListFromEpList(epList EndpointsList, jobZoneType string) (appList []string) {
 	for _, object := range epList.Items {
 		//获取本租户下的一个ep对象所对应的app信息(1个)
-		appName := getAppName(object)
+		appName := getAppName(object, jobZoneType)
 		if appName != "" {
 			appList = append(appList, appName)
 		}
@@ -125,32 +119,16 @@ func getAppListFromEpList(epList EndpointsList) (appList []string) {
 }
 
 //从k8s集群获取租户的详细信息
-func getNamespacesDetailInfoFromK8s(getNamespacesURL string) (namespacesDetail NamespacesDetailInfo) {
+func getNamespacesDetailInfoFromK8s(getNamespacesURL string, jobZoneType string) (namespacesDetail NamespacesDetailInfo) {
 	namespacesList := getNamespacesFromK8s(getNamespacesURL)
 	namespacesDetail.NamespacesList = namespacesList
-<<<<<<< HEAD
 
 	for _, namespace := range namespacesList {
 		getEndpointsURL := getNamespacesURL + "/" + namespace + "/endpoints"
 		//拿到本租户下的所有ep(epList中包含了服务名N个)
 		endpointList := getServiceFromK8s(getEndpointsURL)
 		//解析epList 将N个服务的名字解析出来{"app1","app2",..."appN"}
-		namespacesDetail.NamespacesAppList = append(namespacesDetail.NamespacesAppList, getAppListFromEpList(endpointList))
-=======
-	namespacesDetail.NamespacesList = []string{"租户1", "租户2", "租户3"}
-
-	for _, namespace := range namespacesList {
-		getEndpointsURL := getNamespacesURL + "/" + namespace + "/endpoints"
-		//Get 统计
-		logdebug.Println(logdebug.LevelInfo, getEndpointsURL)
-
-	}
-
-	namespacesDetail.NamespacesAppCounts = [][]string{
-		{"服务1", "服务2", "服务3"},
-		{"服务21", "服务22", "服务23"},
-		{"服务31", "服务32", "服务33"},
->>>>>>> 20b58e004a2c9588577d8c34c8b249ae101b959a
+		namespacesDetail.NamespacesAppList = append(namespacesDetail.NamespacesAppList, getAppListFromEpList(endpointList, jobZoneType))
 	}
 
 	return
