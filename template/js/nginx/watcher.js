@@ -164,7 +164,7 @@ $(document).ready(function () {
 		"success":function(data){
 			var objTestWatcher = data;
 			//var objTestWatcher = eval("("+data+")");
-		
+
 			var watcherNodeIP = objTestWatcher.Client.NodeIP;
 			var watcherClientID = objTestWatcher.Client.ClientID;
 			var NodeName = objTestWatcher.Client.NodeName;
@@ -203,14 +203,14 @@ $(document).ready(function () {
 			var watcherCfgHtml = '';
 			watcherCfgHtml += '<tr>'+
 									'<td>k8s Master节点IP端口</td>'+
-											'<td class="firstTd"><span id="KubernetesMasterHostOldVal" name="KubernetesMasterHost" value="'+KubernetesMasterHost+'">'+KubernetesMasterHost+'</span><i class="fa fa-edit fa-nodeEdit"></i></td>'+
-											'<td class="editItem"><input class="editInput" id="KubernetesMasterHostInfo" type="text" placeholder="" name="KubernetesMasterHost" value="111111">'+
+											'<td class="firstTd"><span id="KubernetesMasterHostOldVal" value="'+KubernetesMasterHost+'">'+KubernetesMasterHost+'</span><i class="fa fa-edit fa-nodeEdit"></i></td>'+
+											'<td class="editItem"><input class="editInput" id="KubernetesMasterHostInfo" type="text" placeholder="" name="KubernetesMasterHost" value="'+KubernetesMasterHost+'">'+
 											'<i class="fa fa-save fa-nodeSave" id="KubernetesMasterHostSaveBtn"></i><i class="fa fa-times fa-nodeTimes"></i></td>'+
 										'</tr>'+
 										'<tr>'+
 											'<td class="firstTd">k8s Api 版本</td>'+
 											'<td><span id="KubernetesAPIVersionOldVal">'+KubernetesAPIVersion+'</span><i class="fa fa-edit fa-nodeEdit"></i></td>'+
-											'<td class="editItem" id="apiVersion"><select name="KubernetesAPIVersion" id="KubernetesAPIVersionInfo">'+
+											'<td class="editItem" id="apiVersion"><select id="KubernetesAPIVersionInfo" name="KubernetesAPIVersion">'+
 											'<option value="api/v1">api/v1</option>'+
 											'<option value="api">api</option>'+
 											'</select>'+
@@ -289,7 +289,7 @@ $(document).ready(function () {
 										'<tr>'+
 											'<td class="firstTd">备用upstream服务器节点</td>'+
 											'<td><span id="StandbyUpstreamNodesOldVal">'+StandbyUpstreamNodes+'</span><i class="fa fa-edit fa-nodeEdit"></i></td>'+
-											'<td class="editItem"><input class="editInput" id="StandbyUpstreamNodesInfo" type="text" value="'+StandbyUpstreamNodes+'">'+
+											'<td class="editItem"><input class="editInput" id="StandbyUpstreamNodesInfo" type="text" name="StandbyUpstreamNodes" value="'+StandbyUpstreamNodes+'">'+
 											'<i class="fa fa-save fa-nodeSave" id="StandbyUpstreamNodesSaveBtn"></i><i class="fa fa-times fa-nodeTimes"></i></td>'+
 										'</tr>'+
 										'<tr>'+
@@ -453,8 +453,58 @@ function watcherSubmit(NodeIPInfo,ClientIDInfo){
 	var areaIP = "localhost";
 	var areaPort = "port";
 	var submitUrl = "http://"+areaIP+":"+areaPort+"/watcher";
+	
+				
+	var KubernetesMasterHost = $("#KubernetesMasterHostOldVal").html();
+	var KubernetesAPIVersion =$("#KubernetesAPIVersionOldVal").html();
+	var NginxReloadCommand = $("#NginxReloadCommandOldVal").html();
+	//var JobZoneType = $("#JobZoneTypeOldVal").html();
+	var NginxListenPort = $("#NginxListenPortOldVal").html();
+	//var WatchNamespaceSets = $("#WatchNamespaceSetsOldVal").html();
+//	var NginxRealCfgDirPath = objTestWatcher.Watcher.NginxRealCfgDirPath;
+//	var NginxTestCfgDirPath = objTestWatcher.Watcher.NginxTestCfgDirPath;
+//	var DownloadCfgDirPath = objTestWatcher.Watcher.DownloadCfgDirPath;
+//	var LogPrintLevel = objTestWatcher.Watcher.LogPrintLevel;
+//	var DefaultNginxServerType = objTestWatcher.Watcher.DefaultNginxServerType;
+//	var DomainSuffix = objTestWatcher.Watcher.DomainSuffix;
+//	var WorkMode = objTestWatcher.Watcher.WorkMode;
+//	var NginxTestCommand = objTestWatcher.Watcher.NginxTestCommand;
+	var StandbyUpstreamNodes = $("#StandbyUpstreamNodesOldVal").html();
+	//var K8sWatcherStatus = objTestWatcher.Watcher.K8sWatcherStatus;
+	var WebMsg = {
+		"NodeIP": "192.168.252.133",
+		"ClientID": "10855",
+		"WatcherCfg": {
+			"KubernetesMasterHost": KubernetesMasterHost,
+		    "StandbyUpstreamNodes": ["11.1.1.1","2.2.2.2"]
+		}
+	};
+	
+	//var	JsonTypeWebMsg = eval("(" + WebMsg + ")");	
+			
 	$.ajax({
-    		
+
+    		url : submitUrl,
+			dataType: "json",
+			contentType: "text/html; charset=UTF-8",
+    		type: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				"Accept": "application/json",
+			},
+			data: JSON.stringify(WebMsg),
+			
+    		success : function(data) {
+				data = eval("(" + data + ")");
+    			
+    			/*data = eval("(" + data + ")");
+    			if (data.status=="400") {
+    				
+    			} else if (data.status=="500") {
+    				
+    			}else {
+    				
+    			}*/
     		}
     	});
 }
