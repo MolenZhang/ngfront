@@ -330,7 +330,7 @@ function showNamespacesEcharts(KubernetesMasterHost,KubernetesAPIVersion,JobZone
 			var namespacesHtml = "";
 			if(NamespacesList != null){
 				for(var i=0; i<NamespacesList.length; i++){
-					var eveNamespace = NamespacesList[i];
+					var	eveNamespace = NamespacesList[i];
 					namespacesHtml += '<label class="namespacesLabel"><input type="checkbox" class="namespacesChk" value="'+eveNamespace+'">'+eveNamespace+'</label>';
 				}
 				$("#namespacesInfo").empty().append(namespacesHtml);
@@ -389,7 +389,10 @@ function showNamespacesEcharts(KubernetesMasterHost,KubernetesAPIVersion,JobZone
 			var NamespacesSerNum = new Array();
 			if(NamespacesAppCounts != null){
 				for(var i = 0; i<NamespacesAppCounts.length; i++){
-					var eveNamespacesNum = NamespacesAppCounts[i].length;
+					var eveNamespacesNum = 0;
+					if(NamespacesAppCounts[i] != null){
+						eveNamespacesNum = NamespacesAppCounts[i].length;
+					}
 					NamespacesSerNum.push(eveNamespacesNum);
 				}
 				var optionSeries = {
