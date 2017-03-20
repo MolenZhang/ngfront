@@ -2,6 +2,12 @@ var KubernetesMasterHost = "";
 var KubernetesAPIVersion = ""; 
 var JobZoneType = "";
 $(document).ready(function () {
+	var locationUrl = window.location;
+	//http://172.16.13.110:8083/ngfront/zone/clients/watcher?NodeIP=10.10.3.9&ClientID=21343&areaType=user
+	var NodeIPInfo = locationUrl.search.substring(locationUrl.search.indexOf("NodeIP=")+7,locationUrl.search.indexOf("&C"));
+	var ClientIDInfo = locationUrl.search.substring(locationUrl.search.indexOf("ClientID=")+9,locationUrl.search.indexOf("&a"));
+	var areaTypeInfo = locationUrl.search.substring(locationUrl.search.indexOf("areaType=")+9,locationUrl.search.length);
+
 	 $(document).on('click','.fa-nodeEdit',function(){
 		 $(this).parent().hide();
 		 $(this).parent().next().show();
@@ -29,6 +35,8 @@ $(document).ready(function () {
 		 $(this).parent().find("img").attr("src",startSrc);
 		 $(".btn-stop").attr("disabled",false);
 		 $("#K8sWatcherStatus").empty().append("start");
+
+		 watcherSubmit(NodeIPInfo,ClientIDInfo);
 	 });
 	//进入Nginx配置管理界面
 	$(document).on('click','.btn-toNginx',function(){
@@ -129,12 +137,6 @@ $(document).ready(function () {
 		var changeVal = $("#StandbyUpstreamNodesInfo").val();
 		$("#StandbyUpstreamNodesOldVal").empty().append(changeVal);
 	});
-	
-	var locationUrl = window.location;
-	//http://172.16.13.110:8083/ngfront/zone/clients/watcher?NodeIP=10.10.3.9&ClientID=21343&areaType=user
-	var NodeIPInfo = locationUrl.search.substring(locationUrl.search.indexOf("NodeIP=")+7,locationUrl.search.indexOf("&C"));
-	var ClientIDInfo = locationUrl.search.substring(locationUrl.search.indexOf("ClientID=")+9,locationUrl.search.indexOf("&a"));
-	var areaTypeInfo = locationUrl.search.substring(locationUrl.search.indexOf("areaType=")+9,locationUrl.search.length);
 
 	showWatcher(NodeIPInfo,ClientIDInfo);
 	
@@ -409,57 +411,29 @@ function showNamespacesEcharts(KubernetesMasterHost,KubernetesAPIVersion,JobZone
 	});
 }
 
-// //生成监控租户集合
-// function loadNamespaces(KubernetesMasterHost,KubernetesAPIVersion,JobZoneType){
-// 	var areaIP = "localhost";
-// 	var areaPort = "port";
-// 	var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/namespaces";
-// 	$.ajax({
-// 		"url":apiVersionUrl,
-// 		"type":"get",
-// 		"data":{
-// 			"KubernetesMasterHost":KubernetesMasterHost,
-// 			"KubernetesAPIVersion":KubernetesAPIVersion,
-// 			"JobZoneType":JobZoneType
-// 		},
-// 		"success":function(data){
-// 			var namespacesData = eval("("+data+")");
-// 			var namespacesHtml = "";
-// 			var NamespacesList = namespacesData.NamespacesList;
-// 			if(NamespacesList != null){
-// 				for(var i=0; i<NamespacesList.length; i++){
-// 					var eveNamespace = NamespacesList[i];
-// 					namespacesHtml += '<label class="namespacesLabel"><input type="checkbox" class="namespacesChk" value="'+eveNamespace+'">'+eveNamespace+'</label>';
-// 				}
-// 				$("#namespacesInfo").empty().append(namespacesHtml);
-// 			}
-			
-// 		}
-// 	})
-// }
 
 //提交watcher表单
-// function watcherSubmit(){
-// 	var areaIP = "localhost";
-// 	var areaPort = "port";
-// 	var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/watcher";
-// 	$.ajax({
-//     		url : ,
-//     		type: "POST",
-//     		data:{
-//     			"proxyPath":proxyPath,
-//     			"serviceName":serviceName
-//     		},
-//     		success : function(data) {
-//     			$("#buildService").submit();
-//     			/*data = eval("(" + data + ")");
-//     			if (data.status=="400") {
+function watcherSubmit(NodeIPInfo,ClientIDInfo){
+	var areaIP = "localhost";
+	var areaPort = "port";
+	var submitUrl = "http://"+areaIP+":"+areaPort+"/watcher";
+	$.ajax({
+    		url : submitUrl,
+    		type: "POST",
+    		data:{
+    			"NodeIP":NodeIPInfo,
+				"ClientID":ClientIDInfo
+    		},
+    		success : function(data) {
+    			$("#buildService").submit();
+    			/*data = eval("(" + data + ")");
+    			if (data.status=="400") {
     				
-//     			} else if (data.status=="500") {
+    			} else if (data.status=="500") {
     				
-//     			}else {
+    			}else {
     				
-//     			}*/
-//     		}
-//     	});
-// }
+    			}*/
+    		}
+    	});
+}
