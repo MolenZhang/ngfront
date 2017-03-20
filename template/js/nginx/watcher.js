@@ -142,8 +142,8 @@ $(document).ready(function () {
  });/*reday*/
 
   function showWatcher(NodeIPInfo,ClientIDInfo){
-	var areaIP = "172.16.13.110";
-	var areaPort = "8083";
+	var areaIP = "localhost";
+	var areaPort = "port";
 	var watcherUrl = "http://"+areaIP+":"+areaPort+"/watcher";
 	$.ajax({
 		"url":watcherUrl,
@@ -311,8 +311,8 @@ $(document).ready(function () {
 
 //生成监控echart图
 function showNamespacesEcharts(KubernetesMasterHost,KubernetesAPIVersion,JobZoneType){
-	var areaIP = "172.16.13.110";
-	var areaPort = "8083";
+	var areaIP = "localhost";
+	var areaPort = "port";
 	var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/namespaces";
 	
 	$.ajax({
@@ -408,8 +408,8 @@ function showNamespacesEcharts(KubernetesMasterHost,KubernetesAPIVersion,JobZone
 
 // //生成监控租户集合
 // function loadNamespaces(KubernetesMasterHost,KubernetesAPIVersion,JobZoneType){
-// 	var areaIP = "172.16.13.110";
-// 	var areaPort = "8083";
+// 	var areaIP = "localhost";
+// 	var areaPort = "port";
 // 	var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/namespaces";
 // 	$.ajax({
 // 		"url":apiVersionUrl,
@@ -437,8 +437,8 @@ function showNamespacesEcharts(KubernetesMasterHost,KubernetesAPIVersion,JobZone
 
 //提交watcher表单
 // function watcherSubmit(){
-// 	var areaIP = "172.16.13.110";
-// 	var areaPort = "8083";
+// 	var areaIP = "localhost";
+// 	var areaPort = "port";
 // 	var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/watcher";
 // 	$.ajax({
 //     		url : ,
