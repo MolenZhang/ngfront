@@ -65,8 +65,7 @@ $(document).ready(function () {
 		$("#KubernetesAPIVersionOldVal").empty().append(changeVal);
 		var KubernetesMasterHostVal = $("#KubernetesMasterHostOldVal").html();
 		$("#namespacesInfo").empty();
-		loadNamespaces(KubernetesMasterHostVal,KubernetesAPIVersion,changeVal);
-		apiVersionSave(KubernetesMasterHostVal,changeVal);
+		showNamespacesEcharts(KubernetesMasterHostVal,changeVal,JobZoneType)
 	 });
 	//日志打印级别  保存按钮
 	$(document).on('click','#LogPrintLevelSaveBtn',function(){
@@ -138,10 +137,7 @@ $(document).ready(function () {
 	var areaTypeInfo = locationUrl.search.substring(locationUrl.search.indexOf("areaType=")+9,locationUrl.search.length);
 
 	showWatcher(NodeIPInfo,ClientIDInfo);
-	//apiVersionSave(KubernetesMasterHost,KubernetesAPIVersion);
-
-	//loadNamespaces(KubernetesMasterHost,areaTypeInfo);
-	//apiVersionSave(NodeIPInfo,ClientIDInfo);
+	
 	 
  });/*reday*/
 
@@ -308,14 +304,13 @@ $(document).ready(function () {
 										'</tr>';
 			$("#watcherBasicInfo").append(watcherBasicHtml);
 			
-			loadNamespaces(KubernetesMasterHost,KubernetesAPIVersion,JobZoneType);
-			apiVersionSave(KubernetesMasterHost,KubernetesAPIVersion);
+			showNamespacesEcharts(KubernetesMasterHost,KubernetesAPIVersion,JobZoneType);
 		}
 	});
 }
 
 //生成监控echart图
-function apiVersionSave(KubernetesMasterHost,KubernetesAPIVersion){
+function showNamespacesEcharts(KubernetesMasterHost,KubernetesAPIVersion,JobZoneType){
 	var areaIP = "172.16.13.110";
 	var areaPort = "8083";
 	var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/namespaces";
@@ -330,8 +325,17 @@ function apiVersionSave(KubernetesMasterHost,KubernetesAPIVersion){
 		},
 		"success":function(data){
 			var data = eval("("+data+")");
-			var optionxAxisData = data.NamespacesList;
-			var NamespacesAppCounts = data.NamespacesAppCounts;
+			var NamespacesList = data.NamespacesList;
+			var NamespacesAppCounts = data.NamespacesAppList;
+			var namespacesHtml = "";
+			if(NamespacesList != null){
+				for(var i=0; i<NamespacesList.length; i++){
+					var eveNamespace = NamespacesList[i];
+					namespacesHtml += '<label class="namespacesLabel"><input type="checkbox" class="namespacesChk" value="'+eveNamespace+'">'+eveNamespace+'</label>';
+				}
+				$("#namespacesInfo").empty().append(namespacesHtml);
+			}
+			//echart画图位置
 			var myChart = echarts.init(document.getElementById('main'));
 			option = {
 					    color: ['#3398DB'],
@@ -375,7 +379,7 @@ function apiVersionSave(KubernetesMasterHost,KubernetesAPIVersion){
 			//node上租户的个数
 			var optionxAxis = {
 					            type : 'category',
-					            data : optionxAxisData,
+					            data : NamespacesList,
 					            axisTick: {
 					                alignWithLabel: true
 					            }
@@ -402,34 +406,34 @@ function apiVersionSave(KubernetesMasterHost,KubernetesAPIVersion){
 	});
 }
 
-//生成监控租户集合
-function loadNamespaces(KubernetesMasterHost,KubernetesAPIVersion,JobZoneType){
-	var areaIP = "172.16.13.110";
-	var areaPort = "8083";
-	var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/namespaces";
-	$.ajax({
-		"url":apiVersionUrl,
-		"type":"get",
-		"data":{
-			"KubernetesMasterHost":KubernetesMasterHost,
-			"KubernetesAPIVersion":KubernetesAPIVersion,
-			"JobZoneType":JobZoneType
-		},
-		"success":function(data){
-			var namespacesData = eval("("+data+")");
-			var namespacesHtml = "";
-			var NamespacesList = namespacesData.NamespacesList;
-			if(NamespacesList != null){
-				for(var i=0; i<NamespacesList.length; i++){
-					var eveNamespace = NamespacesList[i];
-					namespacesHtml += '<label class="namespacesLabel"><input type="checkbox" class="namespacesChk" value="'+eveNamespace+'">'+eveNamespace+'</label>';
-				}
-				$("#namespacesInfo").empty().append(namespacesHtml);
-			}
+// //生成监控租户集合
+// function loadNamespaces(KubernetesMasterHost,KubernetesAPIVersion,JobZoneType){
+// 	var areaIP = "172.16.13.110";
+// 	var areaPort = "8083";
+// 	var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/namespaces";
+// 	$.ajax({
+// 		"url":apiVersionUrl,
+// 		"type":"get",
+// 		"data":{
+// 			"KubernetesMasterHost":KubernetesMasterHost,
+// 			"KubernetesAPIVersion":KubernetesAPIVersion,
+// 			"JobZoneType":JobZoneType
+// 		},
+// 		"success":function(data){
+// 			var namespacesData = eval("("+data+")");
+// 			var namespacesHtml = "";
+// 			var NamespacesList = namespacesData.NamespacesList;
+// 			if(NamespacesList != null){
+// 				for(var i=0; i<NamespacesList.length; i++){
+// 					var eveNamespace = NamespacesList[i];
+// 					namespacesHtml += '<label class="namespacesLabel"><input type="checkbox" class="namespacesChk" value="'+eveNamespace+'">'+eveNamespace+'</label>';
+// 				}
+// 				$("#namespacesInfo").empty().append(namespacesHtml);
+// 			}
 			
-		}
-	})
-}
+// 		}
+// 	})
+// }
 
 //提交watcher表单
 // function watcherSubmit(){
