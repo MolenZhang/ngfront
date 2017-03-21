@@ -458,32 +458,45 @@ function watcherSubmit(NodeIPInfo,ClientIDInfo){
 	var KubernetesMasterHost = $("#KubernetesMasterHostOldVal").html();
 	var KubernetesAPIVersion =$("#KubernetesAPIVersionOldVal").html();
 	var NginxReloadCommand = $("#NginxReloadCommandOldVal").html();
-	//var JobZoneType = $("#JobZoneTypeOldVal").html();
+	var JobZoneType = $("#JobZoneTypeOldVal").html();
 	var NginxListenPort = $("#NginxListenPortOldVal").html();
-	//var WatchNamespaceSets = $("#WatchNamespaceSetsOldVal").html();
-//	var NginxRealCfgDirPath = objTestWatcher.Watcher.NginxRealCfgDirPath;
-//	var NginxTestCfgDirPath = objTestWatcher.Watcher.NginxTestCfgDirPath;
-//	var DownloadCfgDirPath = objTestWatcher.Watcher.DownloadCfgDirPath;
-//	var LogPrintLevel = objTestWatcher.Watcher.LogPrintLevel;
-//	var DefaultNginxServerType = objTestWatcher.Watcher.DefaultNginxServerType;
-//	var DomainSuffix = objTestWatcher.Watcher.DomainSuffix;
-//	var WorkMode = objTestWatcher.Watcher.WorkMode;
-//	var NginxTestCommand = objTestWatcher.Watcher.NginxTestCommand;
-	var StandbyUpstreamNodes = $("#StandbyUpstreamNodesOldVal").html();
-	//var K8sWatcherStatus = objTestWatcher.Watcher.K8sWatcherStatus;
+	var WatchNamespaceSets = $("#WatchNamespaceSetsOldVal").html().split(",");
+	var NginxRealCfgDirPath = $("#NginxRealCfgDirPathOldVal").html();
+	var NginxTestCfgDirPath = $("#NginxTestCfgDirPathOldVal").html();
+	var DownloadCfgDirPath = $("#DownloadCfgDirPathOldVal").html();
+	var LogPrintLevel = $("#LogPrintLevelOldVal").html();
+	var DefaultNginxServerType = $("#DefaultNginxServerTypeOldVal").html();
+	var DomainSuffix = $("#DomainSuffixOldVal").html();
+	var WorkMode = $("#WorkModeOldVal").html();
+	var NginxTestCommand = $("#NginxTestCommandOldVal").html();
+	var StandbyUpstreamNodes = $("#StandbyUpstreamNodesOldVal").html().split(",");
+	var K8sWatcherStatus = "start";
 	var WebMsg = {
-		"NodeIP": "192.168.252.133",
-		"ClientID": "10855",
+		"NodeIP": NodeIPInfo,
+		"ClientID": ClientIDInfo,
 		"WatcherCfg": {
 			"KubernetesMasterHost": KubernetesMasterHost,
-		    "StandbyUpstreamNodes": ["11.1.1.1","2.2.2.2"]
+			"KubernetesAPIVersion":KubernetesAPIVersion,
+			"NginxReloadCommand":NginxReloadCommand,
+			"JobZoneType":JobZoneType,
+			"NginxListenPort":NginxListenPort,
+			"WatchNamespaceSets":WatchNamespaceSets,
+			"NginxRealCfgDirPath":NginxRealCfgDirPath,
+			"NginxTestCfgDirPath":NginxTestCfgDirPath,
+			"DownloadCfgDirPath":DownloadCfgDirPath,
+			"LogPrintLevel":LogPrintLevel,
+			"DefaultNginxServerType":DefaultNginxServerType,
+			"DomainSuffix":DomainSuffix,
+			"WorkMode":WorkMode,
+			"NginxTestCommand":NginxTestCommand,
+		    "StandbyUpstreamNodes": StandbyUpstreamNodes,
+		    "K8sWatcherStatus":K8sWatcherStatus
 		}
 	};
 	
 	//var	JsonTypeWebMsg = eval("(" + WebMsg + ")");	
 			
 	$.ajax({
-
     		url : submitUrl,
 			dataType: "json",
 			contentType: "text/html; charset=UTF-8",
