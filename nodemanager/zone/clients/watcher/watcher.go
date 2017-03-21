@@ -25,7 +25,7 @@ type ServiceInfo struct {
 
 //加载界面
 func loadWatcherPage(w http.ResponseWriter, r *http.Request) {
-	logdebug.Println(logdebug.LevelInfo, "<<<<<<<<<<<<<加载watcher页面>>>>>>>>>>>>>")
+	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<<加载watcher页面>>>>>>>>>>>>>")
 	//加载模板 显示内容是 批量操作client
 	t, err := template.ParseFiles("template/views/nginx/watcher.html")
 	if err != nil {
@@ -41,7 +41,7 @@ func loadWatcherPage(w http.ResponseWriter, r *http.Request) {
 
 //处理前端的get请求
 func getWatcherInfo(request *restful.Request, response *restful.Response) {
-	logdebug.Println(logdebug.LevelInfo, "=============获取监视器信息=============")
+	logdebug.Println(logdebug.LevelDebug, "=============获取监视器信息=============")
 
 	request.Request.ParseForm()
 
@@ -67,7 +67,7 @@ func getWatcherInfo(request *restful.Request, response *restful.Response) {
 func postWatcherInfo(request *restful.Request, response *restful.Response) {
 	webMsg := CfgWebMsg{}
 
-	logdebug.Println(logdebug.LevelInfo, "=============与kubeng通讯 更新watcher状态=============")
+	logdebug.Println(logdebug.LevelDebug, "=============与kubeng通讯 更新watcher状态=============")
 
 	err := request.ReadEntity(&webMsg)
 	if err != nil {
@@ -79,7 +79,7 @@ func postWatcherInfo(request *restful.Request, response *restful.Response) {
 	//解析成功后 下发给kubveng 并返回错误码...
 	response.WriteHeaderAndJson(200, "Hello World!", "application/json")
 
-	logdebug.Println(logdebug.LevelInfo, "=============与kubeng通讯 更新watcher状态 收到的web前端消息内容:", webMsg, "=============")
+	logdebug.Println(logdebug.LevelDebug, "=============与kubeng通讯 更新watcher状态 收到的web前端消息内容:", webMsg, "=============")
 
 	return
 }
@@ -113,7 +113,7 @@ func getWatchNamespacesDetailInfo(w http.ResponseWriter, r *http.Request) {
 
 	namespaces = getTestNamespacesDetailInfo()
 
-	logdebug.Println(logdebug.LevelInfo, "=============从后台获取到的租户详细信息:", namespaces, "=============")
+	logdebug.Println(logdebug.LevelDebug, "=============从后台获取到的租户详细信息:", namespaces, "=============")
 	//通信结构 json格式转换
 	jsonTypeMsg, err := json.Marshal(namespaces)
 	if err != nil {
