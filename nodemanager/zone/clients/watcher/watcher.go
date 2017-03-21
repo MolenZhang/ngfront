@@ -106,7 +106,7 @@ func postWatcherInfo(request *restful.Request, response *restful.Response) {
 	communicate.SendRequestByJSON(communicate.POST, updateWatcherCfgURL, webMsg.WatcherCfg)
 
 	//解析成功后 下发给kubveng 并返回错误码...
-	response.WriteHeaderAndJson(200, "Hello World!", "application/json")
+	//response.WriteHeaderAndJson(200, "Hello World!", "application/json")
 
 	logdebug.Println(logdebug.LevelDebug, "与kubeng通讯 更新watcher状态 收到的web前端消息内容:", webMsg)
 
