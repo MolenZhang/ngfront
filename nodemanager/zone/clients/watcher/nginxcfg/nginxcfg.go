@@ -58,12 +58,14 @@ type Config struct {
 type ServiceInfo struct {
 }
 
-type AllAppCfgs struct {
-	allK8sAppCfgsMap map[string]map[string]Config
-	allExternCfgsMap map[string]map[string]Config
+/*
+type AppCfgs struct {
+	appCfgs map[string]Config
 }
-
-var allAppCfgs AllAppCfgs
+*/
+type AllAppCfgs struct {
+	allAppCfgsMap map[string]map[string]Config
+}
 
 func showNginxCfgPage(w http.ResponseWriter, r *http.Request) {
 	logdebug.Println(logdebug.LevelInfo, "<<<<<<<<<<<<<加载nginx页面>>>>>>>>>>>>>")
@@ -80,6 +82,10 @@ func showNginxCfgPage(w http.ResponseWriter, r *http.Request) {
 }
 
 func (svc *ServiceInfo) getNginxInfo(request *restful.Request, response *restful.Response) {
+
+	var allAppCfgs AllAppCfgs
+
+	allAppCfgs.allAppCfgsMap = make(map[string]map[string]Config, 0)
 
 	logdebug.Println(logdebug.LevelInfo, "<<<<<<<<<<<<get nginxCfg>>>>>>>>>>>>")
 	//
@@ -99,9 +105,19 @@ func (svc *ServiceInfo) getNginxInfo(request *restful.Request, response *restful
 		return
 	}
 
-	if err = json.Unmarshal(resp, &allAppCfgs.allK8sAppCfgsMap); err != nil {
+	allK8sCfgs := make(map[string]map[string]Config, 0)
+	if err = json.Unmarshal(resp, &allK8sCfgs); err != nil {
 		logdebug.Println(logdebug.LevelError, err)
 		return
+	}
+
+	for k, v := range allK8sCfgs {
+		for key, cfg := range v {
+			cfg.AppSrcType = "k8s"
+			v[key] = cfg
+		}
+		//k = namespace2-app1
+		allAppCfgs.allAppCfgsMap[k] = v //map[string]Config
 	}
 
 	getExternAppcfgsUrl := "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.NginxCfgsAPIServerPath + "/extern"
@@ -111,12 +127,25 @@ func (svc *ServiceInfo) getNginxInfo(request *restful.Request, response *restful
 		return
 	}
 
-	if err = json.Unmarshal(resp, &allAppCfgs.allExternCfgsMap); err != nil {
+	allExternCfgs := make(map[string]map[string]Config, 0)
+	if err = json.Unmarshal(resp, &allExternCfgs); err != nil {
 		logdebug.Println(logdebug.LevelError, err)
 		return
 	}
-	logdebug.Println(logdebug.LevelDebug, allAppCfgs)
-	response.WriteHeaderAndJson(200, allAppCfgs, "application/json")
+
+	for k, v := range allExternCfgs {
+		for key, cfg := range v {
+			cfg.AppSrcType = "extern"
+			v[key] = cfg
+		}
+
+		//k = namespace2-app2
+		allAppCfgs.allAppCfgsMap[k] = v //map[string]Config
+	}
+
+	logdebug.Println(logdebug.LevelDebug, allAppCfgs.allAppCfgsMap)
+
+	err = response.WriteHeaderAndJson(200, allAppCfgs.allAppCfgsMap, "application/json")
 
 }
 
@@ -151,7 +180,7 @@ func (svc *ServiceInfo) Init() {
 		Doc("get nginx manager config").
 		Operation("findNginxManagerConfig"))
 	//		Reads(nodes.ClientInfo{}).
-	//		Returns(200, "OK", nodes.NodeInfo{}))
+	//Returns(200, "OK", AllAppCfgs{}))
 	//
 	ws.Route(ws.POST("/").To(svc.postNginxInfo).
 		// docs
