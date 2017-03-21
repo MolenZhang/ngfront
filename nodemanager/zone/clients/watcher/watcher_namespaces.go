@@ -65,7 +65,7 @@ type PortsObject struct {
 
 //从k8s获取集群namespaces
 func getNamespacesFromK8s(url string) (namespaces []string) {
-	logdebug.Println(logdebug.LevelInfo, "-----请求watcher 数据 url=", url)
+	logdebug.Println(logdebug.LevelDebug, "请求watcher 数据 url=", url)
 
 	resp, err := http.Get(url)
 	if err != nil {

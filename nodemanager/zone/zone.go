@@ -13,21 +13,6 @@ import (
 type ServiceInfo struct {
 }
 
-func loadHomePage(w http.ResponseWriter, r *http.Request) {
-	logdebug.Println(logdebug.LevelInfo, "<<<<<<<<<<<<<加载主页>>>>>>>>>>>>>")
-
-	t, err := template.ParseFiles("template/views/nginx/area.html")
-	if err != nil {
-		logdebug.Println(logdebug.LevelError, err)
-
-		return
-	}
-
-	t.Execute(w, nil)
-
-	return
-}
-
 //client 用于展示的客户端信息数据结构
 type client struct {
 	NodeIP   string
@@ -62,6 +47,21 @@ func convertZoneType(zoneType string) int {
 	return maxZone
 }
 
+func loadHomePage(w http.ResponseWriter, r *http.Request) {
+	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<<加载主页>>>>>>>>>>>>>")
+
+	t, err := template.ParseFiles("template/views/nginx/area.html")
+	if err != nil {
+		logdebug.Println(logdebug.LevelError, err)
+
+		return
+	}
+
+	t.Execute(w, nil)
+
+	return
+}
+
 func getZoneInfo(w http.ResponseWriter, r *http.Request) {
 	//定义一个4个大小尺寸的结构体数组
 	var webMsg [maxZone]webRespMsg
@@ -72,6 +72,7 @@ func getZoneInfo(w http.ResponseWriter, r *http.Request) {
 
 	//获取所有Nodes的信息
 	allNodes := nodes.GetAllNodesInfo()
+
 	for _, nodeInfo := range allNodes {
 		//提取nodeInfo中部分字段 给前端展示使用
 		clientInfo := client{
