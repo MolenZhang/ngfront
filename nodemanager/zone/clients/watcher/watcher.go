@@ -140,7 +140,7 @@ func getWatchNamespacesDetailInfo(w http.ResponseWriter, r *http.Request) {
 
 	namespaces := getNamespacesDetailInfoFromK8s(getNamespacesURL, jobZoneType)
 
-	namespaces = getTestNamespacesDetailInfo()
+	//namespaces = getTestNamespacesDetailInfo()
 
 	logdebug.Println(logdebug.LevelDebug, "从后台获取到的租户详细信息:", namespaces)
 	//通信结构 json格式转换

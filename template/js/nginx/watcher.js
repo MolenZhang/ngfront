@@ -537,13 +537,45 @@ function stopControl(NodeIPInfo,ClientIDInfo){
 	var areaPort = "port";
 	var submitUrl = "http://"+areaIP+":"+areaPort+"/watcher";
 	
+	var KubernetesMasterHost = $("#KubernetesMasterHostOldVal").html();
+	var KubernetesAPIVersion =$("#KubernetesAPIVersionOldVal").html();
+	var NginxReloadCommand = $("#NginxReloadCommandOldVal").html();
+	var JobZoneType = $("#JobZoneTypeOldVal").html();
+	var NginxListenPort = $("#NginxListenPortOldVal").html();
+	var WatchNamespaceSets = $("#WatchNamespaceSetsOldVal").html().split(",");
+	var NginxRealCfgDirPath = $("#NginxRealCfgDirPathOldVal").html();
+	var NginxTestCfgDirPath = $("#NginxTestCfgDirPathOldVal").html();
+	var DownloadCfgDirPath = $("#DownloadCfgDirPathOldVal").html();
+	var LogPrintLevel = $("#LogPrintLevelOldVal").html();
+	var DefaultNginxServerType = $("#DefaultNginxServerTypeOldVal").html();
+	var DomainSuffix = $("#DomainSuffixOldVal").html();
+	var WorkMode = $("#WorkModeOldVal").html();
+	var NginxTestCommand = $("#NginxTestCommandOldVal").html();
+	var StandbyUpstreamNodes = $("#StandbyUpstreamNodesOldVal").html().split(",");
+	var K8sWatcherStatus = "stop";
 	var WebMsg = {
 		"NodeIP": NodeIPInfo,
 		"ClientID": ClientIDInfo,
 		"WatcherCfg": {
-		    "K8sWatcherStatus":"stop"
+			"KubernetesMasterHost": KubernetesMasterHost,
+			"KubernetesAPIVersion":KubernetesAPIVersion,
+			"NginxReloadCommand":NginxReloadCommand,
+			"JobZoneType":JobZoneType,
+			"NginxListenPort":NginxListenPort,
+			"WatchNamespaceSets":WatchNamespaceSets,
+			"NginxRealCfgDirPath":NginxRealCfgDirPath,
+			"NginxTestCfgDirPath":NginxTestCfgDirPath,
+			"DownloadCfgDirPath":DownloadCfgDirPath,
+			"LogPrintLevel":LogPrintLevel,
+			"DefaultNginxServerType":DefaultNginxServerType,
+			"DomainSuffix":DomainSuffix,
+			"WorkMode":WorkMode,
+			"NginxTestCommand":NginxTestCommand,
+		    "StandbyUpstreamNodes": StandbyUpstreamNodes,
+		    "K8sWatcherStatus":K8sWatcherStatus
 		}
 	};
+	
 	$.ajax({
     		url : submitUrl,
 			dataType: "json",
