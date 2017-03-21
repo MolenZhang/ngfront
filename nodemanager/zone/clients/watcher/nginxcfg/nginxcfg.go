@@ -58,7 +58,7 @@ type ServiceInfo struct {
 }
 
 func showNginxCfgPage(w http.ResponseWriter, r *http.Request) {
-	logdebug.Println(logdebug.LevelInfo, "-----加载nginx页面----")
+	logdebug.Println(logdebug.LevelInfo, "<<<<<<<<<<<<<加载nginx页面>>>>>>>>>>>>>")
 	//加载模板 显示内容是 批量操作nginx配置
 	t, err := template.ParseFiles("template/views/nginx/nginxcfg.html")
 	if err != nil {
