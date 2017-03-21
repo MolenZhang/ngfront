@@ -72,6 +72,7 @@ func getZoneInfo(w http.ResponseWriter, r *http.Request) {
 
 	//获取所有Nodes的信息
 	allNodes := nodes.GetAllNodesInfo()
+
 	for _, nodeInfo := range allNodes {
 		//提取nodeInfo中部分字段 给前端展示使用
 		clientInfo := client{
