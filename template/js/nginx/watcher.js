@@ -28,23 +28,26 @@ $(document).ready(function () {
 		 var stopSrc = '/images/stop.png';
 		 $(this).parent().find("img").attr("src",stopSrc);
 		 $(this).attr("disabled",true);
+		 $(".btn-toNginx").attr("disabled",true);
 		 $("#K8sWatcherStatus").empty().append("stop");
-		 alert("stop")
+		 $(".btn-start").empty().html("开始监控");
+		 stopControl(NodeIPInfo,ClientIDInfo);
 	 });
 	//开始监控按钮
-	$(document).on('click','.btn-start',function(e){
-		//event.stopPropagation();
+	$(document).on('click','.btn-start',function(){
 		 var startSrc = '/images/running.gif';
 		 $(this).parent().find("img").attr("src",startSrc);
+		 $(this).empty().html("重新监控");
 		 $(".btn-stop").attr("disabled",false);
+		 $(".btn-toNginx").attr("disabled",false);
 		 $("#K8sWatcherStatus").empty().append("start");
-		 alert("start");
+		 
 		 watcherSubmit(NodeIPInfo,ClientIDInfo);
 		 
 	 });
 	//进入Nginx配置管理界面
 	$(document).on('click','.btn-toNginx',function(){
-		 location.href = "file:///C:/Users/Administrator/Desktop/src/views/nginx/k8snginxcfg.html" ;
+		 location.href = "/ngfront/zone/clients/watcher/nginxcfg" ;
 	 });
 	
 	//租户监控checkbox   保存按钮
@@ -203,7 +206,7 @@ $(document).ready(function () {
 				imgHtml = '<img src="/images/stop.png" alt=""/>'+
 							'<button class="btn btn-info btn-start">开始监控</button>'+
 							'<button class="btn btn-info btn-stop" disabled>停止监控</button>'+
-							'<button class="btn btn-info btn-toNginx">Nginx配置</button>';
+							'<button class="btn btn-info btn-toNginx" disabled>Nginx配置</button>';
 			}
 			$("#imgStatusInfo").append(imgHtml);
 			var watcherCfgHtml = '';
@@ -455,9 +458,7 @@ function loadNamespaces(KubernetesMasterHost,KubernetesAPIVersion){
 			
 
 //提交watcher表单
-function watcherSubmit(event,NodeIPInfo,ClientIDInfo){
-	//event.stopPropagation();
-	//alert("watcher")
+function watcherSubmit(NodeIPInfo,ClientIDInfo){
 	var areaIP = "localhost";
 	var areaPort = "port";
 	var submitUrl = "http://"+areaIP+":"+areaPort+"/watcher";
@@ -529,3 +530,34 @@ function watcherSubmit(event,NodeIPInfo,ClientIDInfo){
     		}
     	});
 }
+
+//停止监控
+function stopControl(NodeIPInfo,ClientIDInfo){
+	var areaIP = "localhost";
+	var areaPort = "port";
+	var submitUrl = "http://"+areaIP+":"+areaPort+"/watcher";
+	
+	var WebMsg = {
+		"NodeIP": NodeIPInfo,
+		"ClientID": ClientIDInfo,
+		"WatcherCfg": {
+		    "K8sWatcherStatus":"stop"
+		}
+	};
+	$.ajax({
+    		url : submitUrl,
+			dataType: "json",
+			contentType: "text/html; charset=UTF-8",
+    		type: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				"Accept": "application/json",
+			},
+			data: JSON.stringify(WebMsg),
+			
+    		success : function(data) {
+				data = eval("(" + data + ")");
+    		}
+    	});
+}
+
