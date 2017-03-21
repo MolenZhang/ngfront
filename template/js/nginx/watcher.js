@@ -28,21 +28,26 @@ $(document).ready(function () {
 		 var stopSrc = '/images/stop.png';
 		 $(this).parent().find("img").attr("src",stopSrc);
 		 $(this).attr("disabled",true);
+		 $(".btn-toNginx").attr("disabled",true);
 		 $("#K8sWatcherStatus").empty().append("stop");
+		 $(".btn-start").empty().html("开始监控");
+		 stopControl(NodeIPInfo,ClientIDInfo);
 	 });
 	//开始监控按钮
-	$(document).on('click','.btn-start',function(e){
-		event.stopPropagation();
+	$(document).on('click','.btn-start',function(){
 		 var startSrc = '/images/running.gif';
 		 $(this).parent().find("img").attr("src",startSrc);
+		 $(this).empty().html("重新监控");
 		 $(".btn-stop").attr("disabled",false);
+		 $(".btn-toNginx").attr("disabled",false);
 		 $("#K8sWatcherStatus").empty().append("start");
-
+		 
 		 watcherSubmit(NodeIPInfo,ClientIDInfo);
+		 
 	 });
 	//进入Nginx配置管理界面
 	$(document).on('click','.btn-toNginx',function(){
-		 location.href = "file:///C:/Users/Administrator/Desktop/src/views/nginx/k8snginxcfg.html" ;
+		 location.href = "/ngfront/zone/clients/watcher/nginxcfg" ;
 	 });
 	
 	//租户监控checkbox   保存按钮
@@ -75,7 +80,9 @@ $(document).ready(function () {
 	});
 	
 	//k8s Api 版本  保存按钮
-	$(document).on('click','#KubernetesAPIVersionSaveBtn',function(){
+	$("#KubernetesAPIVersionSaveBtn").unbind().click(function(){
+	//$(document).on('click','#KubernetesAPIVersionSaveBtn',function(){
+		alert("#KubernetesAPIVersionSaveBtn")
 		var changeVal = $("#KubernetesAPIVersionInfo").val();
 		$("#KubernetesAPIVersionOldVal").empty().append(changeVal);
 		var KubernetesMasterHostVal = $("#KubernetesMasterHostOldVal").html();
@@ -83,7 +90,9 @@ $(document).ready(function () {
 		showNamespacesEcharts(KubernetesMasterHostVal,changeVal,JobZoneType)
 	 });
 	//日志打印级别  保存按钮
-	$(document).on('click','#LogPrintLevelSaveBtn',function(){
+	$("#LogPrintLevelInfo").unbind().click(function(){
+	//$(document).on('click','#LogPrintLevelSaveBtn',function(){
+		alert("LogPrintLevelInfo;");
 		var changeVal = $("#LogPrintLevelInfo").val();
 		$("#LogPrintLevelOldVal").empty().append(changeVal);
 	});
@@ -197,7 +206,7 @@ $(document).ready(function () {
 				imgHtml = '<img src="/images/stop.png" alt=""/>'+
 							'<button class="btn btn-info btn-start">开始监控</button>'+
 							'<button class="btn btn-info btn-stop" disabled>停止监控</button>'+
-							'<button class="btn btn-info btn-toNginx">Nginx配置</button>';
+							'<button class="btn btn-info btn-toNginx" disabled>Nginx配置</button>';
 			}
 			$("#imgStatusInfo").append(imgHtml);
 			var watcherCfgHtml = '';
@@ -521,3 +530,66 @@ function watcherSubmit(NodeIPInfo,ClientIDInfo){
     		}
     	});
 }
+
+//停止监控
+function stopControl(NodeIPInfo,ClientIDInfo){
+	var areaIP = "localhost";
+	var areaPort = "port";
+	var submitUrl = "http://"+areaIP+":"+areaPort+"/watcher";
+	
+	var KubernetesMasterHost = $("#KubernetesMasterHostOldVal").html();
+	var KubernetesAPIVersion =$("#KubernetesAPIVersionOldVal").html();
+	var NginxReloadCommand = $("#NginxReloadCommandOldVal").html();
+	var JobZoneType = $("#JobZoneTypeOldVal").html();
+	var NginxListenPort = $("#NginxListenPortOldVal").html();
+	var WatchNamespaceSets = $("#WatchNamespaceSetsOldVal").html().split(",");
+	var NginxRealCfgDirPath = $("#NginxRealCfgDirPathOldVal").html();
+	var NginxTestCfgDirPath = $("#NginxTestCfgDirPathOldVal").html();
+	var DownloadCfgDirPath = $("#DownloadCfgDirPathOldVal").html();
+	var LogPrintLevel = $("#LogPrintLevelOldVal").html();
+	var DefaultNginxServerType = $("#DefaultNginxServerTypeOldVal").html();
+	var DomainSuffix = $("#DomainSuffixOldVal").html();
+	var WorkMode = $("#WorkModeOldVal").html();
+	var NginxTestCommand = $("#NginxTestCommandOldVal").html();
+	var StandbyUpstreamNodes = $("#StandbyUpstreamNodesOldVal").html().split(",");
+	var K8sWatcherStatus = "stop";
+	var WebMsg = {
+		"NodeIP": NodeIPInfo,
+		"ClientID": ClientIDInfo,
+		"WatcherCfg": {
+			"KubernetesMasterHost": KubernetesMasterHost,
+			"KubernetesAPIVersion":KubernetesAPIVersion,
+			"NginxReloadCommand":NginxReloadCommand,
+			"JobZoneType":JobZoneType,
+			"NginxListenPort":NginxListenPort,
+			"WatchNamespaceSets":WatchNamespaceSets,
+			"NginxRealCfgDirPath":NginxRealCfgDirPath,
+			"NginxTestCfgDirPath":NginxTestCfgDirPath,
+			"DownloadCfgDirPath":DownloadCfgDirPath,
+			"LogPrintLevel":LogPrintLevel,
+			"DefaultNginxServerType":DefaultNginxServerType,
+			"DomainSuffix":DomainSuffix,
+			"WorkMode":WorkMode,
+			"NginxTestCommand":NginxTestCommand,
+		    "StandbyUpstreamNodes": StandbyUpstreamNodes,
+		    "K8sWatcherStatus":K8sWatcherStatus
+		}
+	};
+	
+	$.ajax({
+    		url : submitUrl,
+			dataType: "json",
+			contentType: "text/html; charset=UTF-8",
+    		type: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				"Accept": "application/json",
+			},
+			data: JSON.stringify(WebMsg),
+			
+    		success : function(data) {
+				data = eval("(" + data + ")");
+    		}
+    	});
+}
+
