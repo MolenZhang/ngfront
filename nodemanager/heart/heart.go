@@ -3,7 +3,7 @@ package heart
 import (
 	//"log"
 	"net/http"
-	"ngfront/logdebug"
+	//"ngfront/logdebug"
 	"ngfront/nodemanager/nodes"
 
 	"github.com/emicklei/go-restful"
@@ -56,7 +56,7 @@ func (svc *ServiceInfo) heart(request *restful.Request, response *restful.Respon
 	//校验失败:1.之前几次心跳可能超时了 定时器timeout后删除了map中的clientID
 	//本次心跳就视为失败了，只要这个客户端不经过Login 后续的心跳是不可能成功的
 
-	logdebug.Println(logdebug.LevelInfo, "心跳报文=", heartReqMsg)
+	//logdebug.Println(logdebug.LevelInfo, "心跳报文=", heartReqMsg)
 
 	response.WriteHeaderAndJson(200, heartReqMsg, "application/json")
 

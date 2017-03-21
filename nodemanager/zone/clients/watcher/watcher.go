@@ -12,16 +12,25 @@ import (
 	"github.com/emicklei/go-restful"
 )
 
+//CfgWebMsg 监视器配置的web消息
+type CfgWebMsg struct {
+	NodeIP     string
+	ClientID   string
+	WatcherCfg nodes.WatchManagerCfg
+}
+
 //ServiceInfo 服务信息
 type ServiceInfo struct {
 }
 
-func showWatcherPage(w http.ResponseWriter, r *http.Request) {
-	logdebug.Println(logdebug.LevelInfo, "-----加载watcher页面----")
+//加载界面
+func loadWatcherPage(w http.ResponseWriter, r *http.Request) {
+	logdebug.Println(logdebug.LevelInfo, "<<<<<<<<<<<<<加载watcher页面>>>>>>>>>>>>>")
 	//加载模板 显示内容是 批量操作client
 	t, err := template.ParseFiles("template/views/nginx/watcher.html")
 	if err != nil {
 		logdebug.Println(logdebug.LevelError, err)
+
 		return
 	}
 
@@ -30,72 +39,9 @@ func showWatcherPage(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
-//获取之前缓存在nodes包里面的watcher界面所需的信息
-//func getWatcherInfo(w http.ResponseWriter, r *http.Request) {
-//	//watcher界面所需展示的数据较多 不止是watcher 还有client的部分信息
-//	webMsg := nodes.NodeInfo{}
-//	r.ParseForm()
-
-//	client := nodes.ClientInfo{
-//		NodeIP:   r.Form.Get("NodeIP"),
-//		ClientID: r.Form.Get("ClientID"),
-//	}
-
-//	key := client.CreateKey()
-
-//	webMsg.Client = nodes.GetClientInfo(key)
-//	webMsg.Watcher = nodes.GetWatcherData(key)
-
-//	//通信结构 json格式转换
-//	jsonTypeMsg, err := json.Marshal(webMsg)
-//	if err != nil {
-//		logdebug.Println(logdebug.LevelError, err)
-//		return
-//	}
-
-//	w.Write(jsonTypeMsg)
-
-//	return
-//}
-
-//更新kubeng上的监视器信息
-func updateWatcherInfo(w http.ResponseWriter, r *http.Request) {
-	r.ParseForm()
-	//解析表单
-	var bodyRead []byte = make([]byte, 1024)
-	r.Body.Read(bodyRead)
-
-	//str := byteString(bodyRead)
-	//fmt.Println("the length of str is ", len(str))
-	var recv nodes.WatchManagerCfg
-	//json.Unmarshal([]byte(str), &recv)
-	json.Unmarshal(bodyRead, &recv)
-
-	logdebug.Println(logdebug.LevelInfo, "------与kubeng通讯 更新watcher状态 ----", recv)
-
-	return
-}
-
-//处理
-//func dealWatcherInfo(w http.ResponseWriter, r *http.Request) {
-//	//加载模板....redirect 拿数据 写回....
-//	if r.Method == "GET" {
-//		logdebug.Println(logdebug.LevelInfo, "------重定向 获取数据 返回给JS----", *r)
-
-//		getWatcherInfo(w, r)
-
-//		return
-//	}
-
-//	//response.WriteHeaderAndJson(200, nil, "application/json")
-
-//	updateWatcherInfo(w, r)
-
-//	return
-//}
-
+//处理前端的get请求
 func getWatcherInfo(request *restful.Request, response *restful.Response) {
-	logdebug.Println(logdebug.LevelInfo, "------get watcher info----")
+	logdebug.Println(logdebug.LevelInfo, "=============获取监视器信息=============")
 
 	request.Request.ParseForm()
 
@@ -117,10 +63,11 @@ func getWatcherInfo(request *restful.Request, response *restful.Response) {
 	return
 }
 
+//postWatcherInfo 处理前端POST过来的消息
 func postWatcherInfo(request *restful.Request, response *restful.Response) {
-	webMsg := WebMsg{}
+	webMsg := CfgWebMsg{}
 
-	logdebug.Println(logdebug.LevelInfo, "------与kubeng通讯 更新watcher状态 ----")
+	logdebug.Println(logdebug.LevelInfo, "=============与kubeng通讯 更新watcher状态=============")
 
 	err := request.ReadEntity(&webMsg)
 	if err != nil {
@@ -129,9 +76,12 @@ func postWatcherInfo(request *restful.Request, response *restful.Response) {
 		return
 	}
 
+	//解析成功后 下发给kubveng 并返回错误码...
 	response.WriteHeaderAndJson(200, "Hello World!", "application/json")
 
-	logdebug.Println(logdebug.LevelInfo, "------与kubeng通讯 更新watcher状态 ----", webMsg)
+	logdebug.Println(logdebug.LevelInfo, "=============与kubeng通讯 更新watcher状态 收到的web前端消息内容:", webMsg, "=============")
+
+	return
 }
 
 //测试数据
@@ -163,11 +113,12 @@ func getWatchNamespacesDetailInfo(w http.ResponseWriter, r *http.Request) {
 
 	namespaces = getTestNamespacesDetailInfo()
 
-	logdebug.Println(logdebug.LevelInfo, "***********namespace detailInfo******************", namespaces)
+	logdebug.Println(logdebug.LevelInfo, "=============从后台获取到的租户详细信息:", namespaces, "=============")
 	//通信结构 json格式转换
 	jsonTypeMsg, err := json.Marshal(namespaces)
 	if err != nil {
 		logdebug.Println(logdebug.LevelError, err)
+
 		return
 	}
 
@@ -176,16 +127,9 @@ func getWatchNamespacesDetailInfo(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
-type WebMsg struct {
-	NodeIP   string
-	ClientID string
-
-	WatcherCfg nodes.WatchManagerCfg
-}
-
 //Init 初始化函数
 func (svc *ServiceInfo) Init() {
-	http.HandleFunc("/ngfront/zone/clients/watcher", showWatcherPage)
+	http.HandleFunc("/ngfront/zone/clients/watcher", loadWatcherPage)
 	//http.HandleFunc("/watcher", dealWatcherInfo)
 	http.HandleFunc("/namespaces", getWatchNamespacesDetailInfo)
 
@@ -196,7 +140,7 @@ func (svc *ServiceInfo) Init() {
 		Consumes(restful.MIME_XML, restful.MIME_JSON).
 		Produces(restful.MIME_JSON, restful.MIME_XML) // you can specify this per route as well
 
-	//获取监视管理器配置 GET http://localhost:8888/watchmgr
+	//获取监视管理器配置 GET http://localhost:8888/watcher
 	ws.Route(ws.GET("/").To(getWatcherInfo).
 		// docs
 		Doc("get watch manager config").
@@ -204,12 +148,12 @@ func (svc *ServiceInfo) Init() {
 		Reads(nodes.ClientInfo{}).
 		Returns(200, "OK", nodes.NodeInfo{}))
 
-	//更新监视管理器配置 PUT http://localhost:8888/watchmgr
+	//更新监视管理器配置 PUT http://localhost:8888/watcher
 	ws.Route(ws.POST("/").To(postWatcherInfo).
 		// docs
 		Doc("update watch manager config").
 		Operation("updateWatchManagerConfig").
-		Reads(WebMsg{})) // from the request
+		Reads(CfgWebMsg{})) // from the request
 
 	restful.Add(ws)
 

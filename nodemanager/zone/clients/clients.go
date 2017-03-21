@@ -27,7 +27,7 @@ type webRespMsg struct {
 }
 
 func showClientsPage(w http.ResponseWriter, r *http.Request) {
-	logdebug.Println(logdebug.LevelInfo, "-----加载client页面----")
+	logdebug.Println(logdebug.LevelInfo, "<<<<<<<<<<<<<加载client页面>>>>>>>>>>>>>")
 
 	//加载模板 显示内容是 批量操作client
 	t, err := template.ParseFiles("template/views/nginx/clients.html")
