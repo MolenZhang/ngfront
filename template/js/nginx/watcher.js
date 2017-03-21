@@ -29,16 +29,18 @@ $(document).ready(function () {
 		 $(this).parent().find("img").attr("src",stopSrc);
 		 $(this).attr("disabled",true);
 		 $("#K8sWatcherStatus").empty().append("stop");
+		 alert("stop")
 	 });
 	//开始监控按钮
 	$(document).on('click','.btn-start',function(e){
-		event.stopPropagation();
+		//event.stopPropagation();
 		 var startSrc = '/images/running.gif';
 		 $(this).parent().find("img").attr("src",startSrc);
 		 $(".btn-stop").attr("disabled",false);
 		 $("#K8sWatcherStatus").empty().append("start");
-
+		 alert("start");
 		 watcherSubmit(NodeIPInfo,ClientIDInfo);
+		 
 	 });
 	//进入Nginx配置管理界面
 	$(document).on('click','.btn-toNginx',function(){
@@ -75,7 +77,9 @@ $(document).ready(function () {
 	});
 	
 	//k8s Api 版本  保存按钮
-	$(document).on('click','#KubernetesAPIVersionSaveBtn',function(){
+	$("#KubernetesAPIVersionSaveBtn").unbind().click(function(){
+	//$(document).on('click','#KubernetesAPIVersionSaveBtn',function(){
+		alert("#KubernetesAPIVersionSaveBtn")
 		var changeVal = $("#KubernetesAPIVersionInfo").val();
 		$("#KubernetesAPIVersionOldVal").empty().append(changeVal);
 		var KubernetesMasterHostVal = $("#KubernetesMasterHostOldVal").html();
@@ -83,7 +87,9 @@ $(document).ready(function () {
 		showNamespacesEcharts(KubernetesMasterHostVal,changeVal,JobZoneType)
 	 });
 	//日志打印级别  保存按钮
-	$(document).on('click','#LogPrintLevelSaveBtn',function(){
+	$("#LogPrintLevelInfo").unbind().click(function(){
+	//$(document).on('click','#LogPrintLevelSaveBtn',function(){
+		alert("LogPrintLevelInfo;");
 		var changeVal = $("#LogPrintLevelInfo").val();
 		$("#LogPrintLevelOldVal").empty().append(changeVal);
 	});
@@ -449,7 +455,9 @@ function loadNamespaces(KubernetesMasterHost,KubernetesAPIVersion){
 			
 
 //提交watcher表单
-function watcherSubmit(NodeIPInfo,ClientIDInfo){
+function watcherSubmit(event,NodeIPInfo,ClientIDInfo){
+	//event.stopPropagation();
+	//alert("watcher")
 	var areaIP = "localhost";
 	var areaPort = "port";
 	var submitUrl = "http://"+areaIP+":"+areaPort+"/watcher";
