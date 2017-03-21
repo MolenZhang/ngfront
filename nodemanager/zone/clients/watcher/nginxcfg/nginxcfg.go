@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"ngfront/logdebug"
 	//"ngfront/nodemanager/nodes"
+	"github.com/emicklei/go-restful"
 )
 
 //UserDefinedNginxRules 用户自定义nginx规则
@@ -71,14 +72,63 @@ func showNginxCfgPage(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
-func dealNginxCfg(w http.ResponseWriter, r *http.Request) {
+func (svc *ServiceInfo) getNginxInfo(request *restful.Request, response *restful.Response) {
 
+	logdebug.Println(logdebug.LevelInfo, "<<<<<<<<<<<<get nginxCfg>>>>>>>>>>>>")
+}
+
+func (svc *ServiceInfo) postNginxInfo(request *restful.Request, response *restful.Response) {
+
+	logdebug.Println(logdebug.LevelInfo, "<<<<<<<<<<<<post nginxCfg>>>>>>>>>>>>")
+}
+
+func (svc *ServiceInfo) delNginxInfo(request *restful.Request, response *restful.Response) {
+
+	logdebug.Println(logdebug.LevelInfo, "<<<<<<<<<<<<del nginxCfg>>>>>>>>>>>>")
+}
+
+func (svc *ServiceInfo) putNginxInfo(request *restful.Request, response *restful.Response) {
+
+	logdebug.Println(logdebug.LevelInfo, "<<<<<<<<<<<<put nginxCfg>>>>>>>>>>>>")
 }
 
 //Init 初始化函数
 func (svc *ServiceInfo) Init() {
 	http.HandleFunc("/ngfront/zone/clients/watcher/nginxcfg", showNginxCfgPage)
-	http.HandleFunc("/nginxcfg", dealNginxCfg)
+
+	ws := new(restful.WebService)
+
+	ws.
+		Path("/nginxcfg").
+		Consumes(restful.MIME_XML, restful.MIME_JSON).
+		Produces(restful.MIME_JSON, restful.MIME_XML) // you can specify this per route as well
+	//
+	ws.Route(ws.GET("/").To(svc.getNginxInfo).
+		// docs
+		Doc("get nginx manager config").
+		Operation("findNginxManagerConfig"))
+	//		Reads(nodes.ClientInfo{}).
+	//		Returns(200, "OK", nodes.NodeInfo{}))
+	//
+	ws.Route(ws.POST("/").To(svc.postNginxInfo).
+		// docs
+		Doc("post nginx manager config").
+		Operation("postNginxManagerConfig").
+		Reads(Config{})) // from the request
+	//
+	ws.Route(ws.PUT("/").To(svc.putNginxInfo).
+		// docs
+		Doc("put nginx manager config").
+		Operation("putNginxManagerConfig").
+		Reads(Config{})) // from the request
+	//
+	ws.Route(ws.DELETE("/").To(svc.delNginxInfo).
+		// docs
+		Doc("delete nginx manager config").
+		Operation("deleteNginxManagerConfig").
+		Reads(Config{})) // from the request
+
+	restful.Add(ws)
 
 	return
 }
