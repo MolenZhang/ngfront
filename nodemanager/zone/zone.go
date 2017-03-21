@@ -13,21 +13,6 @@ import (
 type ServiceInfo struct {
 }
 
-func showHomePage(w http.ResponseWriter, r *http.Request) {
-	logdebug.Println(logdebug.LevelInfo, "-----加载主页----")
-
-	t, err := template.ParseFiles("template/views/nginx/area.html")
-	if err != nil {
-		logdebug.Println(logdebug.LevelError, err)
-
-		return
-	}
-
-	t.Execute(w, nil)
-
-	return
-}
-
 //client 用于展示的客户端信息数据结构
 type client struct {
 	NodeIP   string
@@ -60,6 +45,21 @@ func convertZoneType(zoneType string) int {
 
 	//非法值
 	return maxZone
+}
+
+func loadHomePage(w http.ResponseWriter, r *http.Request) {
+	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<<加载主页>>>>>>>>>>>>>")
+
+	t, err := template.ParseFiles("template/views/nginx/area.html")
+	if err != nil {
+		logdebug.Println(logdebug.LevelError, err)
+
+		return
+	}
+
+	t.Execute(w, nil)
+
+	return
 }
 
 func getZoneInfo(w http.ResponseWriter, r *http.Request) {
@@ -109,7 +109,7 @@ func (svc *ServiceInfo) Init() {
 	http.Handle("/plugins/", http.FileServer(http.Dir("template")))
 	http.Handle("/images/", http.FileServer(http.Dir("template")))
 
-	http.HandleFunc("/ngfront", showHomePage)
+	http.HandleFunc("/ngfront", loadHomePage)
 	http.HandleFunc("/ngfront/zone", getZoneInfo)
 
 	return

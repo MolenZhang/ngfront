@@ -29,30 +29,36 @@ type NamespacesDetailInfo struct {
 	NamespacesAppList [][]string
 }
 
+//EndpointsList epList数据结构
 type EndpointsList struct {
 	Items []EndpointObject
 }
 
+//EndpointObject 单个ep对象结构
 type EndpointObject struct {
 	Metadata EndpointMetadata
 	Subsets  []EndpointSubset
 }
 
+//EndpointMetadata ep元数据
 type EndpointMetadata struct {
 	Name      string
 	Namespace string
 	Labels    map[string]string
 }
 
+//EndpointSubset ep subesets
 type EndpointSubset struct {
 	Addresses []AddressObject
 	Ports     []PortsObject
 }
 
+//AddressObject address对象
 type AddressObject struct {
 	IP string
 }
 
+//PortsObject port对象
 type PortsObject struct {
 	Port int
 }
