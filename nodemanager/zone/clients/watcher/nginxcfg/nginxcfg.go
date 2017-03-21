@@ -1,13 +1,13 @@
 package nginxcfg
 
 import (
-	//"encoding/json"
-	"html/template"
-	//"io/ioutil"
-	"net/http"
-	"ngfront/logdebug"
-	//"ngfront/nodemanager/nodes"
+	"encoding/json"
 	"github.com/emicklei/go-restful"
+	"html/template"
+	"net/http"
+	"ngfront/communicate"
+	"ngfront/logdebug"
+	"ngfront/nodemanager/nodes"
 )
 
 //UserDefinedNginxRules 用户自定义nginx规则
@@ -58,6 +58,13 @@ type Config struct {
 type ServiceInfo struct {
 }
 
+type AllAppCfgs struct {
+	allK8sAppCfgsMap map[string]map[string]Config
+	allExternCfgsMap map[string]map[string]Config
+}
+
+var allAppCfgs AllAppCfgs
+
 func showNginxCfgPage(w http.ResponseWriter, r *http.Request) {
 	logdebug.Println(logdebug.LevelInfo, "<<<<<<<<<<<<<加载nginx页面>>>>>>>>>>>>>")
 	//加载模板 显示内容是 批量操作nginx配置
@@ -75,6 +82,42 @@ func showNginxCfgPage(w http.ResponseWriter, r *http.Request) {
 func (svc *ServiceInfo) getNginxInfo(request *restful.Request, response *restful.Response) {
 
 	logdebug.Println(logdebug.LevelInfo, "<<<<<<<<<<<<get nginxCfg>>>>>>>>>>>>")
+	//
+	request.Request.ParseForm()
+	client := nodes.ClientInfo{
+		NodeIP:   request.Request.Form.Get("NodeIP"),
+		ClientID: request.Request.Form.Get("ClientID"),
+	}
+	//
+	key := client.CreateKey()
+	clientInfo := nodes.GetClientInfo(key)
+
+	getK8sAppCfgsUrl := "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.NginxCfgsAPIServerPath + "/k8s"
+	resp, err := communicate.SendRequestByJSON(communicate.GET, getK8sAppCfgsUrl, nil)
+	if err != nil {
+		logdebug.Println(logdebug.LevelError, err)
+		return
+	}
+
+	if err = json.Unmarshal(resp, &allAppCfgs.allK8sAppCfgsMap); err != nil {
+		logdebug.Println(logdebug.LevelError, err)
+		return
+	}
+
+	getExternAppcfgsUrl := "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.NginxCfgsAPIServerPath + "/extern"
+	resp, err = communicate.SendRequestByJSON(communicate.GET, getExternAppcfgsUrl, nil)
+	if err != nil {
+		logdebug.Println(logdebug.LevelError, err)
+		return
+	}
+
+	if err = json.Unmarshal(resp, &allAppCfgs.allExternCfgsMap); err != nil {
+		logdebug.Println(logdebug.LevelError, err)
+		return
+	}
+	logdebug.Println(logdebug.LevelDebug, allAppCfgs)
+	response.WriteHeaderAndJson(200, allAppCfgs, "application/json")
+
 }
 
 func (svc *ServiceInfo) postNginxInfo(request *restful.Request, response *restful.Response) {
