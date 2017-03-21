@@ -148,6 +148,8 @@ func AddWatcherData(key string, watcher WatchManagerCfg) {
 
 	defer allNodesInfo.mutexLock.Unlock()
 
+	//logdebug.Println(logdebug.LevelDebug, "----add watcher data---", watcher)
+
 	currentNodeInfo := allNodesInfo.allNodesInfoMap[key]
 	currentNodeInfo.Watcher = watcher
 	allNodesInfo.allNodesInfoMap[key] = currentNodeInfo
@@ -184,6 +186,8 @@ func GetAllNodesInfo() (allNodes map[string]NodeInfo) {
 	defer allNodesInfo.mutexLock.Unlock()
 
 	allNodes = allNodesInfo.allNodesInfoMap
+
+	//logdebug.Println(logdebug.LevelDebug, "---get all nodes---", allNodes)
 
 	return
 }

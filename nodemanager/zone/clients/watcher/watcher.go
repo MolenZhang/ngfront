@@ -6,6 +6,7 @@ import (
 	"html/template"
 	//"io/ioutil"
 	"net/http"
+	"ngfront/communicate"
 	"ngfront/logdebug"
 	"ngfront/nodemanager/nodes"
 
@@ -21,6 +22,13 @@ type CfgWebMsg struct {
 
 //ServiceInfo 服务信息
 type ServiceInfo struct {
+}
+
+//ResponseBody 用于衡量每次restful请求的执行结果(通常是PUT)
+type ResponseBody struct {
+	Result       bool
+	ErrorMessage string
+	ErrCode      int32
 }
 
 //加载界面
@@ -41,7 +49,7 @@ func loadWatcherPage(w http.ResponseWriter, r *http.Request) {
 
 //处理前端的get请求
 func getWatcherInfo(request *restful.Request, response *restful.Response) {
-	logdebug.Println(logdebug.LevelDebug, "=============获取监视器信息=============")
+	logdebug.Println(logdebug.LevelDebug, "获取监视器信息")
 
 	request.Request.ParseForm()
 
@@ -63,11 +71,28 @@ func getWatcherInfo(request *restful.Request, response *restful.Response) {
 	return
 }
 
+func (webMsg *CfgWebMsg) getWatcherAPIServerURL() (watcherAPIServerURL string) {
+	client := nodes.ClientInfo{
+		NodeIP:   webMsg.NodeIP,
+		ClientID: webMsg.ClientID,
+	}
+
+	key := client.CreateKey()
+
+	clientInfo := nodes.GetClientInfo(key)
+
+	watcherAPIServerURL = "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.WatchManagerAPIServerPath
+
+	//logdebug.Println(logdebug.LevelDebug, "=watcherAPIServerURL URL:", watcherAPIServerURL, "=")
+
+	return
+}
+
 //postWatcherInfo 处理前端POST过来的消息
 func postWatcherInfo(request *restful.Request, response *restful.Response) {
 	webMsg := CfgWebMsg{}
 
-	logdebug.Println(logdebug.LevelDebug, "=============与kubeng通讯 更新watcher状态=============")
+	logdebug.Println(logdebug.LevelDebug, "与kubeng通讯 更新watcher状态")
 
 	err := request.ReadEntity(&webMsg)
 	if err != nil {
@@ -76,10 +101,14 @@ func postWatcherInfo(request *restful.Request, response *restful.Response) {
 		return
 	}
 
+	updateWatcherCfgURL := webMsg.getWatcherAPIServerURL()
+
+	communicate.SendRequestByJSON(communicate.POST, updateWatcherCfgURL, webMsg.WatcherCfg)
+
 	//解析成功后 下发给kubveng 并返回错误码...
 	response.WriteHeaderAndJson(200, "Hello World!", "application/json")
 
-	logdebug.Println(logdebug.LevelDebug, "=============与kubeng通讯 更新watcher状态 收到的web前端消息内容:", webMsg, "=============")
+	logdebug.Println(logdebug.LevelDebug, "与kubeng通讯 更新watcher状态 收到的web前端消息内容:", webMsg)
 
 	return
 }
@@ -111,9 +140,9 @@ func getWatchNamespacesDetailInfo(w http.ResponseWriter, r *http.Request) {
 
 	namespaces := getNamespacesDetailInfoFromK8s(getNamespacesURL, jobZoneType)
 
-	namespaces = getTestNamespacesDetailInfo()
+	//namespaces = getTestNamespacesDetailInfo()
 
-	logdebug.Println(logdebug.LevelDebug, "=============从后台获取到的租户详细信息:", namespaces, "=============")
+	logdebug.Println(logdebug.LevelDebug, "从后台获取到的租户详细信息:", namespaces)
 	//通信结构 json格式转换
 	jsonTypeMsg, err := json.Marshal(namespaces)
 	if err != nil {

@@ -230,7 +230,7 @@ $(document).ready(function () {
 										'</tr>'+
 										'<tr>'+
 											'<td class="firstTd">工作区类型</td>'+
-											'<td>'+JobZoneType+'</td>'+
+											'<td><span id="JobZoneTypeOldVal">'+JobZoneType+'</span></td>'+
 										'</tr>'+
 										'<tr>'+
 											'<td class="firstTd">nginx监听端口</td>'+
