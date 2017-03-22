@@ -208,7 +208,7 @@ func (svc *ServiceInfo) delNginxInfo(request *restful.Request, response *restful
 		":" +
 		delNginxCfg.ListenPort
 
-	_, err := communicate.SendRequestByJSON(communicate.PUT, appCfgURL, delNginxCfg)
+	_, err := communicate.SendRequestByJSON(communicate.DELETE, appCfgURL, delNginxCfg)
 	if err != nil {
 		logdebug.Println(logdebug.LevelError, err)
 		return
