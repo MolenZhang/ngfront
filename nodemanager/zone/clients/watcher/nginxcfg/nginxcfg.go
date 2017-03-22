@@ -145,13 +145,15 @@ func (svc *ServiceInfo) getNginxInfo(request *restful.Request, response *restful
 
 	logdebug.Println(logdebug.LevelDebug, allAppCfgs.allAppCfgsMap)
 
-	err = response.WriteHeaderAndJson(200, allAppCfgs.allAppCfgsMap, "application/json")
+	response.WriteHeaderAndJson(200, allAppCfgs.allAppCfgsMap, "application/json")
 
 }
 
-func (svc *ServiceInfo) postNginxInfo(request *restful.Request, response *restful.Response) {
+// put
+func (svc *ServiceInfo) updateNginxInfo(request *restful.Request, response *restful.Response) {
 
 	logdebug.Println(logdebug.LevelInfo, "<<<<<<<<<<<<post nginxCfg>>>>>>>>>>>>")
+
 }
 
 func (svc *ServiceInfo) delNginxInfo(request *restful.Request, response *restful.Response) {
@@ -159,9 +161,41 @@ func (svc *ServiceInfo) delNginxInfo(request *restful.Request, response *restful
 	logdebug.Println(logdebug.LevelInfo, "<<<<<<<<<<<<del nginxCfg>>>>>>>>>>>>")
 }
 
-func (svc *ServiceInfo) putNginxInfo(request *restful.Request, response *restful.Response) {
-
+//post
+func (svc *ServiceInfo) createNginxInfo(request *restful.Request, response *restful.Response) {
 	logdebug.Println(logdebug.LevelInfo, "<<<<<<<<<<<<put nginxCfg>>>>>>>>>>>>")
+	createNginxCfg := Config{}
+
+	request.Request.ParseForm()
+	client := nodes.ClientInfo{
+		NodeIP:   request.Request.Form.Get("NodeIP"),
+		ClientID: request.Request.Form.Get("ClientID"),
+	}
+	//
+	key := client.CreateKey()
+	clientInfo := nodes.GetClientInfo(key)
+	if err := request.ReadEntity(&createNginxCfg); err != nil {
+		logdebug.Println(logdebug.LevelError, err)
+		return
+	}
+	if "k8s" == createNginxCfg.AppSrcType {
+		createK8sAppCfgUrl := "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.NginxCfgsAPIServerPath + "/k8s"
+		_, err := communicate.SendRequestByJSON(communicate.POST, createK8sAppCfgUrl, createNginxCfg)
+		if err != nil {
+			logdebug.Println(logdebug.LevelError, err)
+			return
+		}
+		return
+	}
+
+	createExternAppCfgUrl := "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.NginxCfgsAPIServerPath + "/extern"
+	_, err := communicate.SendRequestByJSON(communicate.POST, createExternAppCfgUrl, createNginxCfg)
+	if err != nil {
+		logdebug.Println(logdebug.LevelError, err)
+		return
+	}
+	return
+
 }
 
 //Init 初始化函数
@@ -182,13 +216,13 @@ func (svc *ServiceInfo) Init() {
 	//		Reads(nodes.ClientInfo{}).
 	//Returns(200, "OK", AllAppCfgs{}))
 	//
-	ws.Route(ws.POST("/").To(svc.postNginxInfo).
+	ws.Route(ws.POST("/").To(svc.createNginxInfo).
 		// docs
 		Doc("post nginx manager config").
 		Operation("postNginxManagerConfig").
 		Reads(Config{})) // from the request
 	//
-	ws.Route(ws.PUT("/").To(svc.putNginxInfo).
+	ws.Route(ws.PUT("/").To(svc.updateNginxInfo).
 		// docs
 		Doc("put nginx manager config").
 		Operation("putNginxManagerConfig").
