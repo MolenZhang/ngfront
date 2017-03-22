@@ -173,26 +173,53 @@ func (svc *ServiceInfo) getNginxInfo(request *restful.Request, response *restful
 
 // put
 func (svc *ServiceInfo) updateNginxInfo(request *restful.Request, response *restful.Response) {
-
 	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<post nginxCfg>>>>>>>>>>>>")
+
+	URL, updateNginxCfg := getCommunicateInfo(request, response)
+	appCfgURL := URL +
+		"/" +
+		updateNginxCfg.Namespace +
+		"-" +
+		updateNginxCfg.AppName +
+		"/" +
+		updateNginxCfg.ServerName +
+		":" +
+		updateNginxCfg.ListenPort
+
+	_, err := communicate.SendRequestByJSON(communicate.PUT, appCfgURL, updateNginxCfg)
+	if err != nil {
+		logdebug.Println(logdebug.LevelError, err)
+		return
+	}
 }
 
 func (svc *ServiceInfo) delNginxInfo(request *restful.Request, response *restful.Response) {
 
 	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<del nginxCfg>>>>>>>>>>>>")
+
+	URL, delNginxCfg := getCommunicateInfo(request, response)
+	appCfgURL := URL +
+		"/" +
+		delNginxCfg.Namespace +
+		"-" +
+		delNginxCfg.AppName +
+		"/" +
+		delNginxCfg.ServerName +
+		":" +
+		delNginxCfg.ListenPort
+
+	_, err := communicate.SendRequestByJSON(communicate.PUT, appCfgURL, delNginxCfg)
+	if err != nil {
+		logdebug.Println(logdebug.LevelError, err)
+		return
+	}
 }
 
 //post
 func (svc *ServiceInfo) createNginxInfo(request *restful.Request, response *restful.Response) {
 	logdebug.Println(logdebug.LevelInfo, "<<<<<<<<<<<<put nginxCfg>>>>>>>>>>>>")
-	createNginxCfg := Config{}
 
-	if err := request.ReadEntity(&createNginxCfg); err != nil {
-		logdebug.Println(logdebug.LevelError, err)
-		return
-	}
-
-	appCfgURL := getAppCfgURL(request, response, createNginxCfg.AppSrcType)
+	appCfgURL, createNginxCfg := getCommunicateInfo(request, response)
 
 	_, err := communicate.SendRequestByJSON(communicate.POST, appCfgURL, createNginxCfg)
 	if err != nil {
@@ -242,14 +269,21 @@ func (svc *ServiceInfo) Init() {
 	return
 }
 
-func getAppCfgURL(request *restful.Request, response *restful.Response, appSrc string) string {
+func getCommunicateInfo(request *restful.Request, response *restful.Response) (url string, nginxCfg Config) {
+
+	if err := request.ReadEntity(&nginxCfg); err != nil {
+		logdebug.Println(logdebug.LevelError, err)
+		return
+	}
+
 	request.Request.ParseForm()
 	client := nodes.ClientInfo{
 		NodeIP:   request.Request.Form.Get("NodeIP"),
 		ClientID: request.Request.Form.Get("ClientID"),
 	}
-	//
+
 	key := client.CreateKey()
 	clientInfo := nodes.GetClientInfo(key)
-	return "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.NginxCfgsAPIServerPath + "/" + appSrc
+	url = "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.NginxCfgsAPIServerPath + "/" + nginxCfg.AppSrcType
+	return
 }
