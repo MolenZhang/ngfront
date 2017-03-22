@@ -80,7 +80,7 @@ func showNginxCfgPage(w http.ResponseWriter, r *http.Request) {
 }
 
 //从kubeng获取nginx配置集合
-func getNginxCfgsListFromKubeNG(getCfgsURL string) (cfgsList []Config) {
+func getNginxCfgsListFromKubeNG(getCfgsURL string, appSrcType string) (cfgsList []Config) {
 	//logdebug.Println(logdebug.LevelDebug, "URL= !", getCfgsURL)
 
 	resp, err := communicate.SendRequestByJSON(communicate.GET, getCfgsURL, nil)
@@ -99,7 +99,8 @@ func getNginxCfgsListFromKubeNG(getCfgsURL string) (cfgsList []Config) {
 
 	for _, eachAppCfgs := range allAppsCfgs {
 		for _, singleCfg := range eachAppCfgs {
-			//遍历出最小单位的一条配置 追加至数组中
+			//遍历出最小单位的一条配置 追加至数组中 添加app来源类型字段
+			singleCfg.AppSrcType = appSrcType
 			cfgsList = append(cfgsList, singleCfg)
 		}
 	}
@@ -122,11 +123,24 @@ func (svc *ServiceInfo) getNginxInfo(request *restful.Request, response *restful
 	key := client.CreateKey()
 	clientInfo := nodes.GetClientInfo(key)
 
-	getK8sAppCfgsURL := "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.NginxCfgsAPIServerPath + "/k8s"
-	getExternAppCfgsURL := "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.NginxCfgsAPIServerPath + "/extern"
+	getK8sAppCfgsURL := "http://" +
+		clientInfo.NodeIP +
+		clientInfo.APIServerPort +
+		"/" +
+		clientInfo.NginxCfgsAPIServerPath +
+		"/" +
+		AppSrcTypeKubernetes
 
-	k8sNginxCfgsList := getNginxCfgsListFromKubeNG(getK8sAppCfgsURL)
-	externNginxCfgsList := getNginxCfgsListFromKubeNG(getExternAppCfgsURL)
+	getExternAppCfgsURL := "http://" +
+		clientInfo.NodeIP +
+		clientInfo.APIServerPort +
+		"/" +
+		clientInfo.NginxCfgsAPIServerPath +
+		"/" +
+		AppSrcTypeExtern
+
+	k8sNginxCfgsList := getNginxCfgsListFromKubeNG(getK8sAppCfgsURL, AppSrcTypeKubernetes)
+	externNginxCfgsList := getNginxCfgsListFromKubeNG(getExternAppCfgsURL, AppSrcTypeExtern)
 
 	wholeAppCfgs := WholeAppNginxCfgs{
 		K8sNginxCfgsList:    k8sNginxCfgsList,
