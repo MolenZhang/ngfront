@@ -1,12 +1,13 @@
 package nginxcfg
 
 import (
-	//"encoding/json"
+	"encoding/json"
 	"html/template"
-	//"io/ioutil"
 	"net/http"
+	"ngfront/communicate"
 	"ngfront/logdebug"
-	//"ngfront/nodemanager/nodes"
+	"ngfront/nodemanager/nodes"
+
 	"github.com/emicklei/go-restful"
 )
 
@@ -29,8 +30,8 @@ const (
 	AppSrcTypeExtern     = "extern"
 )
 
-//Config nginx 配置
-type Config struct {
+//KubeNGConfig nginx 配置 用于从kubeng获取json格式数据
+type KubeNGConfig struct {
 	ServerName            string                //nginx配置server_name选项(域名 IP方式均可)
 	ListenPort            string                //nginx配置listen选项
 	RealServerPath        string                //真实提供服务的路径
@@ -51,15 +52,65 @@ type Config struct {
 	LogRule               LogRulesInfo          //日志规则相关信息
 	DeleteUserCfgs        bool                  //应用停止时 是否删除个性化配置
 	IsDefaultCfg          bool                  //本条配置是否是默认配置
-	AppSrcType            string                //服务来源类型 k8s 或者 extern 根据访问的路径填充
+	AppSrcType            string                //服务来源类型 k8s 或者 extern 根据访问的路径填充(暂未启用)
+}
+
+//UserRules 用户自定义的规则结构
+type UserRules struct {
+	RuleCMD   string
+	RuleParam string
+}
+
+//JSUserDefinedNginxRules js所需配置结构
+type JSUserDefinedNginxRules struct {
+	UserRuleSet []UserRules
+}
+
+//WebConfig nginx 配置 用于与js通讯 (json格式数据)
+type WebConfig struct {
+	ServerName            string                  //nginx配置server_name选项(域名 IP方式均可)
+	ListenPort            string                  //nginx配置listen选项
+	RealServerPath        string                  //真实提供服务的路径
+	Namespace             string                  //namespace租户 应该从k8s集群获得
+	AppName               string                  //app名字 用于制作路径 文件名等 应从k8s集群获得
+	Location              string                  //nginx配置loction选项(相当于原来的proxy_path)
+	ProxyRedirectSrcPath  string                  //nginx配置proxy_redirect选项 源路径
+	ProxyRedirectDestPath string                  //nginx配置proxy_redirect选项 目路径
+	UpstreamIPs           []string                //nginx配置upstream IP (不支持界面配置该选项 但支持获取该选项)
+	UpstreamPort          string                  //nginx配置upstream Port (不支持界面配置该选项 但支持获取该选项)
+	IsUpstreamIPHash      bool                    //是否需要ip_hash
+	IsAppActivity         bool                    //app活动位
+	OperationType         string                  //操作类型
+	IsK8sNotify           bool                    //k8s通知位
+	UpstreamUserRules     JSUserDefinedNginxRules //保留字段 用于用户自定义nginx规则
+	ServerUserRules       JSUserDefinedNginxRules //保留字段 用于用户自定义nginx规则
+	LocationUserRules     JSUserDefinedNginxRules //保留字段 用于用户自定义nginx规则
+	LogRule               LogRulesInfo            //日志规则相关信息
+	DeleteUserCfgs        bool                    //应用停止时 是否删除个性化配置
+	IsDefaultCfg          bool                    //本条配置是否是默认配置
+	AppSrcType            string                  //服务来源类型 k8s 或者 extern 根据访问的路径填充(暂未启用)
 }
 
 //ServiceInfo 服务信息
 type ServiceInfo struct {
 }
 
+//NginxCfgsList 所有的k8s/extern nginx 配置列表
+type NginxCfgsList struct {
+	CfgType  string
+	CfgsList []WebConfig
+}
+
+//WebNginxCfgs 返回给web端的nginx配置信息
+type WebNginxCfgs struct {
+	NodeIP        string
+	ClientID      string
+	APIServerPort string
+	NginxList     []NginxCfgsList
+}
+
 func showNginxCfgPage(w http.ResponseWriter, r *http.Request) {
-	logdebug.Println(logdebug.LevelInfo, "<<<<<<<<<<<<<加载nginx页面>>>>>>>>>>>>>")
+	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<<加载nginx页面>>>>>>>>>>>>>")
 	//加载模板 显示内容是 批量操作nginx配置
 	t, err := template.ParseFiles("template/views/nginx/nginxcfg.html")
 	if err != nil {
@@ -72,24 +123,215 @@ func showNginxCfgPage(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
+//从kubeng数据结构中提取出部分字段 转换成js所需的数据结构
+func (kubeNGCfg *KubeNGConfig) convertToWebCfg() (webCfg WebConfig) {
+	webCfg = WebConfig{
+		ServerName:            kubeNGCfg.ServerName,
+		ListenPort:            kubeNGCfg.ListenPort,
+		RealServerPath:        kubeNGCfg.RealServerPath,
+		Namespace:             kubeNGCfg.Namespace,
+		AppName:               kubeNGCfg.AppName,
+		Location:              kubeNGCfg.Location,
+		ProxyRedirectSrcPath:  kubeNGCfg.ProxyRedirectSrcPath,
+		ProxyRedirectDestPath: kubeNGCfg.ProxyRedirectDestPath,
+		UpstreamIPs:           kubeNGCfg.UpstreamIPs,
+		UpstreamPort:          kubeNGCfg.UpstreamPort,
+		IsUpstreamIPHash:      kubeNGCfg.IsUpstreamIPHash,
+		IsAppActivity:         kubeNGCfg.IsAppActivity,
+		OperationType:         kubeNGCfg.OperationType,
+		IsK8sNotify:           kubeNGCfg.IsK8sNotify,
+		LogRule:               kubeNGCfg.LogRule,
+		DeleteUserCfgs:        kubeNGCfg.DeleteUserCfgs,
+		IsDefaultCfg:          kubeNGCfg.IsDefaultCfg,
+		AppSrcType:            kubeNGCfg.AppSrcType,
+	}
+
+	for ruleCMD, ruleParams := range kubeNGCfg.UpstreamUserRules.RulesSet {
+		for _, ruleParam := range ruleParams {
+			webCfg.UpstreamUserRules.UserRuleSet = append(webCfg.UpstreamUserRules.UserRuleSet, UserRules{
+				RuleCMD:   ruleCMD,
+				RuleParam: ruleParam,
+			})
+		}
+	}
+
+	for ruleCMD, ruleParams := range kubeNGCfg.ServerUserRules.RulesSet {
+		for _, ruleParam := range ruleParams {
+			webCfg.ServerUserRules.UserRuleSet = append(webCfg.ServerUserRules.UserRuleSet, UserRules{
+				RuleCMD:   ruleCMD,
+				RuleParam: ruleParam,
+			})
+		}
+	}
+
+	for ruleCMD, ruleParams := range kubeNGCfg.LocationUserRules.RulesSet {
+		for _, ruleParam := range ruleParams {
+			webCfg.LocationUserRules.UserRuleSet = append(webCfg.LocationUserRules.UserRuleSet, UserRules{
+				RuleCMD:   ruleCMD,
+				RuleParam: ruleParam,
+			})
+		}
+	}
+
+	return
+}
+
+//从kubeng获取nginx配置集合
+func getNginxCfgsListFromKubeNG(getCfgsURL string, appSrcType string) (cfgsList []WebConfig) {
+	//logdebug.Println(logdebug.LevelDebug, "URL= !", getCfgsURL)
+
+	resp, err := communicate.SendRequestByJSON(communicate.GET, getCfgsURL, nil)
+	if err != nil {
+		logdebug.Println(logdebug.LevelError, err)
+
+		return
+	}
+
+	allAppsCfgs := make(map[string]map[string]KubeNGConfig, 0)
+	if err = json.Unmarshal(resp, &allAppsCfgs); err != nil {
+		logdebug.Println(logdebug.LevelError, err)
+
+		return
+	}
+
+	for _, eachAppCfgs := range allAppsCfgs {
+		for _, singleCfg := range eachAppCfgs {
+			//遍历出最小单位的一条配置 追加至数组中 添加app来源类型字段
+			singleCfg.AppSrcType = appSrcType
+			webCfg := singleCfg.convertToWebCfg()
+			//组织 WebConfig 结构
+			cfgsList = append(cfgsList, webCfg)
+		}
+	}
+
+	logdebug.Println(logdebug.LevelDebug, "--------cfgsList = ", cfgsList)
+
+	return
+}
+
 func (svc *ServiceInfo) getNginxInfo(request *restful.Request, response *restful.Response) {
+	logdebug.Println(logdebug.LevelDebug, "获取完整的app nginx配置集合!")
 
-	logdebug.Println(logdebug.LevelInfo, "<<<<<<<<<<<<get nginxCfg>>>>>>>>>>>>")
+	request.Request.ParseForm()
+
+	client := nodes.ClientInfo{
+		NodeIP:   request.Request.Form.Get("NodeIP"),
+		ClientID: request.Request.Form.Get("ClientID"),
+	}
+
+	key := client.CreateKey()
+	clientInfo := nodes.GetClientInfo(key)
+
+	getK8sAppCfgsURL := "http://" +
+		clientInfo.NodeIP +
+		clientInfo.APIServerPort +
+		"/" +
+		clientInfo.NginxCfgsAPIServerPath +
+		"/" +
+		AppSrcTypeKubernetes
+
+	getExternAppCfgsURL := "http://" +
+		clientInfo.NodeIP +
+		clientInfo.APIServerPort +
+		"/" +
+		clientInfo.NginxCfgsAPIServerPath +
+		"/" +
+		AppSrcTypeExtern
+
+	webAppCfgs := WebNginxCfgs{
+		NodeIP:        clientInfo.NodeIP,
+		ClientID:      client.ClientID,
+		APIServerPort: clientInfo.APIServerPort,
+	}
+
+	k8sCfgList := NginxCfgsList{
+		CfgType:  AppSrcTypeKubernetes,
+		CfgsList: getNginxCfgsListFromKubeNG(getK8sAppCfgsURL, AppSrcTypeKubernetes),
+	}
+
+	externCfgList := NginxCfgsList{
+		CfgType:  AppSrcTypeExtern,
+		CfgsList: getNginxCfgsListFromKubeNG(getExternAppCfgsURL, AppSrcTypeExtern),
+	}
+
+	webAppCfgs.NginxList = append(webAppCfgs.NginxList, k8sCfgList)
+	webAppCfgs.NginxList = append(webAppCfgs.NginxList, externCfgList)
+
+	response.WriteHeaderAndJson(200, webAppCfgs, "application/json")
+
+	return
 }
 
-func (svc *ServiceInfo) postNginxInfo(request *restful.Request, response *restful.Response) {
+// put
+func (svc *ServiceInfo) updateNginxCfg(request *restful.Request, response *restful.Response) {
+	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<post nginxCfg>>>>>>>>>>>>")
 
-	logdebug.Println(logdebug.LevelInfo, "<<<<<<<<<<<<post nginxCfg>>>>>>>>>>>>")
+	URL, updateNginxCfg := getCommunicateInfo(request, response)
+	appCfgURL := URL +
+		"/" +
+		updateNginxCfg.Namespace +
+		"-" +
+		updateNginxCfg.AppName +
+		"/" +
+		updateNginxCfg.ServerName +
+		":" +
+		updateNginxCfg.ListenPort
+
+	_, err := communicate.SendRequestByJSON(communicate.PUT, appCfgURL, updateNginxCfg)
+	if err != nil {
+		logdebug.Println(logdebug.LevelError, err)
+		return
+	}
 }
 
-func (svc *ServiceInfo) delNginxInfo(request *restful.Request, response *restful.Response) {
+func (svc *ServiceInfo) deleteSingleNginxCfg(request *restful.Request, response *restful.Response) {
 
-	logdebug.Println(logdebug.LevelInfo, "<<<<<<<<<<<<del nginxCfg>>>>>>>>>>>>")
+	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<del Single nginxCfg>>>>>>>>>>>>")
+
+	URL, delSingleNginxCfg := getCommunicateInfo(request, response)
+	appCfgURL := URL +
+		"/" +
+		delSingleNginxCfg.Namespace +
+		"-" +
+		delSingleNginxCfg.AppName +
+		"/" +
+		delSingleNginxCfg.ServerName +
+		":" +
+		delSingleNginxCfg.ListenPort
+
+	_, err := communicate.SendRequestByJSON(communicate.DELETE, appCfgURL, delSingleNginxCfg)
+	if err != nil {
+		logdebug.Println(logdebug.LevelError, err)
+		return
+	}
 }
 
-func (svc *ServiceInfo) putNginxInfo(request *restful.Request, response *restful.Response) {
-
+//post
+func (svc *ServiceInfo) createNginxCfg(request *restful.Request, response *restful.Response) {
 	logdebug.Println(logdebug.LevelInfo, "<<<<<<<<<<<<put nginxCfg>>>>>>>>>>>>")
+	appCfgURL, createNginxCfg := getCommunicateInfo(request, response)
+
+	_, err := communicate.SendRequestByJSON(communicate.POST, appCfgURL, createNginxCfg)
+	if err != nil {
+		logdebug.Println(logdebug.LevelError, err)
+		return
+	}
+}
+
+func (svc *ServiceInfo) deleteAllNginxCfgs(request *restful.Request, response *restful.Response) {
+	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<del All nginxCfgs>>>>>>>>>>>>")
+
+	URL, deleteAllNginxCfgs := getCommunicateInfo(request, response)
+	appCfgURL := URL +
+		"/" +
+		deleteAllNginxCfgs.Namespace +
+		"-" +
+		deleteAllNginxCfgs.AppName
+	_, err := communicate.SendRequestByJSON(communicate.DELETE, appCfgURL, nil)
+	if err != nil {
+		logdebug.Println(logdebug.LevelError, err)
+		return
+	}
 }
 
 //Init 初始化函数
@@ -108,27 +350,51 @@ func (svc *ServiceInfo) Init() {
 		Doc("get nginx manager config").
 		Operation("findNginxManagerConfig"))
 	//		Reads(nodes.ClientInfo{}).
-	//		Returns(200, "OK", nodes.NodeInfo{}))
+	//Returns(200, "OK", AllAppCfgs{}))
 	//
-	ws.Route(ws.POST("/").To(svc.postNginxInfo).
+	ws.Route(ws.POST("/").To(svc.createNginxCfg).
 		// docs
 		Doc("post nginx manager config").
 		Operation("postNginxManagerConfig").
-		Reads(Config{})) // from the request
+		Reads(KubeNGConfig{})) // from the request
 	//
-	ws.Route(ws.PUT("/").To(svc.putNginxInfo).
+	ws.Route(ws.PUT("/").To(svc.updateNginxCfg).
 		// docs
 		Doc("put nginx manager config").
 		Operation("putNginxManagerConfig").
-		Reads(Config{})) // from the request
+		Reads(KubeNGConfig{})) // from the request
 	//
-	ws.Route(ws.DELETE("/").To(svc.delNginxInfo).
+	ws.Route(ws.DELETE("/").To(svc.deleteSingleNginxCfg).
 		// docs
-		Doc("delete nginx manager config").
-		Operation("deleteNginxManagerConfig").
-		Reads(Config{})) // from the request
+		Doc("删除一个服务的单个Nginx配置").
+		Operation("deleteSingleNginxConfig").
+		Reads(KubeNGConfig{})) // from the request
+
+	ws.Route(ws.DELETE("/all").To(svc.deleteAllNginxCfgs).
+		// docs
+		Doc("删除一个服务的所有Nginx配置").
+		Operation("deleteAllNginxConfig"))
 
 	restful.Add(ws)
 
+	return
+}
+
+func getCommunicateInfo(request *restful.Request, response *restful.Response) (url string, nginxCfg KubeNGConfig) {
+
+	if err := request.ReadEntity(&nginxCfg); err != nil {
+		logdebug.Println(logdebug.LevelError, err)
+		return
+	}
+
+	request.Request.ParseForm()
+	client := nodes.ClientInfo{
+		NodeIP:   request.Request.Form.Get("NodeIP"),
+		ClientID: request.Request.Form.Get("ClientID"),
+	}
+
+	key := client.CreateKey()
+	clientInfo := nodes.GetClientInfo(key)
+	url = "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.NginxCfgsAPIServerPath + "/" + nginxCfg.AppSrcType
 	return
 }

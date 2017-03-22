@@ -49,8 +49,8 @@ function showClients(areaType){
                                     		'<td>'+NodeIP+'</td>'+
                                     		'<td>'+APIServerPort+'</td>'+
                                     		'<td class="operationBtns">'+
-                                    			'<a><i class="fa fa-play"></i></a>'+
-                                    			'<a><i class="fa fa-power-off"></i></a>'+
+                                    			'<a><i class="fa fa-play hide"></i></a>'+
+                                    			'<a><i class="fa fa-power-off hide"></i></a>'+
                                     			'<a href="'+watcherUrl+NodeIP+'&ClientID='+ClientID+'&areaType='+areaType+'"><i class="fa fa-gear"></i></a>'+
                                     		'</td>'+
                                     	'</tr>';

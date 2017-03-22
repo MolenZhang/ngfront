@@ -103,6 +103,7 @@ func postWatcherInfo(request *restful.Request, response *restful.Response) {
 
 	updateWatcherCfgURL := webMsg.getWatcherAPIServerURL()
 
+	//暂时未做处理失败的逻辑判断
 	communicate.SendRequestByJSON(communicate.POST, updateWatcherCfgURL, webMsg.WatcherCfg)
 
 	//解析成功后 下发给kubveng 并返回错误码...
@@ -140,7 +141,7 @@ func getWatchNamespacesDetailInfo(w http.ResponseWriter, r *http.Request) {
 
 	namespaces := getNamespacesDetailInfoFromK8s(getNamespacesURL, jobZoneType)
 
-	namespaces = getTestNamespacesDetailInfo()
+	//namespaces = getTestNamespacesDetailInfo()
 
 	logdebug.Println(logdebug.LevelDebug, "从后台获取到的租户详细信息:", namespaces)
 	//通信结构 json格式转换

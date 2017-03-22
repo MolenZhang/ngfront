@@ -287,7 +287,38 @@
  	showAllNgs();
 
  	var locationUrl = window.location;
-	//http://172.16.13.110:8083/ngfront/zone/clients/watcher/nginxcfg?KubernetesMasterHost=http://192.168.0.75:8080&KubernetesAPIVersion=api/v1&JobZoneType=user
+
+	$("#hypBtn").click(function(){
+		var areaIP = "localhost";
+		var areaPort = "port";
+		var Url = "http://"+areaIP+":"+areaPort+"/nginxcfg?NodeIP=192.168.252.133&ClientID=49073";
+		
+		var WebMsg = {
+			"ServerName": "测试ServerName222",
+			"ListenPort": "测试ListenPort",
+			"Namespace": "测试Namespace",
+			"AppName": "测试AppName",
+		    "AppSrcType": "k8s",
+			"Location": "测试location"
+	    };
+		
+		$.ajax({
+			url : Url,
+			dataType: "json",
+			contentType: "text/html; charset=UTF-8",
+    		type: "delete",//update操作 
+			headers: {
+				"Content-Type": "application/json",
+				"Accept": "application/json",
+			},
+			data: JSON.stringify(WebMsg),
+			
+			"success":function(data){
+				var data = eval("("+data+")");
+			}
+		})
+	});
+	
 	
 	var KubernetesMasterHost = locationUrl.search.substring(locationUrl.search.indexOf("KubernetesMasterHost=")+21,locationUrl.search.indexOf("&K"));
 	var KubernetesAPIVersion = locationUrl.search.substring(locationUrl.search.indexOf("KubernetesAPIVersion=")+21,locationUrl.search.indexOf("&J"));
@@ -719,3 +750,5 @@ function showAllNgs(){
  // 			}
  // 	 });
 	// }
+
+	
