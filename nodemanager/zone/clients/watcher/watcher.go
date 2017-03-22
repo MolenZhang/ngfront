@@ -103,6 +103,7 @@ func postWatcherInfo(request *restful.Request, response *restful.Response) {
 
 	updateWatcherCfgURL := webMsg.getWatcherAPIServerURL()
 
+	//暂时未做处理失败的逻辑判断
 	communicate.SendRequestByJSON(communicate.POST, updateWatcherCfgURL, webMsg.WatcherCfg)
 
 	//解析成功后 下发给kubveng 并返回错误码...
