@@ -59,10 +59,18 @@ type Config struct {
 type ServiceInfo struct {
 }
 
-//WholeAppNginxCfgs 完整的所有服务的所有配置合集
-type WholeAppNginxCfgs struct {
-	ExternNginxCfgsList []Config
-	K8sNginxCfgsList    []Config
+//WebNginxCfgs 返回给web端的nginx配置信息
+type WebNginxCfgs struct {
+	NodeIP        string
+	ClientID      string
+	APIServerPort string
+	NginxList     []NginxCfgsList
+}
+
+//NginxCfgsList 所有的k8s/extern nginx 配置列表
+type NginxCfgsList struct {
+	CfgType  string
+	CfgsList []Config
 }
 
 func showNginxCfgPage(w http.ResponseWriter, r *http.Request) {
@@ -139,15 +147,26 @@ func (svc *ServiceInfo) getNginxInfo(request *restful.Request, response *restful
 		"/" +
 		AppSrcTypeExtern
 
-	k8sNginxCfgsList := getNginxCfgsListFromKubeNG(getK8sAppCfgsURL, AppSrcTypeKubernetes)
-	externNginxCfgsList := getNginxCfgsListFromKubeNG(getExternAppCfgsURL, AppSrcTypeExtern)
-
-	wholeAppCfgs := WholeAppNginxCfgs{
-		K8sNginxCfgsList:    k8sNginxCfgsList,
-		ExternNginxCfgsList: externNginxCfgsList,
+	webAppCfgs := WebNginxCfgs{
+		NodeIP:        clientInfo.NodeIP,
+		ClientID:      client.ClientID,
+		APIServerPort: clientInfo.APIServerPort,
 	}
 
-	response.WriteHeaderAndJson(200, wholeAppCfgs, "application/json")
+	k8sCfgList := NginxCfgsList{
+		CfgType:  AppSrcTypeKubernetes,
+		CfgsList: getNginxCfgsListFromKubeNG(getK8sAppCfgsURL, AppSrcTypeKubernetes),
+	}
+
+	externCfgList := NginxCfgsList{
+		CfgType:  AppSrcTypeExtern,
+		CfgsList: getNginxCfgsListFromKubeNG(getExternAppCfgsURL, AppSrcTypeExtern),
+	}
+
+	webAppCfgs.NginxList = append(webAppCfgs.NginxList, k8sCfgList)
+	webAppCfgs.NginxList = append(webAppCfgs.NginxList, externCfgList)
+
+	response.WriteHeaderAndJson(200, webAppCfgs, "application/json")
 
 	return
 }
