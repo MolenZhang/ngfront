@@ -279,7 +279,7 @@ func (svc *ServiceInfo) Init() {
 		Operation("deleteSingleNginxConfig").
 		Reads(Config{})) // from the request
 
-	ws.Route(ws.DELETE("/").To(svc.deleteAllNginxCfgs).
+	ws.Route(ws.DELETE("/all").To(svc.deleteAllNginxCfgs).
 		// docs
 		Doc("删除一个服务的所有Nginx配置").
 		Operation("deleteAllNginxConfig"))
