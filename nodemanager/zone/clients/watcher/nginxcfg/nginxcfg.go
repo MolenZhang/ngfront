@@ -172,7 +172,7 @@ func (svc *ServiceInfo) getNginxInfo(request *restful.Request, response *restful
 }
 
 // put
-func (svc *ServiceInfo) updateNginxInfo(request *restful.Request, response *restful.Response) {
+func (svc *ServiceInfo) updateNginxCfg(request *restful.Request, response *restful.Response) {
 	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<post nginxCfg>>>>>>>>>>>>")
 
 	URL, updateNginxCfg := getCommunicateInfo(request, response)
@@ -193,22 +193,22 @@ func (svc *ServiceInfo) updateNginxInfo(request *restful.Request, response *rest
 	}
 }
 
-func (svc *ServiceInfo) delNginxInfo(request *restful.Request, response *restful.Response) {
+func (svc *ServiceInfo) deleteSingleNginxCfg(request *restful.Request, response *restful.Response) {
 
-	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<del nginxCfg>>>>>>>>>>>>")
+	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<del Single nginxCfg>>>>>>>>>>>>")
 
-	URL, delNginxCfg := getCommunicateInfo(request, response)
+	URL, delSingleNginxCfg := getCommunicateInfo(request, response)
 	appCfgURL := URL +
 		"/" +
-		delNginxCfg.Namespace +
+		delSingleNginxCfg.Namespace +
 		"-" +
-		delNginxCfg.AppName +
+		delSingleNginxCfg.AppName +
 		"/" +
-		delNginxCfg.ServerName +
+		delSingleNginxCfg.ServerName +
 		":" +
-		delNginxCfg.ListenPort
+		delSingleNginxCfg.ListenPort
 
-	_, err := communicate.SendRequestByJSON(communicate.DELETE, appCfgURL, delNginxCfg)
+	_, err := communicate.SendRequestByJSON(communicate.DELETE, appCfgURL, delSingleNginxCfg)
 	if err != nil {
 		logdebug.Println(logdebug.LevelError, err)
 		return
@@ -216,12 +216,28 @@ func (svc *ServiceInfo) delNginxInfo(request *restful.Request, response *restful
 }
 
 //post
-func (svc *ServiceInfo) createNginxInfo(request *restful.Request, response *restful.Response) {
+func (svc *ServiceInfo) createNginxCfg(request *restful.Request, response *restful.Response) {
 	logdebug.Println(logdebug.LevelInfo, "<<<<<<<<<<<<put nginxCfg>>>>>>>>>>>>")
 
 	appCfgURL, createNginxCfg := getCommunicateInfo(request, response)
 
 	_, err := communicate.SendRequestByJSON(communicate.POST, appCfgURL, createNginxCfg)
+	if err != nil {
+		logdebug.Println(logdebug.LevelError, err)
+		return
+	}
+}
+
+func (svc *ServiceInfo) deleteAllNginxCfgs(request *restful.Request, response *restful.Response) {
+	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<del All nginxCfgs>>>>>>>>>>>>")
+
+	URL, deleteAllNginxCfgs := getCommunicateInfo(request, response)
+	appCfgURL := URL +
+		"/" +
+		deleteAllNginxCfgs.Namespace +
+		"-" +
+		deleteAllNginxCfgs.AppName
+	_, err := communicate.SendRequestByJSON(communicate.DELETE, appCfgURL, nil)
 	if err != nil {
 		logdebug.Println(logdebug.LevelError, err)
 		return
@@ -246,23 +262,28 @@ func (svc *ServiceInfo) Init() {
 	//		Reads(nodes.ClientInfo{}).
 	//Returns(200, "OK", AllAppCfgs{}))
 	//
-	ws.Route(ws.POST("/").To(svc.createNginxInfo).
+	ws.Route(ws.POST("/").To(svc.createNginxCfg).
 		// docs
 		Doc("post nginx manager config").
 		Operation("postNginxManagerConfig").
 		Reads(Config{})) // from the request
 	//
-	ws.Route(ws.PUT("/").To(svc.updateNginxInfo).
+	ws.Route(ws.PUT("/").To(svc.updateNginxCfg).
 		// docs
 		Doc("put nginx manager config").
 		Operation("putNginxManagerConfig").
 		Reads(Config{})) // from the request
 	//
-	ws.Route(ws.DELETE("/").To(svc.delNginxInfo).
+	ws.Route(ws.DELETE("/").To(svc.deleteSingleNginxCfg).
 		// docs
-		Doc("delete nginx manager config").
-		Operation("deleteNginxManagerConfig").
+		Doc("删除一个服务的单个Nginx配置").
+		Operation("deleteSingleNginxConfig").
 		Reads(Config{})) // from the request
+
+	ws.Route(ws.DELETE("/").To(svc.deleteAllNginxCfgs).
+		// docs
+		Doc("删除一个服务的所有Nginx配置").
+		Operation("deleteAllNginxConfig"))
 
 	restful.Add(ws)
 
