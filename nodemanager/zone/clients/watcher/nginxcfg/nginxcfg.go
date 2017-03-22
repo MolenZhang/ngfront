@@ -218,7 +218,6 @@ func (svc *ServiceInfo) deleteSingleNginxCfg(request *restful.Request, response 
 //post
 func (svc *ServiceInfo) createNginxCfg(request *restful.Request, response *restful.Response) {
 	logdebug.Println(logdebug.LevelInfo, "<<<<<<<<<<<<put nginxCfg>>>>>>>>>>>>")
-
 	appCfgURL, createNginxCfg := getCommunicateInfo(request, response)
 
 	_, err := communicate.SendRequestByJSON(communicate.POST, appCfgURL, createNginxCfg)
