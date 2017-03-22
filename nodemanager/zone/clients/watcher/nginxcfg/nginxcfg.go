@@ -217,7 +217,7 @@ func (svc *ServiceInfo) delNginxInfo(request *restful.Request, response *restful
 
 //post
 func (svc *ServiceInfo) createNginxInfo(request *restful.Request, response *restful.Response) {
-	logdebug.Println(logdebug.LevelInfo, "<<<<<<<<<<<<put nginxCfg>>>>>>>>>>>>")
+	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<put nginxCfg>>>>>>>>>>>>")
 
 	appCfgURL, createNginxCfg := getCommunicateInfo(request, response)
 
