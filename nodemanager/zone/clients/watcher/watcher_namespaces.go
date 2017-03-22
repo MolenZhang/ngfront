@@ -105,7 +105,7 @@ func getAppName(obj EndpointObject, jobZoneType string) (appName string) {
 		return
 	}
 
-	if obj.Metadata.Labels[jobZoneType] == jobZoneType {
+	if obj.Metadata.Labels[jobZoneType] == jobZoneType || "all" == jobZoneType {
 		appName = obj.Metadata.Name
 	}
 
