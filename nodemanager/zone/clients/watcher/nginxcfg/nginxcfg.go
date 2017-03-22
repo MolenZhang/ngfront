@@ -2,12 +2,13 @@ package nginxcfg
 
 import (
 	"encoding/json"
-	"github.com/emicklei/go-restful"
 	"html/template"
 	"net/http"
 	"ngfront/communicate"
 	"ngfront/logdebug"
 	"ngfront/nodemanager/nodes"
+
+	"github.com/emicklei/go-restful"
 )
 
 //UserDefinedNginxRules 用户自定义nginx规则
@@ -51,24 +52,21 @@ type Config struct {
 	LogRule               LogRulesInfo          //日志规则相关信息
 	DeleteUserCfgs        bool                  //应用停止时 是否删除个性化配置
 	IsDefaultCfg          bool                  //本条配置是否是默认配置
-	AppSrcType            string                //服务来源类型 k8s 或者 extern 根据访问的路径填充
+	AppSrcType            string                //服务来源类型 k8s 或者 extern 根据访问的路径填充(暂未启用)
 }
 
 //ServiceInfo 服务信息
 type ServiceInfo struct {
 }
 
-/*
-type AppCfgs struct {
-	appCfgs map[string]Config
-}
-*/
-type AllAppCfgs struct {
-	allAppCfgsMap map[string]map[string]Config
+//WholeAppNginxCfgs 完整的所有服务的所有配置合集
+type WholeAppNginxCfgs struct {
+	ExternNginxCfgsList []Config
+	K8sNginxCfgsList    []Config
 }
 
 func showNginxCfgPage(w http.ResponseWriter, r *http.Request) {
-	logdebug.Println(logdebug.LevelInfo, "<<<<<<<<<<<<<加载nginx页面>>>>>>>>>>>>>")
+	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<<加载nginx页面>>>>>>>>>>>>>")
 	//加载模板 显示内容是 批量操作nginx配置
 	t, err := template.ParseFiles("template/views/nginx/nginxcfg.html")
 	if err != nil {
@@ -81,87 +79,78 @@ func showNginxCfgPage(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
+//从kubeng获取nginx配置集合
+func getNginxCfgsListFromKubeNG(getCfgsURL string) (cfgsList []Config) {
+	//logdebug.Println(logdebug.LevelDebug, "URL= !", getCfgsURL)
+
+	resp, err := communicate.SendRequestByJSON(communicate.GET, getCfgsURL, nil)
+	if err != nil {
+		logdebug.Println(logdebug.LevelError, err)
+
+		return
+	}
+
+	allAppsCfgs := make(map[string]map[string]Config, 0)
+	if err = json.Unmarshal(resp, &allAppsCfgs); err != nil {
+		logdebug.Println(logdebug.LevelError, err)
+
+		return
+	}
+
+	for _, eachAppCfgs := range allAppsCfgs {
+		for _, singleCfg := range eachAppCfgs {
+			//遍历出最小单位的一条配置 追加至数组中
+			cfgsList = append(cfgsList, singleCfg)
+		}
+	}
+
+	logdebug.Println(logdebug.LevelDebug, "--------cfgsList = ", cfgsList)
+
+	return
+}
+
 func (svc *ServiceInfo) getNginxInfo(request *restful.Request, response *restful.Response) {
+	logdebug.Println(logdebug.LevelDebug, "获取完整的app nginx配置集合!")
 
-	var allAppCfgs AllAppCfgs
-
-	allAppCfgs.allAppCfgsMap = make(map[string]map[string]Config, 0)
-
-	logdebug.Println(logdebug.LevelInfo, "<<<<<<<<<<<<get nginxCfg>>>>>>>>>>>>")
-	//
 	request.Request.ParseForm()
+
 	client := nodes.ClientInfo{
 		NodeIP:   request.Request.Form.Get("NodeIP"),
 		ClientID: request.Request.Form.Get("ClientID"),
 	}
-	//
+
 	key := client.CreateKey()
 	clientInfo := nodes.GetClientInfo(key)
 
-	getK8sAppCfgsUrl := "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.NginxCfgsAPIServerPath + "/k8s"
-	resp, err := communicate.SendRequestByJSON(communicate.GET, getK8sAppCfgsUrl, nil)
-	if err != nil {
-		logdebug.Println(logdebug.LevelError, err)
-		return
+	getK8sAppCfgsURL := "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.NginxCfgsAPIServerPath + "/k8s"
+	getExternAppCfgsURL := "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.NginxCfgsAPIServerPath + "/extern"
+
+	k8sNginxCfgsList := getNginxCfgsListFromKubeNG(getK8sAppCfgsURL)
+	externNginxCfgsList := getNginxCfgsListFromKubeNG(getExternAppCfgsURL)
+
+	wholeAppCfgs := WholeAppNginxCfgs{
+		K8sNginxCfgsList:    k8sNginxCfgsList,
+		ExternNginxCfgsList: externNginxCfgsList,
 	}
 
-	allK8sCfgs := make(map[string]map[string]Config, 0)
-	if err = json.Unmarshal(resp, &allK8sCfgs); err != nil {
-		logdebug.Println(logdebug.LevelError, err)
-		return
-	}
+	response.WriteHeaderAndJson(200, wholeAppCfgs, "application/json")
 
-	for k, v := range allK8sCfgs {
-		for key, cfg := range v {
-			cfg.AppSrcType = "k8s"
-			v[key] = cfg
-		}
-		//k = namespace2-app1
-		allAppCfgs.allAppCfgsMap[k] = v //map[string]Config
-	}
-
-	getExternAppcfgsUrl := "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.NginxCfgsAPIServerPath + "/extern"
-	resp, err = communicate.SendRequestByJSON(communicate.GET, getExternAppcfgsUrl, nil)
-	if err != nil {
-		logdebug.Println(logdebug.LevelError, err)
-		return
-	}
-
-	allExternCfgs := make(map[string]map[string]Config, 0)
-	if err = json.Unmarshal(resp, &allExternCfgs); err != nil {
-		logdebug.Println(logdebug.LevelError, err)
-		return
-	}
-
-	for k, v := range allExternCfgs {
-		for key, cfg := range v {
-			cfg.AppSrcType = "extern"
-			v[key] = cfg
-		}
-
-		//k = namespace2-app2
-		allAppCfgs.allAppCfgsMap[k] = v //map[string]Config
-	}
-
-	logdebug.Println(logdebug.LevelDebug, allAppCfgs.allAppCfgsMap)
-
-	err = response.WriteHeaderAndJson(200, allAppCfgs.allAppCfgsMap, "application/json")
-
+	return
 }
 
 func (svc *ServiceInfo) postNginxInfo(request *restful.Request, response *restful.Response) {
 
-	logdebug.Println(logdebug.LevelInfo, "<<<<<<<<<<<<post nginxCfg>>>>>>>>>>>>")
+	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<post nginxCfg>>>>>>>>>>>>")
 }
 
 func (svc *ServiceInfo) delNginxInfo(request *restful.Request, response *restful.Response) {
 
-	logdebug.Println(logdebug.LevelInfo, "<<<<<<<<<<<<del nginxCfg>>>>>>>>>>>>")
+	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<del nginxCfg>>>>>>>>>>>>")
 }
 
 func (svc *ServiceInfo) putNginxInfo(request *restful.Request, response *restful.Response) {
 
-	logdebug.Println(logdebug.LevelInfo, "<<<<<<<<<<<<put nginxCfg>>>>>>>>>>>>")
+	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<put nginxCfg>>>>>>>>>>>>")
 }
 
 //Init 初始化函数
