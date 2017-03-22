@@ -2,7 +2,7 @@
 	$("#hypBtn").click(function(){
 		var areaIP = "localhost";
 		var areaPort = "port";
-		var Url = "http://"+areaIP+":"+areaPort+"/nginxcfg?NodeIP=192.168.252.133&ClientID=47069";
+		var Url = "http://"+areaIP+":"+areaPort+"/nginxcfg?NodeIP=192.168.252.133&ClientID=47637";
 		
 		var WebMsg = {
 			"ServerName": "测试ServerName111",
