@@ -109,6 +109,15 @@ type WebNginxCfgs struct {
 	NginxList     []NginxCfgsList
 }
 
+//ResponseBody 用于衡量每次restful请求的执行结果(通常是PUT POST)
+type ResponseBody struct {
+	Result       bool
+	ErrorMessage string
+	NginxConf    KubeNGConfig
+	WebCfg       WebConfig
+	ErrCode      int32
+}
+
 //显示nginx配置主页
 func showNginxCfgPage(w http.ResponseWriter, r *http.Request) {
 	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<<加载nginx页面>>>>>>>>>>>>>")
@@ -310,6 +319,19 @@ func (svc *ServiceInfo) getNginxInfo(request *restful.Request, response *restful
 	return
 }
 
+//解析kubeNG的回复
+func parseRespFromKubeNG(recvData []byte) ResponseBody {
+	var respMsg ResponseBody
+
+	json.Unmarshal(recvData, &respMsg)
+
+	respMsg.WebCfg = respMsg.NginxConf.convertToWebCfg()
+
+	logdebug.Println(logdebug.LevelDebug, "收到的数据流", respMsg)
+
+	return respMsg
+}
+
 //构造与kubeng通讯的信息
 func buildCommunicateInfo(request *restful.Request, response *restful.Response) (nginxCfgURL string, nginxCfg WebConfig) {
 	if err := request.ReadEntity(&nginxCfg); err != nil {
@@ -349,12 +371,18 @@ func (svc *ServiceInfo) updateNginxCfg(request *restful.Request, response *restf
 
 	kubeNGCfg := updateNginxCfg.convertToKubeNGCfg()
 
-	_, err := communicate.SendRequestByJSON(communicate.PUT, appCfgURL, kubeNGCfg)
+	recvData, err := communicate.SendRequestByJSON(communicate.PUT, appCfgURL, kubeNGCfg)
 	if err != nil {
 		logdebug.Println(logdebug.LevelError, err)
 
+		response.WriteError(http.StatusInternalServerError, err)
+
 		return
 	}
+
+	resp := parseRespFromKubeNG(recvData)
+
+	response.WriteHeaderAndJson(200, resp, "application/json")
 
 	return
 }
@@ -393,12 +421,18 @@ func (svc *ServiceInfo) createNginxCfg(request *restful.Request, response *restf
 
 	kubeNGCfg := createNginxCfg.convertToKubeNGCfg()
 
-	_, err := communicate.SendRequestByJSON(communicate.POST, appCfgURL, kubeNGCfg)
+	recvData, err := communicate.SendRequestByJSON(communicate.POST, appCfgURL, kubeNGCfg)
 	if err != nil {
 		logdebug.Println(logdebug.LevelError, err)
 
+		response.WriteError(http.StatusInternalServerError, err)
+
 		return
 	}
+
+	resp := parseRespFromKubeNG(recvData)
+
+	response.WriteHeaderAndJson(200, resp, "application/json")
 
 	return
 }
