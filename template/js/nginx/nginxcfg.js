@@ -25,28 +25,28 @@
 //      		 "UserRuleSet": null
 //       },
 //      "ServerUserRules": {
-//	       "UserRuleSet": [
-//	        {
-//	         "RuleCMD": "rewrite",
-//	         "RuleParam": "cccc cccc"
-//	        },
-//	        {
-//	         "RuleCMD": "rewrite",
-//	         "RuleParam": "dddd dddd"
-//	        }
-//	       ]
+// 	       "UserRuleSet": [
+// 	        {
+// 	         "RuleCMD": "rewrite",
+// 	         "RuleParam": "cccc cccc"
+// 	        },
+// 	        {
+// 	         "RuleCMD": "rewrite",
+// 	         "RuleParam": "dddd dddd"
+// 	        }
+// 	       ]
 //      },
 //      "LocationUserRules": {
-//	       "UserRuleSet": [
-//	        {
-//	         "RuleCMD": "rewrite",
-//	         "RuleParam": "eeee eeee"
-//	        },
-//	        {
-//	         "RuleCMD": "rewrite",
-//	         "RuleParam": "ffff ffff"
-//	        }
-//	       ]
+// 	       "UserRuleSet": [
+// 	        {
+// 	         "RuleCMD": "rewrite",
+// 	         "RuleParam": "eeee eeee"
+// 	        },
+// 	        {
+// 	         "RuleCMD": "rewrite",
+// 	         "RuleParam": "ffff ffff"
+// 	        }
+// 	       ]
 //      },
 //      "LogRule": {
 //       "LogRuleName": "access_log",
@@ -438,6 +438,7 @@ function showAllNgs(NodeIP,ClientID){
 	var areaIP = "localhost";
 	var areaPort = "port";
 	var Url = "http://"+areaIP+":"+areaPort+"/nginxcfg?NodeIP="+NodeIP+"&ClientID="+ClientID;
+	//showNgsHtml(data);
 	$.ajax({
 			url : Url,
 			dataType: "json",
@@ -512,12 +513,12 @@ function showNgsHtml(data){
                                              + '<span><i class="fa fa-caret-down fa-one" onClick="toggleOneSerPart(this)"></i></span>'
                                              + '<span class="ngConfigPartTit"></span>'
 												+ '<div class="ngConfigPartCon">'
-												+ '<form class="nginxForm" method="post" action="">'
+												+ '<form class="nginxForm" method="post" action="" AppSrcType="'+CfgsList.AppSrcType+'">'
 												+	'<div class="nginx-label">'
-												+		'<span class="upstreamPartTit">upstream</span><input type="text" class="appNameAndNamespace" name="appNameAndNamespace" value="'+CfgsList.AppName+'-'+CfgsList.Namespace+'" disabled>{'
+												+		'<span class="upstreamPartTit">upstream</span><input type="text" class="appNameAndNamespace" name="appNameAndNamespace" AppName="'+CfgsList.AppName+'" Namespace="'+CfgsList.Namespace+'" value="'+CfgsList.AppName+'-'+CfgsList.Namespace+'" disabled>{'
 												+	'</div>'
 												+	'<div class="nginx-label col-md-offset-1">'
-												+		'<select id="IsUpstreamIPHash" name="IsUpstreamIPHash">';
+												+		'<select id="IsUpstreamIPHash" name="IsUpstreamIPHash" val="'+CfgsList.IsUpstreamIPHash+'">';
 												var iphash='';	
 							 					if(CfgsList.IsUpstreamIPHash==false){
 												    iphash+='<option value="false" selected="selected">none</option>'
@@ -549,10 +550,10 @@ function showNgsHtml(data){
 								 					
 									 				for(var i=0; i<UpstreamUserRules.length; i++){
 									 					
-									 					UpstreamUserRulesStr+='<div class="col-md-offset-1 nginx-label">'
+									 					UpstreamUserRulesStr+='<div class="col-md-offset-1 nginx-label UpstreamUserRulesDiv" RuleCMD="'+UpstreamUserRules[i].RuleCMD+'" RuleParam="'+UpstreamUserRules[i].RuleParam+'">'
 									 	 	 					+'<span>|-<span>'
-									 	 	 					+'<input type="text" id="UpstreamRuleCMD" name="UpstreamRuleCMD" value="'+UpstreamUserRules[i].RuleCMD+'"><span>:</span>'
-									 	 	 					+'<input type="text" id="UpstreamRuleParam" name="UpstreamRuleParam" value="'+UpstreamUserRules[i].RuleParam+'">;'
+									 	 	 					+'<input type="text" id="UpstreamRuleCMD" class="def-input RuleCMD" name="UpstreamRuleCMD" value="'+UpstreamUserRules[i].RuleCMD+'"><span>:</span>'
+									 	 	 					+'<input type="text" id="UpstreamRuleParam" class="def-input RuleParam" name="UpstreamRuleParam" value="'+UpstreamUserRules[i].RuleParam+'">;'
 									 	 	 					+'<span><i class="fa fa-trash" onClick="removeOneupstreamUserRulesPlus(this)"></i></span> '
 									 	 	 					+'</div>'
 									 					
@@ -580,7 +581,7 @@ function showNgsHtml(data){
 												+					'<span>location:</span><input type="text" id="Location" name="Location" value="'+CfgsList.Location+'">{'
 												+				'</div>'
 												+				'<div class="nginx-label col-md-offset-2">'
-												+					'<span>proxy_pass:</span><input type="text" id="proxy_pass" name="" value="http://'+CfgsList.AppName+'-'+CfgsList.Namespace+'" disabled><input type="text" id="" name="" value="'+CfgsList.RealServerPath+'">;'
+												+					'<span>proxy_pass:</span><input type="text" id="proxy_pass" name="" value="http://'+CfgsList.AppName+'-'+CfgsList.Namespace+'" disabled><input type="text" class="RealServerPath" name="" value="'+CfgsList.RealServerPath+'">;'
 												+				'</div>'
 												+				'<div class="nginx-label col-md-offset-2">'
 												+					'<span>proxy_set_header Host $host:</span><input type="text" class="sameToListenPort" name="" value="" disabled>;'
@@ -596,7 +597,7 @@ function showNgsHtml(data){
 												+					'<input type="text" id="ProxyRedirectDestPath" name="ProxyRedirectDestPath" value="'+CfgsList.ProxyRedirectDestPath+'">;'
 												+				'</div>'
 												+'<div class="nginx-label col-md-offset-2">'
-	 											+'<select id="LogRuleName" name="LogRuleName">';
+	 											+'<select id="LogRuleName" class="LogRuleName" name="LogRuleName" value="'+CfgsList.LogRule.LogRuleName+'">';
 	 											var rname ='';
 							 					if(CfgsList.LogRule.LogRuleName=="access_log"){
 							 						rname+='<option value="access_log" selected>access_log</option>'
@@ -607,9 +608,9 @@ function showNgsHtml(data){
 							 					}
 							 					ngConfigPartHtml += rname					
 	 											+'</select>'
-	 											+'<input type="text" id="LogFileDirPath" name="LogFileDirPath" value="'+CfgsList.LogRule.LogFileDirPath+'">'
+	 											+'<input type="text" id="LogFileDirPath" class="LogFileDirPath" name="LogFileDirPath" value="'+CfgsList.LogRule.LogFileDirPath+'">'
 							 					+'<input type="text" id="" name="" value="'+CfgsList.Location+'_access_log" disabled>'
-							 					+'<input type="text" id="LogTemplateName" name="LogTemplateName" value="'+CfgsList.LogRule.LogTemplateName+'">;'
+							 					+'<input type="text" id="LogTemplateName" class="LogTemplateName" name="LogTemplateName" value="'+CfgsList.LogRule.LogTemplateName+'">;'
 							 					+'</div>';
 							 					var LocationUserRulesStr='';
 							 					var LocationUserRules = CfgsList.LocationUserRules.UserRuleSet;
@@ -617,10 +618,10 @@ function showNgsHtml(data){
 							 	 	 	 		
 							 	 				for(var i=0; i<LocationUserRules.length; i++){
 							 	 					
-							 	 						LocationUserRulesStr+='<div class="col-md-offset-2 nginx-label">'
+							 	 						LocationUserRulesStr+='<div class="col-md-offset-2 nginx-label LocationUserRulesDiv" RuleCMD="'+LocationUserRules[i].RuleCMD+'" RuleParam="'+LocationUserRules[i].RuleParam+'">'
 							 	 	 	 					+'<span>|-<span>'
-							 	 	 	 					+'<input type="text" class="def-input" id="LocationRuleCMD" name="LocationRuleCMD" value="'+LocationUserRules[i].RuleCMD+'"><span>:</span>'
-							 	 	 	 					+'<input type="text" class="def-input" id="LocationRuleParam" name="LocationRuleParam" value="'+LocationUserRules[i].RuleParam+'">;'
+							 	 	 	 					+'<input type="text" class="def-input RuleCMD" id="LocationRuleCMD" name="LocationRuleCMD" value="'+LocationUserRules[i].RuleCMD+'"><span>:</span>'
+							 	 	 	 					+'<input type="text" class="def-input RuleParam" id="LocationRuleParam" name="LocationRuleParam" value="'+LocationUserRules[i].RuleParam+'">;'
 							 	 	 	 					+'<span><i class="fa fa-trash" onClick="removeOnelocationUserRulesPlus(this)"></i></span> '
 							 	 	 	 					+'</div>'
 							 	 					
@@ -639,10 +640,10 @@ function showNgsHtml(data){
 													
 							 	 	 				for(var i=0; i<ServerUserRules.length; i++){
 							 	 	 					
-							 	 	 					ServerUserRulesStr+='<div class="col-md-offset-1 nginx-label">'
+							 	 	 					ServerUserRulesStr+='<div class="col-md-offset-1 nginx-label ServerUserRulesDiv" RuleCMD="'+ServerUserRules[i].RuleCMD+'" RuleParam="'+ServerUserRules[i].RuleParam+'">'
 							 	 	 	 	 					+'<span>|-<span>'
-							 	 	 	 	 					+'<input type="text" id="ServerRuleCMD" name="ServerRuleCMD" value="'+ServerUserRules[i].RuleCMD+'"><span>:</span>'
-							 	 	 	 	 					+'<input type="text" id="ServerRuleParam" name="ServerRuleParam" value="'+ServerUserRules[i].RuleParam+'">;'
+							 	 	 	 	 					+'<input type="text" id="ServerRuleCMD" class="def-input RuleCMD" name="ServerRuleCMD" value="'+ServerUserRules[i].RuleCMD+'"><span>:</span>'
+							 	 	 	 	 					+'<input type="text" id="ServerRuleParam" class="def-input RuleParam" name="ServerRuleParam" value="'+ServerUserRules[i].RuleParam+'">;'
 							 	 	 	 	 					+'<span><i class="fa fa-trash" onClick="removeOneserverUserRulesPlus(this)"></i></span> '
 							 	 	 	 	 					+'</div>'
 							 	 	 					
@@ -673,10 +674,10 @@ function showNgsHtml(data){
 	 */
 	function addOneupstreamUserRulesPlus(obj){
 		var strs='';
-		strs+='<div class="col-md-offset-1 def-input nginx-label">'
+		strs+='<div class="col-md-offset-1 def-input nginx-label UpstreamUserRulesDiv">'
 				+'<span>|-<span>'
-				+'<input type="text" class="first-text" id="upstreamUserRulesKey" name="upstreamUserRulesKey" value=""><span>:</span>'
-				+'<input type="text" class="sec-text" id="upstreamUserRulesValue" name="upstreamUserRulesValue" value="">;'
+				+'<input type="text" class="first-text RuleCMD" name="UpstreamRuleCMD" value=""><span>:</span>'
+				+'<input type="text" class="sec-text RuleParam" name="UpstreamRuleParam" value="">;'
 				+'<span><i class="fa fa-trash" onClick="removeOneupstreamUserRulesPlus(this)"></i></span> '
 				+'</div>'
 		$(obj).parent().parent().after(strs);
@@ -690,10 +691,10 @@ function showNgsHtml(data){
 	 */
 	function addOnelocationUserRulesPlus(obj){
 		var LogRuleHtml='';
-		LogRuleHtml+='<div class="col-md-offset-2 def-input nginx-label">'
+		LogRuleHtml+='<div class="col-md-offset-2 def-input nginx-label LocationUserRulesDiv">'
 				+'<span>|-<span>'
-				+'<input type="text" class="first-text" id="locationUserRulesKey" name="locationUserRulesKey" value=""><span>:</span>'
-				+'<input type="text" class="sec-text" id="locationUserRulesValue" name="locationUserRulesValue" value="">;'
+				+'<input type="text" class="first-text RuleCMD" name="LocationRuleCMD" value=""><span>:</span>'
+				+'<input type="text" class="sec-text RuleParam" name="LocationRuleParam" value="">;'
 				+'<span><i class="fa fa-trash" onClick="removeOnelocationUserRulesPlus(this)"></i></span> '
 				+'</div>'
 		$(obj).parent().parent().after(LogRuleHtml);
@@ -707,10 +708,10 @@ function showNgsHtml(data){
 	 */
 	function addOneserverUserRulesPlus(obj){
 		var strs='';
-		strs+='<div class="col-md-offset-1 def-input nginx-label">'
+		strs+='<div class="col-md-offset-1 def-input nginx-label ServerUserRulesDiv">'
 				+'<span>|-<span>'
-				+'<input type="text" class="first-text" id="serverUserRulesKey" name="serverUserRulesKey" value=""><span>:</span>'
-				+'<input type="text" class="sec-text" id="serverUserRulesValue" name="serverUserRulesValue" value="">;'
+				+'<input type="text" class="first-text RuleCMD" name="ServerRuleCMD" value=""><span>:</span>'
+				+'<input type="text" class="sec-text RuleParam" name="ServerRuleParam" value="">;'
 				+'<span><i class="fa fa-trash" onClick="removeOneserverUserRulesPlus(this)"></i></span> '
 				+'</div>'
 		$(obj).parent().parent().after(strs);
@@ -872,59 +873,94 @@ function showNgsHtml(data){
 	/**
  	 * 局部刷新
  	 */
+ 	function RulesData(RulesDiv){
+ 		//$($(".LocationUserRulesDiv")[2]).find(".bbb").val()
+
+ 		var itemRules = new Array();
+		for(var i=0; i<RulesDiv.length; i++){
+			var tranRulesDiv = RulesDiv[i];
+			var RuleCMD = $(tranRulesDiv).find(".RuleCMD").val();
+			var RuleParam = $(tranRulesDiv).find(".RuleParam").val();
+			var eveRule = {
+				"RuleCMD": RuleCMD,
+         		"RuleParam": RuleParam
+			};
+			itemRules.push(eveRule);
+		}
+		return itemRules;
+ 	}
+
  	function localRefreshNg(obj){
 		var ngConfigPart = $(obj).parent().parent().find('.nginxForm');
 		var ServerName = ngConfigPart.find("#ServerName").val();
-		var AppName = ngConfigPart.find("#appNameAndNamespace").val().split("-")[0];
-		var Namespace = ngConfigPart.find("#appNameAndNamespace").val().split("-")[1];
-		
+		var ListenPort = ngConfigPart.find("#ListenPort").val();
+		var RealServerPath = ngConfigPart.find(".RealServerPath").val();
+		var Namespace = ngConfigPart.find(".appNameAndNamespace").attr("namespace");
+		var AppName = ngConfigPart.find(".appNameAndNamespace").attr("appname");
+		var Location = ngConfigPart.find("#Location").val();
+		var ProxyRedirectSrcPath = ngConfigPart.find("#ProxyRedirectSrcPath").val();
+		var ProxyRedirectDestPath = ngConfigPart.find("#ProxyRedirectDestPath").val();
+		var IsUpstreamIPHash = ngConfigPart.find("#IsUpstreamIPHash").val();
+		//OperationType 新建create 删除delete 更新update
+
+		var OperationType = "create";
+
+		var UpstreamUserRules = "";
+		if($(".UpstreamUserRulesDiv")){
+			UpstreamUserRules = RulesData($(".UpstreamUserRulesDiv"));
+		}else{
+			UpstreamUserRules = null;
+		}
+
+		var ServerUserRules = "";
+		if($(".ServerUserRulesDiv")){
+			ServerUserRules = RulesData($(".ServerUserRulesDiv"));
+		}else{
+			ServerUserRules = null;
+		}
+
+		var LocationUserRules ="";
+		if($(".LocationUserRulesDiv")){
+			LocationUserRules = RulesData($(".LocationUserRulesDiv"));
+		}else{
+			LocationUserRules = null;
+		}
+
+		var LogRuleName = ngConfigPart.find(".LogRuleName").val();
+		var LogFileDirPath = ngConfigPart.find(".LogFileDirPath").val();
+		var LogTemplateName = ngConfigPart.find(".LogTemplateName").val();
+		var DeleteUserCfgs = false;
+		var IsDefaultCfg = false;
+		var AppSrcType = ngConfigPart.attr("AppSrcType");
 		
 	var saveData = {
-      "ServerName": "bonc.local",
-      "ListenPort": "8081",
-      "RealServerPath": "/testa",
-      "Namespace": "huyuepeng",
-      "AppName": "testa",
-      "Location": "/huyuepeng/testa",
-      "ProxyRedirectSrcPath": "http://testa:8080/testa",
-      "ProxyRedirectDestPath": "/huyuepeng/testa",
-      "IsUpstreamIPHash": true,
-      "OperationType": "create",
+      "ServerName": ServerName,
+      "ListenPort": ListenPort,
+      "RealServerPath": RealServerPath,
+      "Namespace": Namespace,
+      "AppName": AppName,
+      "Location": Location,
+      "ProxyRedirectSrcPath": ProxyRedirectSrcPath,
+      "ProxyRedirectDestPath": ProxyRedirectDestPath,
+      "IsUpstreamIPHash": IsUpstreamIPHash,
+      "OperationType": OperationType,
       "UpstreamUserRules": {
-       "UserRuleSet": null
+       "UserRuleSet": UpstreamUserRules
       },
       "ServerUserRules": {
-       "UserRuleSet": [
-        {
-         "RuleCMD": "rewrite",
-         "RuleParam": "cccc cccc"
-        },
-        {
-         "RuleCMD": "rewrite",
-         "RuleParam": "dddd dddd"
-        }
-       ]
+       "UserRuleSet": ServerUserRules
       },
       "LocationUserRules": {
-       "UserRuleSet": [
-        {
-         "RuleCMD": "rewrite",
-         "RuleParam": "eeee eeee"
-        },
-        {
-         "RuleCMD": "rewrite",
-         "RuleParam": "ffff ffff"
-        }
-       ]
+       "UserRuleSet": LocationUserRules
       },
       "LogRule": {
-       "LogRuleName": "access_log",
-       "LogFileDirPath": "/var/log/nginx/bonc.local-8081/huyuepeng",
-       "LogTemplateName": "main"
+       "LogRuleName": LogRuleName,
+       "LogFileDirPath": LogFileDirPath,
+       "LogTemplateName": LogTemplateName
       },
-      "DeleteUserCfgs": false,
-      "IsDefaultCfg": false,
-      "AppSrcType": "k8s"
+      "DeleteUserCfgs": DeleteUserCfgs,
+      "IsDefaultCfg": IsDefaultCfg,
+      "AppSrcType": AppSrcType
      };
 	
 	
