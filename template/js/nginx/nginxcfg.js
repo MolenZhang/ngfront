@@ -326,8 +326,8 @@
 	showAllNgs(NodeIP,ClientID);
 	
 //	$("#hypBtn").click(function(){
-//		var areaIP = "localhost";
-//		var areaPort = "port";
+//		var areaIP = "192.168.252.133";
+//		var areaPort = "8011";
 //		var Url = "http://"+areaIP+":"+areaPort+"/nginxcfg?NodeIP=192.168.252.133&ClientID=49073";
 		
 //		var WebMsg = {
@@ -391,8 +391,8 @@
  var NamespacesList = "";
  var NamespacesAppCounts = "";
  function showAllUsers(KubernetesMasterHost,KubernetesAPIVersion,JobZoneType){
- 	var areaIP = "localhost";
-	var areaPort = "port";
+ 	var areaIP = "192.168.252.133";
+	var areaPort = "8011";
 	var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/namespaces";
 	
 	$.ajax({
@@ -435,8 +435,8 @@
 
 //展示同一个node下的所有nginx配置
 function showAllNgs(NodeIP,ClientID){
-	var areaIP = "localhost";
-	var areaPort = "port";
+	var areaIP = "192.168.252.133";
+	var areaPort = "8011";
 	var Url = "http://"+areaIP+":"+areaPort+"/nginxcfg?NodeIP="+NodeIP+"&ClientID="+ClientID;
 	//showNgsHtml(data);
 	$.ajax({
@@ -891,6 +891,7 @@ function showNgsHtml(data){
  	}
 
  	function localRefreshNg(obj){
+<<<<<<< HEAD
 		var ngConfigPart = $(obj).parent().parent().find('.nginxForm');
 		var ServerName = ngConfigPart.find("#ServerName").val();
 		var ListenPort = ngConfigPart.find("#ListenPort").val();
@@ -944,6 +945,25 @@ function showNgsHtml(data){
       "ProxyRedirectDestPath": ProxyRedirectDestPath,
       "IsUpstreamIPHash": IsUpstreamIPHash,
       "OperationType": OperationType,
+=======
+//		var ngConfigPart = $(obj).parent().parent().find('.nginxForm');
+//		var ServerName = ngConfigPart.find("#ServerName").val();
+//		var AppName = ngConfigPart.find("#appNameAndNamespace").val().split("-")[0];
+//		var Namespace = ngConfigPart.find("#appNameAndNamespace").val().split("-")[1];
+		
+		
+	var saveData = {
+      "ServerName": "bonc.local",
+      "ListenPort": "8081",
+      "RealServerPath": "/testa",
+      "Namespace": "huyuepeng",
+      "AppName": "111111111111",
+      "Location": "33333333",
+      "ProxyRedirectSrcPath": "http://testa:8080/testa",
+      "ProxyRedirectDestPath": "/huyuepeng/testa",
+      "IsUpstreamIPHash": true,
+      "OperationType": "create",
+>>>>>>> 0bf1933b0d416ce2aab4bd1e9937a9d5e79de420
       "UpstreamUserRules": {
        "UserRuleSet": UpstreamUserRules
       },
@@ -966,8 +986,8 @@ function showNgsHtml(data){
 	
 	
 		//var saveData = $(obj).parent().parent().find('.nginxForm');
-		var areaIP = "localhost";
-		var areaPort = "port";
+		var areaIP = "192.168.252.133";
+		var areaPort = "8011";
 		var Url = "http://"+areaIP+":"+areaPort+"/nginxcfg?NodeIP="+NodeIP+"&ClientID="+ClientID;
 		$.ajax({
 			url : Url,
