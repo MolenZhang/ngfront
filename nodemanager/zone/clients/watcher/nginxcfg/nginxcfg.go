@@ -414,6 +414,11 @@ func (svc *ServiceInfo) Init() {
 		Doc("删除一个服务的所有Nginx配置").
 		Operation("deleteAllNginxConfig"))
 
+	ws.Route(ws.GET("/download").To(svc.nginxCfgDownload).
+		Doc("download nginx config").
+		Operation("downloadfile").
+		Reads(WebReqMsg{}))
+
 	restful.Add(ws)
 
 	return
