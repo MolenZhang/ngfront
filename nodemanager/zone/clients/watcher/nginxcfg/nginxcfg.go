@@ -109,6 +109,7 @@ type WebNginxCfgs struct {
 	NginxList     []NginxCfgsList
 }
 
+//显示nginx配置主页
 func showNginxCfgPage(w http.ResponseWriter, r *http.Request) {
 	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<<加载nginx页面>>>>>>>>>>>>>")
 	//加载模板 显示内容是 批量操作nginx配置
@@ -204,7 +205,7 @@ func getNginxCfgsListFromKubeNG(getCfgsURL string, appSrcType string) (cfgsList 
 		}
 	}
 
-	logdebug.Println(logdebug.LevelDebug, "--------cfgsList = ", cfgsList)
+	//logdebug.Println(logdebug.LevelDebug, "--------cfgsList = ", cfgsList)
 
 	return
 }
@@ -262,12 +263,34 @@ func (svc *ServiceInfo) getNginxInfo(request *restful.Request, response *restful
 	return
 }
 
+//构造与kubeng通讯的信息
+func buildCommunicateInfo(request *restful.Request, response *restful.Response) (nginxCfgURL string, nginxCfg KubeNGConfig) {
+	if err := request.ReadEntity(&nginxCfg); err != nil {
+		logdebug.Println(logdebug.LevelError, err)
+
+		return
+	}
+
+	request.Request.ParseForm()
+	client := nodes.ClientInfo{
+		NodeIP:   request.Request.Form.Get("NodeIP"),
+		ClientID: request.Request.Form.Get("ClientID"),
+	}
+
+	key := client.CreateKey()
+	clientInfo := nodes.GetClientInfo(key)
+
+	nginxCfgURL = "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.NginxCfgsAPIServerPath + "/" + nginxCfg.AppSrcType
+
+	return
+}
+
 // put
 func (svc *ServiceInfo) updateNginxCfg(request *restful.Request, response *restful.Response) {
-	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<post nginxCfg>>>>>>>>>>>>")
+	logdebug.Println(logdebug.LevelDebug, "更新服务的一条nginx配置")
 
-	URL, updateNginxCfg := getCommunicateInfo(request, response)
-	appCfgURL := URL +
+	nginxCfgURL, updateNginxCfg := buildCommunicateInfo(request, response)
+	appCfgURL := nginxCfgURL +
 		"/" +
 		updateNginxCfg.Namespace +
 		"-" +
@@ -280,16 +303,19 @@ func (svc *ServiceInfo) updateNginxCfg(request *restful.Request, response *restf
 	_, err := communicate.SendRequestByJSON(communicate.PUT, appCfgURL, updateNginxCfg)
 	if err != nil {
 		logdebug.Println(logdebug.LevelError, err)
+
 		return
 	}
+
+	return
 }
 
+//delete
 func (svc *ServiceInfo) deleteSingleNginxCfg(request *restful.Request, response *restful.Response) {
+	logdebug.Println(logdebug.LevelDebug, "删除服务的一条nginx配置!")
 
-	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<del Single nginxCfg>>>>>>>>>>>>")
-
-	URL, delSingleNginxCfg := getCommunicateInfo(request, response)
-	appCfgURL := URL +
+	nginxCfgURL, delSingleNginxCfg := buildCommunicateInfo(request, response)
+	appCfgURL := nginxCfgURL +
 		"/" +
 		delSingleNginxCfg.Namespace +
 		"-" +
@@ -302,36 +328,47 @@ func (svc *ServiceInfo) deleteSingleNginxCfg(request *restful.Request, response 
 	_, err := communicate.SendRequestByJSON(communicate.DELETE, appCfgURL, delSingleNginxCfg)
 	if err != nil {
 		logdebug.Println(logdebug.LevelError, err)
+
 		return
 	}
+
+	return
 }
 
 //post
 func (svc *ServiceInfo) createNginxCfg(request *restful.Request, response *restful.Response) {
-	logdebug.Println(logdebug.LevelInfo, "<<<<<<<<<<<<put nginxCfg>>>>>>>>>>>>")
-	appCfgURL, createNginxCfg := getCommunicateInfo(request, response)
+	logdebug.Println(logdebug.LevelInfo, "新增服务的一条nginx配置!")
+	appCfgURL, createNginxCfg := buildCommunicateInfo(request, response)
 
 	_, err := communicate.SendRequestByJSON(communicate.POST, appCfgURL, createNginxCfg)
 	if err != nil {
 		logdebug.Println(logdebug.LevelError, err)
+
 		return
 	}
+
+	return
 }
 
+//delete all
 func (svc *ServiceInfo) deleteAllNginxCfgs(request *restful.Request, response *restful.Response) {
-	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<del All nginxCfgs>>>>>>>>>>>>")
+	logdebug.Println(logdebug.LevelDebug, "删除一个服务的所有nginx配置")
 
-	URL, deleteAllNginxCfgs := getCommunicateInfo(request, response)
-	appCfgURL := URL +
+	nginxCfgURL, deleteAllNginxCfgs := buildCommunicateInfo(request, response)
+	appCfgURL := nginxCfgURL +
 		"/" +
 		deleteAllNginxCfgs.Namespace +
 		"-" +
 		deleteAllNginxCfgs.AppName
+
 	_, err := communicate.SendRequestByJSON(communicate.DELETE, appCfgURL, nil)
 	if err != nil {
 		logdebug.Println(logdebug.LevelError, err)
+
 		return
 	}
+
+	return
 }
 
 //Init 初始化函数
@@ -377,24 +414,5 @@ func (svc *ServiceInfo) Init() {
 
 	restful.Add(ws)
 
-	return
-}
-
-func getCommunicateInfo(request *restful.Request, response *restful.Response) (url string, nginxCfg KubeNGConfig) {
-
-	if err := request.ReadEntity(&nginxCfg); err != nil {
-		logdebug.Println(logdebug.LevelError, err)
-		return
-	}
-
-	request.Request.ParseForm()
-	client := nodes.ClientInfo{
-		NodeIP:   request.Request.Form.Get("NodeIP"),
-		ClientID: request.Request.Form.Get("ClientID"),
-	}
-
-	key := client.CreateKey()
-	clientInfo := nodes.GetClientInfo(key)
-	url = "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.NginxCfgsAPIServerPath + "/" + nginxCfg.AppSrcType
 	return
 }
