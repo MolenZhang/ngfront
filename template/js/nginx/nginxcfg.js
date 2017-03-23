@@ -873,10 +873,10 @@ function showNgsHtml(data){
  	 * 局部刷新
  	 */
  	function localRefreshNg(obj){
-		var ngConfigPart = $(obj).parent().parent().find('.nginxForm');
-		var ServerName = ngConfigPart.find("#ServerName").val();
-		var AppName = ngConfigPart.find("#appNameAndNamespace").val().split("-")[0];
-		var Namespace = ngConfigPart.find("#appNameAndNamespace").val().split("-")[1];
+//		var ngConfigPart = $(obj).parent().parent().find('.nginxForm');
+//		var ServerName = ngConfigPart.find("#ServerName").val();
+//		var AppName = ngConfigPart.find("#appNameAndNamespace").val().split("-")[0];
+//		var Namespace = ngConfigPart.find("#appNameAndNamespace").val().split("-")[1];
 		
 		
 	var saveData = {
@@ -884,8 +884,8 @@ function showNgsHtml(data){
       "ListenPort": "8081",
       "RealServerPath": "/testa",
       "Namespace": "huyuepeng",
-      "AppName": "testa",
-      "Location": "/huyuepeng/testa",
+      "AppName": "111111111111",
+      "Location": "33333333",
       "ProxyRedirectSrcPath": "http://testa:8080/testa",
       "ProxyRedirectDestPath": "/huyuepeng/testa",
       "IsUpstreamIPHash": true,
@@ -937,7 +937,7 @@ function showNgsHtml(data){
 			url : Url,
 			dataType: "json",
 			contentType: "text/html; charset=UTF-8",
-    		type: "post",//update操作 
+    		type: "put",//update操作 
 			headers: {
 				"Content-Type": "application/json",
 				"Accept": "application/json",

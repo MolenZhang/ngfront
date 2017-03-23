@@ -124,6 +124,52 @@ func showNginxCfgPage(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
+//将从js拿到的数据提取 转换成kubeng所需的数据结构
+func (webCfg *WebConfig) convertToKubeNGCfg() (kubeNGCfg KubeNGConfig) {
+	kubeNGCfg = KubeNGConfig{
+		ServerName:            webCfg.ServerName,
+		ListenPort:            webCfg.ListenPort,
+		RealServerPath:        webCfg.RealServerPath,
+		Namespace:             webCfg.Namespace,
+		AppName:               webCfg.AppName,
+		Location:              webCfg.Location,
+		ProxyRedirectSrcPath:  webCfg.ProxyRedirectSrcPath,
+		ProxyRedirectDestPath: webCfg.ProxyRedirectDestPath,
+		//UpstreamIPs:           webCfg.UpstreamIPs,
+		//UpstreamPort:          webCfg.UpstreamPort,
+		IsUpstreamIPHash: webCfg.IsUpstreamIPHash,
+		//IsAppActivity:         webCfg.IsAppActivity,
+		OperationType: webCfg.OperationType,
+		//IsK8sNotify:           webCfg.IsK8sNotify,
+		LogRule:        webCfg.LogRule,
+		DeleteUserCfgs: webCfg.DeleteUserCfgs,
+		IsDefaultCfg:   webCfg.IsDefaultCfg,
+		AppSrcType:     webCfg.AppSrcType,
+	}
+
+	kubeNGCfg.UpstreamUserRules.RulesSet = make(map[string][]string, 0)
+
+	rulesParams := []string{}
+	for _, userRules := range webCfg.UpstreamUserRules.UserRuleSet {
+		rulesParams = append(rulesParams, userRules.RuleParam)
+		kubeNGCfg.UpstreamUserRules.RulesSet[userRules.RuleCMD] = rulesParams
+	}
+
+	kubeNGCfg.ServerUserRules.RulesSet = make(map[string][]string, 0)
+	for _, userRules := range webCfg.ServerUserRules.UserRuleSet {
+		rulesParams = append(rulesParams, userRules.RuleParam)
+		kubeNGCfg.ServerUserRules.RulesSet[userRules.RuleCMD] = rulesParams
+	}
+
+	kubeNGCfg.LocationUserRules.RulesSet = make(map[string][]string, 0)
+	for _, userRules := range webCfg.LocationUserRules.UserRuleSet {
+		rulesParams = append(rulesParams, userRules.RuleParam)
+		kubeNGCfg.LocationUserRules.RulesSet[userRules.RuleCMD] = rulesParams
+	}
+
+	return
+}
+
 //从kubeng数据结构中提取出部分字段 转换成js所需的数据结构
 func (kubeNGCfg *KubeNGConfig) convertToWebCfg() (webCfg WebConfig) {
 	webCfg = WebConfig{
@@ -265,7 +311,7 @@ func (svc *ServiceInfo) getNginxInfo(request *restful.Request, response *restful
 }
 
 //构造与kubeng通讯的信息
-func buildCommunicateInfo(request *restful.Request, response *restful.Response) (nginxCfgURL string, nginxCfg KubeNGConfig) {
+func buildCommunicateInfo(request *restful.Request, response *restful.Response) (nginxCfgURL string, nginxCfg WebConfig) {
 	if err := request.ReadEntity(&nginxCfg); err != nil {
 		logdebug.Println(logdebug.LevelError, err)
 
@@ -301,7 +347,9 @@ func (svc *ServiceInfo) updateNginxCfg(request *restful.Request, response *restf
 		":" +
 		updateNginxCfg.ListenPort
 
-	_, err := communicate.SendRequestByJSON(communicate.PUT, appCfgURL, updateNginxCfg)
+	kubeNGCfg := updateNginxCfg.convertToKubeNGCfg()
+
+	_, err := communicate.SendRequestByJSON(communicate.PUT, appCfgURL, kubeNGCfg)
 	if err != nil {
 		logdebug.Println(logdebug.LevelError, err)
 
@@ -326,7 +374,9 @@ func (svc *ServiceInfo) deleteSingleNginxCfg(request *restful.Request, response 
 		":" +
 		delSingleNginxCfg.ListenPort
 
-	_, err := communicate.SendRequestByJSON(communicate.DELETE, appCfgURL, delSingleNginxCfg)
+	kubeNGCfg := delSingleNginxCfg.convertToKubeNGCfg()
+
+	_, err := communicate.SendRequestByJSON(communicate.DELETE, appCfgURL, kubeNGCfg)
 	if err != nil {
 		logdebug.Println(logdebug.LevelError, err)
 
@@ -341,7 +391,9 @@ func (svc *ServiceInfo) createNginxCfg(request *restful.Request, response *restf
 	logdebug.Println(logdebug.LevelInfo, "新增服务的一条nginx配置!")
 	appCfgURL, createNginxCfg := buildCommunicateInfo(request, response)
 
-	_, err := communicate.SendRequestByJSON(communicate.POST, appCfgURL, createNginxCfg)
+	kubeNGCfg := createNginxCfg.convertToKubeNGCfg()
+
+	_, err := communicate.SendRequestByJSON(communicate.POST, appCfgURL, kubeNGCfg)
 	if err != nil {
 		logdebug.Println(logdebug.LevelError, err)
 
@@ -394,24 +446,25 @@ func (svc *ServiceInfo) Init() {
 		// docs
 		Doc("post nginx manager config").
 		Operation("postNginxManagerConfig").
-		Reads(KubeNGConfig{})) // from the request
+		Reads(WebConfig{})) // from the request
 	//
 	ws.Route(ws.PUT("/").To(svc.updateNginxCfg).
 		// docs
 		Doc("put nginx manager config").
 		Operation("putNginxManagerConfig").
-		Reads(KubeNGConfig{})) // from the request
+		Reads(WebConfig{})) // from the request
 	//
 	ws.Route(ws.DELETE("/").To(svc.deleteSingleNginxCfg).
 		// docs
 		Doc("删除一个服务的单个Nginx配置").
 		Operation("deleteSingleNginxConfig").
-		Reads(KubeNGConfig{})) // from the request
+		Reads(WebConfig{})) // from the request
 
 	ws.Route(ws.DELETE("/all").To(svc.deleteAllNginxCfgs).
 		// docs
 		Doc("删除一个服务的所有Nginx配置").
-		Operation("deleteAllNginxConfig"))
+		Operation("deleteAllNginxConfig").
+		Reads(WebConfig{})) // from the request
 
 	restful.Add(ws)
 
