@@ -395,10 +395,13 @@ i.fa_btn_plus_gray {
 /* ����ʽ��talbe */
 .ibox {
     clear: both;
-    margin-bottom: 25px;
+    /* margin-bottom: 25px; */
     margin-top: 0;
     padding: 0;
     color: #676a6c;
+}
+.float-e-margins{
+    margin-top: 25px;
 }
 .ibox-title {
     -moz-border-bottom-colors: none;

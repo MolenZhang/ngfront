@@ -61,7 +61,7 @@ i.self_a {
 .addNginxStepRow{
 	width: 96%;
     margin: 0 auto;
-    margin-top: 10px;
+    margin-bottom: 20px;
 }
 .addNginxStepRow .col-sm-12 .ibox-title{
 	border-top: 1px solid #dadada;
@@ -192,4 +192,25 @@ a{
 }
 td.firstTd{
 	width: 30%;
+}
+.def-text{
+	color: #FF1C00;
+	padding-left: 5px;
+}
+.def-text span{
+	margin-left: 10px;
+}
+.def-input{
+	margin-top:6px;
+	/* margin-bottom: 4px; */
+}
+input.first-text{
+	width: 25%!important;
+}
+input.sec-text{
+	width: 60%!important;
+}
+i.fa-one{
+	padding-left: 6px;
+	color:#81a6ea;
 }
