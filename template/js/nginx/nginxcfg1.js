@@ -652,8 +652,7 @@
 	 		 				}
 	 					}
 	 				strs+=ips;
-	 				strs+='<div class="col-md-offset-1">自定义配置<span><i class="fa fa-plus fa-upstreamUserRulesPlus" onClick="addOneupstreamUserRulesPlus(this)"></i></span>'
-	 	 				+'</div>';
+	 				strs+='<div class="col-md-offset-1">自定义配置<span><i class="fa fa-plus fa-upstreamUserRulesPlus" onClick="addOneupstreamUserRulesPlus(this)"></i></span></div>';
 	 	 				var upstreamUserRuleStr=''
 	 	 				var upstreamUserRules=nginxCfgList[i].nginxCfgs[n].upstreamUserRules.rulesSet;
 	 	 				for(var key in upstreamUserRules){
