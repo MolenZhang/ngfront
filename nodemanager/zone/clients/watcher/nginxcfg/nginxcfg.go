@@ -148,10 +148,11 @@ func (kubeNGCfg *KubeNGConfig) convertToWebCfg() (webCfg WebConfig) {
 
 	for ruleCMD, ruleParams := range kubeNGCfg.UpstreamUserRules.RulesSet {
 		for _, ruleParam := range ruleParams {
-			webCfg.UpstreamUserRules.UserRuleSet = append(webCfg.UpstreamUserRules.UserRuleSet, UserRules{
-				RuleCMD:   ruleCMD,
-				RuleParam: ruleParam,
-			})
+			webCfg.UpstreamUserRules.UserRuleSet = append(webCfg.UpstreamUserRules.UserRuleSet,
+				UserRules{
+					RuleCMD:   ruleCMD,
+					RuleParam: ruleParam,
+				})
 		}
 	}
 
