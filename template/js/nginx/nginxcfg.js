@@ -1,356 +1,360 @@
- var data = {
-  "NodeIP": "192.168.252.133",
-  "ClientID": "50395",
-  "APIServerPort": ":8887",
-  "NginxList": [
-   {
-    "CfgType": "k8s",
-    "CfgsList": [
-     {
-      "ServerName": "bonc.local",
-      "ListenPort": "8081",
-      "RealServerPath": "/testa",
-      "Namespace": "huyuepeng",
-      "AppName": "testa",
-      "Location": "/huyuepeng/testa",
-      "ProxyRedirectSrcPath": "http://testa:8080/testa",
-      "ProxyRedirectDestPath": "/huyuepeng/testa",
-      "UpstreamIPs": null,
-      "UpstreamPort": "",
-      "IsUpstreamIPHash": true,
-      "IsAppActivity": false,
-      "OperationType": "create",
-      "IsK8sNotify": false,
-      "UpstreamUserRules": {
-      		 "UserRuleSet": null
-       },
-      "ServerUserRules": {
-	       "UserRuleSet": [
-	        {
-	         "RuleCMD": "rewrite",
-	         "RuleParam": "cccc cccc"
-	        },
-	        {
-	         "RuleCMD": "rewrite",
-	         "RuleParam": "dddd dddd"
-	        }
-	       ]
-      },
-      "LocationUserRules": {
-	       "UserRuleSet": [
-	        {
-	         "RuleCMD": "rewrite",
-	         "RuleParam": "eeee eeee"
-	        },
-	        {
-	         "RuleCMD": "rewrite",
-	         "RuleParam": "ffff ffff"
-	        }
-	       ]
-      },
-      "LogRule": {
-       "LogRuleName": "access_log",
-       "LogFileDirPath": "/var/log/nginx/bonc.local-8081/huyuepeng",
-       "LogTemplateName": "main"
-      },
-      "DeleteUserCfgs": false,
-      "IsDefaultCfg": false,
-      "AppSrcType": "k8s"
-     },
-     {
-      "ServerName": "longlong.yz.local",
-      "ListenPort": "80",
-      "RealServerPath": "/alot",
-      "Namespace": "longlong",
-      "AppName": "alot",
-      "Location": "/alot",
-      "ProxyRedirectSrcPath": "http://alot:8080/alot",
-      "ProxyRedirectDestPath": "/alot",
-      "UpstreamIPs": [
-       "192.168.0.80"
-      ],
-      "UpstreamPort": "32353",
-      "IsUpstreamIPHash": true,
-      "IsAppActivity": true,
-      "OperationType": "",
-      "IsK8sNotify": true,
-      "UpstreamUserRules": {
-       "UserRuleSet": null
-      },
-      "ServerUserRules": {
-       "UserRuleSet": null
-      },
-      "LocationUserRules": {
-       "UserRuleSet": null
-      },
-      "LogRule": {
-       "LogRuleName": "access_log",
-       "LogFileDirPath": "/var/log/nginx/longlong.yz.local-80/longlong",
-       "LogTemplateName": "main"
-      },
-      "DeleteUserCfgs": false,
-      "IsDefaultCfg": true,
-      "AppSrcType": "k8s"
-     },
-     {
-      "ServerName": "testbonc.yz.local",
-      "ListenPort": "80",
-      "RealServerPath": "/demo-a",
-      "Namespace": "testbonc",
-      "AppName": "demo-a",
-      "Location": "/demo-a",
-      "ProxyRedirectSrcPath": "http://demo-a:8080/demo-a",
-      "ProxyRedirectDestPath": "/demo-a",
-      "UpstreamIPs": [
-       "192.168.0.82"
-      ],
-      "UpstreamPort": "31594",
-      "IsUpstreamIPHash": true,
-      "IsAppActivity": true,
-      "OperationType": "",
-      "IsK8sNotify": true,
-      "UpstreamUserRules": {
-       "UserRuleSet": null
-      },
-      "ServerUserRules": {
-       "UserRuleSet": null
-      },
-      "LocationUserRules": {
-       "UserRuleSet": null
-      },
-      "LogRule": {
-       "LogRuleName": "access_log",
-       "LogFileDirPath": "/var/log/nginx/testbonc.yz.local-80/testbonc",
-       "LogTemplateName": "main"
-      },
-      "DeleteUserCfgs": false,
-      "IsDefaultCfg": true,
-      "AppSrcType": "k8s"
-     },
-     {
-      "ServerName": "testbonc.yz.local",
-      "ListenPort": "80",
-      "RealServerPath": "/demo-b",
-      "Namespace": "testbonc",
-      "AppName": "demo-b",
-      "Location": "/demo-b",
-      "ProxyRedirectSrcPath": "http://demo-b:8080/demo-b",
-      "ProxyRedirectDestPath": "/demo-b",
-      "UpstreamIPs": [
-       "192.168.0.82"
-      ],
-      "UpstreamPort": "32285",
-      "IsUpstreamIPHash": true,
-      "IsAppActivity": true,
-      "OperationType": "",
-      "IsK8sNotify": true,
-      "UpstreamUserRules": {
-       "UserRuleSet": null
-      },
-      "ServerUserRules": {
-       "UserRuleSet": null
-      },
-      "LocationUserRules": {
-       "UserRuleSet": null
-      },
-      "LogRule": {
-       "LogRuleName": "access_log",
-       "LogFileDirPath": "/var/log/nginx/testbonc.yz.local-80/testbonc",
-       "LogTemplateName": "main"
-      },
-      "DeleteUserCfgs": false,
-      "IsDefaultCfg": true,
-      "AppSrcType": "k8s"
-     }
-    ]
-   },
-   {
-    "CfgType": "extern",
-    "CfgsList": [
-     {
-      "ServerName": "nginx.yz.local",
-      "ListenPort": "80",
-      "RealServerPath": "/testnginx",
-      "Namespace": "nginx",
-      "AppName": "testnginx",
-      "Location": "/testnginx",
-      "ProxyRedirectSrcPath": "http://testnginx:8080/testnginx",
-      "ProxyRedirectDestPath": "/testnginx",
-      "UpstreamIPs": [
-       "192.168.0.29"
-      ],
-      "UpstreamPort": "3306",
-      "IsUpstreamIPHash": true,
-      "IsAppActivity": true,
-      "OperationType": "",
-      "IsK8sNotify": true,
-      "UpstreamUserRules": {
-       "UserRuleSet": null
-      },
-      "ServerUserRules": {
-       "UserRuleSet": null
-      },
-      "LocationUserRules": {
-       "UserRuleSet": null
-      },
-      "LogRule": {
-       "LogRuleName": "access_log",
-       "LogFileDirPath": "/var/log/nginx/nginx.yz.local-80/nginx",
-       "LogTemplateName": "main"
-      },
-      "DeleteUserCfgs": false,
-      "IsDefaultCfg": true,
-      "AppSrcType": "extern"
-     },
-     {
-      "ServerName": "testbonc.yz.local",
-      "ListenPort": "80",
-      "RealServerPath": "/testdemoui",
-      "Namespace": "testbonc",
-      "AppName": "testdemoui",
-      "Location": "/testdemoui",
-      "ProxyRedirectSrcPath": "http://testdemoui:8080/testdemoui",
-      "ProxyRedirectDestPath": "/testdemoui",
-      "UpstreamIPs": [
-       "192.168.0.76"
-      ],
-      "UpstreamPort": "58985",
-      "IsUpstreamIPHash": true,
-      "IsAppActivity": true,
-      "OperationType": "",
-      "IsK8sNotify": true,
-      "UpstreamUserRules": {
-       "UserRuleSet": null
-      },
-      "ServerUserRules": {
-       "UserRuleSet": null
-      },
-      "LocationUserRules": {
-       "UserRuleSet": null
-      },
-      "LogRule": {
-       "LogRuleName": "access_log",
-       "LogFileDirPath": "/var/log/nginx/testbonc.yz.local-80/testbonc",
-       "LogTemplateName": "main"
-      },
-      "DeleteUserCfgs": false,
-      "IsDefaultCfg": true,
-      "AppSrcType": "extern"
-     },
-     {
-      "ServerName": "testbonc.yz.local",
-      "ListenPort": "80",
-      "RealServerPath": "/testwk",
-      "Namespace": "testbonc",
-      "AppName": "testwk",
-      "Location": "/testwk",
-      "ProxyRedirectSrcPath": "http://testwk:8080/testwk",
-      "ProxyRedirectDestPath": "/testwk",
-      "UpstreamIPs": [
-       "192.168.0.76"
-      ],
-      "UpstreamPort": "3306",
-      "IsUpstreamIPHash": true,
-      "IsAppActivity": true,
-      "OperationType": "",
-      "IsK8sNotify": true,
-      "UpstreamUserRules": {
-       "UserRuleSet": null
-      },
-      "ServerUserRules": {
-       "UserRuleSet": null
-      },
-      "LocationUserRules": {
-       "UserRuleSet": null
-      },
-      "LogRule": {
-       "LogRuleName": "access_log",
-       "LogFileDirPath": "/var/log/nginx/testbonc.yz.local-80/testbonc",
-       "LogTemplateName": "main"
-      },
-      "DeleteUserCfgs": false,
-      "IsDefaultCfg": true,
-      "AppSrcType": "extern"
-     },
-     {
-      "ServerName": "nginx.yz.local",
-      "ListenPort": "80",
-      "RealServerPath": "/deletetest",
-      "Namespace": "nginx",
-      "AppName": "deletetest",
-      "Location": "/deletetest",
-      "ProxyRedirectSrcPath": "http://deletetest:8080/deletetest",
-      "ProxyRedirectDestPath": "/deletetest",
-      "UpstreamIPs": [
-       "192.168.0.29"
-      ],
-      "UpstreamPort": "1234",
-      "IsUpstreamIPHash": true,
-      "IsAppActivity": true,
-      "OperationType": "",
-      "IsK8sNotify": true,
-      "UpstreamUserRules": {
-       "UserRuleSet": null
-      },
-      "ServerUserRules": {
-       "UserRuleSet": null
-      },
-      "LocationUserRules": {
-       "UserRuleSet": null
-      },
-      "LogRule": {
-       "LogRuleName": "access_log",
-       "LogFileDirPath": "/var/log/nginx/nginx.yz.local-80/nginx",
-       "LogTemplateName": "main"
-      },
-      "DeleteUserCfgs": false,
-      "IsDefaultCfg": true,
-      "AppSrcType": "extern"
-     }
-    ]
-   }
-  ]
- };
+// var data = {
+//  "NodeIP": "192.168.252.133",
+//  "ClientID": "50395",
+//  "APIServerPort": ":8887",
+//  "NginxList": [
+//   {
+//    "CfgType": "k8s",
+//    "CfgsList": [
+//     {
+//      "ServerName": "bonc.local",
+//      "ListenPort": "8081",
+//      "RealServerPath": "/testa",
+//      "Namespace": "huyuepeng",
+//      "AppName": "testa",
+//      "Location": "/huyuepeng/testa",
+//      "ProxyRedirectSrcPath": "http://testa:8080/testa",
+//      "ProxyRedirectDestPath": "/huyuepeng/testa",
+//      "UpstreamIPs": null,
+//      "UpstreamPort": "",
+//      "IsUpstreamIPHash": true,
+//      "IsAppActivity": false,
+//      "OperationType": "create",
+//      "IsK8sNotify": false,
+//      "UpstreamUserRules": {
+//      		 "UserRuleSet": null
+//       },
+//      "ServerUserRules": {
+//	       "UserRuleSet": [
+//	        {
+//	         "RuleCMD": "rewrite",
+//	         "RuleParam": "cccc cccc"
+//	        },
+//	        {
+//	         "RuleCMD": "rewrite",
+//	         "RuleParam": "dddd dddd"
+//	        }
+//	       ]
+//      },
+//      "LocationUserRules": {
+//	       "UserRuleSet": [
+//	        {
+//	         "RuleCMD": "rewrite",
+//	         "RuleParam": "eeee eeee"
+//	        },
+//	        {
+//	         "RuleCMD": "rewrite",
+//	         "RuleParam": "ffff ffff"
+//	        }
+//	       ]
+//      },
+//      "LogRule": {
+//       "LogRuleName": "access_log",
+//       "LogFileDirPath": "/var/log/nginx/bonc.local-8081/huyuepeng",
+//       "LogTemplateName": "main"
+//      },
+//      "DeleteUserCfgs": false,
+//      "IsDefaultCfg": false,
+//      "AppSrcType": "k8s"
+//     },
+//     {
+//      "ServerName": "longlong.yz.local",
+//      "ListenPort": "80",
+//      "RealServerPath": "/alot",
+//      "Namespace": "longlong",
+//      "AppName": "alot",
+//      "Location": "/alot",
+//      "ProxyRedirectSrcPath": "http://alot:8080/alot",
+//      "ProxyRedirectDestPath": "/alot",
+//      "UpstreamIPs": [
+//       "192.168.0.80"
+//      ],
+//      "UpstreamPort": "32353",
+//      "IsUpstreamIPHash": true,
+//      "IsAppActivity": true,
+//      "OperationType": "",
+//      "IsK8sNotify": true,
+//      "UpstreamUserRules": {
+//       "UserRuleSet": null
+//      },
+//      "ServerUserRules": {
+//       "UserRuleSet": null
+//      },
+//      "LocationUserRules": {
+//       "UserRuleSet": null
+//      },
+//      "LogRule": {
+//       "LogRuleName": "access_log",
+//       "LogFileDirPath": "/var/log/nginx/longlong.yz.local-80/longlong",
+//       "LogTemplateName": "main"
+//      },
+//      "DeleteUserCfgs": false,
+//      "IsDefaultCfg": true,
+//      "AppSrcType": "k8s"
+//     },
+//     {
+//      "ServerName": "testbonc.yz.local",
+//      "ListenPort": "80",
+//      "RealServerPath": "/demo-a",
+//      "Namespace": "testbonc",
+//      "AppName": "demo-a",
+//      "Location": "/demo-a",
+//      "ProxyRedirectSrcPath": "http://demo-a:8080/demo-a",
+//      "ProxyRedirectDestPath": "/demo-a",
+//      "UpstreamIPs": [
+//       "192.168.0.82"
+//      ],
+//      "UpstreamPort": "31594",
+//      "IsUpstreamIPHash": true,
+//      "IsAppActivity": true,
+//      "OperationType": "",
+//      "IsK8sNotify": true,
+//      "UpstreamUserRules": {
+//       "UserRuleSet": null
+//      },
+//      "ServerUserRules": {
+//       "UserRuleSet": null
+//      },
+//      "LocationUserRules": {
+//       "UserRuleSet": null
+//      },
+//      "LogRule": {
+//       "LogRuleName": "access_log",
+//       "LogFileDirPath": "/var/log/nginx/testbonc.yz.local-80/testbonc",
+//       "LogTemplateName": "main"
+//      },
+//      "DeleteUserCfgs": false,
+//      "IsDefaultCfg": true,
+//      "AppSrcType": "k8s"
+//     },
+//     {
+//      "ServerName": "testbonc.yz.local",
+//      "ListenPort": "80",
+//      "RealServerPath": "/demo-b",
+//      "Namespace": "testbonc",
+//      "AppName": "demo-b",
+//      "Location": "/demo-b",
+//      "ProxyRedirectSrcPath": "http://demo-b:8080/demo-b",
+//      "ProxyRedirectDestPath": "/demo-b",
+//      "UpstreamIPs": [
+//       "192.168.0.82"
+//      ],
+//      "UpstreamPort": "32285",
+//      "IsUpstreamIPHash": true,
+//      "IsAppActivity": true,
+//      "OperationType": "",
+//      "IsK8sNotify": true,
+//      "UpstreamUserRules": {
+//       "UserRuleSet": null
+//      },
+//      "ServerUserRules": {
+//       "UserRuleSet": null
+//      },
+//      "LocationUserRules": {
+//       "UserRuleSet": null
+//      },
+//      "LogRule": {
+//       "LogRuleName": "access_log",
+//       "LogFileDirPath": "/var/log/nginx/testbonc.yz.local-80/testbonc",
+//       "LogTemplateName": "main"
+//      },
+//      "DeleteUserCfgs": false,
+//      "IsDefaultCfg": true,
+//      "AppSrcType": "k8s"
+//     }
+//    ]
+//   },
+//   {
+//    "CfgType": "extern",
+//    "CfgsList": [
+//     {
+//      "ServerName": "nginx.yz.local",
+//      "ListenPort": "80",
+//      "RealServerPath": "/testnginx",
+//      "Namespace": "nginx",
+//      "AppName": "testnginx",
+//      "Location": "/testnginx",
+//      "ProxyRedirectSrcPath": "http://testnginx:8080/testnginx",
+//      "ProxyRedirectDestPath": "/testnginx",
+//      "UpstreamIPs": [
+//       "192.168.0.29"
+//      ],
+//      "UpstreamPort": "3306",
+//      "IsUpstreamIPHash": true,
+//      "IsAppActivity": true,
+//      "OperationType": "",
+//      "IsK8sNotify": true,
+//      "UpstreamUserRules": {
+//       "UserRuleSet": null
+//      },
+//      "ServerUserRules": {
+//       "UserRuleSet": null
+//      },
+//      "LocationUserRules": {
+//       "UserRuleSet": null
+//      },
+//      "LogRule": {
+//       "LogRuleName": "access_log",
+//       "LogFileDirPath": "/var/log/nginx/nginx.yz.local-80/nginx",
+//       "LogTemplateName": "main"
+//      },
+//      "DeleteUserCfgs": false,
+//      "IsDefaultCfg": true,
+//      "AppSrcType": "extern"
+//     },
+//     {
+//      "ServerName": "testbonc.yz.local",
+//      "ListenPort": "80",
+//      "RealServerPath": "/testdemoui",
+//      "Namespace": "testbonc",
+//      "AppName": "testdemoui",
+//      "Location": "/testdemoui",
+//      "ProxyRedirectSrcPath": "http://testdemoui:8080/testdemoui",
+//      "ProxyRedirectDestPath": "/testdemoui",
+//      "UpstreamIPs": [
+//       "192.168.0.76"
+//      ],
+//      "UpstreamPort": "58985",
+//      "IsUpstreamIPHash": true,
+//      "IsAppActivity": true,
+//      "OperationType": "",
+//      "IsK8sNotify": true,
+//      "UpstreamUserRules": {
+//       "UserRuleSet": null
+//      },
+//      "ServerUserRules": {
+//       "UserRuleSet": null
+//      },
+//      "LocationUserRules": {
+//       "UserRuleSet": null
+//      },
+//      "LogRule": {
+//       "LogRuleName": "access_log",
+//       "LogFileDirPath": "/var/log/nginx/testbonc.yz.local-80/testbonc",
+//       "LogTemplateName": "main"
+//      },
+//      "DeleteUserCfgs": false,
+//      "IsDefaultCfg": true,
+//      "AppSrcType": "extern"
+//     },
+//     {
+//      "ServerName": "testbonc.yz.local",
+//      "ListenPort": "80",
+//      "RealServerPath": "/testwk",
+//      "Namespace": "testbonc",
+//      "AppName": "testwk",
+//      "Location": "/testwk",
+//      "ProxyRedirectSrcPath": "http://testwk:8080/testwk",
+//      "ProxyRedirectDestPath": "/testwk",
+//      "UpstreamIPs": [
+//       "192.168.0.76"
+//      ],
+//      "UpstreamPort": "3306",
+//      "IsUpstreamIPHash": true,
+//      "IsAppActivity": true,
+//      "OperationType": "",
+//      "IsK8sNotify": true,
+//      "UpstreamUserRules": {
+//       "UserRuleSet": null
+//      },
+//      "ServerUserRules": {
+//       "UserRuleSet": null
+//      },
+//      "LocationUserRules": {
+//       "UserRuleSet": null
+//      },
+//      "LogRule": {
+//       "LogRuleName": "access_log",
+//       "LogFileDirPath": "/var/log/nginx/testbonc.yz.local-80/testbonc",
+//       "LogTemplateName": "main"
+//      },
+//      "DeleteUserCfgs": false,
+//      "IsDefaultCfg": true,
+//      "AppSrcType": "extern"
+//     },
+//     {
+//      "ServerName": "nginx.yz.local",
+//      "ListenPort": "80",
+//      "RealServerPath": "/deletetest",
+//      "Namespace": "nginx",
+//      "AppName": "deletetest",
+//      "Location": "/deletetest",
+//      "ProxyRedirectSrcPath": "http://deletetest:8080/deletetest",
+//      "ProxyRedirectDestPath": "/deletetest",
+//      "UpstreamIPs": [
+//       "192.168.0.29"
+//      ],
+//      "UpstreamPort": "1234",
+//      "IsUpstreamIPHash": true,
+//      "IsAppActivity": true,
+//      "OperationType": "",
+//      "IsK8sNotify": true,
+//      "UpstreamUserRules": {
+//       "UserRuleSet": null
+//      },
+//      "ServerUserRules": {
+//       "UserRuleSet": null
+//      },
+//      "LocationUserRules": {
+//       "UserRuleSet": null
+//      },
+//      "LogRule": {
+//       "LogRuleName": "access_log",
+//       "LogFileDirPath": "/var/log/nginx/nginx.yz.local-80/nginx",
+//       "LogTemplateName": "main"
+//      },
+//      "DeleteUserCfgs": false,
+//      "IsDefaultCfg": true,
+//      "AppSrcType": "extern"
+//     }
+//    ]
+//   }
+//  ]
+// };
 
- 
+ var NodeIP = "";
+ var ClientID = "";
  $(document).ready(function () {
- 	showAllNgs();
-
  	var locationUrl = window.location;
- 	var KubernetesMasterHost = locationUrl.search.substring(locationUrl.search.indexOf("KubernetesMasterHost=")+21,locationUrl.search.indexOf("&K"));
+	//http://192.168.252.133:8011/ngfront/zone/clients/watcher/nginxcfg?NodeIP=192.168.252.133&ClientID=71906&KubernetesMasterHost=http://192.168.0.75:8080&KubernetesAPIVersion=api/v1&JobZoneType=all
+ 	NodeIP = locationUrl.search.substring(locationUrl.search.indexOf("NodeIP=")+7,locationUrl.search.indexOf("&C"));
+	ClientID = locationUrl.search.substring(locationUrl.search.indexOf("ClientID=")+9,locationUrl.search.indexOf("&KubernetesMasterHost"));
+	var KubernetesMasterHost = locationUrl.search.substring(locationUrl.search.indexOf("KubernetesMasterHost=")+21,locationUrl.search.indexOf("&KubernetesAPIVersion"));
 	var KubernetesAPIVersion = locationUrl.search.substring(locationUrl.search.indexOf("KubernetesAPIVersion=")+21,locationUrl.search.indexOf("&J"));
 	var JobZoneType = locationUrl.search.substring(locationUrl.search.indexOf("JobZoneType=")+12,locationUrl.search.length);
-
-	$("#hypBtn").click(function(){
-		var areaIP = "localhost";
-		var areaPort = "port";
-		var Url = "http://"+areaIP+":"+areaPort+"/nginxcfg?NodeIP=192.168.252.133&ClientID=49073";
+	
+	showAllNgs(NodeIP,ClientID);
+	
+//	$("#hypBtn").click(function(){
+//		var areaIP = "localhost";
+//		var areaPort = "port";
+//		var Url = "http://"+areaIP+":"+areaPort+"/nginxcfg?NodeIP=192.168.252.133&ClientID=49073";
 		
-		var WebMsg = {
-			"ServerName": "测试ServerName222",
-			"ListenPort": "测试ListenPort",
-			"Namespace": "测试Namespace",
-			"AppName": "测试AppName",
-		    "AppSrcType": "k8s",
-			"Location": "测试location"
-	    };
+//		var WebMsg = {
+//			"ServerName": "测试ServerName222",
+//			"ListenPort": "测试ListenPort",
+//			"Namespace": "测试Namespace",
+//			"AppName": "测试AppName",
+//		    "AppSrcType": "k8s",
+//			"Location": "测试location"
+//	    };
 		
-		$.ajax({
-			url : Url,
-			dataType: "json",
-			contentType: "text/html; charset=UTF-8",
-    		type: "delete",//update操作 
-			headers: {
-				"Content-Type": "application/json",
-				"Accept": "application/json",
-			},
-			data: JSON.stringify(WebMsg),
+//		$.ajax({
+//			url : Url,
+//			dataType: "json",
+//			contentType: "text/html; charset=UTF-8",
+//    		type: "delete",//update操作 
+//			headers: {
+//				"Content-Type": "application/json",
+//				"Accept": "application/json",
+//			},
+//			data: JSON.stringify(WebMsg),
 			
-			"success":function(data){
-				var data = eval("("+data+")");
-			}
-		})
-	});
+//			"success":function(data){
+//				var data = eval("("+data+")");
+//			}
+//		})
+//	});
 	
 	
 	
@@ -372,12 +376,12 @@
     });
 
     //与填写的端口号保持一致
-	var ListenPort = $("#ListenPort").val();
-	$(".sameToListenPort").val(ListenPort);
-	$("#ListenPort").blur(function(){
-		ListenPort = $("#ListenPort").val();
-		$(".sameToListenPort").val(ListenPort);
-	});
+//	var ListenPort = $("#ListenPort").val();
+//	$(".sameToListenPort").val(ListenPort);
+//	$("#ListenPort").blur(function(){
+//		ListenPort = $("#ListenPort").val();
+//		$(".sameToListenPort").val(ListenPort);
+//	});
 
 
 	
@@ -430,9 +434,29 @@
 }
 
 //展示同一个node下的所有nginx配置
-function showAllNgs(){
+function showAllNgs(NodeIP,ClientID){
+	var areaIP = "localhost";
+	var areaPort = "port";
+	var Url = "http://"+areaIP+":"+areaPort+"/nginxcfg?NodeIP="+NodeIP+"&ClientID="+ClientID;
+	$.ajax({
+			url : Url,
+			dataType: "json",
+			contentType: "text/html; charset=UTF-8",
+    		type: "get", 
+			headers: {
+				"Content-Type": "application/json",
+				"Accept": "application/json",
+			},
+			"success":function(data){
+				showNgsHtml(data);
+			}	
+	})
 	
+}
+
+function showNgsHtml(data){
 	var NginxList = data.NginxList;
+	
 
 	var strs = "";
 
@@ -443,10 +467,10 @@ function showAllNgs(){
 			 				+'<div class="ibox-title">'
 			 				+'<h5> NODE '+data.NodeIP+data.APIServerPort+'-'+'K8S服务</h5>';
 			 			strs+= '<div class="ibox-tools">'
-													+'<a class="" onclick="nginxFormCommOfNode(this)">'
+													+'<a class="hide" onclick="nginxFormCommOfNode(this)">'
 						                             +   '<i class="fa fa-save" ></i>'
 						                            +'</a>'
-												   + '<a class="" onclick="" index="index"'
+												   + '<a class="hide" onclick="" index="index"'
 												   + 'appName="${ngCfgs.appName}" namespace="${ngCfgs.namespace}" serverName="${ngCfgs.serverName }:${ngCfgs.listenPort }"  flag=0 >'
                                                    +     '<i class="fa fa-trash" ></i>'
                                                    + '</a>'
@@ -461,10 +485,10 @@ function showAllNgs(){
 			 				+'<div class="ibox-title">'
 			 				+'<h5> NODE '+data.NodeIP+data.APIServerPort+'-'+'外部服务</h5>';
 			 			strs+= '<div class="ibox-tools">'
-													+'<a class="" onclick="nginxFormCommOfNode(this)">'
+													+'<a class="hide" onclick="nginxFormCommOfNode(this)">'
 						                             +   '<i class="fa fa-save" ></i>'
 						                            +'</a>'
-												   + '<a class="" onclick="" index="index"'
+												   + '<a class="hide" onclick="" index="index"'
 												   + 'appName="${ngCfgs.appName}" namespace="${ngCfgs.namespace}" serverName="${ngCfgs.serverName }:${ngCfgs.listenPort }"  flag=0 >'
                                                    +     '<i class="fa fa-trash" ></i>'
                                                    + '</a>'
@@ -482,13 +506,13 @@ function showAllNgs(){
 			var CfgsList = nginxList.CfgsList[j];
 			 		ngConfigPartHtml += '<div class="ngConfigPart">'
 											+'<input type="checkbox" class="ngConfigCheckbox"/>'
-											+'<span><i class="fa fa-plus fa-serverPlus fa-one" onClick="addOneSerPart(this)"></i></span>'
-                                             + '<span><i class="fa fa-save fa-one" onClick="sendSerPart(this)"></i></span>'
+											+'<span class="hide"><i class="fa fa-plus fa-serverPlus fa-one" onClick="addOneSerPart(this)"></i></span>'
+                                             + '<span><i class="fa fa-save fa-one" onClick="saveSerPart(this)"></i></span>'
                                              + '<span><i class="fa fa-trash fa-one" onClick="delOneSerPart(this)"></i></span>'
                                              + '<span><i class="fa fa-caret-down fa-one" onClick="toggleOneSerPart(this)"></i></span>'
                                              + '<span class="ngConfigPartTit"></span>'
 												+ '<div class="ngConfigPartCon">'
-												+ '<form class="nginxForm" id="nginxForm" method="post" action="<%=path%>/saveNginxForm">'
+												+ '<form class="nginxForm" method="post" action="">'
 												+	'<div class="nginx-label">'
 												+		'<span class="upstreamPartTit">upstream</span><input type="text" class="appNameAndNamespace" name="appNameAndNamespace" value="'+CfgsList.AppName+'-'+CfgsList.Namespace+'" disabled>{'
 												+	'</div>'
@@ -511,7 +535,7 @@ function showAllNgs(){
 												if(UpstreamIPsArray != null){
 													for(var m=0; m<UpstreamIPsArray.length; m++){
 													UpstreamIPsHtml	+='<div class="nginx-label col-md-offset-1">'
-														+'<span>server:</span><input type="text" class="ipAndUpstreamPort" name="ipAndUpstreamPort" value="'+UpstreamIPsArray[m]+':'+CfgsList.UpstreamPort+'">;'
+														+'<span>server:</span><input type="text" class="ipAndUpstreamPort" value="'+UpstreamIPsArray[m]+':'+CfgsList.UpstreamPort+'">;'
 														+	'</div>';
 													}
 												}
@@ -527,8 +551,8 @@ function showAllNgs(){
 									 					
 									 					UpstreamUserRulesStr+='<div class="col-md-offset-1 nginx-label">'
 									 	 	 					+'<span>|-<span>'
-									 	 	 					+'<input type="text" id="upstreamUserRulesKey" name="upstreamUserRulesKey" value="'+UpstreamUserRules[i].RuleCMD+'"><span>:</span>'
-									 	 	 					+'<input type="text" id="upstreamUserRulesValue" name="upstreamUserRulesValue" value="'+UpstreamUserRules[i].RuleParam+'">;'
+									 	 	 					+'<input type="text" id="UpstreamRuleCMD" name="UpstreamRuleCMD" value="'+UpstreamUserRules[i].RuleCMD+'"><span>:</span>'
+									 	 	 					+'<input type="text" id="UpstreamRuleParam" name="UpstreamRuleParam" value="'+UpstreamUserRules[i].RuleParam+'">;'
 									 	 	 					+'<span><i class="fa fa-trash" onClick="removeOneupstreamUserRulesPlus(this)"></i></span> '
 									 	 	 					+'</div>'
 									 					
@@ -550,7 +574,7 @@ function showAllNgs(){
 												+					'<span>listen:</span><input type="text" id="ListenPort" name="ListenPort" value="'+CfgsList.ListenPort+'">;'
 												+				'</div>'
 												+				'<div class="nginx-label col-md-offset-1">'
-												+					'<span>server_name:</span><input type="text" id="serverName"  name="serverName" value="'+CfgsList.ServerName+'">;'
+												+					'<span>server_name:</span><input type="text" id="ServerName"  name="ServerName" value="'+CfgsList.ServerName+'">;'
 												+				'</div>'
 												+				'<div class="nginx-label col-md-offset-1">'
 												+					'<span>location:</span><input type="text" id="Location" name="Location" value="'+CfgsList.Location+'">{'
@@ -595,8 +619,8 @@ function showAllNgs(){
 							 	 					
 							 	 						LocationUserRulesStr+='<div class="col-md-offset-2 nginx-label">'
 							 	 	 	 					+'<span>|-<span>'
-							 	 	 	 					+'<input type="text" class="def-input" id="locationUserRulesKey" name="locationUserRulesKey" value="'+LocationUserRules[i].RuleCMD+'"><span>:</span>'
-							 	 	 	 					+'<input type="text" class="def-input" id="locationUserRulesValue" name="locationUserRulesValue" value="'+LocationUserRules[i].RuleParam+'">;'
+							 	 	 	 					+'<input type="text" class="def-input" id="LocationRuleCMD" name="LocationRuleCMD" value="'+LocationUserRules[i].RuleCMD+'"><span>:</span>'
+							 	 	 	 					+'<input type="text" class="def-input" id="LocationRuleParam" name="LocationRuleParam" value="'+LocationUserRules[i].RuleParam+'">;'
 							 	 	 	 					+'<span><i class="fa fa-trash" onClick="removeOnelocationUserRulesPlus(this)"></i></span> '
 							 	 	 	 					+'</div>'
 							 	 					
@@ -617,8 +641,8 @@ function showAllNgs(){
 							 	 	 					
 							 	 	 					ServerUserRulesStr+='<div class="col-md-offset-1 nginx-label">'
 							 	 	 	 	 					+'<span>|-<span>'
-							 	 	 	 	 					+'<input type="text" id="serverUserRulesKey" name="serverUserRulesKey" value="'+ServerUserRules[i].RuleCMD+'"><span>:</span>'
-							 	 	 	 	 					+'<input type="text" id="serverUserRulesValue" name="serverUserRulesValue" value="'+ServerUserRules[i].RuleParam+'">;'
+							 	 	 	 	 					+'<input type="text" id="ServerRuleCMD" name="ServerRuleCMD" value="'+ServerUserRules[i].RuleCMD+'"><span>:</span>'
+							 	 	 	 	 					+'<input type="text" id="ServerRuleParam" name="ServerRuleParam" value="'+ServerUserRules[i].RuleParam+'">;'
 							 	 	 	 	 					+'<span><i class="fa fa-trash" onClick="removeOneserverUserRulesPlus(this)"></i></span> '
 							 	 	 	 	 					+'</div>'
 							 	 	 					
@@ -708,7 +732,6 @@ function showAllNgs(){
 		var str='<div class="ngConfigPart" border:1px solid #FF0000 >' 
 			+'<input type="checkbox" class="ngConfigCheckbox"/> '
 //			+'<span><i class="fa fa-plus fa-serverPlus" onClick="addOneSerPart(this)"></i></span> '
-//			+'<span><i class="fa fa-openid" onClick="sendSerPart(this)"></i></span> '
 			+'<span><i class="fa fa-trash fa-one" onClick="removeOneSerPart(this)"></i></span> '
 			+'<span><i class="fa fa-save fa-one" onClick="nginxFormCommOne(this)"></i></span> '
 			+'<span><i class="fa fa-caret-down fa-one" onClick="toggleOneSerPart(this)"></i></span> '
@@ -723,7 +746,7 @@ function showAllNgs(){
 			+'<input type="hidden" name="nodeIp" value="'+nodeIp+'"/>'
 			+'<input type="hidden" name="nodePort" value="'+nodePort+'"/>'
 			+'<div class="nginx-label">'
-			+'<span class="upstreamPartTit">upstream</span><input type="text" class="appNameAndNamespace" name="appNameAndNamespace" value="'+appName+'-'+namespace+'" disabled>{'
+			+'<span class="upstreamPartTit">upstream</span><input type="text" id="appNameAndNamespace" class="appNameAndNamespace" name="appNameAndNamespace" value="'+appName+'-'+namespace+'" disabled>{'
 			+'</div>'
 			+'<div class="nginx-label col-md-offset-1">'
 			+'<select id="IsUpstreamIPHash" name="UpstreamIPHash">'
@@ -799,12 +822,310 @@ function showAllNgs(){
 			+'</div>';
 		$(obj).parent().parent().after(str);
 	}
+	
 	/**
 	 * 删除一个没有提交的ng配置
 	 */
 	function removeOneSerPart(obj){
 		$(obj).parent().parent().remove();
 	}
+	
+	/**
+	 * 提交一个ng配置
+	 * @param obj
+	 */
+	function saveSerPart(obj){
+		var ngConfigPart = $(obj).parent().parent().find('.nginxForm');
+		var nginxform = ngConfigPart;
+		localRefreshNg(obj);
+//		if(1==deforeNginxFormComm($(nginxform))){
+//			return;
+//		}
+//		$(ngConfigPart).ajaxSubmit(function(data) {
+//			var data = eval("("+data+")");
+//			if('200'==data.status){
+//            	if($('#search_service').val().length>0){
+//            		//findNgByOneApp($('#search_service'));	
+//            		localRefreshNg(obj);
+//            	}else{
+//            		if($('#search_user').val().length>0){
+//            			//searchByUser('#search_user');
+//            			localRefreshNg(obj);
+//            		}else{
+//            			//findAllNg();
+//            			localRefreshNg(obj);
+//            		}
+//            	}
+				
+//				layer.msg( "更新成功！", {
+//	                icon: 1
+//	            },function(){
+	            	
+	
+//	            });
+//			}else{
+//				warningInfo("失败:\\n"+data.error);
+//			}
+//		});
+	} 
+	
+	/**
+ 	 * 局部刷新
+ 	 */
+ 	function localRefreshNg(obj){
+		var ngConfigPart = $(obj).parent().parent().find('.nginxForm');
+		var ServerName = ngConfigPart.find("#ServerName").val();
+		var AppName = ngConfigPart.find("#appNameAndNamespace").val().split("-")[0];
+		var Namespace = ngConfigPart.find("#appNameAndNamespace").val().split("-")[1];
+		
+		
+	var saveData = {
+      "ServerName": "bonc.local",
+      "ListenPort": "8081",
+      "RealServerPath": "/testa",
+      "Namespace": "huyuepeng",
+      "AppName": "testa",
+      "Location": "/huyuepeng/testa",
+      "ProxyRedirectSrcPath": "http://testa:8080/testa",
+      "ProxyRedirectDestPath": "/huyuepeng/testa",
+      "IsUpstreamIPHash": true,
+      "OperationType": "create",
+      "UpstreamUserRules": {
+       "UserRuleSet": null
+      },
+      "ServerUserRules": {
+       "UserRuleSet": [
+        {
+         "RuleCMD": "rewrite",
+         "RuleParam": "cccc cccc"
+        },
+        {
+         "RuleCMD": "rewrite",
+         "RuleParam": "dddd dddd"
+        }
+       ]
+      },
+      "LocationUserRules": {
+       "UserRuleSet": [
+        {
+         "RuleCMD": "rewrite",
+         "RuleParam": "eeee eeee"
+        },
+        {
+         "RuleCMD": "rewrite",
+         "RuleParam": "ffff ffff"
+        }
+       ]
+      },
+      "LogRule": {
+       "LogRuleName": "access_log",
+       "LogFileDirPath": "/var/log/nginx/bonc.local-8081/huyuepeng",
+       "LogTemplateName": "main"
+      },
+      "DeleteUserCfgs": false,
+      "IsDefaultCfg": false,
+      "AppSrcType": "k8s"
+     };
+	
+	
+	
+		//var saveData = $(obj).parent().parent().find('.nginxForm');
+		var areaIP = "localhost";
+		var areaPort = "port";
+		var Url = "http://"+areaIP+":"+areaPort+"/nginxcfg?NodeIP="+NodeIP+"&ClientID="+ClientID;
+		$.ajax({
+			url : Url,
+			dataType: "json",
+			contentType: "text/html; charset=UTF-8",
+    		type: "post",//update操作 
+			headers: {
+				"Content-Type": "application/json",
+				"Accept": "application/json",
+			},
+			data: JSON.stringify(saveData),
+			//data: JSON.stringify(saveData.serialize().split("&")),
+			
+			"success":function(data){
+				var data = eval("("+data+")");
+	 			
+				
+//				var strs="";
+// 				strs+='<input type="checkbox" class="ngConfigCheckbox" nodeIp="'+nodeIp+'" nodePort="'+nodePort+'"/> '
+// 					//+'<span><i class="fa fa-plus fa-serverPlus" onClick="addOneSerPart(this)"></i></span> 'listenPort serverName
+// 					+'<span><a class="fa fa-openid" onClick="sendSerPart(this)" '+'listenPort="'+data.nginxCfgs.listenPort+'" serverName="'+data.nginxCfgs.serverName+'" appName="'+data.nginxCfgs.appName+'" namespace="'+data.nginxCfgs.namespace+'" nodeIp="'+nodeIp+'" nodePort="'+nodePort+'" flag="'+flag+'" title="下发配置"></a></span> '
+// 					+'<span><a class="fa fa-trash" onClick="delOneSerPart(this)" '+'listenPort="'+data.nginxCfgs.listenPort+'" serverName="'+data.nginxCfgs.serverName+'" appName="'+data.nginxCfgs.appName+'" namespace="'+data.nginxCfgs.namespace+'" nodeIp="'+nodeIp+'" nodePort="'+nodePort+'" flag="'+flag+'" title="删除配置"></a></span> '
+// 					+'<span><a class="fa fa-save" onClick="nginxFormCommOne(this)" title="提交配置"></a></span> '
+// 					+'<span><a class="fa fa-caret-down" onClick="toggleOneSerPart(this)"></a></span> '
+// 					+'<span class="ngConfigPartTit"></span>'
+// 					+'<div class="ngConfigPartCon">'
+// 					+'<form class="nginxForm" id="nginxForm" method="post" action="'+ctx+'/saveNginxForm">'
+// 					+'<input name="flag" value="'+flag+'" type="hidden"/>'
+// 					+'<input name="had" value=true type="hidden"/>'
+// 					+'<input type="hidden" name="serviceAppName" value="'+namespace+'-'+appName+'"/>'
+// 					+'<input type="hidden" name="appName" value="'+appName+'"/>'
+// 					+'<input type="hidden" name="namespace" value="'+namespace+'"/>'
+// 					+'<input type="hidden" name="nodeIp" value="'+nodeIp+'"/>'
+// 					+'<input type="hidden" name="nodePort" value="'+nodePort+'"/>'
+// 					+'<div class="nginx-label">'
+// 					+'<span class="upstreamPartTit">删除服务的同时删除个性化配置</span>';
+// 					var duc='';
+// 					if(data.nginxCfgs.deleteUserCfgs){
+// 						duc+='<input type="checkbox" name="deleteUserCfgs" checked="checked">'
+// 					}else{
+// 						duc+='<input type="checkbox" name="deleteUserCfgs">'
+// 					}
+// 				strs+=duc;	
+// 				strs+='</div>'
+// 					+'<div class="nginx-label">'
+// 					+'<span class="upstreamPartTit">upstream</span><input type="text" class="appNameAndNamespace" name="appNameAndNamespace" value="'+data.nginxCfgs.appName+'-'+data.nginxCfgs.namespace+'" disabled>{'
+// 					+'</div>'
+// 					+'<div class="nginx-label col-md-offset-1">'
+// 					+'<select id="IsUpstreamIPHash" name="UpstreamIPHash">';
+//				 var iphash='';	
+// 					if(data.nginxCfgs.upstreamIPHash==false){
+//					    iphash+='<option value="false" selected="selected">none</option>'
+//					    	  +'<option value="true">ip_hash</option>';
+//					}else{
+//						iphash+='<option value="false">none</option>'
+//							  +'<option value="true" selected="selected">ip_hash</option>';
+//					}
+// 				strs+=iphash;
+// 				strs+='</select>;'
+// 					+'</div>'
+// 					+'<div id="nginx-sers">';
+// 				var ips='';
+// 					if(undefined==data.nginxCfgs.upstreamIPs){
+// 						ips+='<div class="nginx-label col-md-offset-1">'
+// 							+	'<span>server:</span><input type="text" class="ipAndUpstreamPort" name="ipAndUpstreamPort" disabled value="系统自动生成">;'
+// 							+'</div>';
+// 					}else{
+// 						for(var m=0;m<data.nginxCfgs.upstreamIPs.length;m++){
+// 		 					ips+='<div class="nginx-label col-md-offset-1">'
+// 								+	'<span>server:</span><input type="text" class="ipAndUpstreamPort" name="ipAndUpstreamPort" disabled value="'+data.nginxCfgs.upstreamIPs[m] +':'+data.nginxCfgs.upstreamPort+'">;'
+// 								+'</div>';
+// 		 				}
+// 					}
+// 				strs+=ips;
+// 				strs+='<div class="col-md-offset-1">自定义配置<span><i class="fa fa-plus fa-upstreamUserRulesPlus" onClick="addOneupstreamUserRulesPlus(this)"></i></span>'
+// 				+'</div>';
+// 				var upstreamUserRuleStr=''
+// 				if(false==$.isEmptyObject(data.nginxCfgs.upstreamUserRules)){
+// 					var upstreamUserRules=data.nginxCfgs.upstreamUserRules.rulesSet;
+//	 				for(var key in upstreamUserRules){
+//	 					for(var value in upstreamUserRules[key]){
+//	 						upstreamUserRuleStr+='<div class="col-md-offset-1">'
+//	 	 	 					+'<span>|-<span>'
+//	 	 	 					+'<input type="text" id="upstreamUserRulesKey" name="upstreamUserRulesKey" value="'+key+'"><span>:</span>'
+//	 	 	 					+'<input type="text" id="upstreamUserRulesValue" name="upstreamUserRulesValue" value="'+upstreamUserRules[key][value]+'">;'
+//	 	 	 					+'<span><i class="fa fa-trash" onClick="removeOneupstreamUserRulesPlus(this)"></i></span> '
+//	 	 	 					+'</div>'
+//	 					}
+//	 				}
+// 				}
+// 				strs+=upstreamUserRuleStr;
+// 				strs+='</div>'
+// 					+'<div class="nginx-label">'
+// 					+'<span>}</span>'
+// 					+'</div>'
+// 					+'<div class="serverPartList">'
+// 					+'<div class="serverPart">'
+// 					+'<div class="nginx-label">'
+// 					+'<span class="serverPartTit">server{</span>'
+// 					+'</div>'
+// 					+'<div class="serverPartCon">'
+// 					+'<div class="nginx-label col-md-offset-1">'
+// 					+'<span>listen:</span><input readonly type="text" id="ListenPort" name="ListenPort" value="'+data.nginxCfgs.listenPort+'">;'
+// 					+'</div>'
+// 					+'<div class="nginx-label col-md-offset-1">'
+// 					+'<span>server_name:</span><input readonly type="text" id="serverName"  name="serverName" value="'+data.nginxCfgs.serverName+'">;'
+// 					+'</div>'
+// 					+'<div class="nginx-label col-md-offset-1">'
+// 					+'<span>location:</span><input type="text" id="Location" name="Location" value="'+data.nginxCfgs.location+'">{'
+// 					+'</div>'
+// 					+'<div class="nginx-label col-md-offset-2">'
+// 					+'<span>proxy_pass:</span><input type="text" id="proxy_pass" name="" value="http://'+data.nginxCfgs.appName+'-'+data.nginxCfgs.namespace+'" disabled><input type="text" id="realServerPath" name="realServerPath" value="'+data.nginxCfgs.realServerPath+'"/>;'
+// 					+'</div>'
+// 					+'<div class="nginx-label col-md-offset-2">'
+// 					+'<span>proxy_set_header Host $host:</span><input type="text" class="sameToListenPort" name="" value="'+data.nginxCfgs.listenPort+'" disabled>;'
+// 					+'</div>'
+// 					+'<div class="nginx-label col-md-offset-2">'
+// 					+'<span>proxy_set_header X-Real-IP $remote_addr:</span><input type="text" class="sameToListenPort" id="" name="" value="'+data.nginxCfgs.listenPort+'" disabled>;'
+// 					+'</div>'
+// 					+'<div class="nginx-label col-md-offset-2">'
+// 					+'<span>proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for</span>;'
+// 					+'</div>'
+// 					+'<div class="nginx-label col-md-offset-2">'
+// 					+'<span>proxy_redirect:</span><input type="text" id="ProxyRedirectSrcPath" name="ProxyRedirectSrcPath" value="'+data.nginxCfgs.proxyRedirectSrcPath+'">'
+// 					+'<input type="text" id="ProxyRedirectDestPath" name="ProxyRedirectDestPath" value="'+data.nginxCfgs.proxyRedirectDestPath+'">;'
+// 					+'</div>'
+// 					+'<div class="nginx-label col-md-offset-2">'
+// 					+'<select id="LogRuleName" name="LogRuleName">';
+// 					var rname ='';
+// 					if(data.nginxCfgs.logRule.logRuleName=="access_log"){
+// 						rname+='<option value="access_log" selected>access_log</option>'
+// 						+'<option value="error_log" >error_log</option>';
+// 					}else{
+// 						rname+='<option value="access_log">access_log</option>'
+//	 						+'<option value="error_log" selected>error_log</option>';
+// 					}
+// 					rname+='</select>';
+// 					strs+=rname;
+// 					strs+='<input type="text" id="LogFileDirPath" name="LogFileDirPath" value="'+data.nginxCfgs.logRule.logFileDirPath+'">'
+// 					+'<input type="text" id="" name="" value="/'+data.nginxCfgs.appName+'_'+data.nginxCfgs.logRule.logRuleName+'" disabled>'
+// 					+'<input type="text" id="LogTemplateName" name="LogTemplateName" value="'+data.nginxCfgs.logRule.logTemplateName+'">;'
+// 					+'</div>'
+// 					+'<div class="col-md-offset-2">自定义配置<span><i class="fa fa-plus fa-locationUserRulesPlus" onClick="addOnelocationUserRulesPlus(this)"></i></span>'
+// 					+'</div>';
+// 	 	 	 		var locationUserRuleStr=''
+// 	 	 	 		if(false==$.isEmptyObject(data.nginxCfgs.locationUserRules)){
+// 	 	 	 		var locationUserRules=data.nginxCfgs.locationUserRules.rulesSet;
+// 	 				for(var key in locationUserRules){
+// 	 					for(var value in locationUserRules[key]){
+// 	 						locationUserRuleStr+='<div class="col-md-offset-2">'
+// 	 	 	 					+'<span>|-<span>'
+// 	 	 	 					+'<input type="text" id="locationUserRulesKey" name="locationUserRulesKey" value="'+key+'"><span>:</span>'
+// 	 	 	 					+'<input type="text" id="locationUserRulesValue" name="locationUserRulesValue" value="'+locationUserRules[key][value]+'">;'
+// 	 	 	 					+'<span><i class="fa fa-trash" onClick="removeOnelocationUserRulesPlus(this)"></i></span> '
+// 	 	 	 					+'</div>'
+// 	 					}
+// 	 				}
+// 	 	 	 		}
+ 	 	 				
+// 	 				strs+=locationUserRuleStr;
+// 	 	 			strs+='<div class="nginx-label col-md-offset-1">'
+// 					+'<span>}</span>'
+// 					+'</div>'
+// 					+'<div class="col-md-offset-1">自定义配置<span><i class="fa fa-plus fa-serverUserRulesPlus" onClick="addOneserverUserRulesPlus(this)"></i></span>'
+// 					+'</div>';
+// 					var serverUserRuleStr=''
+//					if(false==$.isEmptyObject(data.nginxCfgs.serverUserRules)){
+//						var serverUserRules=data.nginxCfgs.serverUserRules.rulesSet;
+// 	 	 				for(var key in serverUserRules){
+// 	 	 					for(var value in serverUserRules[key]){
+// 	 	 					serverUserRuleStr+='<div class="col-md-offset-1">'
+// 	 	 	 	 					+'<span>|-<span>'
+// 	 	 	 	 					+'<input type="text" id="serverUserRulesKey" name="serverUserRulesKey" value="'+key+'"><span>:</span>'
+// 	 	 	 	 					+'<input type="text" id="serverUserRulesValue" name="serverUserRulesValue" value="'+serverUserRules[key][value]+'">;'
+// 	 	 	 	 					+'<span><i class="fa fa-trash" onClick="removeOneserverUserRulesPlus(this)"></i></span> '
+// 	 	 	 	 					+'</div>'
+// 	 	 					}
+// 	 	 				}
+//					}
+// 	 	 			strs+=serverUserRuleStr;
+// 					strs+='<div class="nginx-label">'
+// 					+'<span>}</span>'
+// 					+'</div>'
+// 					+'</div>'
+// 					+'</div>'
+// 					+'</div>'
+// 					+'</form> '
+// 				+'</div>';
+//		 		ngConfigPart.empty().append(strs);
+			}
+		});
+ 	}
+	
+	
 	/**
 	 * 删除一个ng配置
 	 * @param obj

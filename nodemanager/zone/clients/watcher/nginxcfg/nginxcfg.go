@@ -210,6 +210,7 @@ func getNginxCfgsListFromKubeNG(getCfgsURL string, appSrcType string) (cfgsList 
 	return
 }
 
+//get
 func (svc *ServiceInfo) getNginxInfo(request *restful.Request, response *restful.Response) {
 	logdebug.Println(logdebug.LevelDebug, "获取完整的app nginx配置集合!")
 

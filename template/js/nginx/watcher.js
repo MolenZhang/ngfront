@@ -47,7 +47,7 @@ $(document).ready(function () {
 	 });
 	//进入Nginx配置管理界面
 	$(document).on('click','.btn-toNginx',function(){
-		 location.href = "/ngfront/zone/clients/watcher/nginxcfg?KubernetesMasterHost="+KubernetesMasterHost+"&KubernetesAPIVersion="+KubernetesAPIVersion+"&JobZoneType="+JobZoneType ;
+		 location.href = "/ngfront/zone/clients/watcher/nginxcfg?NodeIP="+NodeIPInfo+"&ClientID="+ClientIDInfo+"&KubernetesMasterHost="+KubernetesMasterHost+"&KubernetesAPIVersion="+KubernetesAPIVersion+"&JobZoneType="+JobZoneType ;
 
 	 });
 	
