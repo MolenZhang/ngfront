@@ -161,8 +161,8 @@ $(document).ready(function () {
  });/*reday*/
 
   function showWatcher(NodeIPInfo,ClientIDInfo){
-	var areaIP = "192.168.85.130";
-	var areaPort = "8083";
+	var areaIP = "localhost";
+	var areaPort = "port";
 	var watcherUrl = "http://"+areaIP+":"+areaPort+"/watcher";
 	$.ajax({
 		"url":watcherUrl,
@@ -333,8 +333,8 @@ $(document).ready(function () {
 
 //生成监控echart图
 function showNamespacesEcharts(KubernetesMasterHost,KubernetesAPIVersion,JobZoneType){
-	var areaIP = "192.168.85.130";
-	var areaPort = "8083";
+	var areaIP = "localhost";
+	var areaPort = "port";
 	var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/namespaces";
 	
 	$.ajax({
@@ -437,8 +437,8 @@ function showNamespaces(NamespacesList){
 }
 
 function loadNamespaces(KubernetesMasterHost,KubernetesAPIVersion){
-	var areaIP = "192.168.85.130";
-	var areaPort = "8083";
+	var areaIP = "localhost";
+	var areaPort = "port";
 	var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/namespaces";
 	
 	$.ajax({
@@ -460,8 +460,8 @@ function loadNamespaces(KubernetesMasterHost,KubernetesAPIVersion){
 
 //提交watcher表单
 function watcherSubmit(NodeIPInfo,ClientIDInfo){
-	var areaIP = "192.168.85.130";
-	var areaPort = "8083";
+	var areaIP = "localhost";
+	var areaPort = "port";
 	var submitUrl = "http://"+areaIP+":"+areaPort+"/watcher";
 	
 				
@@ -534,8 +534,8 @@ function watcherSubmit(NodeIPInfo,ClientIDInfo){
 
 //停止监控
 function stopControl(NodeIPInfo,ClientIDInfo){
-	var areaIP = "192.168.85.130";
-	var areaPort = "8083";
+	var areaIP = "localhost";
+	var areaPort = "port";
 	var submitUrl = "http://"+areaIP+":"+areaPort+"/watcher";
 	
 	var KubernetesMasterHost = $("#KubernetesMasterHostOldVal").html();
