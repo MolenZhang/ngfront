@@ -2,6 +2,7 @@ package nginxcfg
 
 import (
 	"encoding/json"
+
 	"html/template"
 	"net/http"
 	"ngfront/communicate"
@@ -293,13 +294,13 @@ func (svc *ServiceInfo) Init() {
 		// docs
 		Doc("get all nginx cfgs").
 		Operation("getAllNginxCfgs"))
-
-	//get single
-	ws.Route(ws.GET("/{namespace-appname}").To(svc.getSingleNginxCfg).
-		// docs
-		Doc("get single nginx cfgs").
-		Operation("getSingleNginxCfg"))
-
+	/*
+		//get single
+		ws.Route(ws.GET("/{namespace-appname}").To(svc.getSingleNginxCfg).
+			// docs
+			Doc("get single nginx cfgs").
+			Operation("getSingleNginxCfg"))
+	*/
 	//post - create
 	ws.Route(ws.POST("/").To(svc.createNginxCfg).
 		// docs
@@ -326,6 +327,11 @@ func (svc *ServiceInfo) Init() {
 		Doc("删除一个服务的所有Nginx配置").
 		Operation("deleteAllNginxConfig").
 		Reads(WebConfig{})) // from the request
+
+	ws.Route(ws.POST("/download").To(svc.nginxCfgDownload).
+		Doc("download nginx config").
+		Operation("downloadfile").
+		Reads(WebReqMsg{}))
 
 	restful.Add(ws)
 
