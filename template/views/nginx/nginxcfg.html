@@ -61,7 +61,7 @@
 							
 						</div>
 						<div class="nginxCfgBtns">
-							<a class="" onclick="nginxExport(this)" tooltype="test" title="导出配置文件信息"><i class="fa fa-download"></i>
+							<a class="hide" onclick="nginxExport(this)" tooltype="test" title="导出配置文件信息"><i class="fa fa-download"></i>
 							</a>
 							<a class="hide" onclick="nginxCfgToolMore(this)" tooltype="test" title="批量nginx -t检测">
 							 <i class="fa fa-bug"></i>
@@ -280,26 +280,7 @@
              </table>
         </form>
     </div>
-    <div id="nginxDownload" style="display: none;">
-    	<div class="ngInfo">
-    		<div class="ngInfoTit">用户名：</div>
-    		<div class="ngInfoCon"><input type="text" class="ngInfoInput" name="ngDownUser" id="ngDownUser" /></div>
-    	</div>
-    	<div class="ngInfo">
-    		<div class="ngInfoTit">密码：</div>
-    		<div class="ngInfoCon"><input type="password" class="ngInfoInput" name="ngDownPwd" id="ngDownPwd" /></div>
-    	</div>
-        <form class="hide">
-             <table class="table enabled" style="padding: 5px; margin: 10px">
-                <thead>
-                </thead>
-                <tbody class="BORDER" id="tbody">
-                    <tr><td>用户名：</td><td><input type="text" name="ngDownUser" id="ngDownUser" /></td></tr>
-                    <tr><td>密码：</td><td><input type="password" name="ngDownPwd" id="ngDownPwd" /></td></tr>
-                </tbody>
-             </table>
-        </form>
-    </div>
+    
     <script type="text/javascript" src="/js/plugins/jquery-1.11.3.js"></script>
 	<script type="text/javascript" src="/plugins/bootstrap-3.3.5/dist/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="/plugins/layer/layer.js"></script>

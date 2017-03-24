@@ -175,6 +175,7 @@ function showNgsHtml(data){
 		var ngConfigPartHtml = "";
 		for(var j=0; j< nginxList.CfgsList.length; j++){
 			var CfgsList = nginxList.CfgsList[j];
+				var IsDefaultCfgClass='IsDefaultCfg-'+CfgsList.IsDefaultCfg;
 			 		ngConfigPartHtml += '<div class="ngConfigPart">'
 											+'<input type="checkbox" class="ngConfigCheckbox"/>'
 											+'<span class="hide addOneSerPart">'
@@ -184,7 +185,7 @@ function showNgsHtml(data){
                                              + '<span><i class="fa fa-caret-down fa-one" onClick="toggleOneSerPart(this)"></i></span>'
                                              + '<span class="ngConfigPartTit"></span>'
 												+ '<div class="ngConfigPartCon">'
-												+ '<form class="nginxForm" method="post" action="" AppSrcType="'+nginxList.CfgType+'">'
+												+ '<form class="nginxForm '+IsDefaultCfgClass+'" method="post" action="" AppSrcType="'+nginxList.CfgType+'" IsDefaultCfg="'+CfgsList.IsDefaultCfg+'">'
 												+	'<div class="nginx-label">'
 												+		'<span class="upstreamPartTit">upstream</span><input type="text" class="appNameAndNamespace" name="appNameAndNamespace" AppName="'+CfgsList.AppName+'" Namespace="'+CfgsList.Namespace+'" value="'+CfgsList.AppName+'-'+CfgsList.Namespace+'" disabled>{'
 												+	'</div>'
@@ -407,7 +408,7 @@ function showNgsHtml(data){
         var ProxyRedirectDestPath = $(obj).attr("ProxyRedirectDestPath");
         var IsUpstreamIPHash = $(obj).attr("IsUpstreamIPHash");
         var DeleteUserCfgs = $(obj).attr("DeleteUserCfgs");
-        var IsDefaultCfg = $(obj).attr("IsDefaultCfg");
+        //var IsDefaultCfg = false;
         var AppSrcType = $(obj).attr("CfgType");
 
 		var str='<div class="ngConfigPart" border:1px solid #FF0000 >' 
@@ -504,7 +505,7 @@ function showNgsHtml(data){
 			+'</div>'
 			+'</div>'
 			+'</div>'
-			+'</form> '
+			+'</form>'
 			+'</div>'
 			+'</div>';
 		$(obj).parent().parent().after(str);
@@ -648,11 +649,11 @@ function showNgsHtml(data){
 				}else{
 					
 				
-				
+			var IsDefaultCfgClass = 'IsDefaultCfg-'+CfgsList.IsDefaultCfg;
 	 		var saveDataHtml = "";	
 				
             saveDataHtml +='<div class="ngConfigPartCon">'
-												+ '<form class="nginxForm" method="post" action="" AppSrcType="'+CfgsList.AppSrcType+'">'
+												+ '<form class="nginxForm '+IsDefaultCfgClass+'" method="post" action="" AppSrcType="'+CfgsList.AppSrcType+'">'
 												+	'<div class="nginx-label">'
 												+		'<span class="upstreamPartTit">upstream</span><input type="text" class="appNameAndNamespace" name="appNameAndNamespace" AppName="'+CfgsList.AppName+'" Namespace="'+CfgsList.Namespace+'" value="'+CfgsList.AppName+'-'+CfgsList.Namespace+'" disabled>{'
 												+	'</div>'
@@ -1015,6 +1016,9 @@ function showNgsHtml(data){
       "IsDefaultCfg": IsDefaultCfg,
       "AppSrcType": AppSrcType
      };
+     if($(".IsDefaultCfg-true")){
+     	$(".IsDefaultCfg-true").parent().parent().remove();
+     }
 
 		var areaIP = "localhost";
 		var areaPort = "port";
@@ -1043,9 +1047,9 @@ function showNgsHtml(data){
 				
 				
 	 		var saveDataHtml = "";	
-				
+			var IsDefaultCfgClass = 'IsDefaultCfg-'+CfgsList.IsDefaultCfg;	
             saveDataHtml +='<div class="ngConfigPartCon">'
-												+ '<form class="nginxForm" method="post" action="" AppSrcType="'+CfgsList.AppSrcType+'">'
+												+ '<form class="nginxForm '+IsDefaultCfgClass+'" method="post" action="" AppSrcType="'+CfgsList.AppSrcType+'">'
 												+	'<div class="nginx-label">'
 												+		'<span class="upstreamPartTit">upstream</span><input type="text" class="appNameAndNamespace" name="appNameAndNamespace" AppName="'+CfgsList.AppName+'" Namespace="'+CfgsList.Namespace+'" value="'+CfgsList.AppName+'-'+CfgsList.Namespace+'" disabled>{'
 												+	'</div>'
@@ -1197,55 +1201,4 @@ function showNgsHtml(data){
 		});
 		
 	} 
-	/**
-	 * 导出一个node的配置信息
-	 * @param obj
-	 */
-	function nginxExport(obj){
-		layer.open({
-			type: 1,
-	        title: '请填写该服务器的账号的密码再下载',
-	        content: $("#nginxDownload"),
-	        area:['400px'],
-	        btn: ['确定', '取消'],
-	        yes: function(index, layero){
-	        	var ngDownUser = $("#nginxDownload #ngDownUser").val();
-	        	var ngDownPwd = $("#nginxDownload #ngDownPwd").val();
-	        	if(ngDownUser.length == 0){
-	        		layer.tips('用户名不能为空', $("#nginxDownload #ngDownUser"),{tips: [1, '#EF6578']});
-	        		return;
-	        	}
-	        	if(ngDownPwd.length == 0){
-	        		layer.tips('密码不能为空', $("#nginxDownload #ngDownPwd"),{tips: [1, '#EF6578']});
-	        		return;
-	        	}
-	        	//
-	        	var downloadData={
-	        		"User":ngDownUser,
-	        		"Password":ngDownPwd,
-	        		"NodeIP": NodeIP,
-	        		"ClientID":ClientID
-	        	};
-	        	var areaIP = "localhost";
-				var areaPort = "port";
-				var downloadUrl = 'http://'+areaIP+':'+areaPort+'/nginxcfg/download';
-	        	$.ajax({
-					url : downloadUrl,
-					dataType: "json",
-					contentType: "text/html; charset=UTF-8",
-		    		type: "post", 
-					headers: {
-						"Content-Type": "application/json",
-						"Accept": "application/json",
-					},
-					data: JSON.stringify(downloadData),
-					success :function(data){
-						var data = data;
-					}
-				});
-	        	
-	        }
-		});
-	}
-	
 	
