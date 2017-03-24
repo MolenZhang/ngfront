@@ -1,7 +1,7 @@
 package nginxcfg
 
 import (
-	//"encoding/json"
+	"encoding/json"
 	"html/template"
 	"net/http"
 	"ngfront/communicate"
@@ -28,6 +28,12 @@ type ResponseBody struct {
 	NginxConf    KubeNGConfig
 	WebCfg       WebConfig
 	ErrCode      int32
+}
+
+//GetAppCfgsResponse 获取app的配置集合的回复结构
+type GetAppCfgsResponse struct {
+	AppNameAndNamespace string
+	WebCfgsList         []WebConfig
 }
 
 //显示nginx配置主页
@@ -103,19 +109,67 @@ func (svc *ServiceInfo) getAllNginxCfgs(request *restful.Request, response *rest
 func (svc *ServiceInfo) getSingleNginxCfg(request *restful.Request, response *restful.Response) {
 	appKey := request.PathParameter("namespace-appname")
 
-	nginxCfgURL, _ := buildCommunicateInfo(request, response)
+	request.Request.ParseForm()
+	client := nodes.ClientInfo{
+		NodeIP:   request.Request.Form.Get("NodeIP"),
+		ClientID: request.Request.Form.Get("ClientID"),
+	}
 
-	appCfgURL := nginxCfgURL + "/" + appKey
+	key := client.CreateKey()
+	clientInfo := nodes.GetClientInfo(key)
 
-	//appAllNginxCfgs, ok := svcInfo.externNginxCfgMap[appKey]
+	//先去k8s路径下去拿 如果没有 去extern路径拿
+	appCfgURL := "http://" +
+		clientInfo.NodeIP +
+		clientInfo.APIServerPort +
+		"/" +
+		clientInfo.NginxCfgsAPIServerPath +
+		"/" +
+		AppSrcTypeKubernetes +
+		"/" +
+		appKey
 
-	//	if !ok {
-	//		response.WriteErrorString(http.StatusNotFound, "App could not be found.")
+	logdebug.Println(logdebug.LevelDebug, "获取单个的app nginx配置!-----appkey=", appKey, " appCfgURL = ", appCfgURL)
 
-	//		return
-	//	}
+	recvData, err := communicate.SendRequestByJSON(communicate.GET, appCfgURL, nil)
+	if err != nil {
+		appCfgURL := "http://" +
+			clientInfo.NodeIP +
+			clientInfo.APIServerPort +
+			"/" +
+			clientInfo.NginxCfgsAPIServerPath +
+			"/" +
+			AppSrcTypeExtern +
+			"/" +
+			appKey
 
-	//	response.WriteHeaderAndJson(200, appAllNginxCfgs, "application/json")
+		recvData, err = communicate.SendRequestByJSON(communicate.GET, appCfgURL, nil)
+	}
+
+	if err != nil {
+		logdebug.Println(logdebug.LevelError, err)
+		response.WriteErrorString(http.StatusNotFound, "App could not be found.")
+
+		return
+	}
+
+	kubeNGCfgsList := make(map[string]KubeNGConfig, 0)
+
+	json.Unmarshal(recvData, &kubeNGCfgsList)
+
+	logdebug.Println(logdebug.LevelDebug, "收到的数据流", kubeNGCfgsList)
+
+	resp := GetAppCfgsResponse{}
+
+	for _, kubeNGCfg := range kubeNGCfgsList {
+		webCfg := kubeNGCfg.convertToWebCfg()
+
+		resp.WebCfgsList = append(resp.WebCfgsList, webCfg)
+	}
+
+	resp.AppNameAndNamespace = appKey
+
+	response.WriteHeaderAndJson(200, resp, "application/json")
 
 	return
 }
