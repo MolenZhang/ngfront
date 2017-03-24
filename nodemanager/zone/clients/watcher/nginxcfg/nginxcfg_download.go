@@ -45,7 +45,8 @@ func (svc *ServiceInfo) nginxCfgDownload(request *restful.Request, response *res
 	key := client.CreateKey()
 	clientInfo := nodes.GetClientInfo(key)
 
-	nginxCfgTemDownloadURL := clientInfo.DownloadCfgAPIServerPath
+	nginxCfgTemDownloadURL := "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.DownloadCfgAPIServerPath
+
 	resp, err := communicate.SendRequestByJSON(communicate.GET, nginxCfgTemDownloadURL, nil)
 	if err != nil {
 		logdebug.Println(logdebug.LevelError, err)

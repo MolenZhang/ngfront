@@ -44,8 +44,8 @@ func showNginxCfgPage(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
-//get
-func (svc *ServiceInfo) getNginxInfo(request *restful.Request, response *restful.Response) {
+//get all
+func (svc *ServiceInfo) getAllNginxCfgs(request *restful.Request, response *restful.Response) {
 	logdebug.Println(logdebug.LevelDebug, "获取完整的app nginx配置集合!")
 
 	request.Request.ParseForm()
@@ -98,6 +98,28 @@ func (svc *ServiceInfo) getNginxInfo(request *restful.Request, response *restful
 	return
 }
 
+/*
+//get single
+func (svc *ServiceInfo) getSingleNginxCfg(request *restful.Request, response *restful.Response) {
+	appKey := request.PathParameter("namespace-appname")
+
+	nginxCfgURL, _ := buildCommunicateInfo(request, response)
+
+	appCfgURL := nginxCfgURL + "/" + appKey
+
+	//appAllNginxCfgs, ok := svcInfo.externNginxCfgMap[appKey]
+
+	//	if !ok {
+	//		response.WriteErrorString(http.StatusNotFound, "App could not be found.")
+
+	//		return
+	//	}
+
+	//	response.WriteHeaderAndJson(200, appAllNginxCfgs, "application/json")
+
+	return
+}
+*/
 // put
 func (svc *ServiceInfo) updateNginxCfg(request *restful.Request, response *restful.Response) {
 	logdebug.Println(logdebug.LevelDebug, "更新服务的一条nginx配置")
@@ -212,26 +234,33 @@ func (svc *ServiceInfo) Init() {
 		Path("/nginxcfg").
 		Consumes(restful.MIME_XML, restful.MIME_JSON).
 		Produces(restful.MIME_JSON, restful.MIME_XML) // you can specify this per route as well
-	//
-	ws.Route(ws.GET("/").To(svc.getNginxInfo).
+	//get all
+	ws.Route(ws.GET("/").To(svc.getAllNginxCfgs).
 		// docs
-		Doc("get nginx manager config").
-		Operation("findNginxManagerConfig"))
-	//		Reads(nodes.ClientInfo{}).
-	//Returns(200, "OK", AllAppCfgs{}))
-	//
+		Doc("get all nginx cfgs").
+		Operation("getAllNginxCfgs"))
+	/*
+		//get single
+		ws.Route(ws.GET("/{namespace-appname}").To(svc.getSingleNginxCfg).
+			// docs
+			Doc("get single nginx cfgs").
+			Operation("getSingleNginxCfg"))
+	*/
+	//post - create
 	ws.Route(ws.POST("/").To(svc.createNginxCfg).
 		// docs
 		Doc("post nginx manager config").
 		Operation("postNginxManagerConfig").
 		Reads(WebConfig{})) // from the request
-	//
+
+	//put update
 	ws.Route(ws.PUT("/").To(svc.updateNginxCfg).
 		// docs
 		Doc("put nginx manager config").
 		Operation("putNginxManagerConfig").
 		Reads(WebConfig{})) // from the request
-	//
+
+	//delete
 	ws.Route(ws.DELETE("/").To(svc.deleteSingleNginxCfg).
 		// docs
 		Doc("删除一个服务的单个Nginx配置").
@@ -244,7 +273,7 @@ func (svc *ServiceInfo) Init() {
 		Operation("deleteAllNginxConfig").
 		Reads(WebConfig{})) // from the request
 
-	ws.Route(ws.GET("/download").To(svc.nginxCfgDownload).
+	ws.Route(ws.POST("/download").To(svc.nginxCfgDownload).
 		Doc("download nginx config").
 		Operation("downloadfile").
 		Reads(WebReqMsg{}))

@@ -45,6 +45,18 @@ type WebConfig struct {
 	AppSrcType            string                  //服务来源类型 k8s 或者 extern 根据访问的路径填充(暂未启用)
 }
 
+func addCMDToList(rulesCMDList []string, ruleCMD string) []string {
+	for _, alreadyExistedRuleCMD := range rulesCMDList {
+		if alreadyExistedRuleCMD == ruleCMD {
+			return rulesCMDList
+		}
+	}
+
+	rulesCMDList = append(rulesCMDList, ruleCMD)
+
+	return rulesCMDList
+}
+
 //将从js拿到的数据提取 转换成kubeng所需的数据结构
 func (webCfg *WebConfig) convertToKubeNGCfg() (kubeNGCfg KubeNGConfig) {
 	kubeNGCfg = KubeNGConfig{
@@ -70,22 +82,18 @@ func (webCfg *WebConfig) convertToKubeNGCfg() (kubeNGCfg KubeNGConfig) {
 
 	kubeNGCfg.UpstreamUserRules.RulesSet = make(map[string][]string, 0)
 
-	rulesParams := []string{}
 	for _, userRules := range webCfg.UpstreamUserRules.UserRuleSet {
-		rulesParams = append(rulesParams, userRules.RuleParam)
-		kubeNGCfg.UpstreamUserRules.RulesSet[userRules.RuleCMD] = rulesParams
+		kubeNGCfg.UpstreamUserRules.RulesSet[userRules.RuleCMD] = append(kubeNGCfg.UpstreamUserRules.RulesSet[userRules.RuleCMD], userRules.RuleParam)
 	}
 
 	kubeNGCfg.ServerUserRules.RulesSet = make(map[string][]string, 0)
 	for _, userRules := range webCfg.ServerUserRules.UserRuleSet {
-		rulesParams = append(rulesParams, userRules.RuleParam)
-		kubeNGCfg.ServerUserRules.RulesSet[userRules.RuleCMD] = rulesParams
+		kubeNGCfg.ServerUserRules.RulesSet[userRules.RuleCMD] = append(kubeNGCfg.ServerUserRules.RulesSet[userRules.RuleCMD], userRules.RuleParam)
 	}
 
 	kubeNGCfg.LocationUserRules.RulesSet = make(map[string][]string, 0)
 	for _, userRules := range webCfg.LocationUserRules.UserRuleSet {
-		rulesParams = append(rulesParams, userRules.RuleParam)
-		kubeNGCfg.LocationUserRules.RulesSet[userRules.RuleCMD] = rulesParams
+		kubeNGCfg.LocationUserRules.RulesSet[userRules.RuleCMD] = append(kubeNGCfg.LocationUserRules.RulesSet[userRules.RuleCMD], userRules.RuleParam)
 	}
 
 	return
