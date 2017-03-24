@@ -11,36 +11,36 @@
 	
 	showAllNgs(NodeIP,ClientID);
 	
-//	$("#hypBtn").click(function(){
-//		var areaIP = "localhost";
-//		var areaPort = "port";
-//		var Url = "http://"+areaIP+":"+areaPort+"/nginxcfg?NodeIP=192.168.252.133&ClientID=49073";
+	$("#hypBtn").click(function(){
+		var areaIP = "localhost";
+		var areaPort = "port";
+		var Url = "http://"+areaIP+":"+areaPort+"/nginxcfg?NodeIP=192.168.252.133&ClientID=110617";
 		
-//		var WebMsg = {
-//			"ServerName": "测试ServerName222",
-//			"ListenPort": "测试ListenPort",
-//			"Namespace": "测试Namespace",
-//			"AppName": "测试AppName",
-//		    "AppSrcType": "k8s",
-//			"Location": "测试location"
-//	    };
+		var WebMsg = {
+			"ServerName": "longlong.yz.local",
+			"ListenPort": "80",
+			"Namespace": "longlong",
+			"AppName": "alot",
+		    //"AppSrcType": "k8s",
+			"Location": "alot"
+	    };
 		
-//		$.ajax({
-//			url : Url,
-//			dataType: "json",
-//			contentType: "text/html; charset=UTF-8",
-//    		type: "delete",//update操作 
-//			headers: {
-//				"Content-Type": "application/json",
-//				"Accept": "application/json",
-//			},
-//			data: JSON.stringify(WebMsg),
+		$.ajax({
+			url : Url,
+			dataType: "json",
+			contentType: "text/html; charset=UTF-8",
+    		type: "delete",//update操作 
+			headers: {
+				"Content-Type": "application/json",
+				"Accept": "application/json",
+			},
+			data: JSON.stringify(WebMsg),
 			
-//			"success":function(data){
-//				var data = eval("("+data+")");
-//			}
-//		})
-//	});
+			"success":function(data){
+				var data = eval("("+data+")");
+			}
+		})
+	});
 	
 	
 	
@@ -874,23 +874,26 @@ function showNgsHtml(data){
 	 * @param obj
 	 */
 	function findNgByOneApp(obj){
+		var areaIP = "localhost";
+		var areaPort = "port";
 		//var area=$("#area").val();
 		var appName = $(obj).val();
 		var namespace= $(obj).parent().next().find("#search_user").val();
-	 	
+		var AppNameAndNamespace = namespace+'-'+appName;
+	 	var Url = "http://"+areaIP+":"+areaPort+"/nginxcfg/"+AppNameAndNamespace+"?NodeIP="+NodeIP+"&ClientID="+ClientID;
 //		layer.msg('加载中', {
 //			  icon: 16
 //			  ,shade: 0.01
 //			});
-//	 	$.ajax({
-//			url:,
-//			type:"POST",
-//			data:{"serviceName":serviceName,"flag":flag,"appName":appName,"namespace":namespace,"area":area},
-//			success:function(data){
-//				var data = eval("("+data+")");
-//				//showNgsHtml(data);
-//			}
-//		})
+	 	$.ajax({
+			url:Url,
+			type:"get",
+			//data:{"appName":appName,"namespace":namespace},
+			success:function(data){
+				var data = eval("("+data+")");
+				//showNgsHtml(data);
+			}
+		})
 	}
 
 	/**
