@@ -46,7 +46,7 @@ func showNginxCfgPage(w http.ResponseWriter, r *http.Request) {
 }
 
 //get
-func (svc *ServiceInfo) getNginxInfo(request *restful.Request, response *restful.Response) {
+func (svc *ServiceInfo) getAllNginxInfo(request *restful.Request, response *restful.Response) {
 	logdebug.Println(logdebug.LevelDebug, "获取完整的app nginx配置集合!")
 
 	request.Request.ParseForm()
@@ -214,7 +214,7 @@ func (svc *ServiceInfo) Init() {
 		Consumes(restful.MIME_XML, restful.MIME_JSON).
 		Produces(restful.MIME_JSON, restful.MIME_XML) // you can specify this per route as well
 	//
-	ws.Route(ws.GET("/").To(svc.getNginxInfo).
+	ws.Route(ws.GET("/").To(svc.getAllNginxInfo).
 		// docs
 		Doc("get nginx manager config").
 		Operation("findNginxManagerConfig"))
