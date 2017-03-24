@@ -23,23 +23,24 @@ type respFromKubeNg struct {
 type WebReqMsg struct {
 	User     string
 	Password string
+	NodeIP   string
+	ClientID string
 }
 
 func (svc *ServiceInfo) nginxCfgDownload(request *restful.Request, response *restful.Response) {
 	var (
-		err        error
-		sftpClient *sftp.Client
-		respMsg    respFromKubeNg
-		reqMsg     WebReqMsg
+		err     error
+		respMsg respFromKubeNg
+		reqMsg  WebReqMsg
 	)
-	if err := request.ReadEntity(&reqMsg); err != nil {
+	err = request.ReadEntity(&reqMsg)
+	if err != nil {
 		logdebug.Println(logdebug.LevelError, err)
 	}
 
-	request.Request.ParseForm()
 	client := nodes.ClientInfo{
-		NodeIP:   request.Request.Form.Get("NodeIP"),
-		ClientID: request.Request.Form.Get("ClientID"),
+		NodeIP:   reqMsg.NodeIP,
+		ClientID: reqMsg.ClientID,
 	}
 	key := client.CreateKey()
 	clientInfo := nodes.GetClientInfo(key)
@@ -50,47 +51,20 @@ func (svc *ServiceInfo) nginxCfgDownload(request *restful.Request, response *res
 		logdebug.Println(logdebug.LevelError, err)
 		return
 	}
-	if err := json.Unmarshal(resp, &respMsg); err != nil {
+	err = json.Unmarshal(resp, &respMsg)
+	if err != nil {
 		logdebug.Println(logdebug.LevelError, err)
 		return
 	}
+
 	nginxCfgActDownloadURL := respMsg.DownloadCfgPath
 
-	if sftpClient, err = svc.connect(reqMsg.User, reqMsg.Password, client.NodeIP, 22); err != nil {
-		logdebug.Println(logdebug.LevelError, err)
-		return
-	}
-	defer sftpClient.Close()
-
-	// 用来测试的远程文件路径 和 本地文件夹
-	var remoteFilePath = nginxCfgActDownloadURL
-	var localDir = "./"
-
-	srcFile, err := sftpClient.Open(remoteFilePath)
-	if err != nil {
-		logdebug.Println(logdebug.LevelError, err)
-		return
-	}
-	defer srcFile.Close()
-
-	var localFileName = path.Base(remoteFilePath)
-	dstFile, err := os.Create(path.Join(localDir, localFileName))
-	if err != nil {
-		logdebug.Println(logdebug.LevelError, err)
-		return
-	}
-	defer dstFile.Close()
-
-	if _, err = srcFile.WriteTo(dstFile); err != nil {
-		logdebug.Println(logdebug.LevelError, err)
-		return
-	}
+	svc.remoteFileDownload(reqMsg.User, reqMsg.Password, client.NodeIP, nginxCfgActDownloadURL, 22)
 }
 
-func (svc *ServiceInfo) connect(user, password, host string, port int) (*sftp.Client, error) {
+func (svc *ServiceInfo) remoteFileDownload(user, password, host, url string, port int) {
 	var (
 		auth         []ssh.AuthMethod
-		addr         string
 		clientConfig *ssh.ClientConfig
 		sshClient    *ssh.Client
 		sftpClient   *sftp.Client
@@ -108,16 +82,42 @@ func (svc *ServiceInfo) connect(user, password, host string, port int) (*sftp.Cl
 	}
 
 	// connet to ssh
-	addr = fmt.Sprintf("%s:%d", host, port)
+	addr := fmt.Sprintf("%s:%d", host, port)
 
 	if sshClient, err = ssh.Dial("tcp", addr, clientConfig); err != nil {
-		return nil, err
+		logdebug.Println(logdebug.LevelError, err)
+		return
 	}
 
 	// create sftp client
 	if sftpClient, err = sftp.NewClient(sshClient); err != nil {
-		return nil, err
+		logdebug.Println(logdebug.LevelError, err)
+		return
 	}
+	defer sftpClient.Close()
 
-	return sftpClient, nil
+	// 用来测试的远程文件路径 和 本地文件夹
+	remoteFilePath := url
+	localDir := "./"
+
+	srcFile, err := sftpClient.Open(remoteFilePath)
+	if err != nil {
+		logdebug.Println(logdebug.LevelError, err)
+		return
+	}
+	defer srcFile.Close()
+
+	localFileName := path.Base(remoteFilePath)
+	dstFile, err := os.Create(path.Join(localDir, localFileName))
+	if err != nil {
+		logdebug.Println(logdebug.LevelError, err)
+		return
+	}
+	defer dstFile.Close()
+
+	_, err = srcFile.WriteTo(dstFile)
+	if err != nil {
+		logdebug.Println(logdebug.LevelError, err)
+		return
+	}
 }
