@@ -12,8 +12,8 @@
 	showAllNgs(NodeIP,ClientID);
 	
 //	$("#hypBtn").click(function(){
-//		var areaIP = "192.168.19.128";
-//		var areaPort = "8083";
+//		var areaIP = "localhost";
+//		var areaPort = "port";
 //		var Url = "http://"+areaIP+":"+areaPort+"/nginxcfg?NodeIP=192.168.252.133&ClientID=49073";
 		
 //		var WebMsg = {
@@ -77,8 +77,8 @@
  var NamespacesList = "";
  var NamespacesAppCounts = "";
  function showAllUsers(KubernetesMasterHost,KubernetesAPIVersion,JobZoneType){
- 	var areaIP = "192.168.19.128";
-	var areaPort = "8083";
+ 	var areaIP = "localhost";
+	var areaPort = "port";
 	var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/namespaces";
 	
 	$.ajax({
@@ -121,8 +121,8 @@
 
 //展示同一个node下的所有nginx配置
 function showAllNgs(NodeIP,ClientID){
-	var areaIP = "192.168.19.128";
-	var areaPort = "8083";
+	var areaIP = "localhost";
+	var areaPort = "port";
 	var Url = "http://"+areaIP+":"+areaPort+"/nginxcfg?NodeIP="+NodeIP+"&ClientID="+ClientID;
 	//showNgsHtml(data);
 	$.ajax({
@@ -652,8 +652,8 @@ function showNgsHtml(data){
       "AppSrcType": AppSrcType
      };
 
-		var areaIP = "192.168.19.128";
-		var areaPort = "8083";
+		var areaIP = "localhost";
+		var areaPort = "port";
 		var Url = "http://"+areaIP+":"+areaPort+"/nginxcfg?NodeIP="+NodeIP+"&ClientID="+ClientID;
 		$.ajax({
 			url : Url,
@@ -911,8 +911,8 @@ function showNgsHtml(data){
 	      "AppName": AppName
 	    };
 
-	    var areaIP = "192.168.19.128";
-		var areaPort = "8083";
+	    var areaIP = "localhost";
+		var areaPort = "port";
 		var Url = "http://"+areaIP+":"+areaPort+"/nginxcfg?NodeIP="+NodeIP+"&ClientID="+ClientID;
 
 	    layer.open({
