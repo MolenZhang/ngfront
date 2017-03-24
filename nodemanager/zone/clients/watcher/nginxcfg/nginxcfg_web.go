@@ -45,6 +45,20 @@ type WebConfig struct {
 	AppSrcType            string                  //服务来源类型 k8s 或者 extern 根据访问的路径填充(暂未启用)
 }
 
+//NginxCfgsList 所有的k8s/extern nginx 配置列表
+type NginxCfgsList struct {
+	CfgType  string
+	CfgsList []WebConfig
+}
+
+//WebNginxCfgs 返回给web端的nginx配置信息
+type WebNginxCfgs struct {
+	NodeIP        string
+	ClientID      string
+	APIServerPort string
+	NginxList     []NginxCfgsList
+}
+
 func addCMDToList(rulesCMDList []string, ruleCMD string) []string {
 	for _, alreadyExistedRuleCMD := range rulesCMDList {
 		if alreadyExistedRuleCMD == ruleCMD {

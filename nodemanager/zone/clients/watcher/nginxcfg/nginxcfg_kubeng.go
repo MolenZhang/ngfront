@@ -49,20 +49,6 @@ type KubeNGConfig struct {
 	AppSrcType            string                //服务来源类型 k8s 或者 extern 根据访问的路径填充(暂未启用)
 }
 
-//NginxCfgsList 所有的k8s/extern nginx 配置列表
-type NginxCfgsList struct {
-	CfgType  string
-	CfgsList []WebConfig
-}
-
-//WebNginxCfgs 返回给web端的nginx配置信息
-type WebNginxCfgs struct {
-	NodeIP        string
-	ClientID      string
-	APIServerPort string
-	NginxList     []NginxCfgsList
-}
-
 //构造与kubeng通讯的信息
 func buildCommunicateInfo(request *restful.Request, response *restful.Response) (nginxCfgURL string, nginxCfg WebConfig) {
 	if err := request.ReadEntity(&nginxCfg); err != nil {

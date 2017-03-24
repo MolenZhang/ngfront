@@ -11,41 +11,8 @@
 	
 	showAllNgs(NodeIP,ClientID);
 	
-	$("#hypBtn").click(function(){
-		var areaIP = "localhost";
-		var areaPort = "port";
-		var Url = "http://"+areaIP+":"+areaPort+"/nginxcfg?NodeIP=192.168.252.133&ClientID=110617";
-		
-		var WebMsg = {
-			"ServerName": "longlong.yz.local",
-			"ListenPort": "80",
-			"Namespace": "longlong",
-			"AppName": "alot",
-		    //"AppSrcType": "k8s",
-			"Location": "alot"
-	    };
-		
-		$.ajax({
-			url : Url,
-			dataType: "json",
-			contentType: "text/html; charset=UTF-8",
-    		type: "delete",//update操作 
-			headers: {
-				"Content-Type": "application/json",
-				"Accept": "application/json",
-			},
-			data: JSON.stringify(WebMsg),
-			
-			"success":function(data){
-				var data = eval("("+data+")");
-			}
-		})
-	});
-	
-	
-	
  	//加载所有租户option
-	//showAllUsers(KubernetesMasterHost,KubernetesAPIVersion,JobZoneType);
+	showAllUsers(KubernetesMasterHost,KubernetesAPIVersion,JobZoneType);
     //折叠ibox
     $(document).on('click','.collapse-link',function(){
         var ibox = $(this).closest('div.ibox');
@@ -95,10 +62,13 @@
 			NamespacesAppCounts = data.NamespacesAppList;
 			//租户option
 			var userOptionHtml = "";
-			for(var nsNum=0; nsNum<NamespacesList.length; nsNum++){
+			if(NamespacesList != null){
+				for(var nsNum=0; nsNum<NamespacesList.length; nsNum++){
 				userOptionHtml += '<option value="'+NamespacesList[nsNum]+'">'+NamespacesList[nsNum]+'</option>';
+				}
+				$("#search_user").append(userOptionHtml);
 			}
-			$("#search_user").append(userOptionHtml);
+			
 		}
 	})
  }
@@ -109,11 +79,13 @@
 	//租户option改变生成对应的服务
 	var serviceOptionHtml = '<option value="">-----请选择-----</option>';
 	for(var i=0; i<NamespacesList.length; i++){
-		if(NamespacesList[i] == userVal){
-			for(var j=0; j<NamespacesAppCounts[i].length; j++){
+		if(NamespacesList[i] == userVal ){
+			if(NamespacesAppCounts[i] != null){
+				for(var j=0; j<NamespacesAppCounts[i].length; j++){
 				serviceOptionHtml += '<option value="'+NamespacesAppCounts[i][j]+'" namespacesName="'+NamespacesList[i]+'">'+NamespacesAppCounts[i][j]+'</option>';
+				}
+				$("#search_service").empty().append(serviceOptionHtml);
 			}
-			$("#search_service").empty().append(serviceOptionHtml);
 		}
 		
  	}
@@ -351,7 +323,7 @@ function showNgsHtml(data){
 		strs += ngConfigPartHtml+'</div>';
 		strs +='</div></div>';	
 	}
-	$("#nginxCfgHtml").append(strs);
+	$("#nginxCfgHtml").empty().append(strs);
 	
 }
 
@@ -461,7 +433,7 @@ function showNgsHtml(data){
 			+'<span>listen:</span><input type="text" id="ListenPort" name="ListenPort" value="80">;'
 			+'</div>'
 			+'<div class="nginx-label col-md-offset-1">'
-			+'<span>server_name:</span><input type="text" id="serverName"  name="serverName" value="'+namespace+'.yz.local">;'
+			+'<span>server_name:</span><input type="text" id="ServerName"  name="ServerName" value="'+ServerName+'">;'
 			+'</div>'
 			+'<div class="nginx-label col-md-offset-1">'
 			+'<span>location:</span><input type="text" id="Location" name="Location" value="/'+appName+'">{'
@@ -890,8 +862,11 @@ function showNgsHtml(data){
 			type:"get",
 			//data:{"appName":appName,"namespace":namespace},
 			success:function(data){
-				var data = eval("("+data+")");
-				//showNgsHtml(data);
+				var data = data;
+				
+					
+				showNgsHtml(data);
+				
 			}
 		})
 	}
@@ -911,7 +886,8 @@ function showNgsHtml(data){
 	      "ServerName": ServerName,
 	      "ListenPort": ListenPort,
 	      "Namespace": Namespace,
-	      "AppName": AppName
+	      "AppName": AppName,
+		  "AppSrcType": "k8s"
 	    };
 
 	    var areaIP = "localhost";
@@ -925,42 +901,50 @@ function showNgsHtml(data){
 			yes: function(index, layero){
 	
 		
-		$.ajax({
-			url : Url,
-			dataType: "json",
-			contentType: "text/html; charset=UTF-8",
-    		type: "delete",//update操作 
-			headers: {
-				"Content-Type": "application/json",
-				"Accept": "application/json",
-			},
-			data: JSON.stringify(deleteData),
-			success: function(data){
-				var data=data;
-			}
-		})
+//		$.ajax({
+//			url : Url,
+//			dataType: "json",
+//			contentType: "text/html; charset=UTF-8",
+//    		type: "delete",//update操作 
+//			headers: {
+//				"Content-Type": "application/json",
+//				"Accept": "application/json",
+//			},
+//			data: JSON.stringify(deleteData),
+//			success: function(data){
+//				var data=data;
+//			}
+//		})
 
-				// $.ajax({
-				// 	url: Url,
-				// 	dataType: "json",
-				// 	contentType: "text/html; charset=UTF-8",
-				// 	type:"delete",
-				// 	headers: {
-				// 		"Content-Type": "application/json",
-				// 		"Accept": "application/json",
-				// 	},
-				// 	data: JSON.stringify(deleteData),
+				 $.ajax({
+				 	url: Url,
+				 	dataType: "json",
+				 	contentType: "text/html; charset=UTF-8",
+				 	type:"delete",
+				 	headers: {
+				 		"Content-Type": "application/json",
+				 		"Accept": "application/json",
+				 	},
+				 	data: JSON.stringify(deleteData),
 					
-				// 	success:function(data){
-				// 		var data=data;
-				// 		$(obj).parent().parent().remove();
-				// 		layer.msg('删除成功！', {icon: 1});
-				// 	}
-				// });
+				 	success:function(data){
+				 		var data=data;
+						if(data.Result==true){
+							$(obj).parent().parent().remove();
+				 			layer.msg('删除成功！', {icon: 1});
+						}else{
+							layer.alert(data.ErrorMessage, {
+							  icon: 2,
+							  title:"删除失败",
+							  skin: 'layer-ext-moon'
+							})
+						}
+				 		
+				 	}
+				 });
 				layer.close(index);
 			},
 			cancel: function(index, layero){
-				alert("no");
 			    layer.close(index);
 			}
 		});

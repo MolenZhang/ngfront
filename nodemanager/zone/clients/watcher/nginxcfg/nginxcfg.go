@@ -31,12 +31,6 @@ type ResponseBody struct {
 	ErrCode      int32
 }
 
-//GetAppCfgsResponse 获取app的配置集合的回复结构
-type GetAppCfgsResponse struct {
-	AppNameAndNamespace string
-	WebCfgsList         []WebConfig
-}
-
 //显示nginx配置主页
 func showNginxCfgPage(w http.ResponseWriter, r *http.Request) {
 	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<<加载nginx页面>>>>>>>>>>>>>")
@@ -130,6 +124,16 @@ func (svc *ServiceInfo) getSingleNginxCfg(request *restful.Request, response *re
 		"/" +
 		appKey
 
+	resp := WebNginxCfgs{
+		NodeIP:        clientInfo.NodeIP,
+		ClientID:      clientInfo.ClientID,
+		APIServerPort: clientInfo.APIServerPort,
+	}
+
+	resp.NginxList = make([]NginxCfgsList, 1)
+
+	resp.NginxList[0].CfgType = AppSrcTypeKubernetes
+
 	logdebug.Println(logdebug.LevelDebug, "获取单个的app nginx配置!-----appkey=", appKey, " appCfgURL = ", appCfgURL)
 
 	recvData, err := communicate.SendRequestByJSON(communicate.GET, appCfgURL, nil)
@@ -145,6 +149,8 @@ func (svc *ServiceInfo) getSingleNginxCfg(request *restful.Request, response *re
 			appKey
 
 		recvData, err = communicate.SendRequestByJSON(communicate.GET, appCfgURL, nil)
+
+		resp.NginxList[0].CfgType = AppSrcTypeExtern
 	}
 
 	if err != nil {
@@ -158,17 +164,17 @@ func (svc *ServiceInfo) getSingleNginxCfg(request *restful.Request, response *re
 
 	json.Unmarshal(recvData, &kubeNGCfgsList)
 
-	logdebug.Println(logdebug.LevelDebug, "收到的数据流", kubeNGCfgsList)
+	cfgsList := []WebConfig{}
 
-	resp := GetAppCfgsResponse{}
+	logdebug.Println(logdebug.LevelDebug, "收到的数据流", kubeNGCfgsList)
 
 	for _, kubeNGCfg := range kubeNGCfgsList {
 		webCfg := kubeNGCfg.convertToWebCfg()
 
-		resp.WebCfgsList = append(resp.WebCfgsList, webCfg)
+		cfgsList = append(cfgsList, webCfg)
 	}
 
-	resp.AppNameAndNamespace = appKey
+	resp.NginxList[0].CfgsList = cfgsList
 
 	response.WriteHeaderAndJson(200, resp, "application/json")
 
@@ -210,7 +216,6 @@ func (svc *ServiceInfo) updateNginxCfg(request *restful.Request, response *restf
 
 //delete
 func (svc *ServiceInfo) deleteSingleNginxCfg(request *restful.Request, response *restful.Response) {
-	logdebug.Println(logdebug.LevelDebug, "删除服务的一条nginx配置!")
 
 	nginxCfgURL, delSingleNginxCfg := buildCommunicateInfo(request, response)
 	appCfgURL := nginxCfgURL +
@@ -225,12 +230,20 @@ func (svc *ServiceInfo) deleteSingleNginxCfg(request *restful.Request, response 
 
 	kubeNGCfg := delSingleNginxCfg.convertToKubeNGCfg()
 
-	_, err := communicate.SendRequestByJSON(communicate.DELETE, appCfgURL, kubeNGCfg)
+	logdebug.Println(logdebug.LevelDebug, "删除服务的一条nginx配置!", appCfgURL)
+
+	recvData, err := communicate.SendRequestByJSON(communicate.DELETE, appCfgURL, kubeNGCfg)
 	if err != nil {
 		logdebug.Println(logdebug.LevelError, err)
 
+		response.WriteError(http.StatusInternalServerError, err)
+
 		return
 	}
+
+	resp := parseRespFromKubeNG(recvData)
+
+	response.WriteHeaderAndJson(200, resp, "application/json")
 
 	return
 }
@@ -294,13 +307,13 @@ func (svc *ServiceInfo) Init() {
 		// docs
 		Doc("get all nginx cfgs").
 		Operation("getAllNginxCfgs"))
-	/*
-		//get single
-		ws.Route(ws.GET("/{namespace-appname}").To(svc.getSingleNginxCfg).
-			// docs
-			Doc("get single nginx cfgs").
-			Operation("getSingleNginxCfg"))
-	*/
+
+	//get single
+	ws.Route(ws.GET("/{namespace-appname}").To(svc.getSingleNginxCfg).
+		// docs
+		Doc("get single nginx cfgs").
+		Operation("getSingleNginxCfg"))
+
 	//post - create
 	ws.Route(ws.POST("/").To(svc.createNginxCfg).
 		// docs
