@@ -1,317 +1,3 @@
-// var data = {
-//  "NodeIP": "192.168.252.133",
-//  "ClientID": "50395",
-//  "APIServerPort": ":8887",
-//  "NginxList": [
-//   {
-//    "CfgType": "k8s",
-//    "CfgsList": [
-//     {
-//      "ServerName": "bonc.local",
-//      "ListenPort": "8081",
-//      "RealServerPath": "/testa",
-//      "Namespace": "huyuepeng",
-//      "AppName": "testa",
-//      "Location": "/huyuepeng/testa",
-//      "ProxyRedirectSrcPath": "http://testa:8080/testa",
-//      "ProxyRedirectDestPath": "/huyuepeng/testa",
-//      "UpstreamIPs": null,
-//      "UpstreamPort": "",
-//      "IsUpstreamIPHash": true,
-//      "IsAppActivity": false,
-//      "OperationType": "create",
-//      "IsK8sNotify": false,
-//      "UpstreamUserRules": {
-//      		 "UserRuleSet": null
-//       },
-//      "ServerUserRules": {
-// 	       "UserRuleSet": [
-// 	        {
-// 	         "RuleCMD": "rewrite",
-// 	         "RuleParam": "cccc cccc"
-// 	        },
-// 	        {
-// 	         "RuleCMD": "rewrite",
-// 	         "RuleParam": "dddd dddd"
-// 	        }
-// 	       ]
-//      },
-//      "LocationUserRules": {
-// 	       "UserRuleSet": [
-// 	        {
-// 	         "RuleCMD": "rewrite",
-// 	         "RuleParam": "eeee eeee"
-// 	        },
-// 	        {
-// 	         "RuleCMD": "rewrite",
-// 	         "RuleParam": "ffff ffff"
-// 	        }
-// 	       ]
-//      },
-//      "LogRule": {
-//       "LogRuleName": "access_log",
-//       "LogFileDirPath": "/var/log/nginx/bonc.local-8081/huyuepeng",
-//       "LogTemplateName": "main"
-//      },
-//      "DeleteUserCfgs": false,
-//      "IsDefaultCfg": false,
-//      "AppSrcType": "k8s"
-//     },
-//     {
-//      "ServerName": "longlong.yz.local",
-//      "ListenPort": "80",
-//      "RealServerPath": "/alot",
-//      "Namespace": "longlong",
-//      "AppName": "alot",
-//      "Location": "/alot",
-//      "ProxyRedirectSrcPath": "http://alot:8080/alot",
-//      "ProxyRedirectDestPath": "/alot",
-//      "UpstreamIPs": [
-//       "192.168.0.80"
-//      ],
-//      "UpstreamPort": "32353",
-//      "IsUpstreamIPHash": true,
-//      "IsAppActivity": true,
-//      "OperationType": "",
-//      "IsK8sNotify": true,
-//      "UpstreamUserRules": {
-//       "UserRuleSet": null
-//      },
-//      "ServerUserRules": {
-//       "UserRuleSet": null
-//      },
-//      "LocationUserRules": {
-//       "UserRuleSet": null
-//      },
-//      "LogRule": {
-//       "LogRuleName": "access_log",
-//       "LogFileDirPath": "/var/log/nginx/longlong.yz.local-80/longlong",
-//       "LogTemplateName": "main"
-//      },
-//      "DeleteUserCfgs": false,
-//      "IsDefaultCfg": true,
-//      "AppSrcType": "k8s"
-//     },
-//     {
-//      "ServerName": "testbonc.yz.local",
-//      "ListenPort": "80",
-//      "RealServerPath": "/demo-a",
-//      "Namespace": "testbonc",
-//      "AppName": "demo-a",
-//      "Location": "/demo-a",
-//      "ProxyRedirectSrcPath": "http://demo-a:8080/demo-a",
-//      "ProxyRedirectDestPath": "/demo-a",
-//      "UpstreamIPs": [
-//       "192.168.0.82"
-//      ],
-//      "UpstreamPort": "31594",
-//      "IsUpstreamIPHash": true,
-//      "IsAppActivity": true,
-//      "OperationType": "",
-//      "IsK8sNotify": true,
-//      "UpstreamUserRules": {
-//       "UserRuleSet": null
-//      },
-//      "ServerUserRules": {
-//       "UserRuleSet": null
-//      },
-//      "LocationUserRules": {
-//       "UserRuleSet": null
-//      },
-//      "LogRule": {
-//       "LogRuleName": "access_log",
-//       "LogFileDirPath": "/var/log/nginx/testbonc.yz.local-80/testbonc",
-//       "LogTemplateName": "main"
-//      },
-//      "DeleteUserCfgs": false,
-//      "IsDefaultCfg": true,
-//      "AppSrcType": "k8s"
-//     },
-//     {
-//      "ServerName": "testbonc.yz.local",
-//      "ListenPort": "80",
-//      "RealServerPath": "/demo-b",
-//      "Namespace": "testbonc",
-//      "AppName": "demo-b",
-//      "Location": "/demo-b",
-//      "ProxyRedirectSrcPath": "http://demo-b:8080/demo-b",
-//      "ProxyRedirectDestPath": "/demo-b",
-//      "UpstreamIPs": [
-//       "192.168.0.82"
-//      ],
-//      "UpstreamPort": "32285",
-//      "IsUpstreamIPHash": true,
-//      "IsAppActivity": true,
-//      "OperationType": "",
-//      "IsK8sNotify": true,
-//      "UpstreamUserRules": {
-//       "UserRuleSet": null
-//      },
-//      "ServerUserRules": {
-//       "UserRuleSet": null
-//      },
-//      "LocationUserRules": {
-//       "UserRuleSet": null
-//      },
-//      "LogRule": {
-//       "LogRuleName": "access_log",
-//       "LogFileDirPath": "/var/log/nginx/testbonc.yz.local-80/testbonc",
-//       "LogTemplateName": "main"
-//      },
-//      "DeleteUserCfgs": false,
-//      "IsDefaultCfg": true,
-//      "AppSrcType": "k8s"
-//     }
-//    ]
-//   },
-//   {
-//    "CfgType": "extern",
-//    "CfgsList": [
-//     {
-//      "ServerName": "nginx.yz.local",
-//      "ListenPort": "80",
-//      "RealServerPath": "/testnginx",
-//      "Namespace": "nginx",
-//      "AppName": "testnginx",
-//      "Location": "/testnginx",
-//      "ProxyRedirectSrcPath": "http://testnginx:8080/testnginx",
-//      "ProxyRedirectDestPath": "/testnginx",
-//      "UpstreamIPs": [
-//       "192.168.0.29"
-//      ],
-//      "UpstreamPort": "3306",
-//      "IsUpstreamIPHash": true,
-//      "IsAppActivity": true,
-//      "OperationType": "",
-//      "IsK8sNotify": true,
-//      "UpstreamUserRules": {
-//       "UserRuleSet": null
-//      },
-//      "ServerUserRules": {
-//       "UserRuleSet": null
-//      },
-//      "LocationUserRules": {
-//       "UserRuleSet": null
-//      },
-//      "LogRule": {
-//       "LogRuleName": "access_log",
-//       "LogFileDirPath": "/var/log/nginx/nginx.yz.local-80/nginx",
-//       "LogTemplateName": "main"
-//      },
-//      "DeleteUserCfgs": false,
-//      "IsDefaultCfg": true,
-//      "AppSrcType": "extern"
-//     },
-//     {
-//      "ServerName": "testbonc.yz.local",
-//      "ListenPort": "80",
-//      "RealServerPath": "/testdemoui",
-//      "Namespace": "testbonc",
-//      "AppName": "testdemoui",
-//      "Location": "/testdemoui",
-//      "ProxyRedirectSrcPath": "http://testdemoui:8080/testdemoui",
-//      "ProxyRedirectDestPath": "/testdemoui",
-//      "UpstreamIPs": [
-//       "192.168.0.76"
-//      ],
-//      "UpstreamPort": "58985",
-//      "IsUpstreamIPHash": true,
-//      "IsAppActivity": true,
-//      "OperationType": "",
-//      "IsK8sNotify": true,
-//      "UpstreamUserRules": {
-//       "UserRuleSet": null
-//      },
-//      "ServerUserRules": {
-//       "UserRuleSet": null
-//      },
-//      "LocationUserRules": {
-//       "UserRuleSet": null
-//      },
-//      "LogRule": {
-//       "LogRuleName": "access_log",
-//       "LogFileDirPath": "/var/log/nginx/testbonc.yz.local-80/testbonc",
-//       "LogTemplateName": "main"
-//      },
-//      "DeleteUserCfgs": false,
-//      "IsDefaultCfg": true,
-//      "AppSrcType": "extern"
-//     },
-//     {
-//      "ServerName": "testbonc.yz.local",
-//      "ListenPort": "80",
-//      "RealServerPath": "/testwk",
-//      "Namespace": "testbonc",
-//      "AppName": "testwk",
-//      "Location": "/testwk",
-//      "ProxyRedirectSrcPath": "http://testwk:8080/testwk",
-//      "ProxyRedirectDestPath": "/testwk",
-//      "UpstreamIPs": [
-//       "192.168.0.76"
-//      ],
-//      "UpstreamPort": "3306",
-//      "IsUpstreamIPHash": true,
-//      "IsAppActivity": true,
-//      "OperationType": "",
-//      "IsK8sNotify": true,
-//      "UpstreamUserRules": {
-//       "UserRuleSet": null
-//      },
-//      "ServerUserRules": {
-//       "UserRuleSet": null
-//      },
-//      "LocationUserRules": {
-//       "UserRuleSet": null
-//      },
-//      "LogRule": {
-//       "LogRuleName": "access_log",
-//       "LogFileDirPath": "/var/log/nginx/testbonc.yz.local-80/testbonc",
-//       "LogTemplateName": "main"
-//      },
-//      "DeleteUserCfgs": false,
-//      "IsDefaultCfg": true,
-//      "AppSrcType": "extern"
-//     },
-//     {
-//      "ServerName": "nginx.yz.local",
-//      "ListenPort": "80",
-//      "RealServerPath": "/deletetest",
-//      "Namespace": "nginx",
-//      "AppName": "deletetest",
-//      "Location": "/deletetest",
-//      "ProxyRedirectSrcPath": "http://deletetest:8080/deletetest",
-//      "ProxyRedirectDestPath": "/deletetest",
-//      "UpstreamIPs": [
-//       "192.168.0.29"
-//      ],
-//      "UpstreamPort": "1234",
-//      "IsUpstreamIPHash": true,
-//      "IsAppActivity": true,
-//      "OperationType": "",
-//      "IsK8sNotify": true,
-//      "UpstreamUserRules": {
-//       "UserRuleSet": null
-//      },
-//      "ServerUserRules": {
-//       "UserRuleSet": null
-//      },
-//      "LocationUserRules": {
-//       "UserRuleSet": null
-//      },
-//      "LogRule": {
-//       "LogRuleName": "access_log",
-//       "LogFileDirPath": "/var/log/nginx/nginx.yz.local-80/nginx",
-//       "LogTemplateName": "main"
-//      },
-//      "DeleteUserCfgs": false,
-//      "IsDefaultCfg": true,
-//      "AppSrcType": "extern"
-//     }
-//    ]
-//   }
-//  ]
-// };
-
  var NodeIP = "";
  var ClientID = "";
  $(document).ready(function () {
@@ -326,8 +12,8 @@
 	showAllNgs(NodeIP,ClientID);
 	
 //	$("#hypBtn").click(function(){
-//		var areaIP = "localhost";
-//		var areaPort = "port";
+//		var areaIP = "192.168.19.128";
+//		var areaPort = "8083";
 //		var Url = "http://"+areaIP+":"+areaPort+"/nginxcfg?NodeIP=192.168.252.133&ClientID=49073";
 		
 //		var WebMsg = {
@@ -359,7 +45,7 @@
 	
 	
  	//加载所有租户option
-	showAllUsers(KubernetesMasterHost,KubernetesAPIVersion,JobZoneType);
+	//showAllUsers(KubernetesMasterHost,KubernetesAPIVersion,JobZoneType);
     //折叠ibox
     $(document).on('click','.collapse-link',function(){
         var ibox = $(this).closest('div.ibox');
@@ -391,8 +77,8 @@
  var NamespacesList = "";
  var NamespacesAppCounts = "";
  function showAllUsers(KubernetesMasterHost,KubernetesAPIVersion,JobZoneType){
- 	var areaIP = "localhost";
-	var areaPort = "port";
+ 	var areaIP = "192.168.19.128";
+	var areaPort = "8083";
 	var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/namespaces";
 	
 	$.ajax({
@@ -435,8 +121,8 @@
 
 //展示同一个node下的所有nginx配置
 function showAllNgs(NodeIP,ClientID){
-	var areaIP = "localhost";
-	var areaPort = "port";
+	var areaIP = "192.168.19.128";
+	var areaPort = "8083";
 	var Url = "http://"+areaIP+":"+areaPort+"/nginxcfg?NodeIP="+NodeIP+"&ClientID="+ClientID;
 	//showNgsHtml(data);
 	$.ajax({
@@ -874,8 +560,6 @@ function showNgsHtml(data){
  	 * 局部刷新
  	 */
  	function RulesData(RulesDiv){
- 		//$($(".LocationUserRulesDiv")[2]).find(".bbb").val()
-
  		var itemRules = new Array();
 		for(var i=0; i<RulesDiv.length; i++){
 			var tranRulesDiv = RulesDiv[i];
@@ -965,11 +649,11 @@ function showNgsHtml(data){
       },
       "DeleteUserCfgs": DeleteUserCfgs,
       "IsDefaultCfg": IsDefaultCfg,
-     "AppSrcType": AppSrcType
+      "AppSrcType": AppSrcType
      };
 
-		var areaIP = "localhost";
-		var areaPort = "port";
+		var areaIP = "192.168.19.128";
+		var areaPort = "8083";
 		var Url = "http://"+areaIP+":"+areaPort+"/nginxcfg?NodeIP="+NodeIP+"&ClientID="+ClientID;
 		$.ajax({
 			url : Url,
@@ -1207,5 +891,97 @@ function showNgsHtml(data){
 //				//showNgsHtml(data);
 //			}
 //		})
+	}
+
+	/**
+	 * 删除一个ng配置
+	 * @param obj
+	 */
+	function delOneSerPart(obj){
+		var ngConfigPart = $(obj).parent().parent().find('.nginxForm');
+		var ServerName = ngConfigPart.find("#ServerName").val();
+		var ListenPort = ngConfigPart.find("#ListenPort").val();
+		var Namespace = ngConfigPart.find(".appNameAndNamespace").attr("namespace");
+		var AppName = ngConfigPart.find(".appNameAndNamespace").attr("appname");
+
+		var deleteData = {
+	      "ServerName": ServerName,
+	      "ListenPort": ListenPort,
+	      "Namespace": Namespace,
+	      "AppName": AppName
+	    };
+
+	    var areaIP = "192.168.19.128";
+		var areaPort = "8083";
+		var Url = "http://"+areaIP+":"+areaPort+"/nginxcfg?NodeIP="+NodeIP+"&ClientID="+ClientID;
+
+	    layer.open({
+			title: "删除", //不显示标题
+			content: "确认删除NG",
+			btn: ['确定', '取消'],
+			yes: function(index, layero){
+	
+		
+		$.ajax({
+			url : Url,
+			dataType: "json",
+			contentType: "text/html; charset=UTF-8",
+    		type: "delete",//update操作 
+			headers: {
+				"Content-Type": "application/json",
+				"Accept": "application/json",
+			},
+			data: JSON.stringify(deleteData),
+			success: function(data){
+				var data=data;
+			}
+		})
+
+				// $.ajax({
+				// 	url: Url,
+				// 	dataType: "json",
+				// 	contentType: "text/html; charset=UTF-8",
+				// 	type:"delete",
+				// 	headers: {
+				// 		"Content-Type": "application/json",
+				// 		"Accept": "application/json",
+				// 	},
+				// 	data: JSON.stringify(deleteData),
+					
+				// 	success:function(data){
+				// 		var data=data;
+				// 		$(obj).parent().parent().remove();
+				// 		layer.msg('删除成功！', {icon: 1});
+				// 	}
+				// });
+				layer.close(index);
+			},
+			cancel: function(index, layero){
+				alert("no");
+			    layer.close(index);
+			}
+		});
+		
+	 	
+	 	// $.ajax({
+ 		// 	url:""+ctx+"/deleteNginxCfgs",
+ 		// 	type:"POST",
+ 		// 	data:{"serviceName":serviceName,"flag":flag,"confseq":confseq,"had":true,"appName":appName,"namespace":namespace,"nodeIp":nodeIp,"nodePort":nodePort},
+ 		// 	success:function(data){
+ 		// 		 var data = eval("("+data+")");
+ 		// 		 if("200"==data.status){
+ 		// 			layer.msg( "删除成功！", {
+		 //                icon: 1
+		 //            })
+ 		// 			$(obj).parent().parent().remove();
+ 		// 		 }else if("502"==data.status){
+ 		// 			alert(data.message);
+ 		// 		 }else if("501"==data.status){
+ 		// 			 alert(data.message);
+ 		// 		 }else{
+ 		// 			 alert(data.message);
+ 		// 		 }
+ 		// 	}
+ 	 // 	});
 	}
 	

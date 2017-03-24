@@ -402,6 +402,7 @@ i.fa_btn_plus_gray {
 }
 .float-e-margins{
     margin-top: 25px;
+    border-bottom: 1px solid #ddd;
 }
 .ibox-title {
     -moz-border-bottom-colors: none;
