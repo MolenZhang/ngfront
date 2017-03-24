@@ -2,11 +2,13 @@ var KubernetesMasterHost = "";
 var KubernetesAPIVersion = ""; 
 var JobZoneType = "";
 var WatchNamespaceSets = "";
+var NodeIPInfo ="";
+var ClientIDInfo = "";
 $(document).ready(function () {
 	var locationUrl = window.location;
 	//http://172.16.13.110:8083/ngfront/zone/clients/watcher?NodeIP=10.10.3.9&ClientID=21343&areaType=user
-	var NodeIPInfo = locationUrl.search.substring(locationUrl.search.indexOf("NodeIP=")+7,locationUrl.search.indexOf("&C"));
-	var ClientIDInfo = locationUrl.search.substring(locationUrl.search.indexOf("ClientID=")+9,locationUrl.search.indexOf("&a"));
+	NodeIPInfo = locationUrl.search.substring(locationUrl.search.indexOf("NodeIP=")+7,locationUrl.search.indexOf("&C"));
+	ClientIDInfo = locationUrl.search.substring(locationUrl.search.indexOf("ClientID=")+9,locationUrl.search.indexOf("&a"));
 	var areaTypeInfo = locationUrl.search.substring(locationUrl.search.indexOf("areaType=")+9,locationUrl.search.length);
 
 	 $(document).on('click','.fa-nodeEdit',function(){
@@ -622,8 +624,8 @@ function stopControl(NodeIPInfo,ClientIDInfo){
 	        	var downloadData={
 	        		"User":ngDownUser,
 	        		"Password":ngDownPwd,
-	        		"NodeIP": NodeIP,
-	        		"ClientID":ClientID
+	        		"NodeIP": NodeIPInfo,
+	        		"ClientID":ClientIDInfo
 	        	};
 	        	var areaIP = "localhost";
 				var areaPort = "port";
@@ -642,7 +644,7 @@ function stopControl(NodeIPInfo,ClientIDInfo){
 						var data = data;
 					}
 				});
-	        	
+	        	layer.close(index);
 	        }
 		});
 	}
