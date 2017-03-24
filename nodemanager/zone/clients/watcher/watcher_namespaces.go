@@ -23,10 +23,15 @@ type NamespaceMetadata struct {
 	Name string
 }
 
+type AppInfo struct {
+	AppSrcType    string
+	NamespacesApp string
+}
+
 //NamespacesDetailInfo 租户列表详细信息
 type NamespacesDetailInfo struct {
-	NamespacesList    []string
-	NamespacesAppList [][]string
+	NamespacesList []string
+	AppInfoList    [][]AppInfo
 }
 
 //EndpointsList epList数据结构
@@ -112,12 +117,19 @@ func getAppName(obj EndpointObject, jobZoneType string) (appName string) {
 	return
 }
 
-func getAppListFromEpList(epList EndpointsList, jobZoneType string) (appList []string) {
+func getAppListFromEpList(epList EndpointsList, jobZoneType string) (appInfoList []AppInfo) {
 	for _, object := range epList.Items {
 		//获取本租户下的一个ep对象所对应的app信息(1个)
 		appName := getAppName(object, jobZoneType)
+		appInfo := AppInfo{}
 		if appName != "" {
-			appList = append(appList, appName)
+			appInfo.NamespacesApp = appName
+			appInfo.AppSrcType = "k8s"
+			if object.Metadata.Labels["useProxy"] != "" {
+				appInfo.AppSrcType = "extern"
+			}
+
+			appInfoList = append(appInfoList, appInfo)
 		}
 	}
 
@@ -133,8 +145,11 @@ func getNamespacesDetailInfoFromK8s(getNamespacesURL string, jobZoneType string)
 		getEndpointsURL := getNamespacesURL + "/" + namespace + "/endpoints"
 		//拿到本租户下的所有ep(epList中包含了服务名N个)
 		endpointList := getServiceFromK8s(getEndpointsURL)
+
 		//解析epList 将N个服务的名字解析出来{"app1","app2",..."appN"}
-		namespacesDetail.NamespacesAppList = append(namespacesDetail.NamespacesAppList, getAppListFromEpList(endpointList, jobZoneType))
+		appInfoList := getAppListFromEpList(endpointList, jobZoneType)
+
+		namespacesDetail.AppInfoList = append(namespacesDetail.AppInfoList, appInfoList)
 	}
 
 	return
