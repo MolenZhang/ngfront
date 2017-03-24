@@ -27,7 +27,12 @@ type WebReqMsg struct {
 	ClientID string
 }
 
+type respToweb struct {
+	Result bool
+}
+
 func (svc *ServiceInfo) nginxCfgDownload(request *restful.Request, response *restful.Response) {
+	logdebug.Println(logdebug.LevelDebug, "<<<<<<<nginx config downloading...>>>>>>>")
 	var (
 		err     error
 		respMsg respFromKubeNg
@@ -61,6 +66,10 @@ func (svc *ServiceInfo) nginxCfgDownload(request *restful.Request, response *res
 	nginxCfgActDownloadURL := respMsg.DownloadCfgPath
 
 	svc.remoteFileDownload(reqMsg.User, reqMsg.Password, client.NodeIP, nginxCfgActDownloadURL, 22)
+
+	downloadResp := respToweb{true}
+	response.WriteHeaderAndJson(200, downloadResp, "application/json")
+
 }
 
 func (svc *ServiceInfo) remoteFileDownload(user, password, host, url string, port int) {
@@ -121,4 +130,6 @@ func (svc *ServiceInfo) remoteFileDownload(user, password, host, url string, por
 		logdebug.Println(logdebug.LevelError, err)
 		return
 	}
+	return
+
 }
