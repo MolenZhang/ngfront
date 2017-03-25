@@ -627,6 +627,11 @@ function stopControl(NodeIPInfo,ClientIDInfo){
 	        		"NodeIP": NodeIPInfo,
 	        		"ClientID":ClientIDInfo
 	        	};
+					    layer.msg('下载中', {
+						  icon: 16,
+						  shade: 0.1,
+						  time:3000
+						});
 	        	var areaIP = "localhost";
 				var areaPort = "port";
 				var downloadUrl = 'http://'+areaIP+':'+areaPort+'/nginxcfg/download';
@@ -642,6 +647,18 @@ function stopControl(NodeIPInfo,ClientIDInfo){
 					data: JSON.stringify(downloadData),
 					success :function(data){
 						var data = data;
+						/*
+					    layer.msg('下载中', {
+						  icon: 16,
+						  shade: 0.1,
+						  time:3000
+						});
+						*/
+						if(data.Result==true){
+				 			layer.msg('下载成功！', {icon: 1});
+						}else{
+				 			layer.msg('下载失败！', {icon: 2});
+						}
 					}
 				});
 	        	layer.close(index);

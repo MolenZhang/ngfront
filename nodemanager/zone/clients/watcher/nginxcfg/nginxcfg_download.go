@@ -21,10 +21,11 @@ type respFromKubeNg struct {
 
 //WebReqMsg 保存下载nginx配置相关参数
 type WebReqMsg struct {
-	User     string
-	Password string
-	NodeIP   string
-	ClientID string
+	User         string
+	Password     string
+	DownloadPath string
+	NodeIP       string
+	ClientID     string
 }
 
 type respToweb struct {
@@ -42,6 +43,7 @@ func (svc *ServiceInfo) nginxCfgDownload(request *restful.Request, response *res
 	if err != nil {
 		logdebug.Println(logdebug.LevelError, err)
 	}
+	logdebug.Println(logdebug.LevelDebug, "<<<<<<<前端输入下载信息：>>>>>>>", reqMsg)
 
 	client := nodes.ClientInfo{
 		NodeIP:   reqMsg.NodeIP,
@@ -65,14 +67,17 @@ func (svc *ServiceInfo) nginxCfgDownload(request *restful.Request, response *res
 
 	nginxCfgActDownloadURL := respMsg.DownloadCfgPath
 
-	svc.remoteFileDownload(reqMsg.User, reqMsg.Password, client.NodeIP, nginxCfgActDownloadURL, 22)
+	svc.remoteFileDownload(reqMsg.User, reqMsg.Password, reqMsg.DownloadPath, client.NodeIP, nginxCfgActDownloadURL, 22)
 
-	downloadResp := respToweb{true}
+	downloadResp := ResponseBody{
+		Result: true,
+	}
+
 	response.WriteHeaderAndJson(200, downloadResp, "application/json")
-
+	return
 }
 
-func (svc *ServiceInfo) remoteFileDownload(user, password, host, url string, port int) {
+func (svc *ServiceInfo) remoteFileDownload(user, password, downloadpath, host, url string, port int) {
 	var (
 		auth         []ssh.AuthMethod
 		clientConfig *ssh.ClientConfig
@@ -108,7 +113,7 @@ func (svc *ServiceInfo) remoteFileDownload(user, password, host, url string, por
 
 	// 用来测试的远程文件路径 和 本地文件夹
 	remoteFilePath := url
-	localDir := "./"
+	localDir := downloadpath
 
 	srcFile, err := sftpClient.Open(remoteFilePath)
 	if err != nil {
@@ -117,7 +122,13 @@ func (svc *ServiceInfo) remoteFileDownload(user, password, host, url string, por
 	}
 	defer srcFile.Close()
 
-	localFileName := path.Base(remoteFilePath)
+	localFileName := path.Base(remoteFilePath) // /root/molen -> molen
+
+	//判断路径是否存在
+	if false == pathExists(localDir) {
+		os.MkdirAll(localDir, 0777)
+	}
+
 	dstFile, err := os.Create(path.Join(localDir, localFileName))
 	if err != nil {
 		logdebug.Println(logdebug.LevelError, err)
@@ -132,4 +143,15 @@ func (svc *ServiceInfo) remoteFileDownload(user, password, host, url string, por
 	}
 	return
 
+}
+
+func pathExists(path string) bool {
+	_, err := os.Stat(path)
+	if err == nil {
+		return true
+	}
+	if os.IsNotExist(err) {
+		return false
+	}
+	return false
 }
