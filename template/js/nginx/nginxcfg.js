@@ -45,8 +45,8 @@
  var NamespacesAppCounts = "";
 
  function showAllUsers(KubernetesMasterHost,KubernetesAPIVersion,JobZoneType){
- 	var areaIP = "192.168.85.130";
-	var areaPort = "8083";
+ 	var areaIP = "localhost";
+	var areaPort = "port";
 	var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/namespaces";
 	
 	$.ajax({
@@ -109,8 +109,8 @@
 
 //展示同一个node下的所有nginx配置
 function showAllNgs(NodeIP,ClientID){
-	var areaIP = "192.168.85.130";
-	var areaPort = "8083";
+	var areaIP = "localhost";
+	var areaPort = "port";
 	var showAllNgsUrl = "http://"+areaIP+":"+areaPort+"/nginxcfg?NodeIP="+NodeIP+"&ClientID="+ClientID;
 	$.ajax({
 			url : showAllNgsUrl,
@@ -624,8 +624,8 @@ function showNgsHtml(data){
       "AppSrcType": AppSrcType
      };
 
-		var areaIP = "192.168.85.130";
-		var areaPort = "8083";
+		var areaIP = "localhost";
+		var areaPort = "port";
 		var AppNameAndNamespace = Namespace+'-'+AppName;
 		var saveUrl = "http://"+areaIP+":"+areaPort+"/nginxcfg?AppNameAndNamespace="+AppNameAndNamespace+"&NodeIP="+NodeIP+"&ClientID="+ClientID;
 		$.ajax({
@@ -847,8 +847,8 @@ function showNgsHtml(data){
 	 * @param obj
 	 */
 	function findNgByOneApp(obj){
-		var areaIP = "192.168.85.130";
-		var areaPort = "8083";
+		var areaIP = "localhost";
+		var areaPort = "port";
 		//var area=$("#area").val();
 		var appName = $(obj).val();
 		var namespace= $(obj).parent().next().find("#search_user").val();
@@ -891,8 +891,8 @@ function showNgsHtml(data){
 		  "AppSrcType": AppSrcType
 	    };
 
-	    var areaIP = "192.168.85.130";
-		var areaPort = "8083";
+	    var areaIP = "localhost";
+		var areaPort = "port";
 		var deleteUrl = "http://"+areaIP+":"+areaPort+"/nginxcfg?NodeIP="+NodeIP+"&ClientID="+ClientID;
 
 	    layer.open({
@@ -1020,8 +1020,8 @@ function showNgsHtml(data){
      	$(".IsDefaultCfg-true").parent().parent().remove();
      }
 
-		var areaIP = "192.168.85.130";
-		var areaPort = "8083";
+		var areaIP = "localhost";
+		var areaPort = "port";
 		
 		var saveUrl = "http://"+areaIP+":"+areaPort+"/nginxcfg?NodeIP="+NodeIP+"&ClientID="+ClientID;
 		$.ajax({
