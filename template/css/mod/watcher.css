@@ -91,7 +91,7 @@ button.btn-start{
 	width:60%;
 }
 .ngInfo{
-	width: 80%;
+	width: 88%;
 	float: left;
 	margin-top:15px;
 	margin-left: 10%;
@@ -101,11 +101,17 @@ button.btn-start{
 	border-radius: 4px;
 }
 .ngInfoTit{
-	width:22%;
+	width:23%;
 	float: left;
 	text-align: right;
 }
 .ngInfoCon{
 	width:77%;
 	float: left;
+}
+.warningInfo{
+	color:#e8504f;
+}
+.warningInfo span{
+	margin-top: 6px;
 }

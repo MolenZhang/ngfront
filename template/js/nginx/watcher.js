@@ -621,6 +621,10 @@ function stopControl(NodeIPInfo,ClientIDInfo){
 	        		layer.tips('密码不能为空', $("#nginxDownload #ngDownPwd"),{tips: [1, '#EF6578']});
 	        		return;
 	        	}
+	        	if(ngDownLoadPath.length == 0){
+	        		layer.tips('保存目录不能为空', $("#nginxDownload #ngDownLoadPath"),{tips: [1, '#EF6578']});
+	        		return;
+	        	}
 	        	//
 	        	var downloadData={
 	        		"User":ngDownUser,
@@ -629,10 +633,9 @@ function stopControl(NodeIPInfo,ClientIDInfo){
 	        		"NodeIP": NodeIPInfo,
 	        		"ClientID":ClientIDInfo
 	        	};
-					    layer.msg('下载中', {
+				var indexMsg = layer.msg('下载中', {
 						  icon: 16,
-						  shade: 0.1,
-						  time:3000
+						  shade: 0.1
 						});
 	        	var areaIP = "localhost";
 				var areaPort = "port";
@@ -649,13 +652,7 @@ function stopControl(NodeIPInfo,ClientIDInfo){
 					data: JSON.stringify(downloadData),
 					success :function(data){
 						var data = data;
-						/*
-					    layer.msg('下载中', {
-						  icon: 16,
-						  shade: 0.1,
-						  time:3000
-						});
-						*/
+						layer.close(indexMsg);
 						if(data.Result==true){
 				 			layer.msg('下载成功！', {icon: 1});
 						}else{
