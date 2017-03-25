@@ -28,10 +28,6 @@ type WebReqMsg struct {
 	ClientID     string
 }
 
-type respToweb struct {
-	Result bool
-}
-
 func (svc *ServiceInfo) nginxCfgDownload(request *restful.Request, response *restful.Response) {
 	logdebug.Println(logdebug.LevelDebug, "<<<<<<<nginx config downloading...>>>>>>>")
 	var (
@@ -124,7 +120,7 @@ func (svc *ServiceInfo) remoteFileDownload(user, password, downloadpath, host, u
 
 	localFileName := path.Base(remoteFilePath) // /root/molen -> molen
 
-	//判断路径是否存在
+	//判断路径是否存在,不存在则创建
 	if false == pathExists(localDir) {
 		os.MkdirAll(localDir, 0777)
 	}
