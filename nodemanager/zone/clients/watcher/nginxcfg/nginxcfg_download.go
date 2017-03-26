@@ -6,6 +6,9 @@ import (
 	"github.com/emicklei/go-restful"
 	"github.com/pkg/sftp"
 	"golang.org/x/crypto/ssh"
+	"io"
+	"net/http"
+	"net/url"
 	"ngfront/communicate"
 	"ngfront/logdebug"
 	"ngfront/nodemanager/nodes"
@@ -21,11 +24,10 @@ type respFromKubeNg struct {
 
 //WebReqMsg 保存下载nginx配置相关参数
 type WebReqMsg struct {
-	User         string
-	Password     string
-	DownloadPath string
-	NodeIP       string
-	ClientID     string
+	User     string
+	Password string
+	NodeIP   string
+	ClientID string
 }
 
 func (svc *ServiceInfo) nginxCfgDownload(request *restful.Request, response *restful.Response) {
@@ -63,17 +65,28 @@ func (svc *ServiceInfo) nginxCfgDownload(request *restful.Request, response *res
 
 	nginxCfgActDownloadURL := respMsg.DownloadCfgPath
 
-	svc.remoteFileDownload(reqMsg.User, reqMsg.Password, reqMsg.DownloadPath, client.NodeIP, nginxCfgActDownloadURL, 22)
+	downloadFileName := svc.remoteFileDownload(reqMsg.User, reqMsg.Password, client.NodeIP, nginxCfgActDownloadURL, 22)
 
-	downloadResp := ResponseBody{
-		Result: true,
+	logdebug.Println(logdebug.LevelDebug, "********前端要下载的文件名", downloadFileName)
+
+	file, err := os.Open(downloadFileName)
+	if err != nil {
+		response.WriteErrorString(http.StatusInternalServerError, err.Error())
 	}
 
-	response.WriteHeaderAndJson(200, downloadResp, "application/json")
+	fileName := path.Base(downloadFileName)
+	fileName = url.QueryEscape(fileName) // 防止中文乱码
+	response.AddHeader("Content-Type", "application/octet-stream")
+	response.AddHeader("content-disposition", "attachment; filename=\""+fileName+"\"")
+	_, error := io.Copy(response.ResponseWriter, file)
+	if error != nil {
+		response.WriteErrorString(http.StatusInternalServerError, err.Error())
+		return
+	}
 	return
 }
 
-func (svc *ServiceInfo) remoteFileDownload(user, password, downloadpath, host, url string, port int) {
+func (svc *ServiceInfo) remoteFileDownload(user, password, host, url string, port int) string {
 	var (
 		auth         []ssh.AuthMethod
 		clientConfig *ssh.ClientConfig
@@ -97,24 +110,24 @@ func (svc *ServiceInfo) remoteFileDownload(user, password, downloadpath, host, u
 
 	if sshClient, err = ssh.Dial("tcp", addr, clientConfig); err != nil {
 		logdebug.Println(logdebug.LevelError, err)
-		return
+		return ""
 	}
 
 	// create sftp client
 	if sftpClient, err = sftp.NewClient(sshClient); err != nil {
 		logdebug.Println(logdebug.LevelError, err)
-		return
+		return ""
 	}
 	defer sftpClient.Close()
 
 	// 用来测试的远程文件路径 和 本地文件夹
 	remoteFilePath := url
-	localDir := downloadpath
+	localDir := "/tmp/"
 
 	srcFile, err := sftpClient.Open(remoteFilePath)
 	if err != nil {
 		logdebug.Println(logdebug.LevelError, err)
-		return
+		return ""
 	}
 	defer srcFile.Close()
 
@@ -128,16 +141,16 @@ func (svc *ServiceInfo) remoteFileDownload(user, password, downloadpath, host, u
 	dstFile, err := os.Create(path.Join(localDir, localFileName))
 	if err != nil {
 		logdebug.Println(logdebug.LevelError, err)
-		return
+		return ""
 	}
 	defer dstFile.Close()
 
 	_, err = srcFile.WriteTo(dstFile)
 	if err != nil {
 		logdebug.Println(logdebug.LevelError, err)
-		return
+		return ""
 	}
-	return
+	return localDir + localFileName
 
 }
 
