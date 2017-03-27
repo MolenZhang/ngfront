@@ -110,6 +110,8 @@ func (svc *ServiceInfo) getSingleNginxCfg(request *restful.Request, response *re
 		ClientID: request.Request.Form.Get("ClientID"),
 	}
 
+	appSrcType := request.Request.Form.Get("AppSrcType")
+
 	key := client.CreateKey()
 	clientInfo := nodes.GetClientInfo(key)
 
@@ -120,7 +122,7 @@ func (svc *ServiceInfo) getSingleNginxCfg(request *restful.Request, response *re
 		"/" +
 		clientInfo.NginxCfgsAPIServerPath +
 		"/" +
-		AppSrcTypeKubernetes +
+		appSrcType +
 		"/" +
 		appKey
 
@@ -132,27 +134,11 @@ func (svc *ServiceInfo) getSingleNginxCfg(request *restful.Request, response *re
 
 	resp.NginxList = make([]NginxCfgsList, 1)
 
-	resp.NginxList[0].CfgType = AppSrcTypeKubernetes
+	resp.NginxList[0].CfgType = appSrcType
 
 	logdebug.Println(logdebug.LevelDebug, "获取单个的app nginx配置!-----appkey=", appKey, " appCfgURL = ", appCfgURL)
 
 	recvData, err := communicate.SendRequestByJSON(communicate.GET, appCfgURL, nil)
-	if err != nil {
-		appCfgURL := "http://" +
-			clientInfo.NodeIP +
-			clientInfo.APIServerPort +
-			"/" +
-			clientInfo.NginxCfgsAPIServerPath +
-			"/" +
-			AppSrcTypeExtern +
-			"/" +
-			appKey
-
-		recvData, err = communicate.SendRequestByJSON(communicate.GET, appCfgURL, nil)
-
-		resp.NginxList[0].CfgType = AppSrcTypeExtern
-	}
-
 	if err != nil {
 		logdebug.Println(logdebug.LevelError, err)
 		response.WriteErrorString(http.StatusNotFound, "App could not be found.")
