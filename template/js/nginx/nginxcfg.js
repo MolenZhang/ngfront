@@ -175,6 +175,7 @@ function showNgsHtml(data){
 		var ngConfigPartHtml = "";
 		for(var j=0; j< nginxList.CfgsList.length; j++){
 			var CfgsList = nginxList.CfgsList[j];
+				var IsDefaultCfgClass='IsDefaultCfg-'+CfgsList.IsDefaultCfg;
 			 		ngConfigPartHtml += '<div class="ngConfigPart">'
 											+'<input type="checkbox" class="ngConfigCheckbox"/>'
 											+'<span class="hide addOneSerPart">'
@@ -184,7 +185,7 @@ function showNgsHtml(data){
                                              + '<span><i class="fa fa-caret-down fa-one" onClick="toggleOneSerPart(this)"></i></span>'
                                              + '<span class="ngConfigPartTit"></span>'
 												+ '<div class="ngConfigPartCon">'
-												+ '<form class="nginxForm" method="post" action="" AppSrcType="'+nginxList.CfgType+'">'
+												+ '<form class="nginxForm '+IsDefaultCfgClass+'" method="post" action="" AppSrcType="'+nginxList.CfgType+'" IsDefaultCfg="'+CfgsList.IsDefaultCfg+'">'
 												+	'<div class="nginx-label">'
 												+		'<span class="upstreamPartTit">upstream</span><input type="text" class="appNameAndNamespace" name="appNameAndNamespace" AppName="'+CfgsList.AppName+'" Namespace="'+CfgsList.Namespace+'" value="'+CfgsList.AppName+'-'+CfgsList.Namespace+'" disabled>{'
 												+	'</div>'
@@ -407,7 +408,7 @@ function showNgsHtml(data){
         var ProxyRedirectDestPath = $(obj).attr("ProxyRedirectDestPath");
         var IsUpstreamIPHash = $(obj).attr("IsUpstreamIPHash");
         var DeleteUserCfgs = $(obj).attr("DeleteUserCfgs");
-        var IsDefaultCfg = $(obj).attr("IsDefaultCfg");
+        //var IsDefaultCfg = false;
         var AppSrcType = $(obj).attr("CfgType");
 
 		var str='<div class="ngConfigPart" border:1px solid #FF0000 >' 
@@ -504,7 +505,7 @@ function showNgsHtml(data){
 			+'</div>'
 			+'</div>'
 			+'</div>'
-			+'</form> '
+			+'</form>'
 			+'</div>'
 			+'</div>';
 		$(obj).parent().parent().after(str);
@@ -648,11 +649,11 @@ function showNgsHtml(data){
 				}else{
 					
 				
-				
+			var IsDefaultCfgClass = 'IsDefaultCfg-'+CfgsList.IsDefaultCfg;
 	 		var saveDataHtml = "";	
 				
             saveDataHtml +='<div class="ngConfigPartCon">'
-												+ '<form class="nginxForm" method="post" action="" AppSrcType="'+CfgsList.AppSrcType+'">'
+												+ '<form class="nginxForm '+IsDefaultCfgClass+'" method="post" action="" AppSrcType="'+CfgsList.AppSrcType+'">'
 												+	'<div class="nginx-label">'
 												+		'<span class="upstreamPartTit">upstream</span><input type="text" class="appNameAndNamespace" name="appNameAndNamespace" AppName="'+CfgsList.AppName+'" Namespace="'+CfgsList.Namespace+'" value="'+CfgsList.AppName+'-'+CfgsList.Namespace+'" disabled>{'
 												+	'</div>'
@@ -1015,6 +1016,9 @@ function showNgsHtml(data){
       "IsDefaultCfg": IsDefaultCfg,
       "AppSrcType": AppSrcType
      };
+     if($(".IsDefaultCfg-true")){
+     	$(".IsDefaultCfg-true").parent().parent().remove();
+     }
 
 		var areaIP = "localhost";
 		var areaPort = "port";
@@ -1043,9 +1047,9 @@ function showNgsHtml(data){
 				
 				
 	 		var saveDataHtml = "";	
-				
+			var IsDefaultCfgClass = 'IsDefaultCfg-'+CfgsList.IsDefaultCfg;	
             saveDataHtml +='<div class="ngConfigPartCon">'
-												+ '<form class="nginxForm" method="post" action="" AppSrcType="'+CfgsList.AppSrcType+'">'
+												+ '<form class="nginxForm '+IsDefaultCfgClass+'" method="post" action="" AppSrcType="'+CfgsList.AppSrcType+'">'
 												+	'<div class="nginx-label">'
 												+		'<span class="upstreamPartTit">upstream</span><input type="text" class="appNameAndNamespace" name="appNameAndNamespace" AppName="'+CfgsList.AppName+'" Namespace="'+CfgsList.Namespace+'" value="'+CfgsList.AppName+'-'+CfgsList.Namespace+'" disabled>{'
 												+	'</div>'
