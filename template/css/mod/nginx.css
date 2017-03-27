@@ -214,21 +214,3 @@ i.fa-one{
 	padding-left: 6px;
 	color:#81a6ea;
 }
-.ngInfo{
-	width: 80%;
-	float: left;
-	margin-top:15px;
-	margin-left: 10%;
-}
-.ngInfoInput{
-	width: 90%;
-	border-radius: 4px;
-}
-.ngInfoTit{
-	width:20%;
-	float: left;
-}
-.ngInfoCon{
-	width:78%;
-	float: left;
-}
