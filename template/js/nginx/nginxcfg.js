@@ -1206,7 +1206,7 @@ function showNgsHtml(data){
 			type: 1,
 	        title: '请填写该服务器的账号的密码再下载',
 	        content: $("#nginxDownload"),
-	        area:['300px'],
+	        area:['400px'],
 	        btn: ['确定', '取消'],
 	        yes: function(index, layero){
 	        	var ngDownUser = $("#nginxDownload #ngDownUser").val();
