@@ -43,6 +43,7 @@
  //加载所有租户option
  var NamespacesList = "";
  var NamespacesAppCounts = "";
+
  function showAllUsers(KubernetesMasterHost,KubernetesAPIVersion,JobZoneType){
  	var areaIP = "localhost";
 	var areaPort = "port";
@@ -59,7 +60,7 @@
 		"success":function(data){
 			var data = eval("("+data+")");
 			NamespacesList = data.NamespacesList;
-			NamespacesAppCounts = data.NamespacesAppList;
+			NamespacesAppCounts = data.AppInfoList;
 			//租户option
 			var userOptionHtml = "";
 			if(NamespacesList != null){
@@ -72,22 +73,37 @@
 		}
 	})
  }
-
+ var AppSrcType="";
  function searchByUser(obj){
  	var userVal = $(obj).val();
+ 	if(userVal==""){
+ 		showAllNgs(NodeIP,ClientID);
+ 	}else{
+ 		//租户option改变生成对应的服务
+		var serviceOptionHtml = "";
+		for(var i=0; i<NamespacesList.length; i++){
+			if(NamespacesList[i] == userVal ){
+				if(NamespacesAppCounts[i] != null){
+					serviceOptionHtml += '<option value="">-----请选择-----</option>'
+					for(var j=0; j<NamespacesAppCounts[i].length; j++){
+						AppSrcType = NamespacesAppCounts[i][j].AppSrcType;
+						var AppSrcTypeText = "";
+						if(AppSrcType == "k8s"){
+							AppSrcTypeText = "K8S服务";
+						}else{
+							AppSrcTypeText = "外部服务";
+						}
 
-	//租户option改变生成对应的服务
-	var serviceOptionHtml = '<option value="">-----请选择-----</option>';
-	for(var i=0; i<NamespacesList.length; i++){
-		if(NamespacesList[i] == userVal ){
-			if(NamespacesAppCounts[i] != null){
-				for(var j=0; j<NamespacesAppCounts[i].length; j++){
-				serviceOptionHtml += '<option value="'+NamespacesAppCounts[i][j]+'" namespacesName="'+NamespacesList[i]+'">'+NamespacesAppCounts[i][j]+'</option>';
+					serviceOptionHtml += '<option value="'+NamespacesAppCounts[i][j].NamespacesApp+'" namespacesName="'+NamespacesList[i]+'">'+NamespacesAppCounts[i][j].NamespacesApp+'('+AppSrcTypeText+')'+'</option>';
+					}
+					
+				}else{
+					serviceOptionHtml += '<option>--无服务--</option>';
 				}
 				$("#search_service").empty().append(serviceOptionHtml);
 			}
-		}
-		
+			
+	 	}
  	}
 }
 
@@ -95,10 +111,9 @@
 function showAllNgs(NodeIP,ClientID){
 	var areaIP = "localhost";
 	var areaPort = "port";
-	var Url = "http://"+areaIP+":"+areaPort+"/nginxcfg?NodeIP="+NodeIP+"&ClientID="+ClientID;
-	//showNgsHtml(data);
+	var showAllNgsUrl = "http://"+areaIP+":"+areaPort+"/nginxcfg?NodeIP="+NodeIP+"&ClientID="+ClientID;
 	$.ajax({
-			url : Url,
+			url : showAllNgsUrl,
 			dataType: "json",
 			contentType: "text/html; charset=UTF-8",
     		type: "get", 
@@ -115,10 +130,7 @@ function showAllNgs(NodeIP,ClientID){
 
 function showNgsHtml(data){
 	var NginxList = data.NginxList;
-	
-
 	var strs = "";
-
 	for(var i =0;i< NginxList.length;i++){
 		var nginxList = NginxList[i];
 					if("k8s"==nginxList.CfgType){
@@ -497,35 +509,6 @@ function showNgsHtml(data){
 		var ngConfigPart = $(obj).parent().parent().find('.nginxForm');
 		var nginxform = ngConfigPart;
 		localRefreshNg(obj);
-//		if(1==deforeNginxFormComm($(nginxform))){
-//			return;
-//		}
-//		$(ngConfigPart).ajaxSubmit(function(data) {
-//			var data = eval("("+data+")");
-//			if('200'==data.status){
-//            	if($('#search_service').val().length>0){
-//            		//findNgByOneApp($('#search_service'));	
-//            		localRefreshNg(obj);
-//            	}else{
-//            		if($('#search_user').val().length>0){
-//            			//searchByUser('#search_user');
-//            			localRefreshNg(obj);
-//            		}else{
-//            			//findAllNg();
-//            			localRefreshNg(obj);
-//            		}
-//            	}
-				
-//				layer.msg( "更新成功！", {
-//	                icon: 1
-//	            },function(){
-	            	
-	
-//	            });
-//			}else{
-//				warningInfo("失败:\\n"+data.error);
-//			}
-//		});
 	} 
 	
 	/**
@@ -626,9 +609,9 @@ function showNgsHtml(data){
 
 		var areaIP = "localhost";
 		var areaPort = "port";
-		var Url = "http://"+areaIP+":"+areaPort+"/nginxcfg?NodeIP="+NodeIP+"&ClientID="+ClientID;
+		var saveUrl = "http://"+areaIP+":"+areaPort+"/nginxcfg?NodeIP="+NodeIP+"&ClientID="+ClientID;
 		$.ajax({
-			url : Url,
+			url : saveUrl,
 			dataType: "json",
 			contentType: "text/html; charset=UTF-8",
     		type: "post",//update操作 
@@ -852,21 +835,18 @@ function showNgsHtml(data){
 		var appName = $(obj).val();
 		var namespace= $(obj).parent().next().find("#search_user").val();
 		var AppNameAndNamespace = namespace+'-'+appName;
-	 	var Url = "http://"+areaIP+":"+areaPort+"/nginxcfg/"+AppNameAndNamespace+"?NodeIP="+NodeIP+"&ClientID="+ClientID;
-//		layer.msg('加载中', {
-//			  icon: 16
-//			  ,shade: 0.01
-//			});
+	 	var OneAppUrl = "http://"+areaIP+":"+areaPort+"/nginxcfg/"+AppNameAndNamespace+"?NodeIP="+NodeIP+"&ClientID="+ClientID+"&AppSrcType="+AppSrcType;
+		layer.msg('加载中', {
+			  icon: 16
+			  ,shade: 0.01
+			});
 	 	$.ajax({
-			url:Url,
+			url:OneAppUrl,
 			type:"get",
 			//data:{"appName":appName,"namespace":namespace},
 			success:function(data){
 				var data = data;
-				
-					
 				showNgsHtml(data);
-				
 			}
 		})
 	}
@@ -892,32 +872,15 @@ function showNgsHtml(data){
 
 	    var areaIP = "localhost";
 		var areaPort = "port";
-		var Url = "http://"+areaIP+":"+areaPort+"/nginxcfg?NodeIP="+NodeIP+"&ClientID="+ClientID;
+		var deleteUrl = "http://"+areaIP+":"+areaPort+"/nginxcfg?NodeIP="+NodeIP+"&ClientID="+ClientID;
 
 	    layer.open({
 			title: "删除", //不显示标题
-			content: "确认删除NG",
+			content: "确认删除?",
 			btn: ['确定', '取消'],
 			yes: function(index, layero){
-	
-		
-//		$.ajax({
-//			url : Url,
-//			dataType: "json",
-//			contentType: "text/html; charset=UTF-8",
-//    		type: "delete",//update操作 
-//			headers: {
-//				"Content-Type": "application/json",
-//				"Accept": "application/json",
-//			},
-//			data: JSON.stringify(deleteData),
-//			success: function(data){
-//				var data=data;
-//			}
-//		})
-
 				 $.ajax({
-				 	url: Url,
+				 	url: deleteUrl,
 				 	dataType: "json",
 				 	contentType: "text/html; charset=UTF-8",
 				 	type:"delete",
@@ -948,27 +911,5 @@ function showNgsHtml(data){
 			    layer.close(index);
 			}
 		});
-		
-	 	
-	 	// $.ajax({
- 		// 	url:""+ctx+"/deleteNginxCfgs",
- 		// 	type:"POST",
- 		// 	data:{"serviceName":serviceName,"flag":flag,"confseq":confseq,"had":true,"appName":appName,"namespace":namespace,"nodeIp":nodeIp,"nodePort":nodePort},
- 		// 	success:function(data){
- 		// 		 var data = eval("("+data+")");
- 		// 		 if("200"==data.status){
- 		// 			layer.msg( "删除成功！", {
-		 //                icon: 1
-		 //            })
- 		// 			$(obj).parent().parent().remove();
- 		// 		 }else if("502"==data.status){
- 		// 			alert(data.message);
- 		// 		 }else if("501"==data.status){
- 		// 			 alert(data.message);
- 		// 		 }else{
- 		// 			 alert(data.message);
- 		// 		 }
- 		// 	}
- 	 // 	});
 	}
 	

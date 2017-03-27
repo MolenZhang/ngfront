@@ -348,7 +348,7 @@ function showNamespacesEcharts(KubernetesMasterHost,KubernetesAPIVersion,JobZone
 		"success":function(data){
 			var data = eval("("+data+")");
 			var NamespacesList = data.NamespacesList;
-			var NamespacesAppCounts = data.NamespacesAppList;
+			var NamespacesAppCounts = data.AppInfoList;
 			//生成配置中的租户项
 			//showNamespaces(NamespacesList);
 			//echart画图位置
