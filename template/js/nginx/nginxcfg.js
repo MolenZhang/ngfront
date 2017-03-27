@@ -880,13 +880,14 @@ function showNgsHtml(data){
 		var ListenPort = ngConfigPart.find("#ListenPort").val();
 		var Namespace = ngConfigPart.find(".appNameAndNamespace").attr("namespace");
 		var AppName = ngConfigPart.find(".appNameAndNamespace").attr("appname");
+		var AppSrcType = ngConfigPart.attr("AppSrcType");
 
 		var deleteData = {
 	      "ServerName": ServerName,
 	      "ListenPort": ListenPort,
 	      "Namespace": Namespace,
 	      "AppName": AppName,
-		  "AppSrcType": "k8s"
+		  "AppSrcType": AppSrcType
 	    };
 
 	    var areaIP = "localhost";
