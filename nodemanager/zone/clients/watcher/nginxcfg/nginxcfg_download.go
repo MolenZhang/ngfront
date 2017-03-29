@@ -37,10 +37,12 @@ func (svc *ServiceInfo) nginxCfgDownload(request *restful.Request, response *res
 		respMsg respFromKubeNg
 		reqMsg  WebReqMsg
 	)
-	err = request.ReadEntity(&reqMsg)
-	if err != nil {
-		logdebug.Println(logdebug.LevelError, err)
-	}
+	request.Request.ParseForm()
+	reqMsg.NodeIP = request.Request.Form.Get("NodeIP")
+	reqMsg.ClientID = request.Request.Form.Get("ClientID")
+	reqMsg.Password = request.Request.Form.Get("Password")
+	reqMsg.User = request.Request.Form.Get("User")
+
 	logdebug.Println(logdebug.LevelDebug, "<<<<<<<前端输入下载信息：>>>>>>>", reqMsg)
 
 	client := nodes.ClientInfo{
@@ -72,18 +74,30 @@ func (svc *ServiceInfo) nginxCfgDownload(request *restful.Request, response *res
 	file, err := os.Open(downloadFileName)
 	if err != nil {
 		response.WriteErrorString(http.StatusInternalServerError, err.Error())
+		return
 	}
+	defer file.Close()
 
 	fileName := path.Base(downloadFileName)
 	fileName = url.QueryEscape(fileName) // 防止中文乱码
 	response.AddHeader("Content-Type", "application/octet-stream")
-	response.AddHeader("content-disposition", "attachment; filename=\""+fileName+"\"")
+	response.AddHeader("content-disposition", "attachment; filename="+fileName)
 	_, error := io.Copy(response.ResponseWriter, file)
 	if error != nil {
 		response.WriteErrorString(http.StatusInternalServerError, err.Error())
 		return
 	}
+	logdebug.Println(logdebug.LevelDebug, "******处理结束*******")
+	/*
+		respWeb := ResponseBody{
+			Result: true,
+		}
+
+		response.WriteAsJson(respWeb)
+		//		response.WriteHeaderAndJson(200, respWeb, "application/json")
+	*/
 	return
+
 }
 
 func (svc *ServiceInfo) remoteFileDownload(user, password, host, url string, port int) string {

@@ -627,31 +627,22 @@ function stopControl(NodeIPInfo,ClientIDInfo){
 	        		"NodeIP": NodeIPInfo,
 	        		"ClientID":ClientIDInfo
 	        	};
+				
 				var indexMsg = layer.msg('下载中', {
 						  icon: 16,
 						  shade: 0.1
 						});
+						
 	        	var areaIP = "localhost";
 				var areaPort = "port";
 				var downloadUrl = 'http://'+areaIP+':'+areaPort+'/nginxcfg/download';
 	        	$.ajax({
 					url : downloadUrl,
-					dataType: "json",
-					contentType: "text/html; charset=UTF-8",
-		    		type: "post", 
-					headers: {
-						"Content-Type": "application/json",
-						"Accept": "application/json",
-					},
-					data: JSON.stringify(downloadData),
+		    		type: "get", 
+					data: downloadData,
 					success :function(data){
-						var data = data;
+				location.href = 'http://'+areaIP+':'+areaPort+'/nginxcfg/download?NodeIP='+NodeIPInfo+'&ClientID='+ClientIDInfo+'&User='+ngDownUser+'&Password='+ngDownPwd;
 						layer.close(indexMsg);
-						if(data.Result==true){
-				 			layer.msg('下载成功！', {icon: 1});
-						}else{
-				 			layer.msg('下载失败！', {icon: 2});
-						}
 					}
 				});
 	        	layer.close(index);

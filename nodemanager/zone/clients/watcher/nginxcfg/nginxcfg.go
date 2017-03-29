@@ -327,7 +327,7 @@ func (svc *ServiceInfo) Init() {
 		Operation("deleteAllNginxConfig").
 		Reads(WebConfig{})) // from the request
 
-	ws.Route(ws.POST("/download").To(svc.nginxCfgDownload).
+	ws.Route(ws.GET("/download").To(svc.nginxCfgDownload).
 		Doc("download nginx config").
 		Operation("downloadfile").
 		Reads(WebReqMsg{}))
