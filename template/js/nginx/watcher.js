@@ -612,7 +612,6 @@ function stopControl(NodeIPInfo,ClientIDInfo){
 	        yes: function(index, layero){
 	        	var ngDownUser = $("#nginxDownload #ngDownUser").val();
 	        	var ngDownPwd = $("#nginxDownload #ngDownPwd").val();
-	        	var ngDownLoadPath = $("#nginxDownload #ngDownLoadPath").val();
 	        	if(ngDownUser.length == 0){
 	        		layer.tips('用户名不能为空', $("#nginxDownload #ngDownUser"),{tips: [1, '#EF6578']});
 	        		return;
@@ -621,15 +620,10 @@ function stopControl(NodeIPInfo,ClientIDInfo){
 	        		layer.tips('密码不能为空', $("#nginxDownload #ngDownPwd"),{tips: [1, '#EF6578']});
 	        		return;
 	        	}
-	        	if(ngDownLoadPath.length == 0){
-	        		layer.tips('保存目录不能为空', $("#nginxDownload #ngDownLoadPath"),{tips: [1, '#EF6578']});
-	        		return;
-	        	}
 	        	//
 	        	var downloadData={
 	        		"User":ngDownUser,
 	        		"Password":ngDownPwd,
-	        		"DownloadPath":ngDownLoadPath,
 	        		"NodeIP": NodeIPInfo,
 	        		"ClientID":ClientIDInfo
 	        	};
