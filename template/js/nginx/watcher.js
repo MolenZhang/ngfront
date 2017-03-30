@@ -163,8 +163,8 @@ $(document).ready(function () {
  });/*reday*/
 
   function showWatcher(NodeIPInfo,ClientIDInfo){
-	var areaIP = "localhost";
-	var areaPort = "port";
+	var areaIP = "192.168.85.130";
+	var areaPort = "8083";
 	var watcherUrl = "http://"+areaIP+":"+areaPort+"/watcher";
 	$.ajax({
 		"url":watcherUrl,
@@ -337,8 +337,8 @@ $(document).ready(function () {
 
 //生成监控echart图
 function showNamespacesEcharts(KubernetesMasterHost,KubernetesAPIVersion,JobZoneType){
-	var areaIP = "localhost";
-	var areaPort = "port";
+	var areaIP = "192.168.85.130";
+	var areaPort = "8083";
 	var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/namespaces";
 	
 	$.ajax({
@@ -441,8 +441,8 @@ function showNamespaces(NamespacesList){
 }
 
 function loadNamespaces(KubernetesMasterHost,KubernetesAPIVersion){
-	var areaIP = "localhost";
-	var areaPort = "port";
+	var areaIP = "192.168.85.130";
+	var areaPort = "8083";
 	var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/namespaces";
 	
 	$.ajax({
@@ -464,8 +464,8 @@ function loadNamespaces(KubernetesMasterHost,KubernetesAPIVersion){
 
 //提交watcher表单
 function watcherSubmit(NodeIPInfo,ClientIDInfo){
-	var areaIP = "localhost";
-	var areaPort = "port";
+	var areaIP = "192.168.85.130";
+	var areaPort = "8083";
 	var submitUrl = "http://"+areaIP+":"+areaPort+"/watcher";
 	
 				
@@ -538,8 +538,8 @@ function watcherSubmit(NodeIPInfo,ClientIDInfo){
 
 //停止监控
 function stopControl(NodeIPInfo,ClientIDInfo){
-	var areaIP = "localhost";
-	var areaPort = "port";
+	var areaIP = "192.168.85.130";
+	var areaPort = "8083";
 	var submitUrl = "http://"+areaIP+":"+areaPort+"/watcher";
 	
 	var KubernetesMasterHost = $("#KubernetesMasterHostOldVal").html();
@@ -603,51 +603,23 @@ function stopControl(NodeIPInfo,ClientIDInfo){
 	 * @param obj
 	 */
 	function nginxExport(obj){
-		layer.open({
-			type: 1,
-	        title: '请填写该服务器的账号的密码再下载',
-	        content: $("#nginxDownload"),
-	        area:['400px'],
-	        btn: ['确定', '取消'],
-	        yes: function(index, layero){
-	        	var ngDownUser = $("#nginxDownload #ngDownUser").val();
-	        	var ngDownPwd = $("#nginxDownload #ngDownPwd").val();
-	        	if(ngDownUser.length == 0){
-	        		layer.tips('用户名不能为空', $("#nginxDownload #ngDownUser"),{tips: [1, '#EF6578']});
-	        		return;
-	        	}
-	        	if(ngDownPwd.length == 0){
-	        		layer.tips('密码不能为空', $("#nginxDownload #ngDownPwd"),{tips: [1, '#EF6578']});
-	        		return;
-	        	}
-	        	//
 	        	var downloadData={
-	        		"User":ngDownUser,
-	        		"Password":ngDownPwd,
 	        		"NodeIP": NodeIPInfo,
 	        		"ClientID":ClientIDInfo
 	        	};
-				
-				var indexMsg = layer.msg('下载中', {
-						  icon: 16,
-						  shade: 0.1
-						});
-						
-	        	var areaIP = "localhost";
-				var areaPort = "port";
+	        	var areaIP = "192.168.85.130";
+				var areaPort = "8083";
 				var downloadUrl = 'http://'+areaIP+':'+areaPort+'/nginxcfg/download';
 	        	$.ajax({
 					url : downloadUrl,
 		    		type: "get", 
 					data: downloadData,
 					success :function(data){
-				location.href = 'http://'+areaIP+':'+areaPort+'/nginxcfg/download?NodeIP='+NodeIPInfo+'&ClientID='+ClientIDInfo+'&User='+ngDownUser+'&Password='+ngDownPwd;
-						layer.close(indexMsg);
+			//	location.href = 'http://'+areaIP+':'+areaPort+'/nginxcfg/download?NodeIP='+NodeIPInfo+'&ClientID='+ClientIDInfo+'&User='+ngDownUser+'&Password='+ngDownPwd;
+				location.href = data.NginxCfgDownloadURL
+			//			layer.close(indexMsg);
 					}
 				});
-	        	layer.close(index);
-	        }
-		});
 	}
 
 	// function ngDownLoadPath(path){
