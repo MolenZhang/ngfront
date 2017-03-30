@@ -533,8 +533,9 @@ function showNgsHtml(data){
  	 * 局部刷新
  	 */
  	function RulesData(RulesDiv){
- 		var itemRules = new Array();
+ 		var itemRules = "";
 		for(var i=0; i<RulesDiv.length; i++){
+			itemRules = new Array();
 			var tranRulesDiv = RulesDiv[i];
 			var RuleCMD = $(tranRulesDiv).find(".RuleCMD").val();
 			var RuleParam = $(tranRulesDiv).find(".RuleParam").val();
@@ -543,6 +544,9 @@ function showNgsHtml(data){
          		"RuleParam": RuleParam
 			};
 			itemRules.push(eveRule);
+		}
+		if(itemRules.length==0){
+			itemRules = null;
 		}
 		return itemRules;
  	}
@@ -1190,6 +1194,7 @@ function showNgsHtml(data){
 		});
 		
 	} 
+<<<<<<< HEAD
 	//下发配置选择下发的IP
 	function issuedCfgIps(){
 		layer.open({
@@ -1204,3 +1209,6 @@ function showNgsHtml(data){
 		})
 	}
 	
+=======
+	
+>>>>>>> 9c53b553ebf85f7254b7ec95a0f2be8e8077557e
