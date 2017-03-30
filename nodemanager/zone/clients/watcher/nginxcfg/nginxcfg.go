@@ -12,6 +12,17 @@ import (
 	"github.com/emicklei/go-restful"
 )
 
+type clientInfo struct {
+	NodeIP   string
+	ClientID string
+}
+
+//BatchNginxCfgInfo 批量配置下发信息
+type BatchNginxCfgInfo struct {
+	NodesInfo   []clientInfo
+	WebNginxCfg WebConfig
+}
+
 //AppSrcTypeKubernetes 服务源于k8s
 const (
 	AppSrcTypeKubernetes = "k8s"
@@ -257,6 +268,48 @@ func (svc *ServiceInfo) createNginxCfg(request *restful.Request, response *restf
 	return
 }
 
+//post all
+func (svc *ServiceInfo) createAllNginxCfg(request *restful.Request, response *restful.Response) {
+	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<nginx配置批量下发>>>>>>>>>>>>")
+
+	batchNgCfg := BatchNginxCfgInfo{}
+
+	if err := request.ReadEntity(&batchNgCfg); err != nil {
+		logdebug.Println(logdebug.LevelError, err)
+		return
+	}
+
+	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<前端批量配置信息>>>>>>>>>>>>", batchNgCfg.NodesInfo)
+	for _, batchClientInfo := range batchNgCfg.NodesInfo {
+		client := nodes.ClientInfo{
+			NodeIP:   batchClientInfo.NodeIP,
+			ClientID: batchClientInfo.ClientID,
+		}
+
+		key := client.CreateKey()
+		clientInfo := nodes.GetClientInfo(key)
+
+		nginxCfgURL := "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.NginxCfgsAPIServerPath + "/" + batchNgCfg.WebNginxCfg.AppSrcType
+
+		kubeNGCfg := batchNgCfg.WebNginxCfg.convertToKubeNGCfg()
+
+		_, err := communicate.SendRequestByJSON(communicate.POST, nginxCfgURL, kubeNGCfg)
+		if err != nil {
+			logdebug.Println(logdebug.LevelError, err)
+
+			response.WriteError(http.StatusInternalServerError, err)
+
+			return
+		}
+
+		return
+	}
+	resp := ResponseBody{
+		Result: true,
+	}
+	response.WriteHeaderAndJson(200, resp, "application/json")
+}
+
 //delete all
 func (svc *ServiceInfo) deleteAllNginxCfgs(request *restful.Request, response *restful.Response) {
 	logdebug.Println(logdebug.LevelDebug, "删除一个服务的所有nginx配置")
@@ -304,9 +357,15 @@ func (svc *ServiceInfo) Init() {
 	ws.Route(ws.POST("/").To(svc.createNginxCfg).
 		// docs
 		Doc("post nginx manager config").
-		Operation("postNginxManagerConfig").
+		Operation("postSingleNginxManagerConfig").
 		Reads(WebConfig{})) // from the request
 
+	//postAll - createAll
+	ws.Route(ws.POST("/all").To(svc.createAllNginxCfg).
+		// docs
+		Doc("post nginx manager config").
+		Operation("postAllNginxManagerConfig").
+		Reads(BatchNginxCfgInfo{})) // from the request
 	//put update
 	ws.Route(ws.PUT("/").To(svc.updateNginxCfg).
 		// docs
