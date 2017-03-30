@@ -214,3 +214,27 @@ i.fa-one{
 	padding-left: 4px;
 	color:#81a6ea;
 }
+/*clients.html*/
+.cfgTable{
+	padding: 18px 20px;
+}
+.cfgTable table tr{
+	border-bottom: 1px solid #ddd;
+}
+.cfgTable table tr td:first-of-type{
+	text-indent: 10px;
+}
+.editItem .editInput{
+	border-radius: 4px;
+	width:90%;
+	height: 35px;
+	line-height: 35px;
+}
+.editItem select{
+	border-radius: 4px;
+	width:50%;
+	height: 35px;
+	line-height: 35px;
+	border: 1px solid #ddd;
+}
+
