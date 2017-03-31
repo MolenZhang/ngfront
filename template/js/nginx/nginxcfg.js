@@ -1324,7 +1324,7 @@ function showNgsHtml(data){
 			content: $("#issuedCfgIps"),
 			btn: ['确定','取消'],
 			yes: function(index,layero){
-				var issuedUrl = "http://"+areaIP+":"+areaPort+"/nginxcfg/"+JobZoneType;
+				var issuedUrl = "http://"+areaIP+":"+areaPort+"/nginxcfg/all";
 				var checkItem = $(".chkItem:checked");
 				for(var i=0; i<checkItem.length; i++){
 					var nodeInfo = {
