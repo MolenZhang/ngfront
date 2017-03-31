@@ -79,7 +79,7 @@ function issuedCfg(){
 		yes: function(index,layero){
 			var areaIP = "localhost";
 			var areaPort = "port";
-			var issuedUrl = "http://"+areaIP+":"+areaPort+"/watcher"+areaType;
+			var issuedUrl = "http://"+areaIP+":"+areaPort+"/watcher/all";
 
 			var KubernetesMasterHost = $("#KubernetesMasterHostInfo").val();
 			var KubernetesAPIVersion =$("#KubernetesAPIVersionInfo").val();

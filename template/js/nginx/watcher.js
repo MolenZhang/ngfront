@@ -24,6 +24,21 @@ $(document).ready(function () {
 		 $(this).parent().hide();
 		 $(this).parent().prev().show();
 	 });
+	 //全选
+	$(".chkAll").click(function(){
+	    $(this).parents('table').find(".chkItem").prop('checked',$(".chkAll").is(":checked"));
+	});
+ 
+    // 每条数据 checkbox class设为 chkItem
+    $(document).on("click",".chkItem", function(){
+        if($(this).is(":checked")){
+            if ($(this).parents('table').find(".chkItem:checked").length == $(this).parents('table').find(".chkItem").length) {
+            	$(this).parents('table').find(".chkAll").prop("checked", "checked");
+            }
+        }else{
+        	$(this).parents('table').find(".chkAll").prop('checked', $(this).is(":checked"));
+        }
+    });
 	 
 	 //停止监控按钮
 	 $(document).on('click','.btn-stop',function(){
