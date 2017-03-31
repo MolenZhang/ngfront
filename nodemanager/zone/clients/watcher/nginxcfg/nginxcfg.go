@@ -291,8 +291,8 @@ func (svc *ServiceInfo) createAllNginxCfg(request *restful.Request, response *re
 			return
 		}
 
-		return
 	}
+
 	resp := ResponseBody{
 		Result: true,
 	}
