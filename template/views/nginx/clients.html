@@ -146,7 +146,7 @@
 					<tr>
 						<td class="firstTd">nginx 重载命令</td>
 						<td class="editItem"><input class="editInput" id="NginxReloadCommandInfo"
-						type="text" value="">
+						type="text" value="nginx -s reload">
 						</td>
 					</tr>
 					<tr>
@@ -155,23 +155,24 @@
 					</tr>		
 					<tr>
 						<td class="firstTd">nginx监听端口</td>
-						<td class="editItem"><input type="number" class="editInput" id="NginxListenPortInfo" type="text" value=""></td>
+						<td class="editItem"><input type="number" class="editInput" id="NginxListenPortInfo" type="text" value="80"></td>
 					</tr>
 					<tr>
 						<td class="firstTd">监控租户集合</td>
-						<td class="editItem editNamespacesTd"><span id="namespacesInfo"></span></td>
+						<td class="namespaceAll">all</td>
+						<td class="hide editItem editNamespacesTd"><span id="namespacesInfo"></span></td>
 					</tr>
 					<tr>
 						<td class="firstTd">真实配置文件生成路径</td>
-						<td class="editItem"><input class="editInput" id="NginxRealCfgDirPathInfo" type="text" value=""></td>
+						<td class="editItem"><input class="editInput" id="NginxRealCfgDirPathInfo" type="text" value="/etc/nginx/conf.d/real_cfg/"></td>
 					</tr>
 					<tr>
 						<td class="firstTd">测试配置文件生成路径</td>
-						<td class="editItem"><input class="editInput" id="NginxTestCfgDirPathInfo" type="text" value=""></td>
+						<td class="editItem"><input class="editInput" id="NginxTestCfgDirPathInfo" type="text" value="/etc/nginx/conf.d/test_cfg/"></td>
 					</tr>
 					<tr>
 						<td class="firstTd">配置下载路径</td>
-						<td class="editItem"><input class="editInput" id="DownloadCfgDirPathInfo" type="text" value=""></td>
+						<td class="editItem"><input class="editInput" id="DownloadCfgDirPathInfo" type="text" value="/etc/nginx/conf.d/download_cfg/"></td>
 					</tr>
 					<tr>
 						<td class="firstTd">日志打印级别</td>
@@ -196,7 +197,7 @@
 					</tr>
 					<tr>
 						<td class="firstTd">域名后缀</td>
-						<td class="editItem"><input class="editInput" id="DomainSuffixInfo" type="text" value=""></td>
+						<td class="editItem"><input class="editInput" id="DomainSuffixInfo" type="text" value="yz.local"></td>
 					</tr>
 					<tr>
 						<td class="firstTd">工作模式</td>
@@ -204,11 +205,11 @@
 					</tr>
 					<tr>
 						<td class="firstTd">nginx配置规则检查命令</td>
-						<td class="editItem"><input class="editInput" id="NginxTestCommandInfo" type="text" value=""></td>
+						<td class="editItem"><input class="editInput" id="NginxTestCommandInfo" type="text" value="nginx -t"></td>
 					</tr>
 					<tr>
 						<td class="firstTd">备用upstream服务器节点</td>
-						<td class="editItem"><input class="editInput" id="StandbyUpstreamNodesInfo" type="text" name="StandbyUpstreamNodes" value=""></td>
+						<td class="editItem"><input class="editInput" id="StandbyUpstreamNodesInfo" type="text" name="StandbyUpstreamNodes" value="192.168.0.80,192.168.0.81,192.168.0.82"></td>
 					</tr>			
 				</tbody>
 			</table>
