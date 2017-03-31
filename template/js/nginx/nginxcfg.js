@@ -1,5 +1,6 @@
  var NodeIP = "";
  var ClientID = "";
+ var JobZoneType = "";
  $(document).ready(function () {
  	var locationUrl = window.location;
 	//http://192.168.252.133:8011/ngfront/zone/clients/watcher/nginxcfg?NodeIP=192.168.252.133&ClientID=71906&KubernetesMasterHost=http://192.168.0.75:8080&KubernetesAPIVersion=api/v1&JobZoneType=all
@@ -7,7 +8,7 @@
 	ClientID = locationUrl.search.substring(locationUrl.search.indexOf("ClientID=")+9,locationUrl.search.indexOf("&KubernetesMasterHost"));
 	var KubernetesMasterHost = locationUrl.search.substring(locationUrl.search.indexOf("KubernetesMasterHost=")+21,locationUrl.search.indexOf("&KubernetesAPIVersion"));
 	var KubernetesAPIVersion = locationUrl.search.substring(locationUrl.search.indexOf("KubernetesAPIVersion=")+21,locationUrl.search.indexOf("&J"));
-	var JobZoneType = locationUrl.search.substring(locationUrl.search.indexOf("JobZoneType=")+12,locationUrl.search.length);
+	JobZoneType = locationUrl.search.substring(locationUrl.search.indexOf("JobZoneType=")+12,locationUrl.search.length);
 	
 	showAllNgs(NodeIP,ClientID);
 	
@@ -138,14 +139,14 @@ function showNgsHtml(data){
 			 				+'<div class="ibox-title">'
 			 				+'<h5> NODE '+data.NodeIP+data.APIServerPort+'-'+'K8S服务</h5>';
 			 			strs+= '<div class="ibox-tools">'
-													+'<a class="hide" onclick="nginxFormCommOfNode(this)">'
+													+'<a class="hide" onclick="nginxFormCommOfNode(this)" title="保存">'
 						                             +   '<i class="fa fa-save" ></i>'
 						                            +'</a>'
-												   + '<a class="hide" onclick="" index="index"'
+												   + '<a class="hide" onclick="" index="index" title="删除"'
 												   + 'appName="${ngCfgs.appName}" namespace="${ngCfgs.namespace}" serverName="${ngCfgs.serverName }:${ngCfgs.listenPort }"  flag=0 >'
                                                    +     '<i class="fa fa-trash" ></i>'
                                                    + '</a>'
-													+'<a class="collapse-link" index="index"'
+													+'<a class="collapse-link" index="index" title="伸缩"'
 													+'appName="${ngCfgs.appName}" namespace="${ngCfgs.namespace}" serverName="${ngCfgs.serverName }:${ngCfgs.listenPort }"  flag=0 >'
 						                             +   '<i class="fa fa-chevron-down"></i>'
 						                           + '</a>'
@@ -156,14 +157,14 @@ function showNgsHtml(data){
 			 				+'<div class="ibox-title">'
 			 				+'<h5> NODE '+data.NodeIP+data.APIServerPort+'-'+'外部服务</h5>';
 			 			strs+= '<div class="ibox-tools">'
-													+'<a class="hide" onclick="nginxFormCommOfNode(this)">'
+													+'<a class="hide" onclick="nginxFormCommOfNode(this)" title="保存">'
 						                             +   '<i class="fa fa-save" ></i>'
 						                            +'</a>'
-												   + '<a class="hide" onclick="" index="index"'
+												   + '<a class="hide" onclick="" index="index" title="删除"'
 												   + 'appName="${ngCfgs.appName}" namespace="${ngCfgs.namespace}" serverName="${ngCfgs.serverName }:${ngCfgs.listenPort }"  flag=0 >'
                                                    +     '<i class="fa fa-trash" ></i>'
                                                    + '</a>'
-													+'<a class="collapse-link" index="index"'
+													+'<a class="collapse-link" index="index" title="伸缩"'
 													+'appName="${ngCfgs.appName}" namespace="${ngCfgs.namespace}" serverName="${ngCfgs.serverName }:${ngCfgs.listenPort }"  flag=0 >'
 						                             +   '<i class="fa fa-chevron-down"></i>'
 						                           + '</a>'
@@ -178,12 +179,12 @@ function showNgsHtml(data){
 				var IsDefaultCfgClass='IsDefaultCfg-'+CfgsList.IsDefaultCfg;
 			 		ngConfigPartHtml += '<div class="ngConfigPart">'
 											+'<input type="checkbox" class="ngConfigCheckbox"/>'
-											+'<span class="hide addOneSerPart">'
+											+'<span class="hide addOneSerPart" title="新增">'
 											+'<i class="fa fa-plus fa-serverPlus fa-one" onClick="addOneSerPart(this)" ServerName="'+CfgsList.ServerName+'" ListenPort="'+CfgsList.ListenPort+'" RealServerPath="'+CfgsList.RealServerPath+'" Namespace="'+CfgsList.Namespace+'" AppName="'+CfgsList.AppName+'" Location="'+CfgsList.Location+'" ProxyRedirectSrcPath="'+CfgsList.ProxyRedirectSrcPath+'" ProxyRedirectDestPath="'+CfgsList.ProxyRedirectDestPath+'" IsUpstreamIPHash="'+CfgsList.IsUpstreamIPHash+'" DeleteUserCfgs="'+CfgsList.DeleteUserCfgs+'" IsDefaultCfg="'+CfgsList.IsDefaultCfg+'" CfgType="'+nginxList.CfgType+'"></i></span>'
-                                             +'<span><i class="fa fa-sort-amount-asc fa-one" onclick="issuedCfgIps(this)"></i></span>'
-                                             + '<span><i class="fa fa-save fa-one" onClick="saveSerPart(this)"></i></span>'
-                                             + '<span><i class="fa fa-trash fa-one" onClick="delOneSerPart(this)"></i></span>'
-                                             + '<span><i class="fa fa-caret-down fa-one" onClick="toggleOneSerPart(this)"></i></span>'
+                                             +'<span title="同步"><i class="fa fa-sort-amount-asc fa-one" onclick="issuedCfgIps(this)"></i></span>'
+                                             + '<span title="保存"><i class="fa fa-save fa-one" onClick="saveSerPart(this)"></i></span>'
+                                             + '<span title="删除"><i class="fa fa-trash fa-one" onClick="delOneSerPart(this)"></i></span>'
+                                             + '<span title="伸缩"><i class="fa fa-caret-down fa-one" onClick="toggleOneSerPart(this)"></i></span>'
                                              + '<span class="ngConfigPartTit"></span>'
 												+ '<div class="ngConfigPartCon">'
 												+ '<form class="nginxForm '+IsDefaultCfgClass+'" method="post" action="" AppSrcType="'+nginxList.CfgType+'" IsDefaultCfg="'+CfgsList.IsDefaultCfg+'">'
@@ -414,10 +415,10 @@ function showNgsHtml(data){
 
 		var str='<div class="ngConfigPart" border:1px solid #FF0000 >' 
 			+'<input type="checkbox" class="ngConfigCheckbox"/> '
-//			+'<span><i class="fa fa-plus fa-serverPlus" onClick="addOneSerPart(this)"></i></span> '
-			+'<span><i class="fa fa-save fa-one" onClick="nginxFormCommOne(this)"></i></span> '
-			+'<span><i class="fa fa-trash fa-one" onClick="removeOneSerPart(this)"></i></span> '
-			+'<span><i class="fa fa-caret-down fa-one" onClick="toggleOneSerPart(this)"></i></span> '
+			+'<span class="hide addOneSerPartAfter"><i class="fa fa-plus fa-serverPlus" onClick="addOneSerPart(this)"></i></span> '
+			+'<span title="提交配置"><i class="fa fa-check-square fa-one" onClick="nginxFormCommOne(this)"></i></span> '
+			+'<span title="删除"><i class="fa fa-trash fa-one" onClick="removeOneSerPart(this)"></i></span> '
+			+'<span title="伸缩"><i class="fa fa-caret-down fa-one" onClick="toggleOneSerPart(this)"></i></span> '
 			+'<span class="textNotSet">未提交的配置</span>'
 			+'<span class="ngConfigPartTit"></span>'
 			+'<div class="ngConfigPartCon">'
@@ -943,8 +944,9 @@ function showNgsHtml(data){
 	 * @param obj
 	 */
 	function nginxFormCommOne(obj){
+		$(obj).hide();
 		$(obj).parents(".ngConfigPart").find(".textNotSet").remove();
-		var ngConfigPart = $(obj).parent().parent().find('#nginxForm');
+		var ngConfigPart = $(obj).parent().parent().find('.nginxForm');
 		var nginxform = ngConfigPart;
 		
 		var ServerName = ngConfigPart.find("#ServerName").val();
@@ -1194,21 +1196,166 @@ function showNgsHtml(data){
 		});
 		
 	} 
-<<<<<<< HEAD
+
 	//下发配置选择下发的IP
-	function issuedCfgIps(){
+	function issuedCfgData(obj,NodesInfo){
+		var ngConfigPart = $(obj).parent().parent().find('.nginxForm');
+		var nginxform = ngConfigPart;
+		
+		var ServerName = ngConfigPart.find("#ServerName").val();
+		var ListenPort = ngConfigPart.find("#ListenPort").val();
+		var RealServerPath = ngConfigPart.find(".RealServerPath").val();
+		var Namespace = ngConfigPart.find(".appNameAndNamespace").attr("namespace");
+		var AppName = ngConfigPart.find(".appNameAndNamespace").attr("appname");
+		var Location = ngConfigPart.find("#Location").val();
+		var ProxyRedirectSrcPath = ngConfigPart.find("#ProxyRedirectSrcPath").val();
+		var ProxyRedirectDestPath = ngConfigPart.find("#ProxyRedirectDestPath").val();
+		var IsUpstreamIPHash = ngConfigPart.find("#IsUpstreamIPHash").val();
+		if(IsUpstreamIPHash == "true"){
+			IsUpstreamIPHash = true;
+		}else{
+			IsUpstreamIPHash = false;
+		}
+
+		//var OperationType = "create";//?????????????????下发
+
+		var UpstreamUserRules = "";
+		if(ngConfigPart.find(".UpstreamUserRulesDiv")){
+			UpstreamUserRules = RulesData(ngConfigPart.find(".UpstreamUserRulesDiv"));
+		}else{
+			UpstreamUserRules = null;
+		}
+
+		var ServerUserRules = "";
+		if(ngConfigPart.find(".ServerUserRulesDiv")){
+			ServerUserRules = RulesData(ngConfigPart.find(".ServerUserRulesDiv"));
+		}else{
+			ServerUserRules = null;
+		}
+
+		var LocationUserRules ="";
+		if(ngConfigPart.find(".LocationUserRulesDiv")){
+			LocationUserRules = RulesData(ngConfigPart.find(".LocationUserRulesDiv"));
+		}else{
+			LocationUserRules = null;
+		}
+
+		var LogRuleName = ngConfigPart.find(".LogRuleName").val();
+		var LogFileDirPath = ngConfigPart.find(".LogFileDirPath").val();
+		var LogTemplateName = ngConfigPart.find(".LogTemplateName").val();
+		var DeleteUserCfgs = false;
+		var IsDefaultCfg = false;
+		var AppSrcType = ngConfigPart.attr("AppSrcType");
+		
+		var issuedData = {
+			"NodesInfo":NodesInfo,
+      		"WebNginxCfg":{"ServerName": ServerName,
+     		"ListenPort": ListenPort,
+      		"RealServerPath": RealServerPath,
+      		"Namespace": Namespace,
+      		"AppName": AppName,
+      		"Location": Location,
+      		"ProxyRedirectSrcPath": ProxyRedirectSrcPath,
+      		"ProxyRedirectDestPath": ProxyRedirectDestPath,
+      		"IsUpstreamIPHash": IsUpstreamIPHash,
+      		//"OperationType": OperationType,
+      		"UpstreamUserRules": {
+       			"UserRuleSet": UpstreamUserRules
+      		},
+       		"ServerUserRules": {
+       			"UserRuleSet": ServerUserRules
+      		},
+      		"LocationUserRules": {
+       			"UserRuleSet": LocationUserRules
+      		},
+      		"LogRule": {
+       			"LogRuleName": LogRuleName,
+       			"LogFileDirPath": LogFileDirPath,
+       			"LogTemplateName": LogTemplateName
+      		},
+      		"DeleteUserCfgs": DeleteUserCfgs,
+      		"IsDefaultCfg": IsDefaultCfg,
+      		"AppSrcType": AppSrcType}
+     	};
+     	return issuedData;
+	}
+	function issuedCfgIps(obj){
+		var NodesInfo = new Array();
+		var issuedCfgDataInfo = "";
+		var areaIP = "localhost";
+		var areaPort = "port";
+		var areaUrl = "http://"+areaIP+":"+areaPort+"/clients";
+		var watcherUrl = "http://"+areaIP+":"+areaPort+"/ngfront/zone/clients/watcher?NodeIP=";
+		$.ajax({
+			"url":areaUrl,
+			"type":"get",
+			"success":function(data){
+				var objTest = eval("("+data+")");
+				var optionDataNum = "";
+				var dataType = "";
+				//var dataNum = "";
+				//var tbodyHtml = "";
+				for(var areaNum = 0; areaNum< objTest.length; areaNum++){
+					dataType = objTest[areaNum].JobZoneType;
+					if(dataType!=""){
+						 //弹窗获得nodeip  clientid
+						if(dataType == JobZoneType){
+						 	var clientsVal = objTest[areaNum].Clients;
+						 	var clientsHtml = "";
+						 	for(var i=0; i<clientsVal.length;i++){
+						 		var NodeIP = clientsVal[i].NodeIP;
+						 		var ClientID = clientsVal[i].ClientID;
+
+						 		clientsHtml += '<tr class="nodeInfos">'+
+			                                    '<td style="text-indent: 30px;">'+
+			                                    '<input type="checkbox" class="chkItem" name="ids" nodeip="'+NodeIP+'" clientid="'+ClientID+'"></td>'+
+												'<td class="nodeip">'+NodeIP+'</td>'+
+			                                    '<td class="clientid">'+ClientID+'</td>'+
+			                                    '</tr>';
+						 	}
+						 	$("#cfgTbody").empty().append(clientsHtml);
+						 }
+					 }
+				 }
+			}
+		});
+		//需要下发的数据
+		
 		layer.open({
 			type: 1,
 			title: '下发配置',
-			area: ['800px'],
+			area: ['700px','300px'],
 			content: $("#issuedCfgIps"),
 			btn: ['确定','取消'],
 			yes: function(index,layero){
+				var issuedUrl = "http://"+areaIP+":"+areaPort+"/nginxcfg/"+JobZoneType;
+				var checkItem = $(".chkItem:checked");
+				for(var i=0; i<checkItem.length; i++){
+					var nodeInfo = {
+			                    	"NodeIP":checkItem[i].getAttribute("nodeip"),
+			                    	"ClientID":checkItem[i].getAttribute("clientid")
+			                    };
+			        NodesInfo.push(nodeInfo);
+				}
+				issuedCfgDataInfo = issuedCfgData(obj,NodesInfo);
+				$.ajax({
+					url : issuedUrl,
+					dataType: "json",
+					contentType: "text/html; charset=UTF-8",
+		    		type: "post", 
+					headers: {
+						"Content-Type": "application/json",
+						"Accept": "application/json",
+					},
+					data: JSON.stringify(issuedCfgDataInfo),
+					success :function(data){
+						var data=data;
 
+					}
+				})
+				layer.close(index);
 			}
 		})
 	}
 	
-=======
-	
->>>>>>> 9c53b553ebf85f7254b7ec95a0f2be8e8077557e
+
