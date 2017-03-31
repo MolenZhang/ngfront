@@ -44,7 +44,7 @@ function showClients(areaType){
 			 		}
 			 		clientsHtml += '<tr>'+
                                     		'<td style="text-indent: 30px;">'+
-                                    		'<input type="checkbox" class="chkItem" name="ids" value=""></td>'+
+                                    		'<input type="checkbox" class="chkNodeItem" name="ids" NodeIP="'+NodeIP+'" ClientID="'+ClientID+'"></td>'+
 											'<td class="statusImg">'+statusHtml+'</td>'+
                                     		'<td>'+ClientID+'</td>'+
                                     		'<td>'+NodeName+'</td>'+
@@ -77,12 +77,89 @@ function issuedCfg(){
 		content: $("#issuedCfgInfo"),
 		btn: ['确定','取消'],
 		yes: function(index,layero){
+			var areaIP = "localhost";
+			var areaPort = "port";
+			var issuedUrl = "http://"+areaIP+":"+areaPort+"/watcher"+areaType;
 
+			var KubernetesMasterHost = $("#KubernetesMasterHostInfo").val();
+			var KubernetesAPIVersion =$("#KubernetesAPIVersionInfo").val();
+			var NginxReloadCommand = $("#NginxReloadCommandInfo").val();
+			var NginxListenPort = $("#NginxListenPortInfo").val();
+			var WatchNamespaceSets = new Array();
+			if($(".namespaceAll").css("display")=="none"){
+				var namespacesChk = $(".namespacesChk:checked");
+				for(var nNum=0; nNum<namespacesChk.length; nNum++){
+					WatchNamespaceSets.push(namespacesChk[nNum].value);
+				}
+			}else{
+				WatchNamespaceSets= ["all"];
+			}
+
+			var NginxRealCfgDirPath = $("#NginxRealCfgDirPathInfo").val();
+			var NginxTestCfgDirPath = $("#NginxTestCfgDirPathInfo").val();
+			var DownloadCfgDirPath = $("#DownloadCfgDirPathInfo").val();
+			var LogPrintLevel = $("#LogPrintLevelInfo").val();
+			var DefaultNginxServerType = $("#DefaultNginxServerTypeInfo").val();
+			var DomainSuffix = $("#DomainSuffixInfo").val();
+			var WorkMode = $("#WorkModeInfo").val();
+			var NginxTestCommand = $("#NginxTestCommandInfo").val();
+			var StandbyUpstreamNodes = $("#StandbyUpstreamNodesInfo").val().split(",");
+
+			var BatchNodesInfo = new Array();
+			var checkedNodeItems = $(".chkNodeItem:checked");
+			for(var nodeNum=0; nodeNum< checkedNodeItems.length;nodeNum++){
+				var checkedNode = {
+					"NodeIP": checkedNodeItems[nodeNum].getAttribute("NodeIP"),
+					"ClientID": checkedNodeItems[nodeNum].getAttribute("ClientID")
+				}
+				BatchNodesInfo.push(checkedNode);
+			}
+			
+			
+			var issuedCfgDataInfo = {
+				"BatchNodesInfo":BatchNodesInfo,
+				"WatcherCfg": {
+					"KubernetesMasterHost": KubernetesMasterHost,
+					"KubernetesAPIVersion":KubernetesAPIVersion,
+					"NginxReloadCommand":NginxReloadCommand,
+					"JobZoneType":areaType,
+					"NginxListenPort":NginxListenPort,
+					"WatchNamespaceSets":WatchNamespaceSets,
+					"NginxRealCfgDirPath":NginxRealCfgDirPath,
+					"NginxTestCfgDirPath":NginxTestCfgDirPath,
+					"DownloadCfgDirPath":DownloadCfgDirPath,
+					"LogPrintLevel":LogPrintLevel,
+					"DefaultNginxServerType":DefaultNginxServerType,
+					"DomainSuffix":DomainSuffix,
+					"WorkMode":WorkMode,
+					"NginxTestCommand":NginxTestCommand,
+				    "StandbyUpstreamNodes": StandbyUpstreamNodes,
+				}
+			};
+
+			$.ajax({
+				url : issuedUrl,
+				dataType: "json",
+				contentType: "text/html; charset=UTF-8",
+		    	type: "post", 
+				headers: {
+					"Content-Type": "application/json",
+					"Accept": "application/json",
+				},
+				data: JSON.stringify(issuedCfgDataInfo),
+				success :function(data){
+					var data=data;
+
+				}
+			})
+			layer.close(index);
 		}
 	})
 }
 
 function loadNamespaces(){
+	$(".namespaceAll").hide();
+	$(".editNamespacesTd").removeClass("hide");
 	var KubernetesMasterHost = $("#KubernetesMasterHostInfo").val();
 	var KubernetesAPIVersion = $("#KubernetesAPIVersionInfo").val();
 	var areaIP = "localhost";
