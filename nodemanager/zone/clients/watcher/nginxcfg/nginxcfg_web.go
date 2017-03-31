@@ -9,6 +9,17 @@ package nginxcfg
 
 //"github.com/emicklei/go-restful"
 
+type ClientInfo struct {
+	NodeIP   string
+	ClientID string
+}
+
+//BatchNginxCfgInfo 批量配置下发信息
+type BatchNginxCfgInfo struct {
+	NodesInfo   []ClientInfo
+	WebNginxCfg WebConfig
+}
+
 //UserRules 用户自定义的规则结构
 type UserRules struct {
 	RuleCMD   string

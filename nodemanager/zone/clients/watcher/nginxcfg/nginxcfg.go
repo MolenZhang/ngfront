@@ -12,17 +12,6 @@ import (
 	"github.com/emicklei/go-restful"
 )
 
-type clientInfo struct {
-	NodeIP   string
-	ClientID string
-}
-
-//BatchNginxCfgInfo 批量配置下发信息
-type BatchNginxCfgInfo struct {
-	NodesInfo   []clientInfo
-	WebNginxCfg WebConfig
-}
-
 //AppSrcTypeKubernetes 服务源于k8s
 const (
 	AppSrcTypeKubernetes = "k8s"
