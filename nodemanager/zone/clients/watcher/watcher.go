@@ -101,6 +101,51 @@ func postWatcherInfo(request *restful.Request, response *restful.Response) {
 		return
 	}
 
+	client := nodes.ClientInfo{
+		NodeIP:   webMsg.NodeIP,
+		ClientID: webMsg.ClientID,
+	}
+	key := client.CreateKey()
+	clientInfo := nodes.GetClientInfo(key)
+
+	nodes.AddWatcherData(key, webMsg.WatcherCfg)
+
+	updateWatcherCfgURL := "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.WatchManagerAPIServerPath
+
+	//暂时未做处理失败的逻辑判断
+	communicate.SendRequestByJSON(communicate.POST, updateWatcherCfgURL, webMsg.WatcherCfg)
+
+	logdebug.Println(logdebug.LevelDebug, "与kubeng通讯 更新watcher状态 收到的web前端消息内容:", webMsg)
+
+	return
+}
+
+//前端需批量操作的节点信息
+type watcherNodeInfo struct {
+	NodeIP   string
+	ClientID string
+}
+
+//前端需批量操作的节点内容
+type batchWatcherWebMsg struct {
+	BatchNodesInfo []watcherNodeInfo
+	WatcherCfg     nodes.WatchManagerCfg
+}
+
+// 处理前端批量POST过来的消息
+func postAllWatcherInfo(request *restful.Request, response *restful.Response) {
+
+	webMsg := CfgWebMsg{}
+
+	logdebug.Println(logdebug.LevelDebug, "与kubeng通讯 更新watcher状态")
+
+	err := request.ReadEntity(&webMsg)
+	if err != nil {
+		response.WriteError(http.StatusInternalServerError, err)
+
+		return
+	}
+
 	updateWatcherCfgURL := webMsg.getWatcherAPIServerURL()
 
 	//暂时未做处理失败的逻辑判断
