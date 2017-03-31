@@ -1,7 +1,9 @@
+ var areaType = "";
  $(document).ready(function () {
 	var locationUrl = window.location;
 	//http://192.168.252.133:8083/ngfront/zone/clients?areaType=user
-	var areaType=locationUrl.search.substring(locationUrl.search.indexOf("=")+1,locationUrl.search.length); 
+	areaType=locationUrl.search.substring(locationUrl.search.indexOf("=")+1,locationUrl.search.length); 
+	
 	showClients(areaType);
 	
  });/*reday*/
@@ -63,6 +65,49 @@ function showClients(areaType){
 	 }
 		}
 	})
-	 
+}
+/*下发配置*/
 
+function issuedCfg(){
+	$("#JobZoneTypeOldVal").append(areaType);
+	layer.open({
+		type: 1,
+		title: '下发配置',
+		area: ['800px'],
+		content: $("#issuedCfgInfo"),
+		btn: ['确定','取消'],
+		yes: function(index,layero){
+
+		}
+	})
+}
+
+function loadNamespaces(){
+	var KubernetesMasterHost = $("#KubernetesMasterHostInfo").val();
+	var KubernetesAPIVersion = $("#KubernetesAPIVersionInfo").val();
+	var areaIP = "localhost";
+	var areaPort = "port";
+	var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/namespaces";
+	
+	$.ajax({
+		"url":apiVersionUrl,
+		"type":"get",
+		"data":{
+			"KubernetesMasterHost":KubernetesMasterHost,
+			"KubernetesAPIVersion":KubernetesAPIVersion,
+			"JobZoneType":areaType
+		},
+		"success":function(data){
+			var data = eval("("+data+")");
+			var NamespacesList = data.NamespacesList;
+			var namespacesHtml = "";
+			if(NamespacesList != null){
+				for(var i=0; i<NamespacesList.length; i++){
+					var	eveNamespace = NamespacesList[i];
+					namespacesHtml += '<label class="namespacesLabel"><input type="checkbox" class="namespacesChk" value="'+eveNamespace+'">'+eveNamespace+'</label>';
+				}
+				$("#namespacesInfo").empty().append(namespacesHtml);
+			}
+		}
+	});
 }

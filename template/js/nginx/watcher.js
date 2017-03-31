@@ -622,6 +622,8 @@ function stopControl(NodeIPInfo,ClientIDInfo){
 				});
 	}
 
+	
+
 	// function ngDownLoadPath(path){
 	// 	try {
  //        var Message = "\u8bf7\u9009\u62e9\u6587\u4ef6\u5939"; //选择框提示信息
