@@ -174,170 +174,165 @@ function showNgsHtml(data){
 			 		strs += '<div class="ibox-content" style="display:block">'
 			 				+'<div class="ngConfigPartList">';
 		var ngConfigPartHtml = "";
-		for(var j=0; j< nginxList.CfgsList.length; j++){
+		if(nginxList.CfgsList == null ||nginxList.CfgsList.length == 0 ){
+			ngConfigPartHtml = "无数据";
+		}else{
+			for(var j=0; j< nginxList.CfgsList.length; j++){
 			var CfgsList = nginxList.CfgsList[j];
 				var IsDefaultCfgClass='IsDefaultCfg-'+CfgsList.IsDefaultCfg;
 			 		ngConfigPartHtml += '<div class="ngConfigPart">'
-											+'<input type="checkbox" class="ngConfigCheckbox"/>'
-											+'<span class="hide addOneSerPart" title="新增">'
-											+'<i class="fa fa-plus fa-serverPlus fa-one" onClick="addOneSerPart(this)" ServerName="'+CfgsList.ServerName+'" ListenPort="'+CfgsList.ListenPort+'" RealServerPath="'+CfgsList.RealServerPath+'" Namespace="'+CfgsList.Namespace+'" AppName="'+CfgsList.AppName+'" Location="'+CfgsList.Location+'" ProxyRedirectSrcPath="'+CfgsList.ProxyRedirectSrcPath+'" ProxyRedirectDestPath="'+CfgsList.ProxyRedirectDestPath+'" IsUpstreamIPHash="'+CfgsList.IsUpstreamIPHash+'" DeleteUserCfgs="'+CfgsList.DeleteUserCfgs+'" IsDefaultCfg="'+CfgsList.IsDefaultCfg+'" CfgType="'+nginxList.CfgType+'"></i></span>'
-                                             +'<span title="同步"><i class="fa fa-sort-amount-asc fa-one" onclick="issuedCfgIps(this)"></i></span>'
-                                             + '<span title="保存"><i class="fa fa-save fa-one" onClick="saveSerPart(this)"></i></span>'
-                                             + '<span title="删除"><i class="fa fa-trash fa-one" onClick="delOneSerPart(this)"></i></span>'
-                                             + '<span title="伸缩"><i class="fa fa-caret-down fa-one" onClick="toggleOneSerPart(this)"></i></span>'
-                                             + '<span class="ngConfigPartTit"></span>'
-												+ '<div class="ngConfigPartCon">'
-												+ '<form class="nginxForm '+IsDefaultCfgClass+'" method="post" action="" AppSrcType="'+nginxList.CfgType+'" IsDefaultCfg="'+CfgsList.IsDefaultCfg+'">'
-												+	'<div class="nginx-label">'
-												+		'<span class="upstreamPartTit">upstream</span><input type="text" class="appNameAndNamespace" name="appNameAndNamespace" AppName="'+CfgsList.AppName+'" Namespace="'+CfgsList.Namespace+'" value="'+CfgsList.AppName+'-'+CfgsList.Namespace+'" disabled>{'
-												+	'</div>'
-												+	'<div class="nginx-label col-md-offset-1">'
-												+		'<select id="IsUpstreamIPHash" name="IsUpstreamIPHash" value="'+CfgsList.IsUpstreamIPHash+'">';
-												var iphash='';	
-							 					if(CfgsList.IsUpstreamIPHash==false){
-												    iphash+='<option value="false" selected="selected">none</option>'
-												    	  +'<option value="true">ip_hash</option>';
-												}else{
-													iphash+='<option value="false">none</option>'
-														  +'<option value="true" selected="selected">ip_hash</option>';
-												}
-							ngConfigPartHtml += iphash
-												+		'</select>;'
-												+	'</div>'
-												+'<div id="nginx-sers">';
-												var UpstreamIPsHtml = '';
-												var UpstreamIPsArray = CfgsList.UpstreamIPs;
-												if(UpstreamIPsArray != null){
-													for(var m=0; m<UpstreamIPsArray.length; m++){
-													UpstreamIPsHtml	+='<div class="nginx-label col-md-offset-1">'
-														+'<span>server:</span><input type="text" class="ipAndUpstreamPort" value="'+UpstreamIPsArray[m]+':'+CfgsList.UpstreamPort+'">;'
-														+	'</div>';
-													}
-												}
-												
-												
-							ngConfigPartHtml +=	UpstreamIPsHtml
-												+'</div>';
-												var UpstreamUserRulesStr='';
-												var UpstreamUserRules = CfgsList.UpstreamUserRules.UserRuleSet;
-								 				if(UpstreamUserRules != null){
-								 					
-									 				for(var upNum=0; upNum<UpstreamUserRules.length; upNum++){
-									 					
-									 					UpstreamUserRulesStr+='<div class="col-md-offset-1 nginx-label UpstreamUserRulesDiv" RuleCMD="'+UpstreamUserRules[upNum].RuleCMD+'" RuleParam="'+UpstreamUserRules[upNum].RuleParam+'">'
+									+'<input type="checkbox" class="ngConfigCheckbox"/>'
+									+'<span class="hide addOneSerPart" title="新增">'
+									+'<i class="fa fa-plus fa-serverPlus fa-one" onClick="addOneSerPart(this)" ServerName="'+CfgsList.ServerName+'" ListenPort="'+CfgsList.ListenPort+'" RealServerPath="'+CfgsList.RealServerPath+'" Namespace="'+CfgsList.Namespace+'" AppName="'+CfgsList.AppName+'" Location="'+CfgsList.Location+'" ProxyRedirectSrcPath="'+CfgsList.ProxyRedirectSrcPath+'" ProxyRedirectDestPath="'+CfgsList.ProxyRedirectDestPath+'" IsUpstreamIPHash="'+CfgsList.IsUpstreamIPHash+'" DeleteUserCfgs="'+CfgsList.DeleteUserCfgs+'" IsDefaultCfg="'+CfgsList.IsDefaultCfg+'" CfgType="'+nginxList.CfgType+'"></i></span>'
+                                    +'<span title="同步"><i class="fa fa-sort-amount-asc fa-one" onclick="issuedCfgIps(this)"></i></span>'
+                                    +'<span title="保存"><i class="fa fa-save fa-one" onClick="saveSerPart(this)"></i></span>'
+                                    +'<span title="删除"><i class="fa fa-trash fa-one" onClick="delOneSerPart(this)"></i></span>'
+                                    +'<span title="伸缩"><i class="fa fa-caret-down fa-one" onClick="toggleOneSerPart(this)"></i></span>'
+                                    +'<span class="ngConfigPartTit"></span>'
+									+'<div class="ngConfigPartCon">'
+									+'<form class="nginxForm '+IsDefaultCfgClass+'" method="post" action="" AppSrcType="'+nginxList.CfgType+'" IsDefaultCfg="'+CfgsList.IsDefaultCfg+'">'
+									+'<div class="nginx-label">'
+									+'<span class="upstreamPartTit">upstream</span><input type="text" class="appNameAndNamespace" name="appNameAndNamespace" AppName="'+CfgsList.AppName+'" Namespace="'+CfgsList.Namespace+'" value="'+CfgsList.AppName+'-'+CfgsList.Namespace+'" disabled>{'
+									+'</div>'
+									+'<div class="nginx-label col-md-offset-1">'
+									+'<select id="IsUpstreamIPHash" name="IsUpstreamIPHash" value="'+CfgsList.IsUpstreamIPHash+'">';
+					var iphash='';	
+							 		if(CfgsList.IsUpstreamIPHash==false){
+										iphash+='<option value="false" selected="selected">none</option>'
+												+'<option value="true">ip_hash</option>';
+									}else{
+										iphash+='<option value="false">none</option>'
+												+'<option value="true" selected="selected">ip_hash</option>';
+									}
+					ngConfigPartHtml += iphash
+									+'</select>;'
+									+'</div>'
+									+'<div id="nginx-sers">';
+					var UpstreamIPsHtml = '';
+					var UpstreamIPsArray = CfgsList.UpstreamIPs;
+									if(UpstreamIPsArray != null){
+										for(var m=0; m<UpstreamIPsArray.length; m++){
+											UpstreamIPsHtml	+='<div class="nginx-label col-md-offset-1">'
+														    +'<span>server:</span><input type="text" class="ipAndUpstreamPort" value="'+UpstreamIPsArray[m]+':'+CfgsList.UpstreamPort+'">;'
+														    +'</div>';
+										}
+									}		
+					ngConfigPartHtml +=	UpstreamIPsHtml
+									+'</div>';
+					var UpstreamUserRulesStr='';
+					var UpstreamUserRules = CfgsList.UpstreamUserRules.UserRuleSet;
+								 	if(UpstreamUserRules != null){
+									 	for(var upNum=0; upNum<UpstreamUserRules.length; upNum++){
+									 		UpstreamUserRulesStr+='<div class="col-md-offset-1 nginx-label UpstreamUserRulesDiv" RuleCMD="'+UpstreamUserRules[upNum].RuleCMD+'" RuleParam="'+UpstreamUserRules[upNum].RuleParam+'">'
 									 	 	 					+'<span>|-<span>'
 									 	 	 					+'<input type="text" id="UpstreamRuleCMD" class="def-input RuleCMD" name="UpstreamRuleCMD" value="'+UpstreamUserRules[upNum].RuleCMD+'"><span>:</span>'
 									 	 	 					+'<input type="text" id="UpstreamRuleParam" class="def-input RuleParam" name="UpstreamRuleParam" value="'+UpstreamUserRules[upNum].RuleParam+'">;'
 									 	 	 					+'<span><i class="fa fa-trash" onClick="removeOneupstreamUserRulesPlus(this)"></i></span> '
 									 	 	 					+'</div>'
 									 					
-									 				}
-								 				}
-							ngConfigPartHtml += UpstreamUserRulesStr
-												+'<div class="col-md-offset-1 def-text">自定义配置<span><i class="fa fa-plus fa-upstreamUserRulesPlus" onClick="addOneupstreamUserRulesPlus(this)"></i></span></div>'
-												
-												+	'<div class="nginx-label">'
-												+		'<span>}</span>'
-												+	'</div>'
-												+	'<div class="serverPartList">'
-												+		'<div class="serverPart">'
-												+			'<div class="nginx-label">'
-												+				'<span class="serverPartTit">server{</span>'
-												+			'</div>'
-												+			'<div class="serverPartCon">'
-												+				'<div class="nginx-label col-md-offset-1">'
-												+					'<span>listen:</span><input type="text" id="ListenPort" name="ListenPort" value="'+CfgsList.ListenPort+'">;'
-												+				'</div>'
-												+				'<div class="nginx-label col-md-offset-1">'
-												+					'<span>server_name:</span><input type="text" id="ServerName"  name="ServerName" value="'+CfgsList.ServerName+'">;'
-												+				'</div>'
-												+				'<div class="nginx-label col-md-offset-1">'
-												+					'<span>location:</span><input type="text" id="Location" name="Location" value="'+CfgsList.Location+'">{'
-												+				'</div>'
-												+				'<div class="nginx-label col-md-offset-2">'
-												+					'<span>proxy_pass:</span><input type="text" id="proxy_pass" name="" value="http://'+CfgsList.AppName+'-'+CfgsList.Namespace+'" disabled><input type="text" class="RealServerPath" name="" value="'+CfgsList.RealServerPath+'">;'
-												+				'</div>'
-												+				'<div class="nginx-label col-md-offset-2">'
-												+					'<span>proxy_set_header Host $host:</span><input type="text" class="sameToListenPort" name="" value="'+CfgsList.ListenPort+'" disabled>;'
-												+				'</div>'
-												+				'<div class="nginx-label col-md-offset-2">'
-												+					'<span>proxy_set_header X-Real-IP $remote_addr:</span><input type="text" class="sameToListenPort" id="" name="" value="'+CfgsList.ListenPort+'" disabled>;'
-												+				'</div>'
-												+				'<div class="nginx-label col-md-offset-2">'
-												+					'<span>proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for</span>;'
-												+				'</div>'
-												+				'<div class="nginx-label col-md-offset-2">'
-												+					'<span>proxy_redirect:</span><input type="text" id="ProxyRedirectSrcPath" name="ProxyRedirectSrcPath" value="'+CfgsList.ProxyRedirectSrcPath+'">'
-												+					'<input type="text" id="ProxyRedirectDestPath" name="ProxyRedirectDestPath" value="'+CfgsList.ProxyRedirectDestPath+'">;'
-												+				'</div>'
-												+'<div class="nginx-label col-md-offset-2">'
-	 											+'<select id="LogRuleName" class="LogRuleName" name="LogRuleName" value="'+CfgsList.LogRule.LogRuleName+'">';
-	 											var rname ='';
-							 					if(CfgsList.LogRule.LogRuleName=="access_log"){
-							 						rname+='<option value="access_log" selected>access_log</option>'
-							 						+'<option value="error_log" >error_log</option>';
-							 					}else{
-							 						rname+='<option value="access_log">access_log</option>'
-								 						+'<option value="error_log" selected>error_log</option>';
-							 					}
-							 					ngConfigPartHtml += rname					
-	 											+'</select>'
-	 											+'<input type="text" id="LogFileDirPath" class="LogFileDirPath" name="LogFileDirPath" value="'+CfgsList.LogRule.LogFileDirPath+'">'
-							 					+'<input type="text" id="" name="" value="'+CfgsList.Location+'_access_log" disabled>'
-							 					+'<input type="text" id="LogTemplateName" class="LogTemplateName" name="LogTemplateName" value="'+CfgsList.LogRule.LogTemplateName+'">;'
-							 					+'</div>';
-							 					var LocationUserRulesStr='';
-							 					var LocationUserRules = CfgsList.LocationUserRules.UserRuleSet;
-							 	 	 	 		if(LocationUserRules != null){
-							 	 	 	 		
-							 	 				for(var loNum=0; loNum<LocationUserRules.length; loNum++){
-							 	 					
-							 	 						LocationUserRulesStr+='<div class="col-md-offset-2 nginx-label LocationUserRulesDiv" RuleCMD="'+LocationUserRules[loNum].RuleCMD+'" RuleParam="'+LocationUserRules[loNum].RuleParam+'">'
+									 	}
+								 	}
+					ngConfigPartHtml += UpstreamUserRulesStr
+									+'<div class="col-md-offset-1 def-text">自定义配置<span><i class="fa fa-plus fa-upstreamUserRulesPlus" onClick="addOneupstreamUserRulesPlus(this)"></i></span></div>'
+									+'<div class="nginx-label">'
+									+'<span>}</span>'
+									+'</div>'
+									+'<div class="serverPartList">'
+									+'<div class="serverPart">'
+									+'<div class="nginx-label">'
+									+'<span class="serverPartTit">server{</span>'
+									+'</div>'
+									+'<div class="serverPartCon">'
+									+'<div class="nginx-label col-md-offset-1">'
+									+'<span>listen:</span><input type="text" id="ListenPort" name="ListenPort" value="'+CfgsList.ListenPort+'">;'
+									+'</div>'
+									+'<div class="nginx-label col-md-offset-1">'
+									+'<span>server_name:</span><input type="text" id="ServerName"  name="ServerName" value="'+CfgsList.ServerName+'">;'
+									+'</div>'
+									+'<div class="nginx-label col-md-offset-1">'
+									+'<span>location:</span><input type="text" id="Location" name="Location" value="'+CfgsList.Location+'">{'
+									+'</div>'
+									+'<div class="nginx-label col-md-offset-2">'
+									+'<span>proxy_pass:</span><input type="text" id="proxy_pass" name="" value="http://'+CfgsList.AppName+'-'+CfgsList.Namespace+'" disabled><input type="text" class="RealServerPath" name="" value="'+CfgsList.RealServerPath+'">;'
+									+'</div>'
+									+'<div class="nginx-label col-md-offset-2">'
+									+'<span>proxy_set_header Host $host:</span><input type="text" class="sameToListenPort" name="" value="'+CfgsList.ListenPort+'" disabled>;'
+									+'</div>'
+									+'<div class="nginx-label col-md-offset-2">'
+									+'<span>proxy_set_header X-Real-IP $remote_addr:</span><input type="text" class="sameToListenPort" id="" name="" value="'+CfgsList.ListenPort+'" disabled>;'
+									+'</div>'
+									+'<div class="nginx-label col-md-offset-2">'
+									+'<span>proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for</span>;'
+									+'</div>'
+									+'<div class="nginx-label col-md-offset-2">'
+									+'<span>proxy_redirect:</span><input type="text" id="ProxyRedirectSrcPath" name="ProxyRedirectSrcPath" value="'+CfgsList.ProxyRedirectSrcPath+'">'
+									+'<input type="text" id="ProxyRedirectDestPath" name="ProxyRedirectDestPath" value="'+CfgsList.ProxyRedirectDestPath+'">;'
+									+'</div>'
+									+'<div class="nginx-label col-md-offset-2">'
+	 								+'<select id="LogRuleName" class="LogRuleName" name="LogRuleName" value="'+CfgsList.LogRule.LogRuleName+'">';
+	 				var rname ='';
+							 	if(CfgsList.LogRule.LogRuleName=="access_log"){
+							 		rname+='<option value="access_log" selected>access_log</option>'
+							 			+'<option value="error_log" >error_log</option>';
+							 	}else{
+							 		rname+='<option value="access_log">access_log</option>'
+								 		+'<option value="error_log" selected>error_log</option>';
+							 	}
+					ngConfigPartHtml += rname					
+	 								+'</select>'
+	 								+'<input type="text" id="LogFileDirPath" class="LogFileDirPath" name="LogFileDirPath" value="'+CfgsList.LogRule.LogFileDirPath+'">'
+							 		+'<input type="text" id="" name="" value="'+CfgsList.Location+'_access_log" disabled>'
+							 		+'<input type="text" id="LogTemplateName" class="LogTemplateName" name="LogTemplateName" value="'+CfgsList.LogRule.LogTemplateName+'">;'
+							 		+'</div>';
+					var LocationUserRulesStr='';
+					var LocationUserRules = CfgsList.LocationUserRules.UserRuleSet;
+							 	 	if(LocationUserRules != null){
+							 	 		for(var loNum=0; loNum<LocationUserRules.length; loNum++){
+							 	 			LocationUserRulesStr+='<div class="col-md-offset-2 nginx-label LocationUserRulesDiv" RuleCMD="'+LocationUserRules[loNum].RuleCMD+'" RuleParam="'+LocationUserRules[loNum].RuleParam+'">'
 							 	 	 	 					+'<span>|-<span>'
 							 	 	 	 					+'<input type="text" class="def-input RuleCMD" id="LocationRuleCMD" name="LocationRuleCMD" value="'+LocationUserRules[loNum].RuleCMD+'"><span>:</span>'
 							 	 	 	 					+'<input type="text" class="def-input RuleParam" id="LocationRuleParam" name="LocationRuleParam" value="'+LocationUserRules[loNum].RuleParam+'">;'
 							 	 	 	 					+'<span><i class="fa fa-trash" onClick="removeOnelocationUserRulesPlus(this)"></i></span> '
 							 	 	 	 					+'</div>'
 							 	 					
-							 	 				}
-							 	 	 	 		}
-							 	 	 				
-							ngConfigPartHtml += LocationUserRulesStr
-							 					+'<div class="col-md-offset-2 def-text">自定义配置<span><i class="fa fa-plus fa-locationUserRulesPlus" onClick="addOnelocationUserRulesPlus(this)"></i></span>'
-							 					+'</div>'
-												+				'<div class="nginx-label col-md-offset-1">'
-												+					'<span>}</span>'
-												+				'</div>'
-												var ServerUserRulesStr='';
-												var ServerUserRules= CfgsList.ServerUserRules.UserRuleSet;
-												if(ServerUserRules != null){
-													
-							 	 	 				for(var seNum=0; seNum<ServerUserRules.length; seNum++){
-							 	 	 					
-							 	 	 					ServerUserRulesStr+='<div class="col-md-offset-1 nginx-label ServerUserRulesDiv" RuleCMD="'+ServerUserRules[seNum].RuleCMD+'" RuleParam="'+ServerUserRules[seNum].RuleParam+'">'
-							 	 	 	 	 					+'<span>|-<span>'
-							 	 	 	 	 					+'<input type="text" id="ServerRuleCMD" class="def-input RuleCMD" name="ServerRuleCMD" value="'+ServerUserRules[seNum].RuleCMD+'"><span>:</span>'
-							 	 	 	 	 					+'<input type="text" id="ServerRuleParam" class="def-input RuleParam" name="ServerRuleParam" value="'+ServerUserRules[seNum].RuleParam+'">;'
-							 	 	 	 	 					+'<span><i class="fa fa-trash" onClick="removeOneserverUserRulesPlus(this)"></i></span> '
-							 	 	 	 	 					+'</div>'
-							 	 	 					
-							 	 	 				}
-												}
-							ngConfigPartHtml += ServerUserRulesStr
-												+'<div class="col-md-offset-1 def-text">自定义配置<span><i class="fa fa-plus fa-serverUserRulesPlus" onClick="addOneserverUserRulesPlus(this)"></i></span></div>'
-												+				'<div class="nginx-label">'
-												+					'<span>}</span>'
-												+				'</div>'
-												+			'</div>'
-												+		'</div>'
-												+	'</div>'
-												+'</form> '
-												+'</div>'
-											+'</div>';
-										
+							 	 		}
+							 	 	}			
+					ngConfigPartHtml += LocationUserRulesStr
+							 		+'<div class="col-md-offset-2 def-text">自定义配置<span><i class="fa fa-plus fa-locationUserRulesPlus" onClick="addOnelocationUserRulesPlus(this)"></i></span>'
+							 		+'</div>'
+									+'<div class="nginx-label col-md-offset-1">'
+									+'<span>}</span>'
+									+'</div>'
+					var ServerUserRulesStr='';
+					var ServerUserRules= CfgsList.ServerUserRules.UserRuleSet;
+							if(ServerUserRules != null){
+							 	for(var seNum=0; seNum<ServerUserRules.length; seNum++){
+							 	 	ServerUserRulesStr+='<div class="col-md-offset-1 nginx-label ServerUserRulesDiv" RuleCMD="'+ServerUserRules[seNum].RuleCMD+'" RuleParam="'+ServerUserRules[seNum].RuleParam+'">'
+							 	 	 	 	 		+'<span>|-<span>'
+							 	 	 	 	 		+'<input type="text" id="ServerRuleCMD" class="def-input RuleCMD" name="ServerRuleCMD" value="'+ServerUserRules[seNum].RuleCMD+'"><span>:</span>'
+							 	 	 	 	 		+'<input type="text" id="ServerRuleParam" class="def-input RuleParam" name="ServerRuleParam" value="'+ServerUserRules[seNum].RuleParam+'">;'
+							 	 	 	 	 		+'<span><i class="fa fa-trash" onClick="removeOneserverUserRulesPlus(this)"></i></span> '
+							 	 	 	 	 		+'</div>'
+							 	}
+							}
+					ngConfigPartHtml += ServerUserRulesStr
+									+'<div class="col-md-offset-1 def-text">自定义配置<span><i class="fa fa-plus fa-serverUserRulesPlus" onClick="addOneserverUserRulesPlus(this)"></i></span></div>'
+									+'<div class="nginx-label">'
+									+'<span>}</span>'
+									+'</div>'
+									+'</div>'
+									+'</div>'
+									+'</div>'
+									+'</form> '
+									+'</div>'
+									+'</div>';
+			}
+			
+				
+
 		}
-		strs += ngConfigPartHtml+'</div>';
-		strs +='</div></div>';	
+		strs += ngConfigPartHtml;
+		strs +='</div></div></div>';	
 	}
 	$("#nginxCfgHtml").empty().append(strs);
 	
@@ -415,7 +410,8 @@ function showNgsHtml(data){
 
 		var str='<div class="ngConfigPart" border:1px solid #FF0000 >' 
 			+'<input type="checkbox" class="ngConfigCheckbox"/> '
-			+'<span class="hide addOneSerPartAfter"><i class="fa fa-plus fa-serverPlus" onClick="addOneSerPart(this)"></i></span> '
+			+'<span class="hide addOneSerPartAfter"><i class="fa fa-plus fa-one fa-serverPlus" onClick="addOneSerPart(this)"></i></span> '
+			+'<span class="hide addOneSerPartAfter"><i class="fa fa-sort-amount-asc fa-one" onClick="issuedCfgIps(this)"></i></span> '
 			+'<span title="提交配置"><i class="fa fa-check-square fa-one" onClick="nginxFormCommOne(this)"></i></span> '
 			+'<span title="删除"><i class="fa fa-trash fa-one" onClick="removeOneSerPart(this)"></i></span> '
 			+'<span title="伸缩"><i class="fa fa-caret-down fa-one" onClick="toggleOneSerPart(this)"></i></span> '
@@ -945,6 +941,7 @@ function showNgsHtml(data){
 	 */
 	function nginxFormCommOne(obj){
 		$(obj).hide();
+		$(obj).parent().parent().find(".addOneSerPartAfter").removeClass("hide");
 		$(obj).parents(".ngConfigPart").find(".textNotSet").remove();
 		var ngConfigPart = $(obj).parent().parent().find('.nginxForm');
 		var nginxform = ngConfigPart;
@@ -1122,10 +1119,10 @@ function showNgsHtml(data){
 						+'<span>proxy_pass:</span><input type="text" id="proxy_pass" name="" value="http://'+CfgsList.AppName+'-'+CfgsList.Namespace+'" disabled><input type="text" class="RealServerPath" name="" value="'+CfgsList.RealServerPath+'">;'
 						+'</div>'
 						+'<div class="nginx-label col-md-offset-2">'
-						+'<span>proxy_set_header Host $host:</span><input type="text" class="sameToListenPort" name="" value="" disabled>;'
+						+'<span>proxy_set_header Host $host:</span><input type="text" class="sameToListenPort" name="" value="'+CfgsList.ListenPort+'" disabled>;'
 						+'</div>'
 						+'<div class="nginx-label col-md-offset-2">'
-						+'<span>proxy_set_header X-Real-IP $remote_addr:</span><input type="text" class="sameToListenPort" id="" name="" value="" disabled>;'
+						+'<span>proxy_set_header X-Real-IP $remote_addr:</span><input type="text" class="sameToListenPort" name="" value="'+CfgsList.ListenPort+'" disabled>;'
 						+'</div>'
 						+'<div class="nginx-label col-md-offset-2">'
 						+'<span>proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for</span>;'
@@ -1320,7 +1317,6 @@ function showNgsHtml(data){
 			}
 		});
 		//需要下发的数据
-		
 		layer.open({
 			type: 1,
 			title: '下发配置',
