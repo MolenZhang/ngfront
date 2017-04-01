@@ -229,23 +229,23 @@ function loadNamespaces(){
 	 * @param obj
 	 */
 	function nginxCfgsExport(obj){
-		var downloadData = new Array();
+		var DownloadClientInfo = new Array();
 		var checkedNodeItems = $(".chkNodeItem:checked");
 		for(var nodeNum=0; nodeNum< checkedNodeItems.length;nodeNum++){
 			var checkedNode = {
 				"NodeIP": checkedNodeItems[nodeNum].getAttribute("NodeIP"),
 				"ClientID": checkedNodeItems[nodeNum].getAttribute("ClientID")
 			}
-			downloadData.push(checkedNode);
+			DownloadClientInfo.push(checkedNode);
 		}	
 	        	
 		var downloadUrl = 'http://'+areaIP+':'+areaPort+'/nginxcfg/Alldownload';
 	    $.ajax({
 			url : downloadUrl,
 		    type: "get", 
-			data: downloadData,
+			data: DownloadClientInfo,
 			success :function(data){
-			location.href = data.NginxCfgDownloadURL;
+			//location.href = data.NginxCfgDownloadURL;
 			}
 		});
 	}
