@@ -380,6 +380,11 @@ func (svc *ServiceInfo) Init() {
 		Operation("downloadfile").
 		Reads(WebReqMsg{}))
 
+	ws.Route(ws.POST("/Alldownload").To(svc.batchNginxCfgsDownload).
+		Doc("download all nginx configs").
+		Operation("downloadfile").
+		Reads(BatchDownloadInfo{}))
+
 	restful.Add(ws)
 
 	return

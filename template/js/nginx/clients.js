@@ -244,7 +244,7 @@ function loadNamespaces(){
 	    		url : downloadUrl,
 				dataType: "json",
 				contentType: "text/html; charset=UTF-8",
-		    	type: "get", 
+		    	type: "post", 
 				headers: {
 					"Content-Type": "application/json",
 					"Accept": "application/json",
@@ -252,7 +252,7 @@ function loadNamespaces(){
 				data: JSON.stringify(DownloadClientInfo),
 				success :function(data){
 					var data=data;
-
+					location.href= "http://192.168.85.130:8083/nginxcfg/Alldownload"
 				}
 			
 		});

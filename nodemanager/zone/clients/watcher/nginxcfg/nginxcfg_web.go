@@ -9,6 +9,11 @@ package nginxcfg
 
 //"github.com/emicklei/go-restful"
 
+// 前端批量下载信息
+type BatchDownloadInfo struct {
+	DownloadInfo []ClientInfo
+}
+
 type ClientInfo struct {
 	NodeIP   string
 	ClientID string
