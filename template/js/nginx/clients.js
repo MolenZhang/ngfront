@@ -224,10 +224,33 @@ function loadNamespaces(){
 	});
 }
 
+/**
+	 * 批量导出一个node的配置信息
+	 * @param obj
+	 */
+	function nginxCfgsExport(obj){
+		var downloadData = new Array();
+		var checkedNodeItems = $(".chkNodeItem:checked");
+		for(var nodeNum=0; nodeNum< checkedNodeItems.length;nodeNum++){
+			var checkedNode = {
+				"NodeIP": checkedNodeItems[nodeNum].getAttribute("NodeIP"),
+				"ClientID": checkedNodeItems[nodeNum].getAttribute("ClientID")
+			}
+			downloadData.push(checkedNode);
+		}	
+	        	
+		var downloadUrl = 'http://'+areaIP+':'+areaPort+'/nginxcfg/Alldownload';
+	    $.ajax({
+			url : downloadUrl,
+		    type: "get", 
+			data: downloadData,
+			success :function(data){
+			location.href = data.NginxCfgDownloadURL;
+			}
+		});
+	}
+
 function areaRefresh(){
-	//location.replace(location.href);
-	//var areaIP = "localhost";
-	//var areaPort = "port";
 	location.href = "http://"+areaIP+":"+areaPort+"/ngfront";
 }
 function clientsRefresh(){
