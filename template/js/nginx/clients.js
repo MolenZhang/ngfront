@@ -241,12 +241,20 @@ function loadNamespaces(){
 	        	
 		var downloadUrl = 'http://'+areaIP+':'+areaPort+'/nginxcfg/Alldownload';
 	    $.ajax({
-			url : downloadUrl,
-		    type: "get", 
-			data: DownloadClientInfo,
-			success :function(data){
-			//location.href = data.NginxCfgDownloadURL;
-			}
+	    		url : downloadUrl,
+				dataType: "json",
+				contentType: "text/html; charset=UTF-8",
+		    	type: "get", 
+				headers: {
+					"Content-Type": "application/json",
+					"Accept": "application/json",
+				},
+				data: JSON.stringify(DownloadClientInfo),
+				success :function(data){
+					var data=data;
+
+				}
+			
 		});
 	}
 
