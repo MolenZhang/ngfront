@@ -229,16 +229,16 @@ function loadNamespaces(){
 	 * @param obj
 	 */
 	function nginxCfgsExport(obj){
-		var DownloadClientInfo = new Array();
+		var DownloadInfo = new Array();
 		var checkedNodeItems = $(".chkNodeItem:checked");
 		for(var nodeNum=0; nodeNum< checkedNodeItems.length;nodeNum++){
 			var checkedNode = {
 				"NodeIP": checkedNodeItems[nodeNum].getAttribute("NodeIP"),
 				"ClientID": checkedNodeItems[nodeNum].getAttribute("ClientID")
 			}
-			DownloadClientInfo.push(checkedNode);
+			DownloadInfo.push(checkedNode);
 		}	
-	        	
+	    var DownloadData = {"DownloadClientInfo":DownloadInfo};
 		var downloadUrl = 'http://'+areaIP+':'+areaPort+'/nginxcfg/Alldownload';
 	    $.ajax({
 	    		url : downloadUrl,
@@ -249,7 +249,7 @@ function loadNamespaces(){
 					"Content-Type": "application/json",
 					"Accept": "application/json",
 				},
-				data: JSON.stringify(DownloadClientInfo),
+				data: JSON.stringify(DownloadData),
 				success :function(data){
 					var data=data;
 					location.href= "http://192.168.85.130:8083/nginxcfg/Alldownload"
