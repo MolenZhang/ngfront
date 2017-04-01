@@ -1,13 +1,17 @@
  var NodeIP = "";
  var ClientID = "";
  var JobZoneType = "";
+ var areaIP = "localhost";
+ var areaPort = "port";
+ var KubernetesMasterHost = "";
+ var KubernetesAPIVersion = "";
  $(document).ready(function () {
  	var locationUrl = window.location;
 	//http://192.168.252.133:8011/ngfront/zone/clients/watcher/nginxcfg?NodeIP=192.168.252.133&ClientID=71906&KubernetesMasterHost=http://192.168.0.75:8080&KubernetesAPIVersion=api/v1&JobZoneType=all
  	NodeIP = locationUrl.search.substring(locationUrl.search.indexOf("NodeIP=")+7,locationUrl.search.indexOf("&C"));
 	ClientID = locationUrl.search.substring(locationUrl.search.indexOf("ClientID=")+9,locationUrl.search.indexOf("&KubernetesMasterHost"));
-	var KubernetesMasterHost = locationUrl.search.substring(locationUrl.search.indexOf("KubernetesMasterHost=")+21,locationUrl.search.indexOf("&KubernetesAPIVersion"));
-	var KubernetesAPIVersion = locationUrl.search.substring(locationUrl.search.indexOf("KubernetesAPIVersion=")+21,locationUrl.search.indexOf("&J"));
+	KubernetesMasterHost = locationUrl.search.substring(locationUrl.search.indexOf("KubernetesMasterHost=")+21,locationUrl.search.indexOf("&KubernetesAPIVersion"));
+	KubernetesAPIVersion = locationUrl.search.substring(locationUrl.search.indexOf("KubernetesAPIVersion=")+21,locationUrl.search.indexOf("&J"));
 	JobZoneType = locationUrl.search.substring(locationUrl.search.indexOf("JobZoneType=")+12,locationUrl.search.length);
 	
 	showAllNgs(NodeIP,ClientID);
@@ -36,7 +40,21 @@
 //		ListenPort = $("#ListenPort").val();
 //		$(".sameToListenPort").val(ListenPort);
 //	});
-
+	//全选
+	$(".chkAll").click(function(){
+	    $(this).parents('table').find(".chkItem").prop('checked',$(".chkAll").is(":checked"));
+	});
+ 
+    // 每条数据 checkbox class设为 chkItem
+    $(document).on("click",".chkItem", function(){
+        if($(this).is(":checked")){
+            if ($(this).parents('table').find(".chkItem:checked").length == $(this).parents('table').find(".chkItem").length) {
+            	$(this).parents('table').find(".chkAll").prop("checked", "checked");
+            }
+        }else{
+        	$(this).parents('table').find(".chkAll").prop('checked', $(this).is(":checked"));
+        }
+    });
 
 	
  });/*reday*/
@@ -46,8 +64,7 @@
  var NamespacesAppCounts = "";
 
  function showAllUsers(KubernetesMasterHost,KubernetesAPIVersion,JobZoneType){
- 	var areaIP = "localhost";
-	var areaPort = "port";
+ 	
 	var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/namespaces";
 	
 	$.ajax({
@@ -110,8 +127,8 @@
 
 //展示同一个node下的所有nginx配置
 function showAllNgs(NodeIP,ClientID){
-	var areaIP = "localhost";
-	var areaPort = "port";
+	//var areaIP = "localhost";
+	//var areaPort = "port";
 	var showAllNgsUrl = "http://"+areaIP+":"+areaPort+"/nginxcfg?NodeIP="+NodeIP+"&ClientID="+ClientID;
 	$.ajax({
 			url : showAllNgsUrl,
@@ -626,8 +643,8 @@ function showNgsHtml(data){
       "AppSrcType": AppSrcType
      };
 
-		var areaIP = "localhost";
-		var areaPort = "port";
+		//var areaIP = "localhost";
+		//var areaPort = "port";
 		var AppNameAndNamespace = Namespace+'-'+AppName;
 		var saveUrl = "http://"+areaIP+":"+areaPort+"/nginxcfg?AppNameAndNamespace="+AppNameAndNamespace+"&NodeIP="+NodeIP+"&ClientID="+ClientID;
 		$.ajax({
@@ -893,8 +910,8 @@ function showNgsHtml(data){
 		  "AppSrcType": AppSrcType
 	    };
 
-	    var areaIP = "localhost";
-		var areaPort = "port";
+	    //var areaIP = "localhost";
+		//var areaPort = "port";
 		var deleteUrl = "http://"+areaIP+":"+areaPort+"/nginxcfg?NodeIP="+NodeIP+"&ClientID="+ClientID;
 
 	    layer.open({
@@ -1025,8 +1042,8 @@ function showNgsHtml(data){
 	     	$(".IsDefaultCfg-true").parent().parent().remove();
 	    }
 
-		var areaIP = "localhost";
-		var areaPort = "port";
+		//var areaIP = "localhost";
+		//var areaPort = "port";
 		
 		var saveUrl = "http://"+areaIP+":"+areaPort+"/nginxcfg?NodeIP="+NodeIP+"&ClientID="+ClientID;
 		$.ajax({
@@ -1279,10 +1296,11 @@ function showNgsHtml(data){
 	function issuedCfgIps(obj){
 		var NodesInfo = new Array();
 		var issuedCfgDataInfo = "";
-		var areaIP = "localhost";
-		var areaPort = "port";
+		//var areaIP = "localhost";
+		//var areaPort = "port";
 		var areaUrl = "http://"+areaIP+":"+areaPort+"/clients";
-		var watcherUrl = "http://"+areaIP+":"+areaPort+"/ngfront/zone/clients/watcher?NodeIP=";
+		//var watcherUrl = "http://"+areaIP+":"+areaPort+"/ngfront/zone/clients/watcher?NodeIP=";
+		console.log(areaUrl);
 		$.ajax({
 			"url":areaUrl,
 			"type":"get",
@@ -1302,11 +1320,13 @@ function showNgsHtml(data){
 						 	for(var i=0; i<clientsVal.length;i++){
 						 		var NodeIP = clientsVal[i].NodeIP;
 						 		var ClientID = clientsVal[i].ClientID;
+						 		var APIServerPort = clientsVal[i].APIServerPort.substring(1,clientsVal[i].APIServerPort.length);
 
 						 		clientsHtml += '<tr class="nodeInfos">'+
 			                                    '<td style="text-indent: 30px;">'+
 			                                    '<input type="checkbox" class="chkItem" name="ids" nodeip="'+NodeIP+'" clientid="'+ClientID+'"></td>'+
 												'<td class="nodeip">'+NodeIP+'</td>'+
+												'<td class="APIServerPort">'+APIServerPort+'</td>'+
 			                                    '<td class="clientid">'+ClientID+'</td>'+
 			                                    '</tr>';
 						 	}
@@ -1354,4 +1374,15 @@ function showNgsHtml(data){
 		})
 	}
 	
-
+function areaRefresh(){
+	location.href = "http://"+areaIP+":"+areaPort+"/ngfront";
+}
+function clientsRefresh(){
+	location.href = "http://"+areaIP+":"+areaPort+"/ngfront/zone/clients?areaType="+JobZoneType;
+}	
+function watcherRefresh(){
+	location.href = "http://"+areaIP+":"+areaPort+"/ngfront/zone/clients/watcher?NodeIP="+NodeIP+"&ClientID="+ClientID+"&areaType="+JobZoneType;
+}
+function nginxcfgRefresh(){
+	location.href = "http://"+areaIP+":"+areaPort+"/ngfront/zone/clients/watcher/nginxcfg?NodeIP="+NodeIP+"&ClientID="+ClientID+"&KubernetesMasterHost="+KubernetesMasterHost+"&KubernetesAPIVersion="+KubernetesAPIVersion+"&JobZoneType="+JobZoneType;
+}

@@ -24,7 +24,7 @@
 	        <div class="container">
 	            <div class="navbar-header">
 	                <a href="javascript:void(0);">
-	                    <h2>Nginx配置管理</h2>
+	                    <h2>KubeNG管理</h2>
 	                </a>
 	            </div>
 	            
@@ -34,7 +34,7 @@
 	<div class="page-container">
 		<article>
 			<div class="page-main">
-				<div class="contentTitle">
+				<div class="contentTitle hide">
 					<ol class="breadcrumb">
 						<li><a href="javascript:void(0)"><i class="fa fa-home"></i>&nbsp;&nbsp;<span
 								id="nav1">控制台</span></a></li>
@@ -43,6 +43,14 @@
 					</ol>
 				</div>
 				<div class="contentMain">
+					<aside class="aside-btn">
+	                    <div class="btns-group">
+	                        <a id="clusterResource" class="Record action" onclick="areaRefresh()">
+	                        <i class="fa fa-home"></i>nginx代理区域
+	                        </a>>
+	                        <a id="clusterResource" class="Record action" onclick="clientsRefresh()">节点管理</a>
+	                    </div>
+	                </aside> 
 					<div class="row">
                     <div class="col-md-12">
                         <div class="ibox float-e-margins">
@@ -56,7 +64,7 @@
 											id="nodePlayBtn"><i class="fa fa-play" title="启动"></i></a>
 										<a href="javascript:void(0);"
 											id="userStopBtn"><i class="fa fa-power-off" title="停止"></i></a> -->
-										<a onclick="issuedCfg()"><i class="fa fa-sort-amount-asc" title="下发配置"></i></a>
+										<a onclick="issuedCfg(this)" class="issuedBtn no-drop"><i class="fa fa-sort-amount-asc" title="下发配置"></i></a></span>
 										<a href="javascript:window.location.reload(true);"
 											id="userReloadBtn"><i class="fa fa-repeat" title="刷新"></i></a>
 									</div>

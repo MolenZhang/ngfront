@@ -66,11 +66,11 @@ function showAreaTable(option){
 					 //table
 					 var countNum = "count"+areaNum;
 					 tbodyHtml = '<table class="table"><tbody ><tr><td class="center tdType table-tdFirst" rowspan="'+dataNum+'"><a href="'+clientsUrl+dataType+'">'+dataType+'</a></td>';
-					 tbodyHtml+='<td class="table-tdSec"><a>'+objTest[areaNum].Clients[0].NodeIP+'</a></td>'
+					 tbodyHtml+='<td class="table-tdSec">'+objTest[areaNum].Clients[0].NodeIP+'</td>'
 						'</tr>';
 					 if(dataNum!=1){
 						 for(countNum = 1; countNum< dataNum; countNum++){
-							 tbodyHtml+='<tr><td class="table-tdSec"><a>'+objTest[areaNum].Clients[countNum].NodeIP+'</a></td></tr>';
+							 tbodyHtml+='<tr><td class="table-tdSec">'+objTest[areaNum].Clients[countNum].NodeIP+'</td></tr>';
 						 }
 					 }
 					 tbodyHtml+= '</tbody></table>'
@@ -87,6 +87,11 @@ function showAreaTable(option){
 	})
 }
 
-
+function areaRefresh(){
+	//location.replace(location.href);
+	var areaIP = "localhost";
+	var areaPort = "port";
+	location.href = "http://"+areaIP+":"+areaPort+"/ngfront";
+}
 
 	

@@ -6,7 +6,7 @@
 }
 .aside-btn .btns-group {
     position: absolute;
-    bottom: -1px;
+    bottom: 16px;
 }
 .btns-group .btn-white {
     background: #fff;

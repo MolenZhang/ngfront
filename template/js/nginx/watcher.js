@@ -4,6 +4,8 @@ var JobZoneType = "";
 var WatchNamespaceSets = "";
 var NodeIPInfo ="";
 var ClientIDInfo = "";
+var areaIP = "localhost";
+var areaPort = "port";
 $(document).ready(function () {
 	var locationUrl = window.location;
 	//http://172.16.13.110:8083/ngfront/zone/clients/watcher?NodeIP=10.10.3.9&ClientID=21343&areaType=user
@@ -24,21 +26,6 @@ $(document).ready(function () {
 		 $(this).parent().hide();
 		 $(this).parent().prev().show();
 	 });
-	 //全选
-	$(".chkAll").click(function(){
-	    $(this).parents('table').find(".chkItem").prop('checked',$(".chkAll").is(":checked"));
-	});
- 
-    // 每条数据 checkbox class设为 chkItem
-    $(document).on("click",".chkItem", function(){
-        if($(this).is(":checked")){
-            if ($(this).parents('table').find(".chkItem:checked").length == $(this).parents('table').find(".chkItem").length) {
-            	$(this).parents('table').find(".chkAll").prop("checked", "checked");
-            }
-        }else{
-        	$(this).parents('table').find(".chkAll").prop('checked', $(this).is(":checked"));
-        }
-    });
 	 
 	 //停止监控按钮
 	 $(document).on('click','.btn-stop',function(){
@@ -178,8 +165,8 @@ $(document).ready(function () {
  });/*reday*/
 
   function showWatcher(NodeIPInfo,ClientIDInfo){
-	var areaIP = "localhost";
-	var areaPort = "port";
+	//var areaIP = "localhost";
+	//var areaPort = "port";
 	var watcherUrl = "http://"+areaIP+":"+areaPort+"/watcher";
 	$.ajax({
 		"url":watcherUrl,
@@ -352,8 +339,8 @@ $(document).ready(function () {
 
 //生成监控echart图
 function showNamespacesEcharts(KubernetesMasterHost,KubernetesAPIVersion,JobZoneType){
-	var areaIP = "localhost";
-	var areaPort = "port";
+	//var areaIP = "localhost";
+	//var areaPort = "port";
 	var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/namespaces";
 	
 	$.ajax({
@@ -456,8 +443,8 @@ function showNamespaces(NamespacesList){
 }
 
 function loadNamespaces(KubernetesMasterHost,KubernetesAPIVersion){
-	var areaIP = "localhost";
-	var areaPort = "port";
+	//var areaIP = "localhost";
+	//var areaPort = "port";
 	var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/namespaces";
 	
 	$.ajax({
@@ -479,8 +466,8 @@ function loadNamespaces(KubernetesMasterHost,KubernetesAPIVersion){
 
 //提交watcher表单
 function watcherSubmit(NodeIPInfo,ClientIDInfo){
-	var areaIP = "localhost";
-	var areaPort = "port";
+	//var areaIP = "localhost";
+	//var areaPort = "port";
 	var submitUrl = "http://"+areaIP+":"+areaPort+"/watcher";
 	
 				
@@ -553,8 +540,8 @@ function watcherSubmit(NodeIPInfo,ClientIDInfo){
 
 //停止监控
 function stopControl(NodeIPInfo,ClientIDInfo){
-	var areaIP = "localhost";
-	var areaPort = "port";
+	//var areaIP = "localhost";
+	//var areaPort = "port";
 	var submitUrl = "http://"+areaIP+":"+areaPort+"/watcher";
 	
 	var KubernetesMasterHost = $("#KubernetesMasterHostOldVal").html();
@@ -622,8 +609,8 @@ function stopControl(NodeIPInfo,ClientIDInfo){
 	        		"NodeIP": NodeIPInfo,
 	        		"ClientID":ClientIDInfo
 	        	};
-	        	var areaIP = "localhost";
-				var areaPort = "port";
+	        	//var areaIP = "localhost";
+				//var areaPort = "port";
 				var downloadUrl = 'http://'+areaIP+':'+areaPort+'/nginxcfg/download';
 	        	$.ajax({
 					url : downloadUrl,
@@ -660,6 +647,13 @@ function stopControl(NodeIPInfo,ClientIDInfo){
 	//         alert(e.message);
 	//     }
 	// }
-	
-	
+function areaRefresh(){
+	location.href = "http://"+areaIP+":"+areaPort+"/ngfront";
+}
+function clientsRefresh(){
+	location.href = "http://"+areaIP+":"+areaPort+"/ngfront/zone/clients?areaType="+JobZoneType;
+}	
+function watcherRefresh(){
+	location.href = "http://"+areaIP+":"+areaPort+"/ngfront/zone/clients/watcher?NodeIP="+NodeIPInfo+"&ClientID="+ClientIDInfo+"&areaType="+JobZoneType;
+}
 

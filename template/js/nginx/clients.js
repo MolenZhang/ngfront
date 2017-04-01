@@ -1,16 +1,46 @@
  var areaType = "";
+ var areaIP = "localhost";
+ var areaPort = "port";
  $(document).ready(function () {
 	var locationUrl = window.location;
 	//http://192.168.252.133:8083/ngfront/zone/clients?areaType=user
 	areaType=locationUrl.search.substring(locationUrl.search.indexOf("=")+1,locationUrl.search.length); 
 	
 	showClients(areaType);
+
+	 //全选
+	$(".chkAll").click(function(){
+	    $(this).parents('table').find(".chkItem").prop('checked',$(".chkAll").is(":checked"));
+	    if($(".chkItem:checked").length!=0){
+	    	$(".issuedBtn").removeClass("no-drop");
+	    }else{
+	    	$(".issuedBtn").addClass("no-drop");
+	    }
+	});
+ 
+    // 每条数据 checkbox class设为 chkItem
+    $(document).on("click",".chkItem", function(){
+        if($(this).is(":checked")){
+            if ($(this).parents('table').find(".chkItem:checked").length == $(this).parents('table').find(".chkItem").length) {
+            	$(this).parents('table').find(".chkAll").prop("checked", "checked");
+            }
+        }else{
+        	$(this).parents('table').find(".chkAll").prop('checked', $(this).is(":checked"));
+        }
+        if($(".chkItem:checked").length!=0){
+	    	$(".issuedBtn").removeClass("no-drop");
+	    }else{
+	    	$(".issuedBtn").addClass("no-drop");
+	    }
+    });
+
+
 	
  });/*reday*/
 
 function showClients(areaType){
-	var areaIP = "localhost";
-	var areaPort = "port";
+	//var areaIP = "localhost";
+	//var areaPort = "port";
 	var areaUrl = "http://"+areaIP+":"+areaPort+"/clients";
 	var watcherUrl = "http://"+areaIP+":"+areaPort+"/ngfront/zone/clients/watcher?NodeIP=";
 	$.ajax({
@@ -44,7 +74,7 @@ function showClients(areaType){
 			 		}
 			 		clientsHtml += '<tr>'+
                                     		'<td style="text-indent: 30px;">'+
-                                    		'<input type="checkbox" class="chkNodeItem" name="ids" NodeIP="'+NodeIP+'" ClientID="'+ClientID+'"></td>'+
+                                    		'<input type="checkbox" class="chkItem chkNodeItem" name="ids" NodeIP="'+NodeIP+'" ClientID="'+ClientID+'"></td>'+
 											'<td class="statusImg">'+statusHtml+'</td>'+
                                     		'<td>'+ClientID+'</td>'+
                                     		'<td>'+NodeName+'</td>'+
@@ -68,7 +98,11 @@ function showClients(areaType){
 }
 /*下发配置*/
 
-function issuedCfg(){
+function issuedCfg(obj){
+	if($(obj).attr("class").indexOf("no-drop")!=-1){
+		return
+	}else{
+
 	$("#JobZoneTypeOldVal").append(areaType);
 	layer.open({
 		type: 1,
@@ -77,8 +111,8 @@ function issuedCfg(){
 		content: $("#issuedCfgInfo"),
 		btn: ['确定','取消'],
 		yes: function(index,layero){
-			var areaIP = "localhost";
-			var areaPort = "port";
+			//var areaIP = "localhost";
+			//var areaPort = "port";
 			var issuedUrl = "http://"+areaIP+":"+areaPort+"/watcher/all";
 
 			var KubernetesMasterHost = $("#KubernetesMasterHostInfo").val();
@@ -156,14 +190,15 @@ function issuedCfg(){
 		}
 	})
 }
+}
 
 function loadNamespaces(){
 	$(".namespaceAll").hide();
 	$(".editNamespacesTd").removeClass("hide");
 	var KubernetesMasterHost = $("#KubernetesMasterHostInfo").val();
 	var KubernetesAPIVersion = $("#KubernetesAPIVersionInfo").val();
-	var areaIP = "localhost";
-	var areaPort = "port";
+	//var areaIP = "localhost";
+	//var areaPort = "port";
 	var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/namespaces";
 	
 	$.ajax({
@@ -187,4 +222,14 @@ function loadNamespaces(){
 			}
 		}
 	});
+}
+
+function areaRefresh(){
+	//location.replace(location.href);
+	//var areaIP = "localhost";
+	//var areaPort = "port";
+	location.href = "http://"+areaIP+":"+areaPort+"/ngfront";
+}
+function clientsRefresh(){
+	location.href = "http://"+areaIP+":"+areaPort+"/ngfront/zone/clients?areaType="+areaType;
 }

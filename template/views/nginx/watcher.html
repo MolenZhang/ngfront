@@ -18,7 +18,7 @@
 	        <div class="container">
 	            <div class="navbar-header">
 	                <a href="javascript:void(0);">
-	                    <h2>Nginx配置管理</h2>
+	                    <h2>KubeNG管理</h2>
 	                </a>
 	            </div>
 	            
@@ -31,12 +31,13 @@
 			<div class="page-main">
 				
 				<div class="contentMain">
-					<aside class="aside-btn">
+	                <aside class="aside-btn">
 	                    <div class="btns-group">
-	                        <a id="clusterResource" class="Record action">
-	                        <span class="btn btn-defaults btn-white">
-	                        <span class="ic_left">KubeNG监视器管理</span>
-	                        </span></a>
+	                        <a class="Record action" onclick="areaRefresh()">
+	                        <i class="fa fa-home"></i>nginx代理区域
+	                        </a> > 
+	                        <a class="Record action" onclick="clientsRefresh()">节点管理</a> > 
+	                        <a class="Record action" onclick="watcherRefresh()">KubeNG监视器管理</a>
 	                    </div>
 	                </aside>  
 	                <div class="item-obj">

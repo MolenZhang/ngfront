@@ -6,6 +6,8 @@
 <link rel="stylesheet" type="text/css"
 	href="/plugins/bootstrap-3.3.5/dist/css/bootstrap.min.css" />
 <link rel="stylesheet" type="text/css"
+	href="/plugins/Font-Awesome-master/css/font-awesome.css" />
+<link rel="stylesheet" type="text/css"
 	href="/css/core/base.css" />
 <link rel="stylesheet" type="text/css"
 	href="/css/mod/nginx.css" />
@@ -16,7 +18,7 @@
 	        <div class="container">
 	            <div class="navbar-header">
 	                <a href="javascript:void(0);">
-	                    <h2>Nginx配置管理</h2>
+	                    <h2>KubeNG管理</h2>
 	                </a>
 	            </div>
 	            
@@ -29,12 +31,11 @@
 			<div class="page-main">
 				
 				<div class="contentMain">
-					<aside class="aside-btn">
+	                <aside class="aside-btn">
 	                    <div class="btns-group">
-	                        <a id="clusterResource" class="Record action">
-	                        <span class="btn btn-defaults btn-white">
-	                        <span class="ic_left">Nginx代理区域</span>
-	                        </span></a>
+	                        <a id="clusterResource" class="Record action" onclick="areaRefresh()">
+	                        <i class="fa fa-home"></i>nginx代理区域
+	                        </a>
 	                    </div>
 	                </aside>  
 	                <div class="item-obj">

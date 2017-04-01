@@ -42,7 +42,7 @@ i.self_a {
 }
 .aside-btn .btns-group {
     position: absolute;
-    bottom: -1px;
+    bottom: 16px;
 }
 .btns-group .btn-white {
     background: #fff;
@@ -237,4 +237,10 @@ i.fa-one{
 	line-height: 35px;
 	border: 1px solid #ddd;
 }
+
+.no-drop i{
+	cursor: no-drop!important;
+	color: #ddd;
+}
+
 
