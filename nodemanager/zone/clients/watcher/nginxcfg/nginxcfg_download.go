@@ -53,8 +53,10 @@ func (svc *ServiceInfo) nginxCfgDownload(request *restful.Request, response *res
 }
 
 func (svc *ServiceInfo) batchNginxCfgsDownload(request *restful.Request, response *restful.Response) {
+
 	logdebug.Println(logdebug.LevelDebug, "<<<<<<<all nginx config downloading...>>>>>>>")
-	webMsg := BatchDownloadInfo{}
+
+	webMsg := BatchDownloadCfgsInfo{}
 	err := request.ReadEntity(&webMsg)
 	if err != nil {
 		response.WriteError(http.StatusInternalServerError, err)
@@ -62,7 +64,7 @@ func (svc *ServiceInfo) batchNginxCfgsDownload(request *restful.Request, respons
 	}
 	logdebug.Println(logdebug.LevelDebug, "<<<<<<<解析前端数据>>>>>>>", webMsg)
 
-	for _, batchDownloadInfo := range webMsg.DownloadInfo {
+	for _, batchDownloadInfo := range webMsg.DownloadClientInfo {
 		client := nodes.ClientInfo{
 			NodeIP:   batchDownloadInfo.NodeIP,
 			ClientID: batchDownloadInfo.ClientID,
@@ -80,38 +82,40 @@ func (svc *ServiceInfo) batchNginxCfgsDownload(request *restful.Request, respons
 		resp, _ := http.Get(NginxCfgDownloadURL)
 		defer resp.Body.Close()
 		body, _ := ioutil.ReadAll(resp.Body)
+		os.MkdirAll("/tmp/molen", os.ModePerm)
 		writeFileTar := "/tmp/molen" +
 			"/" +
 			batchDownloadInfo.NodeIP +
+			"_" +
 			batchDownloadInfo.ClientID +
 			".tar"
+		fout, _ := os.Create(writeFileTar)
+		fout.Write(body)
 
 		//解包
-		untarCmd := "tar -zxvf" + writeFileTar
+		bkpDownloadFile := "/tmp/molly/" + batchDownloadInfo.NodeIP + "_" + batchDownloadInfo.ClientID
+		os.MkdirAll(bkpDownloadFile, os.ModePerm)
+		untarCmd := "tar -zxvf " + writeFileTar + " -C " + bkpDownloadFile
 		cmd := exec.Command("bash", "-c", untarCmd)
 		cmd.Run()
 
-		writeFile := "/tmp/molen" +
-			"/" +
-			batchDownloadInfo.NodeIP +
-			batchDownloadInfo.ClientID
-
-		fout, _ := os.Create(writeFile)
-		fout.Write(body)
 	}
-
-	logdebug.Println(logdebug.LevelDebug, "<<<<<<<走完通信函数...>>>>>>>")
 	//打包
-	tarCmd := "tar -zcvf" +
-		"/tmp/molen" +
-		"molen.tar"
+	tarCmd := "tar -zcvf " + "/tmp/molly.tar.gz" + " /tmp/molly"
 	cmd := exec.Command("bash", "-c", tarCmd)
 	cmd.Run()
+	respMsg := webRespMsg{
+		NginxCfgDownloadURL: "/nginxcfg/batchDownload",
+	}
 
-	logdebug.Println(logdebug.LevelDebug, "<<<<<<<走完打包函数...>>>>>>>")
-	filePath := "/tmp/molen/molen.tar"
+	response.WriteHeaderAndJson(200, respMsg, "application/json")
+
+}
+
+func (svc *ServiceInfo) nginxCfgRedictDownload(request *restful.Request, response *restful.Response) {
 
 	//write to web
+	filePath := "/tmp/molly.tar.gz"
 	file, _ := os.Open(filePath)
 	defer file.Close()
 
@@ -120,6 +124,5 @@ func (svc *ServiceInfo) batchNginxCfgsDownload(request *restful.Request, respons
 	response.AddHeader("Content-Type", "application/octet-stream")
 	response.AddHeader("content-disposition", "attachment; filename="+fileName)
 	io.Copy(response.ResponseWriter, file)
-	logdebug.Println(logdebug.LevelDebug, "<<<<<<<走完前端通信函数...>>>>>>>")
 
 }

@@ -251,8 +251,9 @@ function loadNamespaces(){
 				},
 				data: JSON.stringify(DownloadData),
 				success :function(data){
-					var data=data;
-					location.href= "http://192.168.85.130:8083/nginxcfg/Alldownload"
+					//var data=data;
+//					location.href= 'http://'+areaIP+':'+areaPort+'/nginxcfg/batchDownload';
+					location.href= 'http://'+areaIP+':'+areaPort+data.NginxCfgDownloadURL;
 				}
 			
 		});

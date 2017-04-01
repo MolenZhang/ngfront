@@ -383,7 +383,12 @@ func (svc *ServiceInfo) Init() {
 	ws.Route(ws.POST("/Alldownload").To(svc.batchNginxCfgsDownload).
 		Doc("download all nginx configs").
 		Operation("downloadfile").
-		Reads(BatchDownloadInfo{}))
+		Reads(BatchDownloadCfgsInfo{}))
+
+	ws.Route(ws.GET("/batchDownload").To(svc.nginxCfgRedictDownload).
+		Doc("download nginx config").
+		Operation("downloadfile"))
+	//	Reads(WebReqMsg{}))
 
 	restful.Add(ws)
 

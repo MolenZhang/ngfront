@@ -140,6 +140,9 @@ func batchPostWatcherInfo(request *restful.Request, response *restful.Response) 
 		response.WriteError(http.StatusInternalServerError, err)
 		return
 	}
+
+	logdebug.Println(logdebug.LevelDebug, "前端watcher信息", webMsg)
+
 	for _, batchNodeInfo := range webMsg.BatchNodesInfo {
 
 		client := nodes.ClientInfo{
