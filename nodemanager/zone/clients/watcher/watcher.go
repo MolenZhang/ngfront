@@ -58,10 +58,11 @@ var WebWatcherManagerCfgs []nodes.WatchManagerCfg
 //WatcherCfgConvertToWebCfg map转换arry函数
 func WatcherCfgConvertToWebCfg(watchManagerCfgs map[int]nodes.WatchManagerCfg) []nodes.WatchManagerCfg {
 
-	webWatcherManagerCfgs := make([]nodes.WatchManagerCfg, 0)
+	webWatcherManagerCfgs := make([]nodes.WatchManagerCfg, len(watchManagerCfgs))
 
-	for _, watcherCfg := range watchManagerCfgs {
-		webWatcherManagerCfgs = append(webWatcherManagerCfgs, watcherCfg)
+	for k, watcherCfg := range watchManagerCfgs {
+		//webWatcherManagerCfgs = append(webWatcherManagerCfgs, watcherCfg)
+		webWatcherManagerCfgs[k-1] = watcherCfg
 	}
 
 	return webWatcherManagerCfgs
@@ -178,7 +179,7 @@ func postWatcherInfo(request *restful.Request, response *restful.Response) {
 
 		return
 	}
-	logdebug.Println("新增时 前端传来的数据：", webMsg)
+	logdebug.Println(logdebug.LevelDebug, "新增时 前端传来的数据：", webMsg)
 	client := nodes.ClientInfo{
 		NodeIP:   webMsg.NodeIP,
 		ClientID: webMsg.ClientID,
@@ -204,7 +205,7 @@ func postWatcherInfo(request *restful.Request, response *restful.Response) {
 	respBody := ResponseBody{}
 	json.Unmarshal(resp, &respBody)
 
-	logdebug.Println("返回给前端时 后台传来的数据：", respBody)
+	logdebug.Println(logdebug.LevelDebug, "返回给前端时 后台传来的数据：", respBody)
 	response.WriteHeaderAndJson(200, respBody, "application/json")
 	return
 
@@ -377,6 +378,44 @@ func restartWatcherManager(request *restful.Request, response *restful.Response)
 	return
 }
 
+type watcherInfo struct {
+	Client  nodes.ClientInfo
+	Watcher nodes.WatchManagerCfg
+}
+
+func getSingleWatcherInfo(request *restful.Request, response *restful.Response) {
+	logdebug.Println(logdebug.LevelDebug, "获取具体watcherID监视器信息")
+
+	watcherID := request.PathParameter("watcherID")
+
+	request.Request.ParseForm()
+
+	client := nodes.ClientInfo{
+		NodeIP:   request.Request.Form.Get("NodeIP"),
+		ClientID: request.Request.Form.Get("ClientID"),
+	}
+
+	//watcher界面所需展示的数据较多 不止是watcher 还有client的部分信息
+	webMsg := watcherInfo{}
+
+	key := client.CreateKey()
+
+	clientInfo := nodes.GetClientInfo(key)
+	webMsg.Client = clientInfo
+
+	watcherAPIServerURL := "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.WatchManagerAPIServerPath + "/" + watcherID
+
+	respMsg := ResponseBody{}
+	resp, _ := communicate.SendRequestByJSON(communicate.GET, watcherAPIServerURL, nil)
+	json.Unmarshal(resp, &respMsg)
+	webMsg.Watcher = respMsg.WatcherCfg
+
+	response.WriteHeaderAndJson(200, webMsg, "application/json")
+
+	return
+
+}
+
 //Init 初始化函数
 func (svc *ServiceInfo) Init() {
 	http.HandleFunc("/ngfront/zone/clients/watcher", loadWatcherPage)
@@ -390,6 +429,13 @@ func (svc *ServiceInfo) Init() {
 		Consumes(restful.MIME_XML, restful.MIME_JSON).
 		Produces(restful.MIME_JSON, restful.MIME_XML) // you can specify this per route as well
 
+	ws.Route(ws.GET("/watcher/{watcherID}").To(getSingleWatcherInfo).
+		// docs
+		Doc("get watch manager config").
+		Operation("findWatchManagerConfig").
+		Reads(nodes.ClientInfo{}).
+		Returns(200, "OK", nodes.NodeInfo{}))
+
 	//获取所有的监视管理器配置 GET http://localhost:8888/watcher
 	ws.Route(ws.GET("/").To(getAllWatcherInfo).
 		// docs
@@ -399,7 +445,7 @@ func (svc *ServiceInfo) Init() {
 		Returns(200, "OK", nodes.NodeInfo{}))
 
 	//更新下发监视管理器配置 PUT http://localhost:8888/watcher/watcherID
-	ws.Route(ws.PUT("/{WatcherID}").To(putWatcherInfoByID).
+	ws.Route(ws.PUT("/{watcherID}").To(putWatcherInfoByID).
 		// docs
 		Doc("update watch manager config").
 		Operation("updateWatchManagerConfig").
