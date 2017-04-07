@@ -190,25 +190,28 @@ func postWatcherInfo(request *restful.Request, response *restful.Response) {
 	createWatcherURL := "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.WatchManagerAPIServerPath
 
 	resp, _ := communicate.SendRequestByJSON(communicate.POST, createWatcherURL, webMsg.WatcherCfg)
-	/*
-		resp, _ := communicate.SendRequestByJSON(communicate.POST, createWatcherURL, webMsg.WatcherCfg)
-		//根据kubeng通信返回的信息存储watcher配置
-		respBody := ResponseBody{}
-		json.Unmarshal(resp, &respBody)
-		watcherKey := respBody.WatcherCfg.WatcherID
-		watcherValue := respBody.WatcherCfg
-		watcherCfgs := map[int]nodes.WatchManagerCfg{
-			watcherKey: watcherValue,
-		}
-		nodes.AddWatcherData(key, watcherCfgs)
-	*/
 	respBody := ResponseBody{}
 	json.Unmarshal(resp, &respBody)
+
+	getNamespacesFromWeb(respBody.WatcherCfg.WatchNamespaceSets)
 
 	logdebug.Println(logdebug.LevelDebug, "返回给前端时 后台传来的数据：", respBody)
 	response.WriteHeaderAndJson(200, respBody, "application/json")
 	return
 
+}
+
+// SaveNamespacesFromWeb 保存前端已经选择的租户集合
+type SaveNamespacesFromWeb struct {
+	namespaceSets []string
+}
+
+var saveNamespacesFromWeb SaveNamespacesFromWeb
+
+func getNamespacesFromWeb(namespaces []string) {
+	for _, namspace := range namespaces {
+		saveNamespacesFromWeb.namespaceSets = append(saveNamespacesFromWeb.namespaceSets, namespace)
+	}
 }
 
 //对应前端编辑按钮
@@ -410,6 +413,7 @@ func getSingleWatcherInfo(request *restful.Request, response *restful.Response) 
 	json.Unmarshal(resp, &respMsg)
 	webMsg.Watcher = respMsg.WatcherCfg
 
+	logdebug.Println(logdebug.LevelDebug, "getSingleWatcherInfo 获取前端数据：", webMsg)
 	response.WriteHeaderAndJson(200, webMsg, "application/json")
 
 	return
@@ -459,14 +463,14 @@ func (svc *ServiceInfo) Init() {
 		Reads(CfgWebMsg{}))
 
 	//删除某个特定的监视器配置
-	ws.Route(ws.DELETE("/{WatcherID}").To(deleteWatcherInfoByID).
+	ws.Route(ws.DELETE("/{watcherID}").To(deleteWatcherInfoByID).
 		Doc("delete a specific watcher cfg").
 		Operation("deleteSpecificWatcherInfo").
 		Param(ws.PathParameter("watcherID", "watcherID由监控的租户列表组成").DataType("int")).
 		Reads(CfgWebMsg{}))
 
 	//获取某个特定的监视器配置
-	ws.Route(ws.GET("/{WatcherID}").To(getWatcherInfoByID).
+	ws.Route(ws.GET("/{watcherID}").To(getWatcherInfoByID).
 		Doc("get a specific  watcher cfg").
 		Operation("getSpecificWatcherInfo").
 		Param(ws.PathParameter("watcherID", "watcherID由监控的租户列表组成").DataType("int")).
