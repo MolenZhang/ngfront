@@ -24,4 +24,4 @@ sed -i 's/var areaPort = "port";/var areaPort = "'${PORT}'";/g' template/js/ngin
 sed -i 's/var areaPort = "port";/var areaPort = "'${PORT}'";/g' template/js/nginx/nginxcfg.js
 sed -i 's/var areaPort = "port";/var areaPort = "'${PORT}'";/g' template/js/nginx/watcher.js
 
-./ngfront -port ${PORT} -loglevel debug
+./ngfront -ip ${HOSTIP} -port ${PORT} -loglevel debug

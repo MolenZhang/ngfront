@@ -40,7 +40,7 @@ const DefaultLogLevel = "info"
 
 // Init 初始配置参数
 func Init() {
-	flag.StringVar(&NgFrontCfg.ListenIP, "ip]", DefaultListenIP, "默认监听地址")
+	flag.StringVar(&NgFrontCfg.ListenIP, "ip", DefaultListenIP, "默认监听地址")
 	flag.StringVar(&NgFrontCfg.ListenPort, "port", DefaultListenPort, "默认监听端口")
 	flag.DurationVar(&NgFrontCfg.HeartCycle, "heartcycle", DefaultHeartCycle, "默认心跳间隔 单位/秒")
 	flag.StringVar(&NgFrontCfg.HeartServerAddr, "heartserveraddr", "http://localhost:8083"+DefaultHeartServerPath, "默认心跳服务器地址")
