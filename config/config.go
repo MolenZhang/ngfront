@@ -47,7 +47,7 @@ func Init() {
 	flag.StringVar(&NgFrontCfg.LogLevel, "loglevel", DefaultLogLevel, "默认日志级别，支持debug,info,warn,error,fatal")
 	flag.Parse()
 
-	NgFrontCfg.HeartServerAddr = "http://" + NgFrontCfg.ListenIP + NgFrontCfg.ListenPort + DefaultHeartServerPath
+	NgFrontCfg.HeartServerAddr = "http://" + NgFrontCfg.ListenIP + ":" + NgFrontCfg.ListenPort + DefaultHeartServerPath
 
 	return
 }
