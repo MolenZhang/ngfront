@@ -20,6 +20,13 @@ type watcherNodeInfo struct {
 	ClientID string
 }
 
+type watcherStatusInfo struct {
+	NodeIP     string
+	ClientID   string
+	WatcherID  string
+	WatcherCfg nodes.WatchManagerCfg
+}
+
 //前端需批量操作的节点内容
 type BatchWatcherWebMsg struct {
 	BatchNodesInfo []watcherNodeInfo
@@ -193,6 +200,7 @@ func postWatcherInfo(request *restful.Request, response *restful.Response) {
 
 }
 
+//对应前端编辑按钮
 //putWatcherInfo 处理前端PUT过来的消息 更新
 func putWatcherInfoByID(request *restful.Request, response *restful.Response) {
 	logdebug.Println(logdebug.LevelDebug, "与kubeng通讯 更新指定watcherID的状态")
@@ -301,6 +309,64 @@ func getWatchNamespacesDetailInfo(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
+//对应前端 启动 按钮
+func startWatcherManager(request *restful.Request, response *restful.Response) {
+	reqMsg := watcherStatusInfo{}
+
+	err := request.ReadEntity(&reqMsg)
+	if err != nil {
+		response.WriteError(http.StatusInternalServerError, err)
+		return
+	}
+
+	reqMsg.WatcherCfg.K8sWatcherStatus = "start"
+
+	client := nodes.ClientInfo{
+		NodeIP:   reqMsg.NodeIP,
+		ClientID: reqMsg.ClientID,
+	}
+	key := client.CreateKey()
+	clientInfo := nodes.GetClientInfo(key)
+
+	startWatcherCfgURL := "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.WatchManagerAPIServerPath + reqMsg.WatcherID
+
+	//暂时未做处理失败的逻辑判断
+	communicate.SendRequestByJSON(communicate.PUT, startWatcherCfgURL, reqMsg.WatcherCfg.K8sWatcherStatus)
+	return
+}
+
+//对应前端停止按钮
+func stopWatcherManager(request *restful.Request, response *restful.Response) {
+	reqMsg := watcherStatusInfo{}
+
+	err := request.ReadEntity(&reqMsg)
+	if err != nil {
+		response.WriteError(http.StatusInternalServerError, err)
+		return
+	}
+
+	reqMsg.WatcherCfg.K8sWatcherStatus = "stop"
+
+	client := nodes.ClientInfo{
+		NodeIP:   reqMsg.NodeIP,
+		ClientID: reqMsg.ClientID,
+	}
+	key := client.CreateKey()
+	clientInfo := nodes.GetClientInfo(key)
+
+	startWatcherCfgURL := "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.WatchManagerAPIServerPath + reqMsg.WatcherID
+
+	//暂时未做处理失败的逻辑判断
+	communicate.SendRequestByJSON(communicate.PUT, startWatcherCfgURL, reqMsg.WatcherCfg.K8sWatcherStatus)
+	return
+}
+
+//对应前端 重启按钮，实则为启动按钮
+func restartWatcherManager(request *restful.Request, response *restful.Response) {
+	startWatcherManager(request, response)
+	return
+}
+
 //Init 初始化函数
 func (svc *ServiceInfo) Init() {
 	http.HandleFunc("/ngfront/zone/clients/watcher", loadWatcherPage)
@@ -355,6 +421,27 @@ func (svc *ServiceInfo) Init() {
 		// docs
 		Doc("batch update watch manager config").
 		Operation("updateAllWatchManagerConfig").
+		Reads(BatchWatcherWebMsg{})) // from the request
+
+	//停止监视器
+	ws.Route(ws.POST("/stop").To(stopWatcherManager).
+		// docs
+		Doc("stop watcher manager").
+		Operation("stopWatcherManager").
+		Reads(BatchWatcherWebMsg{})) // from the request
+
+	//开启监视器
+	ws.Route(ws.POST("/start").To(startWatcherManager).
+		// docs
+		Doc("start watcher manager").
+		Operation("startWatcherManager").
+		Reads(BatchWatcherWebMsg{})) // from the request
+
+	//重启监视器
+	ws.Route(ws.POST("/start").To(restartWatcherManager).
+		// docs
+		Doc("start watcher manager").
+		Operation("startWatcherManager").
 		Reads(BatchWatcherWebMsg{})) // from the request
 
 	restful.Add(ws)
