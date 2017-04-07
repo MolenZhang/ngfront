@@ -9,6 +9,7 @@ import (
 	"ngfront/communicate"
 	"ngfront/logdebug"
 	"ngfront/nodemanager/nodes"
+	//"strconv"
 
 	"github.com/emicklei/go-restful"
 )
@@ -41,6 +42,7 @@ type ResponseBody struct {
 	Result       bool
 	ErrorMessage string
 	ErrCode      int32
+	WatcherCfg   nodes.WatchManagerCfg
 }
 
 //加载界面
@@ -59,24 +61,75 @@ func loadWatcherPage(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
-//处理前端的get请求
-func getWatcherInfo(request *restful.Request, response *restful.Response) {
-	logdebug.Println(logdebug.LevelDebug, "获取监视器信息")
+//获取前端特指的某个监视器配置
+func getWatcherInfoByID(request *restful.Request, response *restful.Response) {
+	logdebug.Println(logdebug.LevelDebug, "根据前端提供的WatcherID获取相应监视器信息")
+	watcherID := request.PathParameter("watcherID")
 
 	request.Request.ParseForm()
-
 	client := nodes.ClientInfo{
 		NodeIP:   request.Request.Form.Get("NodeIP"),
 		ClientID: request.Request.Form.Get("ClientID"),
 	}
 
-	//watcher界面所需展示的数据较多 不止是watcher 还有client的部分信息
-	webMsg := nodes.NodeInfo{}
+	key := client.CreateKey()
+	clientInfo := nodes.GetClientInfo(key)
+
+	getWatcherCfgURL := "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.WatchManagerAPIServerPath + watcherID
+
+	resp, _ := communicate.SendRequestByJSON(communicate.GET, getWatcherCfgURL, nil)
+
+	webMsg := ResponseBody{}
+	json.Unmarshal(resp, &webMsg)
+
+	response.WriteHeaderAndJson(200, webMsg, "application/json")
+
+	return
+
+}
+
+func deleteWatcherInfoByID(request *restful.Request, response *restful.Response) {
+	logdebug.Println(logdebug.LevelDebug, "根据前端提供的watcherID删除对应监视器信息")
+	watcherID := request.PathParameter("watcherID")
+
+	request.Request.ParseForm()
+	client := nodes.ClientInfo{
+		NodeIP:   request.Request.Form.Get("NodeIP"),
+		ClientID: request.Request.Form.Get("ClientID"),
+	}
 
 	key := client.CreateKey()
+	clientInfo := nodes.GetClientInfo(key)
 
-	webMsg.Client = nodes.GetClientInfo(key)
-	webMsg.Watcher = nodes.GetWatcherData(key)
+	deleteWatcherAPIServerURL := "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.WatchManagerAPIServerPath + watcherID
+	communicate.SendRequestByJSON(communicate.DELETE, deleteWatcherAPIServerURL, nil)
+}
+
+//处理前端的get请求
+func getAllWatcherInfo(request *restful.Request, response *restful.Response) {
+	logdebug.Println(logdebug.LevelDebug, "获取所有监视器信息")
+
+	request.Request.ParseForm()
+	client := nodes.ClientInfo{
+		NodeIP:   request.Request.Form.Get("NodeIP"),
+		ClientID: request.Request.Form.Get("ClientID"),
+	}
+	key := client.CreateKey()
+	clientInfo := nodes.GetClientInfo(key)
+
+	watcherAPIServerURL := "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.WatchManagerAPIServerPath
+
+	/*
+		//watcher界面所需展示的数据较多 不止是watcher 还有client的部分信息
+		webMsg := nodes.NodeInfo{}
+		key := client.CreateKey()
+
+		webMsg.Client = nodes.GetClientInfo(key)
+		webMsg.Watcher = nodes.GetWatcherData(key)
+	*/
+	webMsg := nodes.WatchManagerCfgs
+	resp, _ := communicate.SendRequestByJSON(communicate.GET, watcherAPIServerURL, nil)
+	json.Unmarshal(resp, &webMsg)
 
 	response.WriteHeaderAndJson(200, webMsg, "application/json")
 
@@ -98,10 +151,10 @@ func (webMsg *CfgWebMsg) getWatcherAPIServerURL() (watcherAPIServerURL string) {
 	return
 }
 
-//postWatcherInfo 处理前端POST过来的消息
+//createWatcherInfo 处理前端生成的信息 创建
 func postWatcherInfo(request *restful.Request, response *restful.Response) {
-	logdebug.Println(logdebug.LevelDebug, "与kubeng通讯 更新watcher状态")
 
+	logdebug.Println(logdebug.LevelDebug, "与kubeng通讯 创建watcherCfg")
 	webMsg := CfgWebMsg{}
 	err := request.ReadEntity(&webMsg)
 	if err != nil {
@@ -117,22 +170,81 @@ func postWatcherInfo(request *restful.Request, response *restful.Response) {
 	key := client.CreateKey()
 	clientInfo := nodes.GetClientInfo(key)
 
-	//更新watcher信息
-	nodes.AddWatcherData(key, webMsg.WatcherCfg)
+	createWatcherURL := "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.WatchManagerAPIServerPath
 
-	updateWatcherCfgURL := "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.WatchManagerAPIServerPath
+	communicate.SendRequestByJSON(communicate.POST, createWatcherURL, webMsg.WatcherCfg)
+	/*
+		resp, _ := communicate.SendRequestByJSON(communicate.POST, createWatcherURL, webMsg.WatcherCfg)
+		//根据kubeng通信返回的信息存储watcher配置
+		respBody := ResponseBody{}
+		json.Unmarshal(resp, &respBody)
+		watcherKey := respBody.WatcherCfg.WatcherID
+		watcherValue := respBody.WatcherCfg
+		watcherCfgs := map[int]nodes.WatchManagerCfg{
+			watcherKey: watcherValue,
+		}
+		nodes.AddWatcherData(key, watcherCfgs)
+	*/
+	webRespMsg := ResponseBody{
+		Result: true,
+	}
+	response.WriteHeaderAndJson(200, webRespMsg, "application/json")
+	return
+
+}
+
+//putWatcherInfo 处理前端PUT过来的消息 更新
+func putWatcherInfoByID(request *restful.Request, response *restful.Response) {
+	logdebug.Println(logdebug.LevelDebug, "与kubeng通讯 更新指定watcherID的状态")
+	watcherID := request.PathParameter("watcherID")
+
+	webMsg := CfgWebMsg{}
+
+	/*intTypeWatcherID, err := strconv.Atoi(watcherID)
+	if err != nil {
+		response.WriteError(http.StatusInternalServerError, err)
+		return
+	}
+	*/
+	err := request.ReadEntity(&webMsg)
+	if err != nil {
+		response.WriteError(http.StatusInternalServerError, err)
+
+		return
+	}
+
+	client := nodes.ClientInfo{
+		NodeIP:   webMsg.NodeIP,
+		ClientID: webMsg.ClientID,
+	}
+	key := client.CreateKey()
+	clientInfo := nodes.GetClientInfo(key)
+	/*
+		//更新watcher信息
+		watcherKey := webMsg.WatcherCfg.WatcherID
+		watcherValue := webMsg.WatcherCfg
+		watcherCfgs := map[int]nodes.WatchManagerCfg{
+			watcherKey: watcherValue,
+		}
+		nodes.AddWatcherData(key, webMsg.WatcherCfgs)
+	*/
+	updateWatcherCfgURL := "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.WatchManagerAPIServerPath + watcherID
 
 	//暂时未做处理失败的逻辑判断
-	communicate.SendRequestByJSON(communicate.POST, updateWatcherCfgURL, webMsg.WatcherCfg)
+	communicate.SendRequestByJSON(communicate.PUT, updateWatcherCfgURL, webMsg.WatcherCfg)
 
 	logdebug.Println(logdebug.LevelDebug, "与kubeng通讯 更新watcher状态 收到的web前端消息内容:", webMsg)
 
+	webRespMsg := ResponseBody{
+		Result: true,
+	}
+	response.WriteHeaderAndJson(200, webRespMsg, "application/json")
 	return
 }
 
 // 处理前端批量POST过来的消息
 func batchPostWatcherInfo(request *restful.Request, response *restful.Response) {
-	logdebug.Println(logdebug.LevelDebug, "与kubeng通讯 批量更新watcher状态")
+	logdebug.Println(logdebug.LevelDebug, "与kubeng通讯 批量创建watcher状态")
 
 	webMsg := BatchWatcherWebMsg{}
 	err := request.ReadEntity(&webMsg)
@@ -153,12 +265,12 @@ func batchPostWatcherInfo(request *restful.Request, response *restful.Response) 
 		clientInfo := nodes.GetClientInfo(key)
 
 		//更新watcher信息
-		nodes.AddWatcherData(key, webMsg.WatcherCfg)
+		//		nodes.AddWatcherData(key, webMsg.WatcherCfg)
 
-		updateWatcherCfgURL := "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.WatchManagerAPIServerPath
+		createWatcherCfgURL := "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.WatchManagerAPIServerPath
 
 		//暂时未做处理失败的逻辑判断
-		communicate.SendRequestByJSON(communicate.POST, updateWatcherCfgURL, webMsg.WatcherCfg)
+		communicate.SendRequestByJSON(communicate.POST, createWatcherCfgURL, webMsg.WatcherCfg)
 	}
 	return
 }
@@ -202,20 +314,41 @@ func (svc *ServiceInfo) Init() {
 		Consumes(restful.MIME_XML, restful.MIME_JSON).
 		Produces(restful.MIME_JSON, restful.MIME_XML) // you can specify this per route as well
 
-	//获取监视管理器配置 GET http://localhost:8888/watcher
-	ws.Route(ws.GET("/").To(getWatcherInfo).
+	//获取所有的监视管理器配置 GET http://localhost:8888/watcher
+	ws.Route(ws.GET("/").To(getAllWatcherInfo).
 		// docs
 		Doc("get watch manager config").
 		Operation("findWatchManagerConfig").
 		Reads(nodes.ClientInfo{}).
 		Returns(200, "OK", nodes.NodeInfo{}))
 
-	//更新下发监视管理器配置 POST http://localhost:8888/watcher
-	ws.Route(ws.POST("/").To(postWatcherInfo).
+	//更新下发监视管理器配置 PUT http://localhost:8888/watcher/watcherID
+	ws.Route(ws.PUT("/{WatcherID}").To(putWatcherInfoByID).
 		// docs
 		Doc("update watch manager config").
 		Operation("updateWatchManagerConfig").
+		Param(ws.PathParameter("watcherID", "watcherID由监控的租户列表组成").DataType("int")).
 		Reads(CfgWebMsg{})) // from the request
+
+	//创建监视器配置 CREATE
+	ws.Route(ws.POST("/").To(postWatcherInfo).
+		Doc("create a watcher manager").
+		Operation("createWatcherInfo").
+		Reads(CfgWebMsg{}))
+
+	//删除某个特定的监视器配置
+	ws.Route(ws.DELETE("/{WatcherID}").To(deleteWatcherInfoByID).
+		Doc("delete a specific watcher cfg").
+		Operation("deleteSpecificWatcherInfo").
+		Param(ws.PathParameter("watcherID", "watcherID由监控的租户列表组成").DataType("int")).
+		Reads(CfgWebMsg{}))
+
+	//获取某个特定的监视器配置
+	ws.Route(ws.GET("/{WatcherID}").To(getWatcherInfoByID).
+		Doc("get a specific  watcher cfg").
+		Operation("getSpecificWatcherInfo").
+		Param(ws.PathParameter("watcherID", "watcherID由监控的租户列表组成").DataType("int")).
+		Reads(CfgWebMsg{}))
 
 	//批量下发监视管理器配置 POST http://localhost:8888/watcher
 	ws.Route(ws.POST("/all").To(batchPostWatcherInfo).
@@ -223,6 +356,7 @@ func (svc *ServiceInfo) Init() {
 		Doc("batch update watch manager config").
 		Operation("updateAllWatchManagerConfig").
 		Reads(BatchWatcherWebMsg{})) // from the request
+
 	restful.Add(ws)
 
 	return

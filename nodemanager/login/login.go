@@ -119,10 +119,10 @@ func (svc *ServiceInfo) login(request *restful.Request, response *restful.Respon
 
 	nodes.AddClientData(clientInfo) //将IP+clientID 为key add进map
 	url := "http://" + reqMsg.ReqBody.NodeIP + reqMsg.ReqBody.APIServerPort + "/" + reqMsg.ReqBody.WatchManagerAPIServerPath
-	watcherCfg := getWatcherCfg(url)
-	if watcherCfg != nil {
+	watcherCfgs := getWatcherCfgs(url)
+	if watcherCfgs != nil {
 		key := clientInfo.CreateKey()
-		nodes.AddWatcherData(key, *watcherCfg)
+		nodes.AddWatcherData(key, watcherCfgs)
 	}
 	// http GET---->AddWatcherData(clientInfo.CreateKey(), Value....) 存
 
@@ -132,7 +132,7 @@ func (svc *ServiceInfo) login(request *restful.Request, response *restful.Respon
 	return
 }
 
-func getWatcherCfg(url string) (watcherCfg *nodes.WatchManagerCfg) {
+func getWatcherCfgs(url string) map[int]nodes.WatchManagerCfg {
 	//logdebug.Println(logdebug.LevelInfo,"-----请求watcher 数据 url=", url)
 
 	resp, err := http.Get(url)
@@ -148,7 +148,8 @@ func getWatcherCfg(url string) (watcherCfg *nodes.WatchManagerCfg) {
 		return nil
 	}
 
-	json.Unmarshal(body, &watcherCfg)
+	watcherCfgs := nodes.WatchManagerCfgs
+	json.Unmarshal(body, &watcherCfgs)
 
-	return
+	return watcherCfgs
 }

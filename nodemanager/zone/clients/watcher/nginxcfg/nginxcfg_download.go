@@ -29,11 +29,15 @@ func (svc *ServiceInfo) nginxCfgDownload(request *restful.Request, response *res
 		reqMsg  WebReqMsg
 		respMsg webRespMsg
 	)
+
+	watcherID := request.PathParameter("watcherID")
+
 	request.Request.ParseForm()
 	reqMsg.NodeIP = request.Request.Form.Get("NodeIP")
 	reqMsg.ClientID = request.Request.Form.Get("ClientID")
 
 	logdebug.Println(logdebug.LevelDebug, "<<<<<<<前端输入下载信息：>>>>>>>", reqMsg)
+	logdebug.Println(logdebug.LevelDebug, "<<<<<<<前端watcherID：>>>>>>>", watcherID)
 
 	client := nodes.ClientInfo{
 		NodeIP:   reqMsg.NodeIP,
@@ -47,7 +51,9 @@ func (svc *ServiceInfo) nginxCfgDownload(request *restful.Request, response *res
 		clientInfo.NodeIP +
 		clientInfo.APIServerPort +
 		"/" +
-		clientInfo.DownloadCfgAPIServerPath
+		clientInfo.DownloadCfgAPIServerPath +
+		"/" +
+		watcherID
 
 	response.WriteHeaderAndJson(200, respMsg, "application/json")
 }
@@ -92,7 +98,7 @@ func (svc *ServiceInfo) batchNginxCfgsDownload(request *restful.Request, respons
 		fout, _ := os.Create(writeFileTar)
 		fout.Write(body)
 
-		//解包
+		//处理kubeNg发来的数据
 		bkpDownloadFile := "/tmp/molly/" + batchDownloadInfo.NodeIP + "_" + batchDownloadInfo.ClientID
 		os.MkdirAll(bkpDownloadFile, os.ModePerm)
 		untarCmd := "tar -zxvf " + writeFileTar + " -C " + bkpDownloadFile
@@ -100,7 +106,7 @@ func (svc *ServiceInfo) batchNginxCfgsDownload(request *restful.Request, respons
 		cmd.Run()
 
 	}
-	//打包
+	//将kubeNG发来的数据 整理打包 准备发给web前端
 	tarCmd := "tar -zcvf " + "/tmp/molly.tar.gz" + " /tmp/molly"
 	cmd := exec.Command("bash", "-c", tarCmd)
 	cmd.Run()

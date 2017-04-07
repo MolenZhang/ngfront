@@ -375,9 +375,10 @@ func (svc *ServiceInfo) Init() {
 		Operation("deleteAllNginxConfig").
 		Reads(WebConfig{})) // from the request
 
-	ws.Route(ws.GET("/download").To(svc.nginxCfgDownload).
+	ws.Route(ws.GET("/download/{watcherID}").To(svc.nginxCfgDownload).
 		Doc("download nginx config").
 		Operation("downloadfile").
+		Param(ws.PathParameter("watcherID", "watcherID由监控的租户列表组成").DataType("int")).
 		Reads(WebReqMsg{}))
 
 	ws.Route(ws.POST("/Alldownload").To(svc.batchNginxCfgsDownload).

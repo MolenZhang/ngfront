@@ -78,11 +78,11 @@ func getClientsInfo(w http.ResponseWriter, r *http.Request) {
 	for _, nodeInfo := range allNodes {
 		//提取nodeInfo中部分字段 给前端展示使用
 		clientInfo := client{
-			NodeName:         nodeInfo.Client.NodeName,
-			NodeIP:           nodeInfo.Client.NodeIP,
-			K8sWatcherStatus: nodeInfo.Watcher.K8sWatcherStatus,
-			ClientID:         nodeInfo.Client.ClientID,
-			APIServerPort:    nodeInfo.Client.APIServerPort,
+			NodeName: nodeInfo.Client.NodeName,
+			NodeIP:   nodeInfo.Client.NodeIP,
+			//	K8sWatcherStatus: nodeInfo.Watcher.K8sWatcherStatus,
+			ClientID:      nodeInfo.Client.ClientID,
+			APIServerPort: nodeInfo.Client.APIServerPort,
 		}
 
 		//获取数组下标

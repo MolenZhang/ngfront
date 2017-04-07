@@ -31,7 +31,10 @@ type WatchManagerCfg struct {
 	NginxTestCommand       string
 	StandbyUpstreamNodes   []string
 	K8sWatcherStatus       string
+	WatcherID              int
 }
+
+var WatchManagerCfgs map[int]WatchManagerCfg
 
 //ClientInfo 客户端信息(kubeng名义上是ngfront的客户端 实际上它提供了多个APIServer)
 type ClientInfo struct {
@@ -50,7 +53,7 @@ type ClientInfo struct {
 //NodeInfo 单个节点的所有信息
 type NodeInfo struct {
 	Client  ClientInfo
-	Watcher WatchManagerCfg
+	Watcher map[int]WatchManagerCfg
 	timer   *time.Timer
 }
 
@@ -143,7 +146,7 @@ func AddClientData(client ClientInfo) {
 }
 
 //AddWatcherData 保存监视器配置数据
-func AddWatcherData(key string, watcher WatchManagerCfg) {
+func AddWatcherData(key string, watcher map[int]WatchManagerCfg) {
 	allNodesInfo.mutexLock.Lock()
 
 	defer allNodesInfo.mutexLock.Unlock()
@@ -158,7 +161,7 @@ func AddWatcherData(key string, watcher WatchManagerCfg) {
 }
 
 //GetWatcherData 获取监视器配置
-func GetWatcherData(key string) WatchManagerCfg {
+func GetWatcherData(key string) map[int]WatchManagerCfg {
 	allNodesInfo.mutexLock.Lock()
 
 	defer allNodesInfo.mutexLock.Unlock()
