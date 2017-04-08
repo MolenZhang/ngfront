@@ -147,7 +147,7 @@ func getAllWatcherInfo(request *restful.Request, response *restful.Response) {
 	json.Unmarshal(resp, &webMsg)
 
 	respMsg := WatcherCfgConvertToWebCfg(webMsg)
-
+	logdebug.Println(logdebug.LevelDebug, "获取所有监视器信息：", webMsg)
 	response.WriteHeaderAndJson(200, respMsg, "application/json")
 
 	return
@@ -193,7 +193,7 @@ func postWatcherInfo(request *restful.Request, response *restful.Response) {
 	respBody := ResponseBody{}
 	json.Unmarshal(resp, &respBody)
 
-	getNamespacesFromWeb(respBody.WatcherCfg.WatchNamespaceSets)
+	//	getNamespacesFromWeb(respBody.WatcherCfg.WatchNamespaceSets)
 
 	logdebug.Println(logdebug.LevelDebug, "返回给前端时 后台传来的数据：", respBody)
 	response.WriteHeaderAndJson(200, respBody, "application/json")
@@ -208,12 +208,13 @@ type SaveNamespacesFromWeb struct {
 
 var saveNamespacesFromWeb SaveNamespacesFromWeb
 
+/*
 func getNamespacesFromWeb(namespaces []string) {
 	for _, namspace := range namespaces {
 		saveNamespacesFromWeb.namespaceSets = append(saveNamespacesFromWeb.namespaceSets, namespace)
 	}
 }
-
+*/
 //对应前端编辑按钮
 //putWatcherInfo 处理前端PUT过来的消息 更新
 func putWatcherInfoByID(request *restful.Request, response *restful.Response) {
@@ -408,9 +409,11 @@ func getSingleWatcherInfo(request *restful.Request, response *restful.Response) 
 
 	watcherAPIServerURL := "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.WatchManagerAPIServerPath + "/" + watcherID
 
+	logdebug.Println(logdebug.LevelDebug, "watcher INFO URL", watcherAPIServerURL)
 	respMsg := ResponseBody{}
 	resp, _ := communicate.SendRequestByJSON(communicate.GET, watcherAPIServerURL, nil)
-	json.Unmarshal(resp, &respMsg)
+	json.Unmarshal(resp, &respMsg.WatcherCfg)
+	logdebug.Println(logdebug.LevelDebug, "kubng返回给的数据信息", respMsg.WatcherCfg)
 	webMsg.Watcher = respMsg.WatcherCfg
 
 	logdebug.Println(logdebug.LevelDebug, "getSingleWatcherInfo 获取前端数据：", webMsg)
@@ -437,8 +440,8 @@ func (svc *ServiceInfo) Init() {
 		// docs
 		Doc("get watch manager config").
 		Operation("findWatchManagerConfig").
-		Reads(nodes.ClientInfo{}).
-		Returns(200, "OK", nodes.NodeInfo{}))
+		Writes(watcherInfo{}))
+	//	Returns(200, "OK", nodes.NodeInfo{}))
 
 	//获取所有的监视管理器配置 GET http://localhost:8888/watcher
 	ws.Route(ws.GET("/").To(getAllWatcherInfo).
