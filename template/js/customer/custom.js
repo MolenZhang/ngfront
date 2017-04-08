@@ -50,7 +50,7 @@ function sliderFn(sliderId, max, min, value){
 }
 
 function testFun(){
-    var testUrl = "http://"+areaIP+":"+areaPort+"/watchers/"+WatcherID+"?NodeIP="+NodeIP+"&ClientID="+ClientID;
+    var testUrl = "http://"+192.168.85.130+":"+8083+"/watchers/"+WatcherID+"?NodeIP="+NodeIP+"&ClientID="+ClientID;
     var testData = {
         "aaa":test,
         "bbb":test1
@@ -60,7 +60,7 @@ function testFun(){
         url: testUrl,
         dataType: "json",
         contentType: "text/html; charset=UTF-8",
-        type:"get",            // get put post delete
+        type:"put",            // get put post delete
         headers: {
             "Content-Type": "application/json",
             "Accept": "application/json",

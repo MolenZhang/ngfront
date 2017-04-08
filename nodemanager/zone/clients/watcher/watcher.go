@@ -10,8 +10,8 @@ import (
 	"ngfront/logdebug"
 	"ngfront/nodemanager/nodes"
 	//"strconv"
-
 	"github.com/emicklei/go-restful"
+	"sort"
 )
 
 //前端单个watcher需展示的信息
@@ -61,16 +61,21 @@ type ResponseBody struct {
 var WebWatcherManagerCfgs []nodes.WatchManagerCfg
 
 //WatcherCfgConvertToWebCfg map转换arry函数
-func WatcherCfgConvertToWebCfg(watchManagerCfgs map[int]nodes.WatchManagerCfg) []nodes.WatchManagerCfg {
+func WatcherCfgConvertToWebCfg(kubengWatchersMap map[int]nodes.WatchManagerCfg) []nodes.WatchManagerCfg {
 
-	webWatcherManagerCfgs := make([]nodes.WatchManagerCfg, len(watchManagerCfgs))
-
-	for k, watcherCfg := range watchManagerCfgs {
-		//webWatcherManagerCfgs = append(webWatcherManagerCfgs, watcherCfg)
-		webWatcherManagerCfgs[k-1] = watcherCfg
+	sort_keys := make([]int, 0)
+	for map_key, _ := range kubengWatchersMap {
+		sort_keys = append(sort_keys, map_key)
 	}
 
-	return webWatcherManagerCfgs
+	sort.Ints(sort_keys)
+
+	webWatchersArray := make([]nodes.WatchManagerCfg, 0)
+	for _, map_key := range sort_keys {
+		webWatchersArray = append(webWatchersArray, kubengWatchersMap[map_key])
+
+	}
+	return webWatchersArray
 }
 
 //加载界面
@@ -230,7 +235,6 @@ func getNamespacesFromWeb(namespaces []string) {
 
 //对应前端编辑按钮
 //putWatcherInfo 处理前端PUT过来的消息 更新
-//同时 前端的重启、停止、开启按钮的实现也是基于更新函数实现
 func putWatcherInfoByID(request *restful.Request, response *restful.Response) {
 	logdebug.Println(logdebug.LevelDebug, "与kubeng通讯 更新指定watcherID的状态")
 	watcherID := request.PathParameter("watcherID")
@@ -456,7 +460,7 @@ func (svc *ServiceInfo) Init() {
 		Reads(BatchWatcherWebMsg{})) // from the request
 
 	//停止或开启监视器
-	ws.Route(ws.POST("/{watcherID}/{status}").To(changeWatcherManagerStatus).
+	ws.Route(ws.PUT("/{watcherID}/{status}").To(changeWatcherManagerStatus).
 		// docs
 		Doc("change watcher manager watcherStatus").
 		Operation("stopWatcherManager").
