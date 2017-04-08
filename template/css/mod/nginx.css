@@ -249,5 +249,20 @@ i.fa-one{
 	width: 3%;
     text-align: center;
 }
+.start_stopBtn{
+	
+}
+.stop_stopBtn{
+	cursor: no-drop;
+	color: #333;
+	display: none;
+}
+.start_startBtn{
+	cursor: no-drop;
+	color: #333;
+	display: none;
+}
+.start_startBtn{
 
+}
 

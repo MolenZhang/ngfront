@@ -85,7 +85,7 @@ function showClients(areaType){
                                     	/*'<a href="'+watcherUrl+NodeIP+'&ClientID='+ClientID+'&areaType='+areaType+'"><i class="fa fa-gear"></i></a>'+*/
                                     	
                                     	'<a onclick="addOneWatcher(this)" ClientID="'+ClientID+'" NodeIP="'+NodeIP+'"><i>新增</i></a>'+
-                                    	'<a ><i>删除</i></a>'+
+                                    	
                                     	'<a onclick="nginxExport(this)"><i>下载</i></a>'+
                                     '</td>'+
                                     '</tr>';
@@ -323,7 +323,11 @@ function showWatcherHtml(data,ClientID,NodeIP){
 					+'<td>'+WatcherID+'</td>'
 					+'<td class="statusImg">'+K8sWatcherStatusHtml+'</td>'
 					+'<td colspan="2">'+WatchNamespaceSets+'</td>'
-					+'<td class="operationBtns" WatcherID="'+WatcherID+'"><a><i>停止</i></a><a><i>启动</i></a><a href="'+watcherHtmlUrl+WatcherID+'"><i>编辑</i></a><a onclick="delOneWatcher(this)"><i>删除</i></a></td>'
+					+'<td class="operationBtns" WatcherID="'+WatcherID+'">'
+					+'<a onclick="stopOneWatcher(this)" class="'+K8sWatcherStatus+'_stopBtn"><i>停止</i></a>'
+					+'<a onclick="startOneWatcher(this)" class="'+K8sWatcherStatus+'_startBtn"><i>启动</i></a>'
+					+'<a href="'+watcherHtmlUrl+WatcherID+'"><i>编辑</i></a>'
+					+'<a onclick="delOneWatcher(this)"><i>删除</i></a></td>'
 					+'</tr>';
 		}
 
@@ -476,7 +480,66 @@ function delOneWatcher(obj){
 			layer.close(index);
 		}
 	});
-	
+}
+/*stop一个watcher*/
+function stopOneWatcher(obj){
+	var WatcherID = $(obj).parent().attr("WatcherID");
+	var NodeIP = $(obj).parent().parent().attr("NodeIP");
+	var ClientID = $(obj).parent().parent().attr("ClientID");
+	var stopUrl = "http://"+areaIP+":"+areaPort+"/watchers/"+WatcherID+"/stop?NodeIP="+NodeIP+"&ClientID="+ClientID;
+	$.ajax({
+        url: stopUrl,
+        dataType: "json",
+        contentType: "text/html; charset=UTF-8",
+        type:"put",            
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+        },
+        success:function(data){
+            var data=data;
+            if(data.Result==true){
+				$(obj).parent().parent().remove();
+				layer.msg('停止成功！', {icon: 1});
+			}else{
+				layer.alert(data.ErrorMessage, {
+				icon: 2,
+				title:"停止失败",
+					skin: 'layer-ext-moon'
+				})
+			}
+        }
+    });
+}
+/*start一个watcher*/
+function startOneWatcher(obj){
+	var WatcherID = $(obj).parent().attr("WatcherID");
+	var NodeIP = $(obj).parent().parent().attr("NodeIP");
+	var ClientID = $(obj).parent().parent().attr("ClientID");
+	var startUrl = "http://"+areaIP+":"+areaPort+"/watchers/"+WatcherID+"/start?NodeIP="+NodeIP+"&ClientID="+ClientID;
+	$.ajax({
+        url: startUrl,
+        dataType: "json",
+        contentType: "text/html; charset=UTF-8",
+        type:"put",            
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+        },
+        success:function(data){
+            var data=data;
+            if(data.Result==true){
+				$(obj).parent().parent().remove();
+				layer.msg('启动成功！', {icon: 1});
+			}else{
+				layer.alert(data.ErrorMessage, {
+				icon: 2,
+				title:"启动失败",
+					skin: 'layer-ext-moon'
+				})
+			}
+        }
+    });
 }
 
 /*下载*/
