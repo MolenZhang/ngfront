@@ -103,7 +103,7 @@ func getWatcherInfoByID(request *restful.Request, response *restful.Response) {
 	key := client.CreateKey()
 	clientInfo := nodes.GetClientInfo(key)
 
-	getWatcherCfgURL := "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.WatchManagerAPIServerPath + watcherID
+	getWatcherCfgURL := "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.WatchManagerAPIServerPath + "/" + watcherID
 
 	resp, _ := communicate.SendRequestByJSON(communicate.GET, getWatcherCfgURL, nil)
 
@@ -129,8 +129,9 @@ func deleteWatcherInfoByID(request *restful.Request, response *restful.Response)
 	key := client.CreateKey()
 	clientInfo := nodes.GetClientInfo(key)
 
-	deleteWatcherAPIServerURL := "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.WatchManagerAPIServerPath + watcherID
+	deleteWatcherAPIServerURL := "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.WatchManagerAPIServerPath + "/" + watcherID
 	communicate.SendRequestByJSON(communicate.DELETE, deleteWatcherAPIServerURL, nil)
+	logdebug.Println(logdebug.LevelDebug, "删除watcher URL", deleteWatcherAPIServerURL)
 	webRespMsg := ResponseBody{
 		Result: true,
 	}
@@ -179,10 +180,11 @@ func (webMsg *CfgWebMsg) getWatcherAPIServerURL() (watcherAPIServerURL string) {
 	return
 }
 
-//createWatcherInfo 处理前端生成的信息 创建
+//createWatcherInfo 处理前端生成的信息 创建 自动同步配置给其他client
 func postWatcherInfo(request *restful.Request, response *restful.Response) {
 
 	logdebug.Println(logdebug.LevelDebug, "与kubeng通讯 创建watcherCfg")
+
 	webMsg := CfgWebMsg{}
 	err := request.ReadEntity(&webMsg)
 	if err != nil {
@@ -190,6 +192,7 @@ func postWatcherInfo(request *restful.Request, response *restful.Response) {
 
 		return
 	}
+
 	logdebug.Println(logdebug.LevelDebug, "新增时 前端传来的数据：", webMsg)
 	client := nodes.ClientInfo{
 		NodeIP:   webMsg.NodeIP,
@@ -248,7 +251,7 @@ func putWatcherInfoByID(request *restful.Request, response *restful.Response) {
 	key := client.CreateKey()
 	clientInfo := nodes.GetClientInfo(key)
 
-	updateWatcherCfgURL := "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.WatchManagerAPIServerPath + watcherID
+	updateWatcherCfgURL := "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.WatchManagerAPIServerPath + "/" + watcherID
 
 	//暂时未做处理失败的逻辑判断
 	communicate.SendRequestByJSON(communicate.PUT, updateWatcherCfgURL, webMsg.WatcherCfg)
@@ -336,7 +339,7 @@ func changeWatcherManagerStatus(request *restful.Request, response *restful.Resp
 	key := client.CreateKey()
 	clientInfo := nodes.GetClientInfo(key)
 
-	startWatcherCfgURL := "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.WatchManagerAPIServerPath + watcherID
+	startWatcherCfgURL := "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.WatchManagerAPIServerPath + "/" + watcherID
 
 	//get 对应watcherID的信息
 	respMsg := ResponseBody{}
