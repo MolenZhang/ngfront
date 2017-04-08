@@ -5,7 +5,7 @@ var WatchNamespaceSets = "";
 var NodeIPInfo ="";
 var ClientIDInfo = "";
 var WatcherID = "";
-var areaIP = "localhost";
+var areaIP = "192.168.85.130";
 var areaPort = "port";
 $(document).ready(function () {
 	var locationUrl = window.location;
@@ -168,7 +168,7 @@ $(document).ready(function () {
  });/*reday*/
 
   function showWatcher(NodeIPInfo,ClientIDInfo){
-	//var areaIP = "localhost";
+	//var areaIP = "192.168.85.130";
 	//var areaPort = "port";
 	var watcherUrl = "http://"+areaIP+":"+areaPort+"/watchers/watcher/"+WatcherID;
 	$.ajax({
@@ -342,7 +342,7 @@ $(document).ready(function () {
 
 //生成监控echart图
 function showNamespacesEcharts(KubernetesMasterHost,KubernetesAPIVersion,JobZoneType){
-	//var areaIP = "localhost";
+	//var areaIP = "192.168.85.130";
 	//var areaPort = "port";
 	var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/namespaces";
 	
@@ -446,7 +446,7 @@ function showNamespaces(NamespacesList){
 }
 
 function loadNamespaces(KubernetesMasterHost,KubernetesAPIVersion){
-	//var areaIP = "localhost";
+	//var areaIP = "192.168.85.130";
 	//var areaPort = "port";
 	var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/namespaces";
 	
@@ -469,7 +469,7 @@ function loadNamespaces(KubernetesMasterHost,KubernetesAPIVersion){
 
 //提交watcher表单
 function watcherSubmit(NodeIPInfo,ClientIDInfo){
-	//var areaIP = "localhost";
+	//var areaIP = "192.168.85.130";
 	//var areaPort = "port";
 	var submitUrl = "http://"+areaIP+":"+areaPort+"/watcher";
 	
@@ -543,7 +543,7 @@ function watcherSubmit(NodeIPInfo,ClientIDInfo){
 
 //停止监控
 function stopControl(NodeIPInfo,ClientIDInfo){
-	//var areaIP = "localhost";
+	//var areaIP = "192.168.85.130";
 	//var areaPort = "port";
 	var submitUrl = "http://"+areaIP+":"+areaPort+"/watcher";
 	
@@ -612,7 +612,7 @@ function stopControl(NodeIPInfo,ClientIDInfo){
 	        		"NodeIP": NodeIPInfo,
 	        		"ClientID":ClientIDInfo
 	        	};
-	        	//var areaIP = "localhost";
+	        	//var areaIP = "192.168.85.130";
 				//var areaPort = "port";
 				var downloadUrl = 'http://'+areaIP+':'+areaPort+'/nginxcfg/download';
 	        	$.ajax({

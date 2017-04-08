@@ -344,18 +344,19 @@ func changeWatcherManagerStatus(request *restful.Request, response *restful.Resp
 	clientInfo := nodes.GetClientInfo(key)
 
 	startWatcherCfgURL := "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.WatchManagerAPIServerPath + "/" + watcherID
-
+	logdebug.Println(logdebug.LevelDebug, "startWatcherCfgURL", startWatcherCfgURL)
 	//get 对应watcherID的信息
 	respMsg := ResponseBody{}
 	resp, _ := communicate.SendRequestByJSON(communicate.GET, startWatcherCfgURL, nil)
-	json.Unmarshal(resp, &respMsg)
+	json.Unmarshal(resp, &respMsg.WatcherCfg)
 	respMsg.WatcherCfg.K8sWatcherStatus = watcherStatus
 
 	//put 更新监控状态位 并发给k8s
 	respWeb, _ := communicate.SendRequestByJSON(communicate.PUT, startWatcherCfgURL, respMsg.WatcherCfg)
-	json.Unmarshal(resp, &respMsg)
+	json.Unmarshal(respWeb, &respMsg)
+	logdebug.Println(logdebug.LevelDebug, "watcherCfg", respMsg)
 
-	response.WriteHeaderAndJson(200, respWeb, "application/json")
+	response.WriteHeaderAndJson(200, respMsg, "application/json")
 
 	return
 }

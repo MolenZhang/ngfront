@@ -1,5 +1,5 @@
  var areaType = "";
- var areaIP = "localhost";
+ var areaIP = "192.168.85.130";
  var areaPort = "port";
  $(document).ready(function () {
 	var locationUrl = window.location;
@@ -39,7 +39,7 @@
  });/*reday*/
 
 function showClients(areaType){
-	//var areaIP = "localhost";
+	//var areaIP = "192.168.85.130";
 	//var areaPort = "port";
 	var areaUrl = "http://"+areaIP+":"+areaPort+"/clients";
 	$.ajax({
@@ -114,7 +114,7 @@ function issuedCfg(obj){
 		content: $("#issuedCfgInfo"),
 		btn: ['确定','取消'],
 		yes: function(index,layero){
-			//var areaIP = "localhost";
+			//var areaIP = "192.168.85.130";
 			//var areaPort = "port";
 			var issuedUrl = "http://"+areaIP+":"+areaPort+"/watcher/all";
 
@@ -200,7 +200,7 @@ function loadNamespaces(){
 	$(".editNamespacesTd").removeClass("hide");
 	var KubernetesMasterHost = $("#KubernetesMasterHostInfo").val();
 	var KubernetesAPIVersion = $("#KubernetesAPIVersionInfo").val();
-	//var areaIP = "localhost";
+	//var areaIP = "192.168.85.130";
 	//var areaPort = "port";
 	var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/namespaces";
 	

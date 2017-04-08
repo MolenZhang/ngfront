@@ -1,7 +1,7 @@
  var NodeIP = "";
  var ClientID = "";
  var JobZoneType = "";
- var areaIP = "localhost";
+ var areaIP = "192.168.85.130";
  var areaPort = "port";
  var KubernetesMasterHost = "";
  var KubernetesAPIVersion = "";
@@ -127,7 +127,7 @@
 
 //展示同一个node下的所有nginx配置
 function showAllNgs(NodeIP,ClientID){
-	//var areaIP = "localhost";
+	//var areaIP = "192.168.85.130";
 	//var areaPort = "port";
 	var showAllNgsUrl = "http://"+areaIP+":"+areaPort+"/nginxcfg?NodeIP="+NodeIP+"&ClientID="+ClientID;
 	$.ajax({
@@ -643,7 +643,7 @@ function localRefreshNg(obj){
       "AppSrcType": AppSrcType
      };
 
-		//var areaIP = "localhost";
+		//var areaIP = "192.168.85.130";
 		//var areaPort = "port";
 	var AppNameAndNamespace = Namespace+'-'+AppName;
 	var saveUrl = "http://"+areaIP+":"+areaPort+"/nginxcfg?AppNameAndNamespace="+AppNameAndNamespace+"&NodeIP="+NodeIP+"&ClientID="+ClientID;
@@ -854,7 +854,7 @@ function localRefreshNg(obj){
 	 * @param obj
 	 */
 	function findNgByOneApp(obj){
-		var areaIP = "localhost";
+		var areaIP = "192.168.85.130";
 		var areaPort = "port";
 		//var area=$("#area").val();
 		var appName = $(obj).val();
@@ -898,7 +898,7 @@ function localRefreshNg(obj){
 		  "AppSrcType": AppSrcType
 	    };
 
-	    //var areaIP = "localhost";
+	    //var areaIP = "192.168.85.130";
 		//var areaPort = "port";
 		var deleteUrl = "http://"+areaIP+":"+areaPort+"/nginxcfg?NodeIP="+NodeIP+"&ClientID="+ClientID;
 
@@ -1030,7 +1030,7 @@ function localRefreshNg(obj){
 	     	$(".IsDefaultCfg-true").parent().parent().remove();
 	    }
 
-		//var areaIP = "localhost";
+		//var areaIP = "192.168.85.130";
 		//var areaPort = "port";
 		
 		var saveUrl = "http://"+areaIP+":"+areaPort+"/nginxcfg?NodeIP="+NodeIP+"&ClientID="+ClientID;
@@ -1284,7 +1284,7 @@ function localRefreshNg(obj){
 	function issuedCfgIps(obj){
 		var NodesInfo = new Array();
 		var issuedCfgDataInfo = "";
-		//var areaIP = "localhost";
+		//var areaIP = "192.168.85.130";
 		//var areaPort = "port";
 		var areaUrl = "http://"+areaIP+":"+areaPort+"/clients";
 		//var watcherUrl = "http://"+areaIP+":"+areaPort+"/ngfront/zone/clients/watcher?NodeIP=";
