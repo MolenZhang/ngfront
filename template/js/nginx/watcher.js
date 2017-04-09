@@ -37,7 +37,7 @@ $(document).ready(function () {
 		 $(this).parent().find("img").attr("src",stopSrc);
 		 $(this).attr("disabled",true);
 		 $(".btn-toNginx").attr("disabled",true);
-		 $(".btn-download").attr("disabled",true);
+		 //$(".btn-download").attr("disabled",true);
 		 $("#K8sWatcherStatus").empty().append("stop");
 		 $(".btn-start").empty().html("开始监控");
 		 stopControl(NodeIPInfo,ClientIDInfo);
@@ -49,7 +49,7 @@ $(document).ready(function () {
 		 $(this).empty().html("重新监控");
 		 $(".btn-stop").attr("disabled",false);
 		 $(".btn-toNginx").attr("disabled",false);
-		 $(".btn-download").attr("disabled",false);
+		 //$(".btn-download").attr("disabled",false);
 		 $("#K8sWatcherStatus").empty().append("start");
 		 watcherSubmit(NodeIPInfo,ClientIDInfo);
 	 });
@@ -168,8 +168,6 @@ $(document).ready(function () {
  });/*reday*/
 
   function showWatcher(NodeIPInfo,ClientIDInfo){
-	//var areaIP = "localhost";
-	//var areaPort = "port";
 	var watcherUrl = "http://"+areaIP+":"+areaPort+"/watchers/watcher/"+WatcherID;
 	$.ajax({
 		"url":watcherUrl,
@@ -209,14 +207,14 @@ $(document).ready(function () {
 				imgHtml = '<img src="/images/running.gif" alt=""/>'+
 							'<button class="btn btn-info btn-start">重启监控</button>'+
 							'<button class="btn btn-info btn-stop">停止监控</button>'+
-							'<button class="btn btn-info btn-toNginx">Nginx配置</button>'+
-							'<button class="btn btn-info btn-download" onclick="nginxExport(this)">下载Nginx配置</button>';
+							'<button class="btn btn-info btn-toNginx">Nginx配置</button>';
+							//'<button class="btn btn-info btn-download" onclick="nginxExport(this)">下载Nginx配置</button>';
 			}else{
 				imgHtml = '<img src="/images/stop.png" alt=""/>'+
 							'<button class="btn btn-info btn-start">开始监控</button>'+
 							'<button class="btn btn-info btn-stop" disabled>停止监控</button>'+
-							'<button class="btn btn-info btn-toNginx" disabled>Nginx配置</button>'+
-							'<button class="btn btn-info btn-download" onclick="nginxExport(this)">下载Nginx配置</button>';
+							'<button class="btn btn-info btn-toNginx" disabled>Nginx配置</button>';
+							//'<button class="btn btn-info btn-download" onclick="nginxExport(this)">下载Nginx配置</button>';
 			}
 			$("#imgStatusInfo").append(imgHtml);
 			var watcherCfgHtml = '';
@@ -469,8 +467,6 @@ function loadNamespaces(KubernetesMasterHost,KubernetesAPIVersion){
 
 //提交watcher表单
 function watcherSubmit(NodeIPInfo,ClientIDInfo){
-	//var areaIP = "localhost";
-	//var areaPort = "port";
 	var submitUrl = "http://"+areaIP+":"+areaPort+"/watcher";
 	
 				
@@ -543,8 +539,6 @@ function watcherSubmit(NodeIPInfo,ClientIDInfo){
 
 //停止监控
 function stopControl(NodeIPInfo,ClientIDInfo){
-	//var areaIP = "localhost";
-	//var areaPort = "port";
 	var submitUrl = "http://"+areaIP+":"+areaPort+"/watcher";
 	
 	var KubernetesMasterHost = $("#KubernetesMasterHostOldVal").html();
@@ -607,25 +601,23 @@ function stopControl(NodeIPInfo,ClientIDInfo){
 	 * 导出一个node的配置信息
 	 * @param obj
 	 */
-	function nginxExport(obj){
-	        	var downloadData={
-	        		"NodeIP": NodeIPInfo,
-	        		"ClientID":ClientIDInfo
-	        	};
-	        	//var areaIP = "localhost";
-				//var areaPort = "port";
-				var downloadUrl = 'http://'+areaIP+':'+areaPort+'/nginxcfg/download';
-	        	$.ajax({
-					url : downloadUrl,
-		    		type: "get", 
-					data: downloadData,
-					success :function(data){
-			//	location.href = 'http://'+areaIP+':'+areaPort+'/nginxcfg/download?NodeIP='+NodeIPInfo+'&ClientID='+ClientIDInfo+'&User='+ngDownUser+'&Password='+ngDownPwd;
-				location.href = data.NginxCfgDownloadURL
-			//			layer.close(indexMsg);
-					}
-				});
-	}
+	// function nginxExport(obj){
+	//         	var downloadData={
+	//         		"NodeIP": NodeIPInfo,
+	//         		"ClientID":ClientIDInfo
+	//         	};
+	// 			var downloadUrl = 'http://'+areaIP+':'+areaPort+'/nginxcfg/download';
+	//         	$.ajax({
+	// 				url : downloadUrl,
+	// 	    		type: "get", 
+	// 				data: downloadData,
+	// 				success :function(data){
+	// 		//	location.href = 'http://'+areaIP+':'+areaPort+'/nginxcfg/download?NodeIP='+NodeIPInfo+'&ClientID='+ClientIDInfo+'&User='+ngDownUser+'&Password='+ngDownPwd;
+	// 			location.href = data.NginxCfgDownloadURL
+			
+	// 				}
+	// 			});
+	// }
 
 	
 

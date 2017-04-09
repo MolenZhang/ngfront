@@ -39,8 +39,6 @@
  });/*reday*/
 
 function showClients(areaType){
-	//var areaIP = "localhost";
-	//var areaPort = "port";
 	var areaUrl = "http://"+areaIP+":"+areaPort+"/clients";
 	$.ajax({
 		"url":areaUrl,
@@ -84,9 +82,8 @@ function showClients(areaType){
                                     	'<a><i class="fa fa-power-off hide"></i></a>'+
                                     	/*'<a href="'+watcherUrl+NodeIP+'&ClientID='+ClientID+'&areaType='+areaType+'"><i class="fa fa-gear"></i></a>'+*/
                                     	
-                                    	'<a onclick="addOneWatcher(this)" ClientID="'+ClientID+'" NodeIP="'+NodeIP+'"><i>新增</i></a>'+
-                                    	
                                     	'<a onclick="nginxExport(this)"><i>下载</i></a>'+
+                                    	'<a onclick="compareClient(this)" ClientID="'+ClientID+'" NodeIP="'+NodeIP+'"><i>对比</i></a>'+
                                     '</td>'+
                                     '</tr>';
 			 	}
@@ -114,8 +111,6 @@ function issuedCfg(obj){
 		content: $("#issuedCfgInfo"),
 		btn: ['确定','取消'],
 		yes: function(index,layero){
-			//var areaIP = "localhost";
-			//var areaPort = "port";
 			var issuedUrl = "http://"+areaIP+":"+areaPort+"/watcher/all";
 
 			var KubernetesMasterHost = $("#KubernetesMasterHostInfo").val();
@@ -200,8 +195,6 @@ function loadNamespaces(){
 	$(".editNamespacesTd").removeClass("hide");
 	var KubernetesMasterHost = $("#KubernetesMasterHostInfo").val();
 	var KubernetesAPIVersion = $("#KubernetesAPIVersionInfo").val();
-	//var areaIP = "localhost";
-	//var areaPort = "port";
 	var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/namespaces";
 	
 	$.ajax({
@@ -289,7 +282,7 @@ function watcherAll(obj){
 			success :function(data){
 				var data=data;
 				var watchersHtml1 = showWatcherHtml(data,ClientID,NodeIP);
-				$(obj).parent().parent().after(watchersHtml1);
+				$(obj).parent().after(watchersHtml1);
 			}
 				
 		});
@@ -327,6 +320,7 @@ function showWatcherHtml(data,ClientID,NodeIP){
 					+'<a onclick="stopOneWatcher(this)" class="'+K8sWatcherStatus+'_stopBtn"><i>停止</i></a>'
 					+'<a onclick="startOneWatcher(this)" class="'+K8sWatcherStatus+'_startBtn"><i>启动</i></a>'
 					+'<a href="'+watcherHtmlUrl+WatcherID+'"><i>编辑</i></a>'
+					+'<a onclick="compareClientOneWatcher(this)" ClientID="'+ClientID+'" NodeIP="'+NodeIP+'"><i>对比</i></a>'
 					+'<a onclick="delOneWatcher(this)"><i>删除</i></a></td>'
 					+'</tr>';
 		}
@@ -540,6 +534,259 @@ function startOneWatcher(obj){
 			}
         }
     });
+}
+/*对比两个client*/
+function compareClient(obj){
+	var thisClientID = $(obj).parent().attr("ClientID");
+	var thisNodeIP = $(obj).parent().attr("NodeIP");
+	var NodesInfo = new Array();
+	var areaUrl = "http://"+areaIP+":"+areaPort+"/clients";
+	$.ajax({
+		"url":areaUrl,
+		"type":"get",
+		"success":function(data){
+			var clientData = eval("("+data+")");
+			
+			var compareClientHtml = "";
+			var dataType = "";
+				
+			for(var areaNum = 0; areaNum< clientData.length; areaNum++){
+				dataType = clientData[areaNum].JobZoneType;
+				if(dataType!=""){
+					//弹窗获得nodeip  clientid
+					if(dataType == areaType){
+						var clientsVal = clientData[areaNum].Clients;
+						var clientsHtml = "";
+						for(var i=0; i<clientsVal.length;i++){
+						 	var NodeIP = clientsVal[i].NodeIP;
+						 	var ClientID = clientsVal[i].ClientID;
+						 	var APIServerPort = clientsVal[i].APIServerPort.substring(1,clientsVal[i].APIServerPort.length);
+						 	if(thisClientID != ClientID || thisNodeIP != NodeIP){
+						 		compareClientHtml += '<tr class="nodeInfos">'+
+			                               '<td style="text-indent: 10px;">'+
+			                                '<input type="radio" nodeip="'+NodeIP+'" clientid="'+ClientID+'" name="compareItem" class="compareItem"></td>'+
+											'<td class="clientid">'+ClientID+'</td>'+
+											'<td class="nodeip">'+NodeIP+'</td>'+
+											'<td class="APIServerPort">'+APIServerPort+'</td>'+
+			                                '</tr>';
+						 	}
+						}
+						$("#compareClientbody").empty().append(compareClientHtml);
+					}
+				}
+			}
+		}
+	});
+	
+
+	layer.open({
+		type: 1,
+		title: '对比Client',
+		area: ['800px','450px'],
+		content: $("#compareClientInfo"),
+		btn: ['k8s对比','外部对比','取消'],
+		yes: function(index, layero){
+			if($(".compareItem:checked").length==0){
+				layer.alert('请选择需要与此对比的一个client', {
+				  icon: 0,
+				  skin: 'layer-ext-moon' 
+				})
+				
+			}else{
+                var NodeIPB = $(".compareItem:checked").attr("NodeIP");
+                var clientB = $(".compareItem:checked").attr("ClientID");
+
+				var compareClientK8sUrl = 'http://'+areaIP+':'+areaPort+'/nginxcfg/compare/'+thisClientID+'-'+clientB+'?NodeIPA='+thisNodeIP+'&NodeIPB='+NodeIPB+'&AppSrcType=k8s';
+
+				$.ajax({
+			        url: compareClientK8sUrl,
+			        dataType: "json",
+			        contentType: "text/html; charset=UTF-8",
+			        type:"get",           
+			        headers: {
+			            "Content-Type": "application/json",
+			            "Accept": "application/json",
+			        },
+			        success:function(data){
+			            var data=data;
+			            if(data.Result == true){
+			            	layer.msg('相同！', {icon: 1});
+			            }else{
+			            	layer.alert(data.ErrorMsg, {
+							  icon: 2,
+							  title:"不同",
+							  skin: 'layer-ext-moon'
+							})
+			            }
+			        }
+    			});					
+			}
+		    layer.close(index);
+		},
+		btn2: function(index, layero){
+			if($(".compareItem:checked").length==0){
+				layer.alert('请选择需要与此对比的一个client', {
+				  icon: 0,
+				  skin: 'layer-ext-moon' 
+				})
+				
+			}else{
+				var compareClientExternUrl = 'http://'+areaIP+':'+areaPort+'/nginxcfg/compare/'+thisClientID+'-'+clientB+'?NodeIPA='+thisNodeIP+'&NodeIPB='+NodeIPB+'&AppSrcType=extern';
+				$.ajax({
+			        url: compareClientExternUrl,
+			        dataType: "json",
+			        contentType: "text/html; charset=UTF-8",
+			        type:"get",           
+			        headers: {
+			            "Content-Type": "application/json",
+			            "Accept": "application/json",
+			        },
+			        success:function(data){
+			            var data=data;
+			            if(data.Result == true){
+			            	layer.msg('相同！', {icon: 1});
+			            }else{
+			            	layer.alert(data.ErrorMsg, {
+							  icon: 2,
+							  title:"不同",
+							  skin: 'layer-ext-moon'
+							})
+			            }
+			        }
+    			});					
+			}
+		    layer.close(index);
+		},
+		btn3: function(index, layero){
+		    layer.close(index);
+		}
+	})
+}
+/*对比两个client中的一个watcher*/
+function compareClientOneWatcher(obj){
+	var thisClientID = $(obj).attr("ClientID");
+	var thisNodeIP = $(obj).attr("NodeIP");
+	var thisWatcherID = $(obj).parent().attr("WatcherID");
+	var NodesInfo = new Array();
+	var areaUrl = "http://"+areaIP+":"+areaPort+"/clients";
+	$.ajax({
+		"url":areaUrl,
+		"type":"get",
+		"success":function(data){
+			var clientData = eval("("+data+")");
+			
+			var compareClientHtml = "";
+			var dataType = "";
+				
+			for(var areaNum = 0; areaNum< clientData.length; areaNum++){
+				dataType = clientData[areaNum].JobZoneType;
+				if(dataType!=""){
+					//弹窗获得nodeip  clientid
+					if(dataType == areaType){
+						var clientsVal = clientData[areaNum].Clients;
+						var clientsHtml = "";
+						for(var i=0; i<clientsVal.length;i++){
+						 	var NodeIP = clientsVal[i].NodeIP;
+						 	var ClientID = clientsVal[i].ClientID;
+						 	var APIServerPort = clientsVal[i].APIServerPort.substring(1,clientsVal[i].APIServerPort.length);
+						 	if(thisClientID != ClientID || thisNodeIP != NodeIP){
+						 		compareClientHtml += '<tr class="nodeInfos">'+
+			                               '<td style="text-indent: 10px;">'+
+			                                '<input type="radio" nodeip="'+NodeIP+'" clientid="'+ClientID+'" name="compareItem" class="compareItem"></td>'+
+											'<td class="clientid">'+ClientID+'</td>'+
+											'<td class="nodeip">'+NodeIP+'</td>'+
+											'<td class="APIServerPort">'+APIServerPort+'</td>'+
+			                                '</tr>';
+						 	}
+						}
+						$("#compareClientbody").empty().append(compareClientHtml);
+					}
+				}
+			}
+		}
+	});
+	
+	var titleCon = '对比两个Client中的一个watcher (WatcherID='+thisWatcherID+')';
+	layer.open({
+		type: 1,
+		title: titleCon,
+		area: ['800px','450px'],
+		content: $("#compareClientInfo"),
+		btn: ['k8s对比','外部对比','取消'],
+		yes: function(index, layero){
+			if($(".compareItem:checked").length==0){
+				layer.alert('请选择需要与此对比的一个client', {
+				  icon: 0,
+				  skin: 'layer-ext-moon' 
+				})
+				
+			}else{
+				var NodeIPB = $(".compareItem:checked").attr("NodeIP");
+				var clientB = $(".compareItem:checked").attr("ClientID");
+				var compareClientOneWatcherK8sUrl = 'http://'+areaIP+':'+areaPort+'/nginxcfg/compare/'+thisClientID+'-'+clientB+'/'+thisWatcherID+'?NodeIPA='+thisNodeIP+'&NodeIPB='+NodeIPB+'&AppSrcType=k8s';
+				$.ajax({
+			        url: compareClientOneWatcherK8sUrl,
+			        dataType: "json",
+			        contentType: "text/html; charset=UTF-8",
+			        type:"get",           
+			        headers: {
+			            "Content-Type": "application/json",
+			            "Accept": "application/json",
+			        },
+			        success:function(data){
+			            var data=data;
+			            if(data.Result == true){
+			            	layer.msg('相同！', {icon: 1});
+			            }else{
+			            	layer.alert(data.ErrorMsg, {
+							  icon: 2,
+							  title:"不同",
+							  skin: 'layer-ext-moon'
+							})
+			            }
+			        }
+    			});										
+			}
+		    layer.close(index);
+		},
+		btn2: function(index, layero){
+			if($(".compareItem:checked").length==0){
+				layer.alert('请选择需要与此对比的一个client', {
+				  icon: 0,
+				  skin: 'layer-ext-moon' 
+				})
+				
+			}else{
+				var compareClientOneWatcherExternUrl = 'http://'+areaIP+':'+areaPort+'/nginxcfg/compare/'+thisClientID+'-'+clientB+'/'+thisWatcherID+'?NodeIPA='+thisNodeIP+'&NodeIPB='+NodeIPB+'&AppSrcType=extern';
+				$.ajax({
+			        url: compareClientOneWatcherExternUrl,
+			        dataType: "json",
+			        contentType: "text/html; charset=UTF-8",
+			        type:"get",           
+			        headers: {
+			            "Content-Type": "application/json",
+			            "Accept": "application/json",
+			        },
+			        success:function(data){
+			            var data=data;
+			            if(data.Result == true){
+			            	layer.msg('相同！', {icon: 1});
+			            }else{
+			            	layer.alert(data.ErrorMsg, {
+							  icon: 2,
+							  title:"不同",
+							  skin: 'layer-ext-moon'
+							})
+			            }
+			        }
+    			});
+			}
+		    layer.close(index);
+		},
+		btn3: function(index, layero){
+		    layer.close(index);
+		}
+	})
 }
 
 /*下载*/
