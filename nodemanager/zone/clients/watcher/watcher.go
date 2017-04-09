@@ -63,16 +63,16 @@ var WebWatcherManagerCfgs []nodes.WatchManagerCfg
 //WatcherCfgConvertToWebCfg map转换arry函数
 func WatcherCfgConvertToWebCfg(kubengWatchersMap map[int]nodes.WatchManagerCfg) []nodes.WatchManagerCfg {
 
-	sort_keys := make([]int, 0)
-	for map_key, _ := range kubengWatchersMap {
-		sort_keys = append(sort_keys, map_key)
+	sortKeys := make([]int, 0)
+	for mapKey, _ := range kubengWatchersMap {
+		sortKeys = append(sortKeys, mapKey)
 	}
 
-	sort.Ints(sort_keys)
+	sort.Ints(sortKeys)
 
 	webWatchersArray := make([]nodes.WatchManagerCfg, 0)
-	for _, map_key := range sort_keys {
-		webWatchersArray = append(webWatchersArray, kubengWatchersMap[map_key])
+	for _, mapKey := range sortKeys {
+		webWatchersArray = append(webWatchersArray, kubengWatchersMap[mapKey])
 
 	}
 	return webWatchersArray
@@ -197,8 +197,13 @@ func postWatcherInfo(request *restful.Request, response *restful.Response) {
 
 		return
 	}
-
 	logdebug.Println(logdebug.LevelDebug, "新增时 前端传来的数据：", webMsg)
+	/*
+		allNodesInfo := nodes.AllNodesInfo{}
+		for i, v := range allNodesInfo.allNodesInfoMap {
+
+		}
+	*/
 	client := nodes.ClientInfo{
 		NodeIP:   webMsg.NodeIP,
 		ClientID: webMsg.ClientID,
@@ -212,7 +217,7 @@ func postWatcherInfo(request *restful.Request, response *restful.Response) {
 	respBody := ResponseBody{}
 	json.Unmarshal(resp, &respBody)
 
-	getNamespacesFromWeb(respBody.WatcherCfg.WatchNamespaceSets)
+	//	getNamespacesFromWeb(respBody.WatcherCfg.WatchNamespaceSets)
 
 	logdebug.Println(logdebug.LevelDebug, "返回给前端时 后台传来的数据：", respBody)
 	response.WriteHeaderAndJson(200, respBody, "application/json")

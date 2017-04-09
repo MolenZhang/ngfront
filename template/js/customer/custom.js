@@ -69,3 +69,21 @@ function testFun(){
         }
     });
 }
+
+function testFunForWatcherTestOK(){
+    var testUrl = "http://192.168.85.130:8083/watchers/1/stop?NodeIP=192.168.85.130&ClientID=73093";
+    var testData = {
+    }
+    
+    $.ajax({
+        url: testUrl,
+        dataType: "json",
+        contentType: "text/html; charset=UTF-8",
+        type:"put",            // get put post delete
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+        },
+       // data: JSON.stringify(testData),
+        success:function(data){
+            var data=data;
