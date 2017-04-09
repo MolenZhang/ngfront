@@ -194,35 +194,31 @@ func postWatcherInfo(request *restful.Request, response *restful.Response) {
 	err := request.ReadEntity(&webMsg)
 	if err != nil {
 		response.WriteError(http.StatusInternalServerError, err)
-
 		return
 	}
 	logdebug.Println(logdebug.LevelDebug, "新增时 前端传来的数据：", webMsg)
-	/*
-		allNodesInfo := nodes.AllNodesInfo{}
-		for i, v := range allNodesInfo.allNodesInfoMap {
 
-		}
-	*/
-	client := nodes.ClientInfo{
-		NodeIP:   webMsg.NodeIP,
-		ClientID: webMsg.ClientID,
+	//给每一个client 发送watcher信息
+	allNodesInfo := nodes.GetAllNodesInfo()
+	for _, singleNodeInfo := range allNodesInfo {
+
+		createWatcherURL := "http://" +
+			singleNodeInfo.Client.NodeIP +
+			singleNodeInfo.Client.APIServerPort +
+			"/" +
+			singleNodeInfo.Client.WatchManagerAPIServerPath
+
+		communicate.SendRequestByJSON(communicate.POST, createWatcherURL, webMsg.WatcherCfg)
+
+		//	getNamespacesFromWeb(respBody.WatcherCfg.WatchNamespaceSets)
+		logdebug.Println(logdebug.LevelDebug, "前端创建watcher时发给kubeng的URL：", createWatcherURL)
 	}
-	key := client.CreateKey()
-	clientInfo := nodes.GetClientInfo(key)
 
-	createWatcherURL := "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.WatchManagerAPIServerPath
-
-	resp, _ := communicate.SendRequestByJSON(communicate.POST, createWatcherURL, webMsg.WatcherCfg)
-	respBody := ResponseBody{}
-	json.Unmarshal(resp, &respBody)
-
-	//	getNamespacesFromWeb(respBody.WatcherCfg.WatchNamespaceSets)
-
-	logdebug.Println(logdebug.LevelDebug, "返回给前端时 后台传来的数据：", respBody)
+	respBody := ResponseBody{
+		Result: true,
+	}
 	response.WriteHeaderAndJson(200, respBody, "application/json")
 	return
-
 }
 
 // SaveNamespacesFromWeb 保存前端已经选择的租户集合
