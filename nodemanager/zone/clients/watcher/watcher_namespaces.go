@@ -23,6 +23,7 @@ type NamespaceMetadata struct {
 	Name string
 }
 
+// AppInfo 服务信息
 type AppInfo struct {
 	AppSrcType    string
 	NamespacesApp string
