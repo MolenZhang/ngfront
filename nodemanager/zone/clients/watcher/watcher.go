@@ -27,10 +27,6 @@ type NamespaceInfo struct {
 // WebWatcherManagerCfgs 将后端的监视信息由map转换成前端所需的arry
 var WebWatcherManagerCfgs []nodes.WatchManagerCfg
 
-var (
-	namespacesInfo []NamespaceInfo
-)
-
 type namespacesUseMark struct {
 	NamespacesInfo []NamespaceInfo
 	AppList        [][]AppInfo
@@ -322,6 +318,7 @@ func getNamespacesFromWeb(namespaces []string) {
 func getWatchNamespacesDetailInfo(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 	var (
+		namespacesInfo        []NamespaceInfo
 		watcherNamespaceSet   map[int]SaveNamespaceInfo
 		saveNamespacesFromWeb []string
 	)
@@ -331,7 +328,7 @@ func getWatchNamespacesDetailInfo(w http.ResponseWriter, r *http.Request) {
 	jobZoneType := r.Form.Get("JobZoneType")
 
 	getNamespacesURL := kubernetesMasterHost + "/" + kubernetesAPIVersion + "/namespaces"
-
+	logdebug.Println(logdebug.LevelDebug, "获取租户请求的URL", getNamespacesURL)
 	namespaces := getNamespacesDetailInfoFromK8s(getNamespacesURL, jobZoneType)
 
 	//将kubeng传来的租户 保存 并置标志位为false
