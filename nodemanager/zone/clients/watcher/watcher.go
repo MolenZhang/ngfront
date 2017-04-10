@@ -52,6 +52,21 @@ type ResponseBody struct {
 	WatcherCfg   nodes.WatchManagerCfg
 }
 
+// WebWatcherManagerCfgs 将后端的监视信息由map转换成前端所需的arry
+var WebWatcherManagerCfgs []nodes.WatchManagerCfg
+
+//WatcherCfgConvertToWebCfg map转换arry函数
+func WatcherCfgConvertToWebCfg(watchManagerCfgs map[int]nodes.WatchManagerCfg) []nodes.WatchManagerCfg {
+
+	webWatcherManagerCfgs := make([]nodes.WatchManagerCfg, 0)
+
+	for _, watcherCfg := range watchManagerCfgs {
+		webWatcherManagerCfgs = append(webWatcherManagerCfgs, watcherCfg)
+	}
+
+	return webWatcherManagerCfgs
+}
+
 //加载界面
 func loadWatcherPage(w http.ResponseWriter, r *http.Request) {
 	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<<加载watcher页面>>>>>>>>>>>>>")
@@ -126,19 +141,13 @@ func getAllWatcherInfo(request *restful.Request, response *restful.Response) {
 
 	watcherAPIServerURL := "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.WatchManagerAPIServerPath
 
-	/*
-		//watcher界面所需展示的数据较多 不止是watcher 还有client的部分信息
-		webMsg := nodes.NodeInfo{}
-		key := client.CreateKey()
-
-		webMsg.Client = nodes.GetClientInfo(key)
-		webMsg.Watcher = nodes.GetWatcherData(key)
-	*/
 	webMsg := nodes.WatchManagerCfgs
 	resp, _ := communicate.SendRequestByJSON(communicate.GET, watcherAPIServerURL, nil)
 	json.Unmarshal(resp, &webMsg)
 
-	response.WriteHeaderAndJson(200, webMsg, "application/json")
+	respMsg := WatcherCfgConvertToWebCfg(webMsg)
+
+	response.WriteHeaderAndJson(200, respMsg, "application/json")
 
 	return
 }
@@ -376,7 +385,7 @@ func (svc *ServiceInfo) Init() {
 	ws := new(restful.WebService)
 
 	ws.
-		Path("/watcher").
+		Path("/watchers").
 		Consumes(restful.MIME_XML, restful.MIME_JSON).
 		Produces(restful.MIME_JSON, restful.MIME_XML) // you can specify this per route as well
 
