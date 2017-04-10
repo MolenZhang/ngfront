@@ -347,7 +347,7 @@ func (svc *ServiceInfo) compareAllWatchersNginxCfgs(request *restful.Request, re
 		return
 	}
 
-	for watcherID, _ := range clientAWatchers {
+	for watcherID := range clientAWatchers {
 		clientANginxCfgURL, clientBNginxCfgURL := getNginxCfgByWatcherURL(clientsSet, watcherID, request, response)
 
 		respA, _ := communicate.SendRequestByJSON(communicate.GET, clientANginxCfgURL, nil)
