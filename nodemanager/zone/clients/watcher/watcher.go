@@ -4,7 +4,6 @@ package watcher
 import (
 	"encoding/json"
 	"html/template"
-	"io/ioutil"
 	"net/http"
 	"ngfront/communicate"
 	"ngfront/logdebug"
@@ -17,12 +16,14 @@ import (
 //SaveNamespaceInfo 保存已经监控的租户
 type SaveNamespaceInfo struct {
 	WatchNamespaceSets []string
+	WatcherID          int
 }
 
 // NamespaceInfo 租户信息
 type NamespaceInfo struct {
 	Namespace string
 	IsUsed    bool
+	WatcherID int
 }
 
 /*
@@ -253,20 +254,20 @@ func putWatcherInfoByID(request *restful.Request, response *restful.Response) {
 		return
 	}
 
-	client := nodes.ClientInfo{
-		NodeIP:   webMsg.NodeIP,
-		ClientID: webMsg.ClientID,
+	allNodesInfo := nodes.GetAllNodesInfo()
+	for _, singleNodeInfo := range allNodesInfo {
+
+		updateWatcherCfgURL := "http://" +
+			singleNodeInfo.Client.NodeIP +
+			singleNodeInfo.Client.APIServerPort +
+			"/" +
+			singleNodeInfo.Client.WatchManagerAPIServerPath +
+			"/" +
+			watcherID
+
+		communicate.SendRequestByJSON(communicate.PUT, updateWatcherCfgURL, webMsg.WatcherCfg)
+
 	}
-	key := client.CreateKey()
-	clientInfo := nodes.GetClientInfo(key)
-
-	updateWatcherCfgURL := "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.WatchManagerAPIServerPath + "/" + watcherID
-
-	//暂时未做处理失败的逻辑判断
-	communicate.SendRequestByJSON(communicate.PUT, updateWatcherCfgURL, webMsg.WatcherCfg)
-
-	logdebug.Println(logdebug.LevelDebug, "与kubeng通讯 更新watcher状态 收到的web前端消息内容:", webMsg)
-
 	webRespMsg := ResponseBody{
 		Result: true,
 	}
@@ -315,86 +316,129 @@ func getNamespacesFromWeb(namespaces []string) {
 	}
 }
 */
-//使用界面传过来的IP VERSION获取所要监控的k8s集群租户的详细信息(统计有多少服务)
-func getWatchNamespacesDetailInfo(w http.ResponseWriter, r *http.Request) {
-	r.ParseForm()
-	var (
-		namespacesInfo        []NamespaceInfo
-		watcherNamespaceSet   map[int]SaveNamespaceInfo
-		saveNamespacesFromWeb []string
-	)
 
-	kubernetesMasterHost := r.Form.Get("KubernetesMasterHost")
-	kubernetesAPIVersion := r.Form.Get("KubernetesAPIVersion")
-	jobZoneType := r.Form.Get("JobZoneType")
+func (watcherNamespacesInfo *SaveNamespaceInfo) isNamespaceInSet(namespace string) bool {
+	for _, usedNamespace := range watcherNamespacesInfo.WatchNamespaceSets {
+		if usedNamespace == namespace {
+			return true
+		}
+		continue
+	}
+	return false
+}
 
-	getNamespacesURL := kubernetesMasterHost + "/" + kubernetesAPIVersion + "/namespaces"
+func initWebMsg(w http.ResponseWriter, r *http.Request, webAllNamespacesInfo *[]NamespaceInfo) (
+	allNamespacesDetailInfoFromK8s NamespacesDetailInfo) {
+	var kubernetesAPIVersion string
+	var kubernetesMasterHost string
+	var jobZoneType string
+
+	allNodesInfo := nodes.GetAllNodesInfo()
+
+	for _, nodeInfo := range allNodesInfo {
+		kubernetesMasterHost = nodeInfo.Client.K8sMasterHost
+		kubernetesAPIVersion = nodeInfo.Client.K8sAPIVersion
+		jobZoneType = nodeInfo.Client.JobZoneType
+		break
+	}
+
+	getNamespacesURL := kubernetesMasterHost +
+		"/" +
+		kubernetesAPIVersion +
+		"/namespaces"
+
 	logdebug.Println(logdebug.LevelDebug, "获取租户请求的URL", getNamespacesURL)
-	namespaces := getNamespacesDetailInfoFromK8s(getNamespacesURL, jobZoneType)
+	allNamespacesDetailInfoFromK8s = getNamespacesDetailInfoFromK8s(getNamespacesURL, jobZoneType)
+	logdebug.Println(logdebug.LevelDebug, "从k8s获取租户信息", allNamespacesDetailInfoFromK8s)
 
-	//将kubeng传来的租户 保存 并置标志位为false
-	for _, namespace := range namespaces.NamespacesList {
+	//init 将k8s获取到的所有租户信息 填充到将要发给web前端的数组中
+	for _, namespace := range allNamespacesDetailInfoFromK8s.NamespacesList {
 		newNamespace := NamespaceInfo{
 			Namespace: namespace,
 			IsUsed:    false,
 		}
-		namespacesInfo = append(namespacesInfo, newNamespace)
+		*webAllNamespacesInfo = append(*webAllNamespacesInfo, newNamespace)
 	}
 
-	logdebug.Println(logdebug.LevelDebug, "******保存的租户信息*****:", namespacesInfo)
-	//筛选前端已经勾选过的租户 并将标志位置为true
-	namespaceUsedMap := nodes.GetAllNodesInfo()
-	var watcherURL string
-	for _, nodeInfo := range namespaceUsedMap {
-		watcherURL = "http://" +
-			nodeInfo.Client.NodeIP +
-			nodeInfo.Client.APIServerPort +
-			"/" +
-			nodeInfo.Client.WatchManagerAPIServerPath
-		break //循环一次即可
-	}
-	resp, err := http.Get(watcherURL)
-	if err != nil {
-		logdebug.Println(logdebug.LevelDebug, err)
+	return
+}
+
+func getWatchersInfoFromKubeNG() (allWatchersNamespacesInfo map[int]SaveNamespaceInfo) {
+	allNodesInfo := nodes.GetAllNodesInfo()
+	if len(allNodesInfo) == 0 {
 		return
 	}
-	defer resp.Body.Close()
-	body, _ := ioutil.ReadAll(resp.Body)
 
-	json.Unmarshal(body, &watcherNamespaceSet)
+	watcherURL := ""
+	for key := range allNodesInfo {
+		watcherURL = "http://" +
+			allNodesInfo[key].Client.NodeIP +
+			allNodesInfo[key].Client.APIServerPort +
+			"/" +
+			allNodesInfo[key].Client.WatchManagerAPIServerPath
 
-	//将map 转换成 arry
-	for _, watcherNamespace := range watcherNamespaceSet {
-		saveNamespacesFromWeb = watcherNamespace.WatchNamespaceSets
+		break
 	}
+	resp, _ := communicate.SendRequestByJSON(communicate.GET, watcherURL, nil)
+	json.Unmarshal(resp, &allWatchersNamespacesInfo)
 
-	//将前端已经勾选过的租户进行标记
-	for _, namespaceUsed := range saveNamespacesFromWeb {
-		for index := range namespacesInfo {
-			if namespaceUsed == namespacesInfo[index].Namespace {
-				namespacesInfo[index].IsUsed = true
+	return
+}
+
+func markUsedNamesapces(webAllNamespacesInfo []NamespaceInfo, allWatchersNamespacesInfo map[int]SaveNamespaceInfo) {
+
+	for _, watcherNamespacesInfo := range allWatchersNamespacesInfo {
+		for index, namespaceInfo := range webAllNamespacesInfo {
+			//	for _, namespaceInfo := range webAllNamespacesInfo {
+			if watcherNamespacesInfo.isNamespaceInSet(namespaceInfo.Namespace) {
+				webAllNamespacesInfo[index].IsUsed = true
+				webAllNamespacesInfo[index].WatcherID = watcherNamespacesInfo.WatcherID
+				//namespaceInfo.IsUsed = true
+				//	namespaceInfo.WatcherID = watcherNamespacesInfo.WatcherID
 			}
 		}
 	}
 
-	logdebug.Println(logdebug.LevelDebug, "******保存的租户信息并标记显示*****:", namespacesInfo)
-	//将所有标记过的租户传给前端使用
+	logdebug.Println(logdebug.LevelDebug, "******保存的租户信息并标记显示*****:", webAllNamespacesInfo)
+
+	return
+}
+
+func respToWebFront(w http.ResponseWriter, webAllNamespacesInfo []NamespaceInfo, namespacesDetail NamespacesDetailInfo) {
 	webNamespacesResp := namespacesUseMark{
-		NamespacesInfo: namespacesInfo,
-		AppList:        namespaces.AppInfoList,
+		NamespacesInfo: webAllNamespacesInfo,
+		AppList:        namespacesDetail.AppInfoList,
 	}
 
-	logdebug.Println(logdebug.LevelDebug, "从后台获取到的租户详细信息:", namespaces)
-	logdebug.Println(logdebug.LevelDebug, "发送给前端的租户详细信息:", webNamespacesResp)
 	//通信结构 json格式转换
 	jsonTypeMsg, err := json.Marshal(webNamespacesResp)
 	if err != nil {
 		logdebug.Println(logdebug.LevelError, err)
-
-		return
 	}
 
 	w.Write(jsonTypeMsg)
+
+	return
+}
+
+//使用界面传过来的IP VERSION获取所要监控的k8s集群租户的详细信息(统计有多少服务)
+func getWatchNamespacesDetailInfo(w http.ResponseWriter, r *http.Request) {
+	var webAllNamespacesInfo []NamespaceInfo                //from k8s ....modify(填充) ..... to web front
+	var allWatchersNamespacesInfo map[int]SaveNamespaceInfo // from kubeng already be watched 租户
+
+	//初始化将要发给前端的所有租户的信息
+	namespacesDetail := initWebMsg(w, r, &webAllNamespacesInfo)
+	logdebug.Println(logdebug.LevelDebug, "初始状态下的所有租户信息", webAllNamespacesInfo)
+
+	//从kubeng获取已经被监视的租户信息
+	allWatchersNamespacesInfo = getWatchersInfoFromKubeNG()
+	logdebug.Println(logdebug.LevelDebug, "前端已经使用的租户信息", allWatchersNamespacesInfo)
+
+	markUsedNamesapces(webAllNamespacesInfo, allWatchersNamespacesInfo)
+	logdebug.Println(logdebug.LevelDebug, "标记过后的所有租户信息", webAllNamespacesInfo)
+
+	//将所有标记过的租户传给前端使用
+	respToWebFront(w, webAllNamespacesInfo, namespacesDetail)
 
 	return
 }

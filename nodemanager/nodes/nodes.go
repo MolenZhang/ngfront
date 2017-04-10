@@ -48,6 +48,9 @@ type ClientInfo struct {
 	DownloadCfgAPIServerPath  string
 	WatchManagerAPIServerPath string
 	JobZoneType               string
+	K8sMasterHost             string
+	K8sAPIVersion             string
+	//k8s api version and master
 }
 
 //NodeInfo 单个节点的所有信息

@@ -24,6 +24,8 @@ type RequestBody struct {
 	DownloadCfgAPIServerPath  string
 	WatchManagerAPIServerPath string
 	JobZoneType               string
+	K8sMasterHost             string
+	K8sAPIVersion             string
 }
 
 //RequestResult 回复成功与否报文原因
@@ -115,6 +117,8 @@ func (svc *ServiceInfo) login(request *restful.Request, response *restful.Respon
 		DownloadCfgAPIServerPath:  reqMsg.ReqBody.DownloadCfgAPIServerPath,
 		WatchManagerAPIServerPath: reqMsg.ReqBody.WatchManagerAPIServerPath,
 		JobZoneType:               reqMsg.ReqBody.JobZoneType,
+		K8sMasterHost:             reqMsg.ReqBody.K8sMasterHost,
+		K8sAPIVersion:             reqMsg.ReqBody.K8sAPIVersion,
 	}
 
 	nodes.AddClientData(clientInfo) //将IP+clientID 为key add进map
