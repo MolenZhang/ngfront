@@ -207,15 +207,20 @@ function loadNamespaces(){
 		},
 		"success":function(data){
 			var data = eval("("+data+")");
-			var NamespacesList = data.NamespacesList;
+
+			var NamespacesInfos = data.NamespacesInfo;
+			
 			var namespacesHtml = "";
-			if(NamespacesList != null){
-				for(var i=0; i<NamespacesList.length; i++){
-					var	eveNamespace = NamespacesList[i];
-					namespacesHtml += '<label class="namespacesLabel"><input type="checkbox" class="namespacesChk" value="'+eveNamespace+'">'+eveNamespace+'</label>';
-				}
-				$("#namespacesInfo").empty().append(namespacesHtml);
-				$("#addnamespacesInfo").empty().append(namespacesHtml);
+			for(var namespacesNum=0; namespacesNum<NamespacesInfos.length; namespacesNum++){
+				var eveNamespace = NamespacesInfos[namespacesNum].Namespace;
+				var eveIsUsedStatue = NamespacesInfos[namespacesNum].IsUsed;
+				namespacesHtml += '<label class="namespacesLabel isUsed_'+eveIsUsedStatue+'"><input type="checkbox" class="namespacesChk name_'+eveNamespace+'" value="'+eveNamespace+'">'+eveNamespace+'</label>';
+			}
+			$("#namespacesInfo").empty().append(namespacesHtml);
+			$("#addnamespacesInfo").empty().append(namespacesHtml);
+			for( var n=0; n<WatchNamespaceSets.length; n++){
+				var checkedNamespaces = '.name_'+WatchNamespaceSets[n];
+				$(checkedNamespaces).prop("checked",true);
 			}
 		}
 	});
@@ -366,13 +371,10 @@ function addOneWatcher(obj){
 			var NginxTestCommand = $("#addNginxTestCommandInfo").val();
 			var StandbyUpstreamNodes = $("#addStandbyUpstreamNodesInfo").val().split(",");
 			var K8sWatcherStatus = $("#addK8sWatcherStatus").val();
-
-			var NodeIP = $(obj).attr("NodeIP");
-			var ClientID = $(obj).attr("ClientID");
 			
 			var addCfgInfo = {
-				"NodeIP":NodeIP,
-				"ClientID":ClientID,
+				// "NodeIP":NodeIP,
+				// "ClientID":ClientID,
 				"WatcherCfg":{
 					"NginxReloadCommand":NginxReloadCommand,
 					"NginxListenPort":NginxListenPort,
@@ -389,7 +391,7 @@ function addOneWatcher(obj){
 					}
 			};
 
-			watchersUrl= 'http://'+areaIP+':'+areaPort+"/watchers?NodeIP="+NodeIP+"&ClientID="+ClientID;
+			watchersUrl= 'http://'+areaIP+':'+areaPort+"/watchers";
 			
 			$.ajax({
 			    url : watchersUrl,
@@ -403,25 +405,27 @@ function addOneWatcher(obj){
 				data: JSON.stringify(addCfgInfo),
 				success :function(data){
 					var data=data;
-					$.ajax({
-					    url : watchersUrl,
-						dataType: "json",
-						contentType: "text/html; charset=UTF-8",
-						type: "get", 
-						headers: {
-							"Content-Type": "application/json",
-							"Accept": "application/json",
-						},
-						//data: JSON.stringify(addCfgInfo),
-						success :function(data){
-							var data=data;
-							$(obj).parent().parent().parent().parent().children(".needHideWatcher").remove();
-							$(obj).parent().parent().find(".caretTd").empty().html('<a><i class="fa fa-caret-down" flag="2"></i></a>');
-							var watchersHtml2 = showWatcherHtml(data);
-							$(obj).parent().parent().after(watchersHtml2);
-						}
+					window.location.reload();
+					// $.ajax({
+					//     url : watchersUrl,
+					// 	dataType: "json",
+					// 	contentType: "text/html; charset=UTF-8",
+					// 	type: "get", 
+					// 	headers: {
+					// 		"Content-Type": "application/json",
+					// 		"Accept": "application/json",
+					// 	},
+					// 	//data: JSON.stringify(addCfgInfo),
+					// 	success :function(data){
+					// 		var data=data;
+					// 		// $(obj).parent().parent().parent().parent().children(".needHideWatcher").remove();
+					// 		// $(obj).parent().parent().find(".caretTd").empty().html('<a><i class="fa fa-caret-down" flag="2"></i></a>');
+					// 		// var watchersHtml2 = showWatcherHtml(data);
+					// 		// $(obj).parent().parent().after(watchersHtml2);
+					// 		window.location.reload();
+					// 	}
 							
-					});
+					// });
 				}
 					
 			});

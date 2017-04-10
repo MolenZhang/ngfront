@@ -127,6 +127,7 @@ a{
 .isUsed_true{
 	cursor: no-drop;
 }
-/* .isUsed_false{
-	cursor: pointer;
-} */
+.table-titSec{
+	padding-left: 20px;
+	color:red;
+}
