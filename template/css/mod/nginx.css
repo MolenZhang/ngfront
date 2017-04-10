@@ -242,5 +242,7 @@ i.fa-one{
 	cursor: no-drop!important;
 	color: #ddd;
 }
-
+.fa-caret-right{
+	font-size: 16px;
+}
 

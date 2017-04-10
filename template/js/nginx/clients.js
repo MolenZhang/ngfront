@@ -65,27 +65,31 @@ function showClients(areaType){
 			 		var NodeName = clientsVal[i].NodeName;
 			 		var ClientID = clientsVal[i].ClientID;
 			 		var APIServerPort = clientsVal[i].APIServerPort.substring(1,clientsVal[i].APIServerPort.length);;
-			 		var K8sWatcherStatus = clientsVal[i].K8sWatcherStatus
+			 		//var K8sWatcherStatus = clientsVal[i].K8sWatcherStatus
 			 		var statusHtml = "";
-			 		if(K8sWatcherStatus == "start"){
+			 		/*if(K8sWatcherStatus == "start"){
 			 			statusHtml = '<img src="/images/running.gif" alt=""/>&nbsp;工作中';
 			 		}else{
 			 			statusHtml = '<img src="/images/stop.png" alt=""/>&nbsp;未工作';
-			 		}
+			 		}*/
 			 		clientsHtml += '<tr>'+
-                                    		'<td style="text-indent: 30px;">'+
-                                    		'<input type="checkbox" class="chkItem chkNodeItem" name="ids" NodeIP="'+NodeIP+'" ClientID="'+ClientID+'"></td>'+
-											'<td class="statusImg">'+statusHtml+'</td>'+
-                                    		'<td>'+ClientID+'</td>'+
-                                    		'<td>'+NodeName+'</td>'+
-                                    		'<td>'+NodeIP+'</td>'+
-                                    		'<td>'+APIServerPort+'</td>'+
-                                    		'<td class="operationBtns">'+
-                                    			'<a><i class="fa fa-play hide"></i></a>'+
-                                    			'<a><i class="fa fa-power-off hide"></i></a>'+
-                                    			'<a href="'+watcherUrl+NodeIP+'&ClientID='+ClientID+'&areaType='+areaType+'"><i class="fa fa-gear"></i></a>'+
-                                    		'</td>'+
-                                    	'</tr>';
+                                    '<td style="text-indent: 30px;">'+
+                                    '<input type="checkbox" class="chkItem chkNodeItem" name="ids" NodeIP="'+NodeIP+'" ClientID="'+ClientID+'"></td>'+	
+                                    '<td><a onclick="watcherAll(this)"><i class="fa fa-caret-right" flag="1"></i></a></td>'+
+                                    '<td>'+ClientID+'</td>'+
+                                    '<td>'+NodeName+'</td>'+
+                                    '<td>'+NodeIP+'</td>'+
+                                    '<td>'+APIServerPort+'</td>'+
+                                    '<td class="operationBtns">'+
+                                    	'<a><i class="fa fa-play hide"></i></a>'+
+                                    	'<a><i class="fa fa-power-off hide"></i></a>'+
+                                    	/*'<a href="'+watcherUrl+NodeIP+'&ClientID='+ClientID+'&areaType='+areaType+'"><i class="fa fa-gear"></i></a>'+*/
+                                    	
+                                    	'<a ><i>新增</i></a>'+
+                                    	'<a ><i>删除</i></a>'+
+                                    	'<a ><i>下载</i></a>'+
+                                    '</td>'+
+                                    '</tr>';
 			 	}
 			 	$("#clientsList").append(clientsHtml);
 			 }
@@ -258,6 +262,53 @@ function loadNamespaces(){
 			
 		});
 	}
+
+function watcherAll(obj,ClientID,NodeIP){
+	//alert(111)
+	var watchersHtml = '<tr class="needHideWatcher" style="background-color:#ddd">'
+					   +'<th colspan="2">&nbsp;</th>'
+                       +'<th>watcherID</th>'
+                       +'<th>工作状态</th>'
+                       +'<th colspan="2">监控的租户</th>'
+                       +'<th>操作</th>'
+                       +'</tr>';
+    watchersHtml +='<tr class="needHideWatcher" style="background-color:#ddd">'
+    			+'<td colspan="2">&nbsp;</td>'
+			    +'<td>1</td>'
+			    +'<td class="statusImg"><img src="../../images/stop.png" alt=""/>&nbsp;未工作</td>'
+			    +'<td colspan="2">dddd,dyrdf</td>'
+			    +'<td><a><i>停止</i></a><a><i>启动</i></a><a><i>编辑</i></a><a><i>删除</i></a></td>'
+			    +'</tr>';
+	var thisFlag = $(obj).children().attr("flag");
+	if(thisFlag==1){
+		$(obj).parent().parent().after(watchersHtml);
+		$(obj).empty().html('<i class="fa fa-caret-down" flag="2"></i>');
+	}else{
+		$(obj).parent().parent().parent().find("tr.needHideWatcher").hide();
+		$(obj).empty().html('<i class="fa fa-caret-right" flag="1"></i>');
+	}
+    
+	//watchersUrl= 'http://'+areaIP+':'+areaPort+"/watchers";
+	// $.ajax({
+	//     url : watchersUrl,
+	// 	dataType: "json",
+	// 	contentType: "text/html; charset=UTF-8",
+	// 	type: "get", 
+	// 	headers: {
+	// 		"Content-Type": "application/json",
+	// 		"Accept": "application/json",
+	// 	},
+	// 	data: {
+	// 		"ClientID":ClientID,
+	// 		"NodeIP":NodeIP
+	// 	},
+	// 	success :function(data){
+	// 		var data=data;
+				
+	// 	}
+			
+	// });
+}
 
 function areaRefresh(){
 	location.href = "http://"+areaIP+":"+areaPort+"/ngfront";
