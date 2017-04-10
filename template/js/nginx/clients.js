@@ -42,7 +42,6 @@ function showClients(areaType){
 	//var areaIP = "localhost";
 	//var areaPort = "port";
 	var areaUrl = "http://"+areaIP+":"+areaPort+"/clients";
-	var watcherUrl = "http://"+areaIP+":"+areaPort+"/ngfront/zone/clients/watcher?NodeIP=";
 	$.ajax({
 		"url":areaUrl,
 		"type":"get",
@@ -73,9 +72,9 @@ function showClients(areaType){
 			 			statusHtml = '<img src="/images/stop.png" alt=""/>&nbsp;未工作';
 			 		}*/
 			 		clientsHtml += '<tr>'+
-                                    '<td style="text-indent: 30px;">'+
+                                    '<td style="text-indent: 10px;text-align:center">'+
                                     '<input type="checkbox" class="chkItem chkNodeItem" name="ids" NodeIP="'+NodeIP+'" ClientID="'+ClientID+'"></td>'+	
-                                    '<td><a onclick="watcherAll(this)"><i class="fa fa-caret-right" flag="1"></i></a></td>'+
+                                    '<td onclick="watcherAll(this)" ClientID="'+ClientID+'" NodeIP="'+NodeIP+'" class="caretTd"><a><i class="fa fa-caret-right" flag="1"></i></a></td>'+
                                     '<td>'+ClientID+'</td>'+
                                     '<td>'+NodeName+'</td>'+
                                     '<td>'+NodeIP+'</td>'+
@@ -85,7 +84,7 @@ function showClients(areaType){
                                     	'<a><i class="fa fa-power-off hide"></i></a>'+
                                     	/*'<a href="'+watcherUrl+NodeIP+'&ClientID='+ClientID+'&areaType='+areaType+'"><i class="fa fa-gear"></i></a>'+*/
                                     	
-                                    	'<a ><i>新增</i></a>'+
+                                    	'<a onclick="addOneWatcher(this)" ClientID="'+ClientID+'" NodeIP="'+NodeIP+'"><i>新增</i></a>'+
                                     	'<a ><i>删除</i></a>'+
                                     	'<a ><i>下载</i></a>'+
                                     '</td>'+
@@ -107,7 +106,7 @@ function issuedCfg(obj){
 		return
 	}else{
 
-	$("#JobZoneTypeOldVal").append(areaType);
+	$("#JobZoneTypeOldVal").empty().append(areaType);
 	layer.open({
 		type: 1,
 		title: '下发配置',
@@ -223,6 +222,7 @@ function loadNamespaces(){
 					namespacesHtml += '<label class="namespacesLabel"><input type="checkbox" class="namespacesChk" value="'+eveNamespace+'">'+eveNamespace+'</label>';
 				}
 				$("#namespacesInfo").empty().append(namespacesHtml);
+				$("#addnamespacesInfo").empty().append(namespacesHtml);
 			}
 		}
 	});
@@ -262,52 +262,178 @@ function loadNamespaces(){
 			
 		});
 	}
+/*展开*/
+function watcherAll(obj){
 
-function watcherAll(obj,ClientID,NodeIP){
-	//alert(111)
+	var thisFlag = $(obj).find("i").attr("flag");
+	if(thisFlag==1){
+		
+		$(obj).empty().html('<a><i class="fa fa-caret-down" flag="2"></i></a>');
+		watchersUrl= 'http://'+areaIP+':'+areaPort+"/watchers";
+		var ClientID = $(obj).attr("ClientID");
+		var NodeIP = $(obj).attr("NodeIP");
+		
+		$.ajax({
+		    url : watchersUrl,
+			dataType: "json",
+			contentType: "text/html; charset=UTF-8",
+			type: "get", 
+			headers: {
+				"Content-Type": "application/json",
+				"Accept": "application/json",
+			},
+			data: {
+				"ClientID":ClientID,
+				"NodeIP":NodeIP
+			},
+			success :function(data){
+				var data=data;
+				var watchersHtml1 = showWatcherHtml(data,ClientID,NodeIP);
+				$(obj).parent().parent().after(watchersHtml1);
+			}
+				
+		});
+	}else{
+		$(obj).parent().parent().parent().find("tr.needHideWatcher").hide();
+		$(obj).empty().html('<a><i class="fa fa-caret-right" flag="1"></i></a>');
+	}
+}
+function showWatcherHtml(data,ClientID,NodeIP){
+	var watcherHtmlUrl = "http://"+areaIP+":"+areaPort+"/ngfront/zone/clients/watcher?NodeIP="+NodeIP+'&ClientID='+ClientID+'&areaType='+areaType+'&WatcherID=';
 	var watchersHtml = '<tr class="needHideWatcher" style="background-color:#ddd">'
 					   +'<th colspan="2">&nbsp;</th>'
                        +'<th>watcherID</th>'
                        +'<th>工作状态</th>'
                        +'<th colspan="2">监控的租户</th>'
-                       +'<th>操作</th>'
+                       +'<th style="text-indent: 10px;">操作</th>'
                        +'</tr>';
-    watchersHtml +='<tr class="needHideWatcher" style="background-color:#ddd">'
-    			+'<td colspan="2">&nbsp;</td>'
-			    +'<td>1</td>'
-			    +'<td class="statusImg"><img src="../../images/stop.png" alt=""/>&nbsp;未工作</td>'
-			    +'<td colspan="2">dddd,dyrdf</td>'
-			    +'<td><a><i>停止</i></a><a><i>启动</i></a><a><i>编辑</i></a><a><i>删除</i></a></td>'
-			    +'</tr>';
-	var thisFlag = $(obj).children().attr("flag");
-	if(thisFlag==1){
-		$(obj).parent().parent().after(watchersHtml);
-		$(obj).empty().html('<i class="fa fa-caret-down" flag="2"></i>');
-	}else{
-		$(obj).parent().parent().parent().find("tr.needHideWatcher").hide();
-		$(obj).empty().html('<i class="fa fa-caret-right" flag="1"></i>');
-	}
     
-	//watchersUrl= 'http://'+areaIP+':'+areaPort+"/watchers";
-	// $.ajax({
-	//     url : watchersUrl,
-	// 	dataType: "json",
-	// 	contentType: "text/html; charset=UTF-8",
-	// 	type: "get", 
-	// 	headers: {
-	// 		"Content-Type": "application/json",
-	// 		"Accept": "application/json",
-	// 	},
-	// 	data: {
-	// 		"ClientID":ClientID,
-	// 		"NodeIP":NodeIP
-	// 	},
-	// 	success :function(data){
-	// 		var data=data;
-				
-	// 	}
+	for(var wNum=0; wNum<data.length;wNum++){
+		var WatcherID = data[wNum].WatcherID;
+		var K8sWatcherStatus = data[wNum].K8sWatcherStatus;
+		var K8sWatcherStatusHtml = "";
+		var WatchNamespaceSets = data[wNum].WatchNamespaceSets
+		if(K8sWatcherStatus == "stop"){
+			K8sWatcherStatusHtml = '<img src="../../images/stop.png" alt=""/>&nbsp;未工作';
+		}else{
+			K8sWatcherStatusHtml = '<img src="../../images/running.gif" alt=""/>&nbsp;已工作';
+		}
+		watchersHtml +='<tr class="needHideWatcher" style="background-color:#ddd" ClientID="'+ClientID+'" NodeIP="'+NodeIP+'">'
+				    +'<td colspan="2">&nbsp;</td>'
+					+'<td>'+WatcherID+'</td>'
+					+'<td class="statusImg">'+K8sWatcherStatusHtml+'</td>'
+					+'<td colspan="2">'+WatchNamespaceSets+'</td>'
+					+'<td class="operationBtns"><a><i>停止</i></a><a><i>启动</i></a><a href="'+watcherHtmlUrl+WatcherID+'"><i>编辑</i></a><a onclick="delOneWatcher(this)"><i>删除</i></a></td>'
+					+'</tr>';
+		}
+
+	return watchersHtml;
+	
+}
+
+/*新增*/
+function addOneWatcher(obj){
+	$("#addJobZoneTypeOldVal").empty().append(areaType);
+	layer.open({
+		type: 1,
+		title: '新增watcher',
+		area: ['800px'],
+		content: $("#addOneWatcherInfo"),
+		btn: ['确定','取消'],
+		yes: function(index,layero){
+			//var addUrl = "http://"+areaIP+":"+areaPort+"/watcher/all";
+
+			var KubernetesMasterHost = $("#addKubernetesMasterHostInfo").val();
+			var KubernetesAPIVersion =$("#addKubernetesAPIVersionInfo").val();
+			var NginxReloadCommand = $("#addNginxReloadCommandInfo").val();
+			var NginxListenPort = $("#addNginxListenPortInfo").val();
+			var WatchNamespaceSets = new Array();
+			if($(".namespaceAll").css("display")=="none"){
+				var namespacesChk = $(".namespacesChk:checked");
+				for(var nNum=0; nNum<namespacesChk.length; nNum++){
+					WatchNamespaceSets.push(namespacesChk[nNum].value);
+				}
+			}else{
+				WatchNamespaceSets= ["all"];
+			}
+
+			var NginxRealCfgDirPath = $("#addNginxRealCfgDirPathInfo").val();
+			var NginxTestCfgDirPath = $("#addNginxTestCfgDirPathInfo").val();
+			var DownloadCfgDirPath = $("#addDownloadCfgDirPathInfo").val();
+			var LogPrintLevel = $("#addLogPrintLevelInfo").val();
+			var DefaultNginxServerType = $("#addDefaultNginxServerTypeInfo").val();
+			var DomainSuffix = $("#addDomainSuffixInfo").val();
+			var WorkMode = $("#addWorkModeInfo").val();
+			var NginxTestCommand = $("#addNginxTestCommandInfo").val();
+			var StandbyUpstreamNodes = $("#addStandbyUpstreamNodesInfo").val().split(",");
+			var K8sWatcherStatus = $("#addK8sWatcherStatus").val();
+
+			var NodeIP = $(obj).attr("NodeIP");
+			var ClientID = $(obj).attr("ClientID");
 			
-	// });
+			var addCfgInfo = {
+				"NodeIP":NodeIP,
+				"ClientID":ClientID,
+				"WatcherCfg":{
+					"NginxListenPort":NginxListenPort,
+					"WatchNamespaceSets":WatchNamespaceSets,
+					"NginxRealCfgDirPath":NginxRealCfgDirPath,
+					"NginxTestCfgDirPath":NginxTestCfgDirPath,
+					"DownloadCfgDirPath":DownloadCfgDirPath,
+					"DefaultNginxServerType":DefaultNginxServerType,
+					"DomainSuffix":DomainSuffix,
+					"WorkMode":WorkMode,
+					"NginxTestCommand":NginxTestCommand,
+					"StandbyUpstreamNodes":StandbyUpstreamNodes,
+					"K8sWatcherStatus":K8sWatcherStatus
+					}
+			};
+
+			watchersUrl= 'http://'+areaIP+':'+areaPort+"/watchers?NodeIP="+NodeIP+"&ClientID="+ClientID;
+			
+			$.ajax({
+			    url : watchersUrl,
+				dataType: "json",
+				contentType: "text/html; charset=UTF-8",
+				type: "post", 
+				headers: {
+					"Content-Type": "application/json",
+					"Accept": "application/json",
+				},
+				data: JSON.stringify(addCfgInfo),
+				success :function(data){
+					var data=data;
+					$.ajax({
+					    url : watchersUrl,
+						dataType: "json",
+						contentType: "text/html; charset=UTF-8",
+						type: "get", 
+						headers: {
+							"Content-Type": "application/json",
+							"Accept": "application/json",
+						},
+						//data: JSON.stringify(addCfgInfo),
+						success :function(data){
+							var data=data;
+							$(obj).parent().parent().parent().parent().children(".needHideWatcher").remove();
+							$(obj).parent().parent().find(".caretTd").empty().html('<a><i class="fa fa-caret-down" flag="2"></i></a>');
+							var watchersHtml2 = showWatcherHtml(data);
+							$(obj).parent().parent().after(watchersHtml2);
+						}
+							
+					});
+				}
+					
+			});
+			layer.close(index);
+		}
+	})
+}
+
+
+/*删除*/
+function delOneWatcher(obj){
+	$(obj).parent().parent().remove();
 }
 
 function areaRefresh(){

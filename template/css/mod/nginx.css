@@ -245,4 +245,8 @@ i.fa-one{
 .fa-caret-right{
 	font-size: 16px;
 }
+.caretTd{
+	width: 3%;
+    text-align: center;
+}
 

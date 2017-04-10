@@ -4,6 +4,7 @@ var JobZoneType = "";
 var WatchNamespaceSets = "";
 var NodeIPInfo ="";
 var ClientIDInfo = "";
+var WatcherID = "";
 var areaIP = "localhost";
 var areaPort = "port";
 $(document).ready(function () {
@@ -11,7 +12,8 @@ $(document).ready(function () {
 	//http://172.16.13.110:8083/ngfront/zone/clients/watcher?NodeIP=10.10.3.9&ClientID=21343&areaType=user
 	NodeIPInfo = locationUrl.search.substring(locationUrl.search.indexOf("NodeIP=")+7,locationUrl.search.indexOf("&C"));
 	ClientIDInfo = locationUrl.search.substring(locationUrl.search.indexOf("ClientID=")+9,locationUrl.search.indexOf("&a"));
-	var areaTypeInfo = locationUrl.search.substring(locationUrl.search.indexOf("areaType=")+9,locationUrl.search.length);
+	var areaTypeInfo = locationUrl.search.substring(locationUrl.search.indexOf("areaType=")+9,locationUrl.search.indexOf("&Watcher"));
+	WatcherID = locationUrl.search.substring(locationUrl.search.indexOf("WatcherID=")+10,locationUrl.search.length);
 
 	 $(document).on('click','.fa-nodeEdit',function(){
 		 $(this).parent().hide();
@@ -167,7 +169,7 @@ $(document).ready(function () {
   function showWatcher(NodeIPInfo,ClientIDInfo){
 	//var areaIP = "localhost";
 	//var areaPort = "port";
-	var watcherUrl = "http://"+areaIP+":"+areaPort+"/watcher";
+	var watcherUrl = "http://"+areaIP+":"+areaPort+"/watchers/watcher/"+WatcherID;
 	$.ajax({
 		"url":watcherUrl,
 		"type":"get",
