@@ -178,7 +178,7 @@ func postWatcherInfo(request *restful.Request, response *restful.Response) {
 
 		return
 	}
-
+	logdebug.Println("新增时 前端传来的数据：", webMsg)
 	client := nodes.ClientInfo{
 		NodeIP:   webMsg.NodeIP,
 		ClientID: webMsg.ClientID,
@@ -188,7 +188,7 @@ func postWatcherInfo(request *restful.Request, response *restful.Response) {
 
 	createWatcherURL := "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.WatchManagerAPIServerPath
 
-	communicate.SendRequestByJSON(communicate.POST, createWatcherURL, webMsg.WatcherCfg)
+	resp, _ := communicate.SendRequestByJSON(communicate.POST, createWatcherURL, webMsg.WatcherCfg)
 	/*
 		resp, _ := communicate.SendRequestByJSON(communicate.POST, createWatcherURL, webMsg.WatcherCfg)
 		//根据kubeng通信返回的信息存储watcher配置
@@ -201,10 +201,11 @@ func postWatcherInfo(request *restful.Request, response *restful.Response) {
 		}
 		nodes.AddWatcherData(key, watcherCfgs)
 	*/
-	webRespMsg := ResponseBody{
-		Result: true,
-	}
-	response.WriteHeaderAndJson(200, webRespMsg, "application/json")
+	respBody := ResponseBody{}
+	json.Unmarshal(resp, &respBody)
+
+	logdebug.Println("返回给前端时 后台传来的数据：", respBody)
+	response.WriteHeaderAndJson(200, respBody, "application/json")
 	return
 
 }
