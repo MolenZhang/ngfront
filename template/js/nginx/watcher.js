@@ -5,8 +5,8 @@ var WatchNamespaceSets = "";
 var NodeIPInfo ="";
 var ClientIDInfo = "";
 var WatcherID = "";
-var areaIP = "192.168.19.128";
-var areaPort = "8083";
+var areaIP = "localhost";
+var areaPort = "port";
 $(document).ready(function () {
 	var locationUrl = window.location;
 	//http://172.16.13.110:8083/ngfront/zone/clients/watcher?NodeIP=10.10.3.9&ClientID=21343&areaType=user
@@ -340,8 +340,8 @@ $(document).ready(function () {
 
 //生成监控echart图
 function showNamespacesEcharts(KubernetesMasterHost,KubernetesAPIVersion,JobZoneType){
-	//var areaIP = "192.168.19.128";
-	//var areaPort = "8083";
+	//var areaIP = "localhost";
+	//var areaPort = "port";
 	var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/namespaces";
 	
 	$.ajax({
@@ -354,8 +354,12 @@ function showNamespacesEcharts(KubernetesMasterHost,KubernetesAPIVersion,JobZone
 		},
 		"success":function(data){
 			var data = eval("("+data+")");
-			var NamespacesList = data.NamespacesList;
-			var NamespacesAppCounts = data.AppInfoList;
+			var NamespacesInfos = data.NamespacesInfo;
+			var NamespacesList = new Array();
+			for(var namespacesNum=0; namespacesNum<NamespacesInfos.length; namespacesNum++){
+				NamespacesList.push(NamespacesInfos[namespacesNum].Namespace);
+			}
+			var NamespacesAppCounts = data.AppList;
 			//生成配置中的租户项
 			//showNamespaces(NamespacesList);
 			//echart画图位置
@@ -444,8 +448,8 @@ function showNamespaces(NamespacesList){
 }
 
 function loadNamespaces(KubernetesMasterHost,KubernetesAPIVersion){
-	//var areaIP = "192.168.19.128";
-	//var areaPort = "8083";
+	//var areaIP = "localhost";
+	//var areaPort = "port";
 	var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/namespaces";
 	
 	$.ajax({
