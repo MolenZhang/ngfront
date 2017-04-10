@@ -631,6 +631,8 @@ function compareClient(obj){
 				})
 				
 			}else{
+                var NodeIPB = $(".compareItem:checked").attr("NodeIP");
+                var clientB = $(".compareItem:checked").attr("ClientID");
 				var compareClientExternUrl = 'http://'+areaIP+':'+areaPort+'/nginxcfg/compare/'+thisClientID+'-'+clientB+'?NodeIPA='+thisNodeIP+'&NodeIPB='+NodeIPB+'&AppSrcType=extern';
 				$.ajax({
 			        url: compareClientExternUrl,
@@ -757,6 +759,8 @@ function compareClientOneWatcher(obj){
 				})
 				
 			}else{
+                var NodeIPB = $(".compareItem:checked").attr("NodeIP");
+                var clientB = $(".compareItem:checked").attr("ClientID");
 				var compareClientOneWatcherExternUrl = 'http://'+areaIP+':'+areaPort+'/nginxcfg/compare/'+thisClientID+'-'+clientB+'/'+thisWatcherID+'?NodeIPA='+thisNodeIP+'&NodeIPB='+NodeIPB+'&AppSrcType=extern';
 				$.ajax({
 			        url: compareClientOneWatcherExternUrl,

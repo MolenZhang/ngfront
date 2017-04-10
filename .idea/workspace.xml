@@ -24,14 +24,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="nginxcfg_compare.go" pinned="false" current-in-tab="false">
+      <file leaf-file-name="nginxcfg_compare.go" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg_compare.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="604">
-              <caret line="328" column="72" lean-forward="false" selection-start-line="328" selection-start-column="72" selection-end-line="328" selection-end-column="72" />
+            <state relative-caret-position="34">
+              <caret line="365" column="89" lean-forward="false" selection-start-line="365" selection-start-column="89" selection-end-line="365" selection-end-column="89" />
               <folding>
                 <element signature="e#18#190#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="watcher.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/template/js/nginx/watcher.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-57">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -66,22 +76,22 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="clients.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="clients.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/template/js/nginx/clients.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="239">
-              <caret line="595" column="29" lean-forward="false" selection-start-line="595" selection-start-column="29" selection-end-line="595" selection-end-column="29" />
+            <state relative-caret-position="448">
+              <caret line="762" column="73" lean-forward="false" selection-start-line="762" selection-start-column="73" selection-end-line="762" selection-end-column="73" />
               <folding>
-                <marker date="1491987710914" expanded="true" signature="2451:2486" ph="..." />
-                <marker date="1491987710914" expanded="true" signature="10180:10201" ph="..." />
-                <marker date="1491987710914" expanded="true" signature="10231:10237" ph=" " />
-                <marker date="1491987710914" expanded="true" signature="10418:10436" ph="..." />
-                <marker date="1491987710914" expanded="true" signature="10814:10820" ph=" " />
-                <marker date="1491987710914" expanded="true" signature="10906:10912" ph=" " />
-                <marker date="1491987710914" expanded="true" signature="10975:10996" ph="..." />
-                <marker date="1491987710914" expanded="true" signature="11070:11076" ph=" " />
-                <marker date="1491987710914" expanded="true" signature="19122:19140" ph="..." />
-                <marker date="1491987710914" expanded="true" signature="23180:23198" ph="..." />
+                <marker date="1491987930655" expanded="true" signature="2457:2492" ph="..." />
+                <marker date="1491987930655" expanded="true" signature="10186:10207" ph="..." />
+                <marker date="1491987930655" expanded="true" signature="10237:10243" ph=" " />
+                <marker date="1491987930655" expanded="true" signature="10424:10442" ph="..." />
+                <marker date="1491987930655" expanded="true" signature="10820:10826" ph=" " />
+                <marker date="1491987930655" expanded="true" signature="10912:10918" ph=" " />
+                <marker date="1491987930655" expanded="true" signature="10981:11002" ph="..." />
+                <marker date="1491987930655" expanded="true" signature="11076:11082" ph=" " />
+                <marker date="1491987930655" expanded="true" signature="19128:19146" ph="..." />
+                <marker date="1491987930655" expanded="true" signature="23332:23350" ph="..." />
               </folding>
             </state>
           </provider>
@@ -117,16 +127,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="nginxcfg_kubeng.go" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg_kubeng.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="19">
-              <caret line="15" column="8" lean-forward="false" selection-start-line="15" selection-start-column="8" selection-end-line="15" selection-end-column="8" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="FindInProjectRecents">
@@ -134,7 +134,11 @@
       <find>localho</find>
       <find>===</find>
       <find>================</find>
+      <find>&lt;----&gt;</find>
     </findStrings>
+    <replaceStrings>
+      <replace>&lt;====&gt;</replace>
+    </replaceStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -148,8 +152,9 @@
         <option value="$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg_web.go" />
         <option value="$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg.go" />
         <option value="$PROJECT_DIR$/template/js/customer/custom.js" />
-        <option value="$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg_compare.go" />
         <option value="$PROJECT_DIR$/template/js/nginx/clients.js" />
+        <option value="$PROJECT_DIR$/template/js/nginx/watcher.js" />
+        <option value="$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg_compare.go" />
       </list>
     </option>
   </component>
@@ -523,16 +528,16 @@
         <state relative-caret-position="19">
           <caret line="1" column="22" lean-forward="false" selection-start-line="1" selection-start-column="22" selection-end-line="1" selection-end-column="22" />
           <folding>
-            <marker date="1491987710914" expanded="true" signature="2451:2486" ph="..." />
-            <marker date="1491987710914" expanded="true" signature="10180:10201" ph="..." />
-            <marker date="1491987710914" expanded="true" signature="10231:10237" ph=" " />
-            <marker date="1491987710914" expanded="true" signature="10418:10436" ph="..." />
-            <marker date="1491987710914" expanded="true" signature="10814:10820" ph=" " />
-            <marker date="1491987710914" expanded="true" signature="10906:10912" ph=" " />
-            <marker date="1491987710914" expanded="true" signature="10975:10996" ph="..." />
-            <marker date="1491987710914" expanded="true" signature="11070:11076" ph=" " />
-            <marker date="1491987710914" expanded="true" signature="19122:19140" ph="..." />
-            <marker date="1491987710914" expanded="true" signature="23180:23198" ph="..." />
+            <marker date="1491987930655" expanded="true" signature="2457:2492" ph="..." />
+            <marker date="1491987930655" expanded="true" signature="10186:10207" ph="..." />
+            <marker date="1491987930655" expanded="true" signature="10237:10243" ph=" " />
+            <marker date="1491987930655" expanded="true" signature="10424:10442" ph="..." />
+            <marker date="1491987930655" expanded="true" signature="10820:10826" ph=" " />
+            <marker date="1491987930655" expanded="true" signature="10912:10918" ph=" " />
+            <marker date="1491987930655" expanded="true" signature="10981:11002" ph="..." />
+            <marker date="1491987930655" expanded="true" signature="11076:11082" ph=" " />
+            <marker date="1491987930655" expanded="true" signature="19128:19146" ph="..." />
+            <marker date="1491987930655" expanded="true" signature="23332:23350" ph="..." />
           </folding>
         </state>
       </provider>
@@ -693,31 +698,39 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg_compare.go">
+    <entry file="file://$PROJECT_DIR$/template/js/nginx/clients.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="604">
-          <caret line="328" column="72" lean-forward="false" selection-start-line="328" selection-start-column="72" selection-end-line="328" selection-end-column="72" />
+        <state relative-caret-position="448">
+          <caret line="762" column="73" lean-forward="false" selection-start-line="762" selection-start-column="73" selection-end-line="762" selection-end-column="73" />
           <folding>
-            <element signature="e#18#190#0" expanded="true" />
+            <marker date="1491987930655" expanded="true" signature="2457:2492" ph="..." />
+            <marker date="1491987930655" expanded="true" signature="10186:10207" ph="..." />
+            <marker date="1491987930655" expanded="true" signature="10237:10243" ph=" " />
+            <marker date="1491987930655" expanded="true" signature="10424:10442" ph="..." />
+            <marker date="1491987930655" expanded="true" signature="10820:10826" ph=" " />
+            <marker date="1491987930655" expanded="true" signature="10912:10918" ph=" " />
+            <marker date="1491987930655" expanded="true" signature="10981:11002" ph="..." />
+            <marker date="1491987930655" expanded="true" signature="11076:11082" ph=" " />
+            <marker date="1491987930655" expanded="true" signature="19128:19146" ph="..." />
+            <marker date="1491987930655" expanded="true" signature="23332:23350" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/template/js/nginx/clients.js">
+    <entry file="file://$PROJECT_DIR$/template/js/nginx/watcher.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="239">
-          <caret line="595" column="29" lean-forward="false" selection-start-line="595" selection-start-column="29" selection-end-line="595" selection-end-column="29" />
+        <state relative-caret-position="-57">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg_compare.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="365" column="89" lean-forward="false" selection-start-line="365" selection-start-column="89" selection-end-line="365" selection-end-column="89" />
           <folding>
-            <marker date="1491987710914" expanded="true" signature="2451:2486" ph="..." />
-            <marker date="1491987710914" expanded="true" signature="10180:10201" ph="..." />
-            <marker date="1491987710914" expanded="true" signature="10231:10237" ph=" " />
-            <marker date="1491987710914" expanded="true" signature="10418:10436" ph="..." />
-            <marker date="1491987710914" expanded="true" signature="10814:10820" ph=" " />
-            <marker date="1491987710914" expanded="true" signature="10906:10912" ph=" " />
-            <marker date="1491987710914" expanded="true" signature="10975:10996" ph="..." />
-            <marker date="1491987710914" expanded="true" signature="11070:11076" ph=" " />
-            <marker date="1491987710914" expanded="true" signature="19122:19140" ph="..." />
-            <marker date="1491987710914" expanded="true" signature="23180:23198" ph="..." />
+            <element signature="e#18#190#0" expanded="true" />
           </folding>
         </state>
       </provider>

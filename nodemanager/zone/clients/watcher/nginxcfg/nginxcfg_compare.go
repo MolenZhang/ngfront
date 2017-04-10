@@ -22,71 +22,71 @@ func deepCompareContent(cfgA, cfgB KubeNGConfig) (bool, string) {
 	errMsg := ""
 
 	if cfgA.RealServerPath != cfgB.RealServerPath {
-		errMsg = fmt.Sprintf(`RealServerPath不一致:%s<---->%s`, cfgA.RealServerPath, cfgB.RealServerPath)
+		errMsg = fmt.Sprintf(`RealServerPath不一致:%s<====>%s`, cfgA.RealServerPath, cfgB.RealServerPath)
 
 		return false, errMsg
 	}
 
 	if cfgA.Location != cfgB.Location {
-		errMsg = fmt.Sprintf(`Location不一致:%s<---->%s`, cfgA.Location, cfgB.Location)
+		errMsg = fmt.Sprintf(`Location不一致:%s<====>%s`, cfgA.Location, cfgB.Location)
 
 		return false, errMsg
 	}
 
 	if cfgA.ProxyRedirectSrcPath != cfgB.ProxyRedirectSrcPath {
-		errMsg = fmt.Sprintf(`ProxyRedirectSrcPath不一致:%s<---->%s`, cfgA.ProxyRedirectSrcPath, cfgB.ProxyRedirectSrcPath)
+		errMsg = fmt.Sprintf(`ProxyRedirectSrcPath不一致:%s<====>%s`, cfgA.ProxyRedirectSrcPath, cfgB.ProxyRedirectSrcPath)
 
 		return false, errMsg
 	}
 
 	if cfgA.ProxyRedirectDestPath != cfgB.ProxyRedirectDestPath {
-		errMsg = fmt.Sprintf(`ProxyRedirectDestPath不一致:%s<---->%s`, cfgA.ProxyRedirectDestPath, cfgB.ProxyRedirectDestPath)
+		errMsg = fmt.Sprintf(`ProxyRedirectDestPath不一致:%s<====>%s`, cfgA.ProxyRedirectDestPath, cfgB.ProxyRedirectDestPath)
 
 		return false, errMsg
 	}
 
 	if len(cfgA.UpstreamIPs) != len(cfgB.UpstreamIPs) {
-		errMsg = fmt.Sprintf(`UpstreamIPs列表内IP个数不一致:%s<---->%s`, cfgA.UpstreamIPs, cfgB.UpstreamIPs)
+		errMsg = fmt.Sprintf(`[服务%s] UpstreamIPs列表内IP个数不一致:%s<====>%s`, cfgA.AppName, cfgA.UpstreamIPs, cfgB.UpstreamIPs)
 
 		return false, errMsg
 	}
 
 	for k, upstreamIP := range cfgA.UpstreamIPs {
 		if cfgB.UpstreamIPs[k] != upstreamIP {
-			errMsg = fmt.Sprintf(`UpstreamIPs列表内IP不一致:%s<---->%s`, cfgA.UpstreamIPs, cfgB.UpstreamIPs)
+			errMsg = fmt.Sprintf(`[服务%s] UpstreamIPs列表内IP不一致:%s<====>%s`, cfgA.AppName, cfgA.UpstreamIPs, cfgB.UpstreamIPs)
 
 			return false, errMsg
 		}
 	}
 
 	if cfgA.UpstreamPort != cfgB.UpstreamPort {
-		errMsg = fmt.Sprintf(`UpstreamPort不一致:%s<---->%s`, cfgA.UpstreamPort, cfgB.UpstreamPort)
+		errMsg = fmt.Sprintf(`[服务%s] UpstreamPort不一致:%s<====>%s`, cfgA.AppName, cfgA.UpstreamPort, cfgB.UpstreamPort)
 
 		return false, errMsg
 	}
 
 	if cfgA.IsUpstreamIPHash != cfgB.IsUpstreamIPHash {
-		errMsg = fmt.Sprintf(`IsUpstreamIPHash不一致:%s<---->%s`, cfgA.IsUpstreamIPHash, cfgB.IsUpstreamIPHash)
+		errMsg = fmt.Sprintf(`[服务%s] IsUpstreamIPHash不一致:%s<====>%s`, cfgA.AppName, cfgA.IsUpstreamIPHash, cfgB.IsUpstreamIPHash)
 
 		return false, errMsg
 	}
 
 	if len(cfgA.UpstreamUserRules.RulesSet) != len(cfgB.UpstreamUserRules.RulesSet) {
-		errMsg = fmt.Sprintf(`UpstreamUserRules规则个数不一致:%s<---->%s`, cfgA.UpstreamUserRules, cfgB.UpstreamUserRules)
+		errMsg = fmt.Sprintf(`[服务%s] UpstreamUserRules规则个数不一致:%s<====>%s`, cfgA.AppName, cfgA.UpstreamUserRules, cfgB.UpstreamUserRules)
 
 		return false, errMsg
 	}
 
 	for rule, params := range cfgA.UpstreamUserRules.RulesSet {
 		if len(params) != len(cfgB.UpstreamUserRules.RulesSet[rule]) {
-			errMsg = fmt.Sprintf(`UpstreamUserRules规则参数个数不一致:%s<---->%s`, cfgA.UpstreamUserRules, cfgB.UpstreamUserRules)
+			errMsg = fmt.Sprintf(`[服务%s] UpstreamUserRules规则参数个数不一致:%s<====>%s`, cfgA.AppName, cfgA.UpstreamUserRules, cfgB.UpstreamUserRules)
 
 			return false, errMsg
 		}
 
 		for k, param := range params {
 			if param != cfgB.UpstreamUserRules.RulesSet[rule][k] {
-				errMsg = fmt.Sprintf(`UpstreamUserRules规则参数内容不一致:%s<---->%s`, cfgA.UpstreamUserRules, cfgB.UpstreamUserRules)
+				errMsg = fmt.Sprintf(`[服务%s] UpstreamUserRules规则参数内容不一致:%s<====>%s`, cfgA.AppName, cfgA.UpstreamUserRules, cfgB.UpstreamUserRules)
 
 				return false, errMsg
 			}
@@ -94,21 +94,21 @@ func deepCompareContent(cfgA, cfgB KubeNGConfig) (bool, string) {
 	}
 
 	if len(cfgA.ServerUserRules.RulesSet) != len(cfgB.ServerUserRules.RulesSet) {
-		errMsg = fmt.Sprintf(`ServerUserRules规则个数不一致:%s<---->%s`, cfgA.ServerUserRules, cfgB.ServerUserRules)
+		errMsg = fmt.Sprintf(`[服务%s] ServerUserRules规则个数不一致:%s<====>%s`, cfgA.AppName, cfgA.ServerUserRules, cfgB.ServerUserRules)
 
 		return false, errMsg
 	}
 
 	for rule, params := range cfgA.ServerUserRules.RulesSet {
 		if len(params) != len(cfgB.ServerUserRules.RulesSet[rule]) {
-			errMsg = fmt.Sprintf(`ServerUserRules规则参数个数不一致:%s<---->%s`, cfgA.ServerUserRules, cfgB.ServerUserRules)
+			errMsg = fmt.Sprintf(`[服务%s] ServerUserRules规则参数个数不一致:%s<====>%s`, cfgA.AppName, cfgA.ServerUserRules, cfgB.ServerUserRules)
 
 			return false, errMsg
 		}
 
 		for k, param := range params {
 			if param != cfgB.ServerUserRules.RulesSet[rule][k] {
-				errMsg = fmt.Sprintf(`ServerUserRules规则参数内容不一致:%s<---->%s`, cfgA.ServerUserRules, cfgB.ServerUserRules)
+				errMsg = fmt.Sprintf(`[服务%s] ServerUserRules规则参数内容不一致:%s<====>%s`, cfgA.AppName, cfgA.ServerUserRules, cfgB.ServerUserRules)
 
 				return false, errMsg
 			}
@@ -116,21 +116,21 @@ func deepCompareContent(cfgA, cfgB KubeNGConfig) (bool, string) {
 	}
 
 	if len(cfgA.LocationUserRules.RulesSet) != len(cfgB.LocationUserRules.RulesSet) {
-		errMsg = fmt.Sprintf(`LocationUserRules规则个数不一致:%s<---->%s`, cfgA.LocationUserRules, cfgB.LocationUserRules)
+		errMsg = fmt.Sprintf(`[服务%s] LocationUserRules规则个数不一致:%s<====>%s`, cfgA.AppName, cfgA.LocationUserRules, cfgB.LocationUserRules)
 
 		return false, errMsg
 	}
 
 	for rule, params := range cfgA.LocationUserRules.RulesSet {
 		if len(params) != len(cfgB.LocationUserRules.RulesSet[rule]) {
-			errMsg = fmt.Sprintf(`LocationUserRules规则参数个数不一致:%s<---->%s`, cfgA.LocationUserRules, cfgB.LocationUserRules)
+			errMsg = fmt.Sprintf(`[服务%s] LocationUserRules规则参数个数不一致:%s<====>%s`, cfgA.AppName, cfgA.LocationUserRules, cfgB.LocationUserRules)
 
 			return false, errMsg
 		}
 
 		for k, param := range params {
 			if param != cfgB.LocationUserRules.RulesSet[rule][k] {
-				errMsg = fmt.Sprintf(`LocationUserRules规则参数内容不一致:%s<---->%s`, cfgA.LocationUserRules, cfgB.LocationUserRules)
+				errMsg = fmt.Sprintf(`[服务%s] LocationUserRules规则参数内容不一致:%s<====>%s`, cfgA.AppName, cfgA.LocationUserRules, cfgB.LocationUserRules)
 
 				return false, errMsg
 			}
@@ -138,25 +138,25 @@ func deepCompareContent(cfgA, cfgB KubeNGConfig) (bool, string) {
 	}
 
 	if cfgA.LogRule.LogFileDirPath != cfgB.LogRule.LogFileDirPath {
-		errMsg = fmt.Sprintf(`LogRule规则不一致:%s<---->%s`, cfgA.LogRule, cfgB.LogRule)
+		errMsg = fmt.Sprintf(`LogRule规则不一致:%s<====>%s`, cfgA.LogRule, cfgB.LogRule)
 
 		return false, errMsg
 	}
 
 	if cfgA.LogRule.LogRuleName != cfgB.LogRule.LogRuleName {
-		errMsg = fmt.Sprintf(`LogRule规则不一致:%s<---->%s`, cfgA.LogRule, cfgB.LogRule)
+		errMsg = fmt.Sprintf(`LogRule规则不一致:%s<====>%s`, cfgA.LogRule, cfgB.LogRule)
 
 		return false, errMsg
 	}
 
 	if cfgA.LogRule.LogTemplateName != cfgB.LogRule.LogTemplateName {
-		errMsg = fmt.Sprintf(`LogRule规则不一致:%s<---->%s`, cfgA.LogRule, cfgB.LogRule)
+		errMsg = fmt.Sprintf(`LogRule规则不一致:%s<====>%s`, cfgA.LogRule, cfgB.LogRule)
 
 		return false, errMsg
 	}
 
 	if cfgA.DeleteUserCfgs != cfgB.DeleteUserCfgs {
-		errMsg = fmt.Sprintf(`是否删除个性化配置规则不一致:%s<---->%s`, cfgA.DeleteUserCfgs, cfgB.DeleteUserCfgs)
+		errMsg = fmt.Sprintf(`[服务%s] 是否删除个性化配置规则不一致:%s<====>%s`, cfgA.AppName, cfgA.DeleteUserCfgs, cfgB.DeleteUserCfgs)
 
 		return false, errMsg
 	}
@@ -358,12 +358,23 @@ func (svc *ServiceInfo) compareAllWatchersNginxCfgs(request *restful.Request, re
 		clientBMap := make(map[string]map[string]KubeNGConfig, 0)
 		json.Unmarshal(respB, &clientBMap)
 
-		responseMsg.Result, responseMsg.ErrorMsg = compareContent(clientAMap, clientBMap)
+		newErrMsg := ""
+		errMsg := ""
+		responseMsg.Result, errMsg = compareContent(clientAMap, clientBMap)
 		if responseMsg.Result != true {
-			break
+			//responseMsg.ErrorMsg = responseMsg.ErrorMsg + "[watcherID] = " + watcherID + "\n"
+			newErrMsg = newErrMsg + "[watcherID] = " + watcherID + "配置不一致 \n "
+			responseMsg.ErrorMsg += newErrMsg
+			logdebug.Println(logdebug.LevelError, errMsg)
+			//break
 		}
-
 	}
+
+	if responseMsg.ErrorMsg != "" {
+		responseMsg.Result = false
+	}
+
+	logdebug.Println(logdebug.LevelDebug, "对比结束", responseMsg.ErrorMsg)
 
 	response.WriteHeaderAndJson(200, responseMsg, "application/json")
 
