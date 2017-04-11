@@ -142,18 +142,19 @@ func deleteWatcherInfoByID(request *restful.Request, response *restful.Response)
 	logdebug.Println(logdebug.LevelDebug, "根据前端提供的watcherID删除对应监视器信息")
 	watcherID := request.PathParameter("watcherID")
 
-	request.Request.ParseForm()
-	client := nodes.ClientInfo{
-		NodeIP:   request.Request.Form.Get("NodeIP"),
-		ClientID: request.Request.Form.Get("ClientID"),
+	allNodesInfo := nodes.GetAllNodesInfo()
+	for _, singleNodeInfo := range allNodesInfo {
+
+		deleteWatcherURL := "http://" +
+			singleNodeInfo.Client.NodeIP +
+			singleNodeInfo.Client.APIServerPort +
+			"/" +
+			singleNodeInfo.Client.WatchManagerAPIServerPath +
+			"/" +
+			watcherID
+		communicate.SendRequestByJSON(communicate.DELETE, deleteWatcherURL, nil)
 	}
 
-	key := client.CreateKey()
-	clientInfo := nodes.GetClientInfo(key)
-
-	deleteWatcherAPIServerURL := "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.WatchManagerAPIServerPath + "/" + watcherID
-	communicate.SendRequestByJSON(communicate.DELETE, deleteWatcherAPIServerURL, nil)
-	logdebug.Println(logdebug.LevelDebug, "删除watcher URL", deleteWatcherAPIServerURL)
 	webRespMsg := ResponseBody{
 		Result: true,
 	}
