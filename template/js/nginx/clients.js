@@ -830,7 +830,7 @@ function watcherNginxExport(obj){
 				url : exportClientWatchersUrl,
 				dataType: "json",
 				contentType: "text/html; charset=UTF-8",
-				type: "get", 
+				type: "post", 
 				headers: {
 					"Content-Type": "application/json",
 					"Accept": "application/json",
