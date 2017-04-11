@@ -124,9 +124,9 @@ button.btn-start{
 a{
 	cursor: pointer;
 }
-.isUsed_true{
+/* .isUsed_true{
 	cursor: no-drop;
-}
+} */
 .table-titSec{
 	padding-left: 20px;
 	color:red;

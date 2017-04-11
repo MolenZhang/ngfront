@@ -2,7 +2,8 @@ $(function(){
 
     // 全选  全选checkbox class设为 chkAll
     $(".chkAll").click(function(){
-        $(".chkItem").prop('checked',$(".chkAll").is(":checked"));
+        $(this).parents("table").find("input.chkItem").prop('checked',$(".chkAll").is(":checked"));
+        //$(".chkItem").prop('checked',$(".chkAll").is(":checked"));
     });
  
     // 每条数据 checkbox class设为 chkItem
