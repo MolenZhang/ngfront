@@ -79,14 +79,14 @@ function showClients(areaType){
                                     '<td>'+NodeName+'</td>'+
                                     '<td>'+NodeIP+'</td>'+
                                     '<td>'+APIServerPort+'</td>'+
-                                    '<td class="operationBtns">'+
+                                    '<td class="operationBtns" ClientID="'+ClientID+'" NodeIP="'+NodeIP+'">'+
                                     	'<a><i class="fa fa-play hide"></i></a>'+
                                     	'<a><i class="fa fa-power-off hide"></i></a>'+
                                     	/*'<a href="'+watcherUrl+NodeIP+'&ClientID='+ClientID+'&areaType='+areaType+'"><i class="fa fa-gear"></i></a>'+*/
                                     	
                                     	'<a onclick="addOneWatcher(this)" ClientID="'+ClientID+'" NodeIP="'+NodeIP+'"><i>新增</i></a>'+
                                     	'<a ><i>删除</i></a>'+
-                                    	'<a ><i>下载</i></a>'+
+                                    	'<a onclick="nginxExport(this)"><i>下载</i></a>'+
                                     '</td>'+
                                     '</tr>';
 			 	}
@@ -323,7 +323,7 @@ function showWatcherHtml(data,ClientID,NodeIP){
 					+'<td>'+WatcherID+'</td>'
 					+'<td class="statusImg">'+K8sWatcherStatusHtml+'</td>'
 					+'<td colspan="2">'+WatchNamespaceSets+'</td>'
-					+'<td class="operationBtns"><a><i>停止</i></a><a><i>启动</i></a><a href="'+watcherHtmlUrl+WatcherID+'"><i>编辑</i></a><a onclick="delOneWatcher(this)"><i>删除</i></a></td>'
+					+'<td class="operationBtns" WatcherID="'+WatcherID+'"><a><i>停止</i></a><a><i>启动</i></a><a href="'+watcherHtmlUrl+WatcherID+'"><i>编辑</i></a><a onclick="delOneWatcher(this)"><i>删除</i></a></td>'
 					+'</tr>';
 		}
 
@@ -433,7 +433,68 @@ function addOneWatcher(obj){
 
 /*删除*/
 function delOneWatcher(obj){
-	$(obj).parent().parent().remove();
+
+	var WatcherID = $(obj).parent().attr("WatcherID");
+	var NodeIP = $(obj).parent().parent().attr("NodeIP");
+	var ClientID = $(obj).parent().parent().attr("ClientID");
+	var deleteUrl = "http://"+areaIP+":"+areaPort+"/nginxcfg/"+WatcherID+"?NodeIP="+NodeIP+"&ClientID="+ClientID;
+
+	layer.open({
+		title: "删除", //不显示标题
+		content: "确认删除?",
+		btn: ['确定', '取消'],
+		yes: function(index, layero){
+			$.ajax({
+				 url: deleteUrl,
+				 dataType: "json",
+				 contentType: "text/html; charset=UTF-8",
+				 type:"delete",
+				 headers: {
+				 	"Content-Type": "application/json",
+				 	"Accept": "application/json",
+				 },
+				success:function(data){
+				 	var data=data;
+					if(data.Result==true){
+						$(obj).parent().parent().remove();
+				 		layer.msg('删除成功！', {icon: 1});
+					}else{
+						layer.alert(data.ErrorMessage, {
+							icon: 2,
+							title:"删除失败",
+							skin: 'layer-ext-moon'
+						})
+					}
+				 		
+				}
+			});
+			layer.close(index);
+		},
+		cancel: function(index, layero){
+			layer.close(index);
+		}
+	});
+	
+}
+
+/*下载*/
+function nginxExport(obj){
+	var NodeIPInfo = $(obj).parent().attr("NodeIP");
+	var ClientIDInfo = $(obj).parent().attr("ClientID");
+	var downloadData={
+	      	"NodeIP": NodeIPInfo,
+	        "ClientID":ClientIDInfo
+	    };
+	        	
+	var downloadUrl = 'http://'+areaIP+':'+areaPort+'/nginxcfg/download';
+	$.ajax({
+		url : downloadUrl,
+		type: "get", 
+		data: downloadData,
+		success :function(data){
+		location.href = data.NginxCfgDownloadURL;
+		}
+	});
 }
 
 function areaRefresh(){

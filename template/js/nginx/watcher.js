@@ -334,7 +334,7 @@ $(document).ready(function () {
 										'</tr>';
 			$("#watcherBasicInfo").append(watcherBasicHtml);
 			
-			showNamespacesEcharts(KubernetesMasterHost,KubernetesAPIVersion,JobZoneType);
+			//showNamespacesEcharts(KubernetesMasterHost,KubernetesAPIVersion,JobZoneType);
 		}
 	});
 }
