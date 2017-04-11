@@ -142,7 +142,7 @@ type singleClientDownloadInfo struct {
 }
 
 //下载单个节点上的所选watcherID的配置信息
-func singleClientWatcherCfgDownloadByWatcherID(request *restful.Request, response *restful.Response) {
+func downloadSingleClientNginxCfgsByWatcherIDs(request *restful.Request, response *restful.Response) {
 	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<根据指定watcherID下载配置信息>>>>>>>>>>>>")
 	var NginxCfgDownloadURL string
 	reqDownloadInfo := singleClientDownloadInfo{}
@@ -213,7 +213,7 @@ func singleClientWatcherCfgDownloadByWatcherID(request *restful.Request, respons
 	response.WriteHeaderAndJson(200, respMsg, "application/json")
 
 }
-func (svc *ServiceInfo) nginxCfgSingleClientDownload(request *restful.Request, response *restful.Response) {
+func (svc *ServiceInfo) realDownload(request *restful.Request, response *restful.Response) {
 
 	logdebug.Println(logdebug.LevelDebug, "前端开始下载")
 	//write to web
@@ -243,10 +243,16 @@ type allClientDownloadInfo struct {
 	WatcherIDSet  []string
 }
 
+<<<<<<< HEAD
 //下载所有节点上的配置信息
 func allNginxCfgDownload(request *restful.Request, response *restful.Response) {
 	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<根据指定watcherID下载所有配置信息>>>>>>>>>>>>")
 
+=======
+//下载指定的部分clients中部分watcher的nginx配置
+func downloadClientsNginxCfgsByWatcherIDs(request *restful.Request, response *restful.Response) {
+	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<根据指定watcherID下载配置信息>>>>>>>>>>>>")
+>>>>>>> 7586db5017fcaec8f0ed182ff2faca9b35edfaf6
 	var NginxCfgDownloadURL string
 
 	reqDownloadInfo := allClientDownloadInfo{}
