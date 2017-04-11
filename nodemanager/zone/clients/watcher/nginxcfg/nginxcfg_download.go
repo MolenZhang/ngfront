@@ -243,16 +243,9 @@ type allClientDownloadInfo struct {
 	WatcherIDSet  []string
 }
 
-<<<<<<< HEAD
-//下载所有节点上的配置信息
-func allNginxCfgDownload(request *restful.Request, response *restful.Response) {
-	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<根据指定watcherID下载所有配置信息>>>>>>>>>>>>")
-
-=======
 //下载指定的部分clients中部分watcher的nginx配置
 func downloadClientsNginxCfgsByWatcherIDs(request *restful.Request, response *restful.Response) {
 	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<根据指定watcherID下载配置信息>>>>>>>>>>>>")
->>>>>>> 7586db5017fcaec8f0ed182ff2faca9b35edfaf6
 	var NginxCfgDownloadURL string
 
 	reqDownloadInfo := allClientDownloadInfo{}
