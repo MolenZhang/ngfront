@@ -14,6 +14,12 @@ import (
 	"github.com/emicklei/go-restful"
 )
 
+//前端单个watcher需展示的信息
+type watcherInfo struct {
+	Client  nodes.ClientInfo
+	Watcher nodes.WatchManagerCfg
+}
+
 //前端需批量操作的节点信息
 type watcherNodeInfo struct {
 	NodeIP   string
@@ -23,7 +29,6 @@ type watcherNodeInfo struct {
 type watcherStatusInfo struct {
 	NodeIP     string
 	ClientID   string
-	WatcherID  string
 	WatcherCfg nodes.WatchManagerCfg
 }
 
@@ -126,6 +131,12 @@ func deleteWatcherInfoByID(request *restful.Request, response *restful.Response)
 
 	deleteWatcherAPIServerURL := "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.WatchManagerAPIServerPath + watcherID
 	communicate.SendRequestByJSON(communicate.DELETE, deleteWatcherAPIServerURL, nil)
+	webRespMsg := ResponseBody{
+		Result: true,
+	}
+	response.WriteHeaderAndJson(200, webRespMsg, "application/json")
+
+	return
 }
 
 //处理前端的get请求
@@ -193,7 +204,7 @@ func postWatcherInfo(request *restful.Request, response *restful.Response) {
 	respBody := ResponseBody{}
 	json.Unmarshal(resp, &respBody)
 
-	//	getNamespacesFromWeb(respBody.WatcherCfg.WatchNamespaceSets)
+	getNamespacesFromWeb(respBody.WatcherCfg.WatchNamespaceSets)
 
 	logdebug.Println(logdebug.LevelDebug, "返回给前端时 后台传来的数据：", respBody)
 	response.WriteHeaderAndJson(200, respBody, "application/json")
@@ -208,27 +219,21 @@ type SaveNamespacesFromWeb struct {
 
 var saveNamespacesFromWeb SaveNamespacesFromWeb
 
-/*
 func getNamespacesFromWeb(namespaces []string) {
-	for _, namspace := range namespaces {
+	for _, namespace := range namespaces {
 		saveNamespacesFromWeb.namespaceSets = append(saveNamespacesFromWeb.namespaceSets, namespace)
 	}
 }
-*/
+
 //对应前端编辑按钮
 //putWatcherInfo 处理前端PUT过来的消息 更新
+//同时 前端的重启、停止、开启按钮的实现也是基于更新函数实现
 func putWatcherInfoByID(request *restful.Request, response *restful.Response) {
 	logdebug.Println(logdebug.LevelDebug, "与kubeng通讯 更新指定watcherID的状态")
 	watcherID := request.PathParameter("watcherID")
 
 	webMsg := CfgWebMsg{}
 
-	/*intTypeWatcherID, err := strconv.Atoi(watcherID)
-	if err != nil {
-		response.WriteError(http.StatusInternalServerError, err)
-		return
-	}
-	*/
 	err := request.ReadEntity(&webMsg)
 	if err != nil {
 		response.WriteError(http.StatusInternalServerError, err)
@@ -242,15 +247,7 @@ func putWatcherInfoByID(request *restful.Request, response *restful.Response) {
 	}
 	key := client.CreateKey()
 	clientInfo := nodes.GetClientInfo(key)
-	/*
-		//更新watcher信息
-		watcherKey := webMsg.WatcherCfg.WatcherID
-		watcherValue := webMsg.WatcherCfg
-		watcherCfgs := map[int]nodes.WatchManagerCfg{
-			watcherKey: watcherValue,
-		}
-		nodes.AddWatcherData(key, webMsg.WatcherCfgs)
-	*/
+
 	updateWatcherCfgURL := "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.WatchManagerAPIServerPath + watcherID
 
 	//暂时未做处理失败的逻辑判断
@@ -325,66 +322,35 @@ func getWatchNamespacesDetailInfo(w http.ResponseWriter, r *http.Request) {
 }
 
 //对应前端 启动 按钮
-func startWatcherManager(request *restful.Request, response *restful.Response) {
-	reqMsg := watcherStatusInfo{}
+func changeWatcherManagerStatus(request *restful.Request, response *restful.Response) {
+	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<更改监视器状态>>>>>>>>")
 
-	err := request.ReadEntity(&reqMsg)
-	if err != nil {
-		response.WriteError(http.StatusInternalServerError, err)
-		return
-	}
+	watcherID := request.PathParameter("watcherID")
+	watcherStatus := request.PathParameter("status")
 
-	reqMsg.WatcherCfg.K8sWatcherStatus = "start"
-
+	request.Request.ParseForm()
 	client := nodes.ClientInfo{
-		NodeIP:   reqMsg.NodeIP,
-		ClientID: reqMsg.ClientID,
+		NodeIP:   request.Request.Form.Get("NodeIP"),
+		ClientID: request.Request.Form.Get("ClientID"),
 	}
 	key := client.CreateKey()
 	clientInfo := nodes.GetClientInfo(key)
 
-	startWatcherCfgURL := "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.WatchManagerAPIServerPath + reqMsg.WatcherID
+	startWatcherCfgURL := "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.WatchManagerAPIServerPath + watcherID
 
-	//暂时未做处理失败的逻辑判断
-	communicate.SendRequestByJSON(communicate.PUT, startWatcherCfgURL, reqMsg.WatcherCfg.K8sWatcherStatus)
+	//get 对应watcherID的信息
+	respMsg := ResponseBody{}
+	resp, _ := communicate.SendRequestByJSON(communicate.GET, startWatcherCfgURL, nil)
+	json.Unmarshal(resp, &respMsg)
+	respMsg.WatcherCfg.K8sWatcherStatus = watcherStatus
+
+	//put 更新监控状态位 并发给k8s
+	respWeb, _ := communicate.SendRequestByJSON(communicate.PUT, startWatcherCfgURL, respMsg.WatcherCfg)
+	json.Unmarshal(resp, &respMsg)
+
+	response.WriteHeaderAndJson(200, respWeb, "application/json")
+
 	return
-}
-
-//对应前端停止按钮
-func stopWatcherManager(request *restful.Request, response *restful.Response) {
-	reqMsg := watcherStatusInfo{}
-
-	err := request.ReadEntity(&reqMsg)
-	if err != nil {
-		response.WriteError(http.StatusInternalServerError, err)
-		return
-	}
-
-	reqMsg.WatcherCfg.K8sWatcherStatus = "stop"
-
-	client := nodes.ClientInfo{
-		NodeIP:   reqMsg.NodeIP,
-		ClientID: reqMsg.ClientID,
-	}
-	key := client.CreateKey()
-	clientInfo := nodes.GetClientInfo(key)
-
-	startWatcherCfgURL := "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.WatchManagerAPIServerPath + reqMsg.WatcherID
-
-	//暂时未做处理失败的逻辑判断
-	communicate.SendRequestByJSON(communicate.PUT, startWatcherCfgURL, reqMsg.WatcherCfg.K8sWatcherStatus)
-	return
-}
-
-//对应前端 重启按钮，实则为启动按钮
-func restartWatcherManager(request *restful.Request, response *restful.Response) {
-	startWatcherManager(request, response)
-	return
-}
-
-type watcherInfo struct {
-	Client  nodes.ClientInfo
-	Watcher nodes.WatchManagerCfg
 }
 
 func getSingleWatcherInfo(request *restful.Request, response *restful.Response) {
@@ -486,26 +452,13 @@ func (svc *ServiceInfo) Init() {
 		Operation("updateAllWatchManagerConfig").
 		Reads(BatchWatcherWebMsg{})) // from the request
 
-	//停止监视器
-	ws.Route(ws.POST("/stop").To(stopWatcherManager).
+	//停止或开启监视器
+	ws.Route(ws.POST("/{watcherID}/{status}").To(changeWatcherManagerStatus).
 		// docs
-		Doc("stop watcher manager").
+		Doc("change watcher manager watcherStatus").
 		Operation("stopWatcherManager").
-		Reads(BatchWatcherWebMsg{})) // from the request
-
-	//开启监视器
-	ws.Route(ws.POST("/start").To(startWatcherManager).
-		// docs
-		Doc("start watcher manager").
-		Operation("startWatcherManager").
-		Reads(BatchWatcherWebMsg{})) // from the request
-
-	//重启监视器
-	ws.Route(ws.POST("/start").To(restartWatcherManager).
-		// docs
-		Doc("start watcher manager").
-		Operation("startWatcherManager").
-		Reads(BatchWatcherWebMsg{})) // from the request
+		Param(ws.PathParameter("watcherID", "watcherID由监控的租户列表组成").DataType("int")).
+		Param(ws.PathParameter("status", "前端监控状态").DataType("string")))
 
 	restful.Add(ws)
 

@@ -138,7 +138,11 @@ func getAppListFromEpList(epList EndpointsList, jobZoneType string) (appInfoList
 
 //从k8s集群获取租户的详细信息
 func getNamespacesDetailInfoFromK8s(getNamespacesURL string, jobZoneType string) (namespacesDetail NamespacesDetailInfo) {
+	//从k8s获取到的全部租户
 	namespacesList := getNamespacesFromK8s(getNamespacesURL)
+
+	//除去前端已经选择监视的租户，其余的返回给前端显示
+
 	namespacesDetail.NamespacesList = namespacesList
 
 	for _, namespace := range namespacesList {
