@@ -3,14 +3,14 @@ package watcher
 //watcher页面 展示具体的某一台client下的监视器信息 可以编辑
 import (
 	"encoding/json"
+	"github.com/emicklei/go-restful"
 	"html/template"
 	"net/http"
 	"ngfront/communicate"
 	"ngfront/logdebug"
 	"ngfront/nodemanager/nodes"
-	//"strconv"
-	"github.com/emicklei/go-restful"
 	"sort"
+	"strconv"
 )
 
 //前端单个watcher需展示的信息
@@ -168,12 +168,14 @@ func getAllWatcherInfo(request *restful.Request, response *restful.Response) {
 
 	watcherAPIServerURL := "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.WatchManagerAPIServerPath
 
+	logdebug.Println(logdebug.LevelDebug, "获取所有的监视器信息URL", watcherAPIServerURL)
 	webMsg := nodes.WatchManagerCfgs
 	resp, _ := communicate.SendRequestByJSON(communicate.GET, watcherAPIServerURL, nil)
 	json.Unmarshal(resp, &webMsg)
 
+	logdebug.Println(logdebug.LevelDebug, "Map 获取所有监视器信息：", webMsg)
 	respMsg := mapConvertToArray(webMsg)
-	logdebug.Println(logdebug.LevelDebug, "获取所有监视器信息：", webMsg)
+	logdebug.Println(logdebug.LevelDebug, "Arr 获取所有监视器信息：", respMsg)
 	response.WriteHeaderAndJson(200, respMsg, "application/json")
 
 	return
@@ -237,14 +239,23 @@ func putWatcherInfoByID(request *restful.Request, response *restful.Response) {
 	logdebug.Println(logdebug.LevelDebug, "与kubeng通讯 更新指定watcherID的状态")
 	watcherID := request.PathParameter("watcherID")
 
+	intTypeWatcherID, err := strconv.Atoi(watcherID)
+
+	if err != nil {
+		logdebug.Println(logdebug.LevelError, err)
+		response.WriteError(http.StatusInternalServerError, err)
+		return
+	}
+
 	webMsg := CfgWebMsg{}
 
-	err := request.ReadEntity(&webMsg)
+	err = request.ReadEntity(&webMsg)
 	if err != nil {
 		response.WriteError(http.StatusInternalServerError, err)
 
 		return
 	}
+	webMsg.WatcherCfg.WatcherID = intTypeWatcherID
 
 	allNodesInfo := nodes.GetAllNodesInfo()
 	for _, singleNodeInfo := range allNodesInfo {
@@ -258,7 +269,6 @@ func putWatcherInfoByID(request *restful.Request, response *restful.Response) {
 			watcherID
 
 		communicate.SendRequestByJSON(communicate.PUT, updateWatcherCfgURL, webMsg.WatcherCfg)
-
 	}
 	webRespMsg := ResponseBody{
 		Result: true,
