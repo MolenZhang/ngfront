@@ -777,7 +777,7 @@ function compareClientOneWatcher(obj){
 	})
 }
 
-/*下载一个watcher*/
+/*批量下载一个client下的多个watcher*/
 function watcherNginxExport(obj){
 	var watchersUrl= 'http://'+areaIP+':'+areaPort+"/watchers";
 	var ClientID = $(obj).parent().attr("ClientID");
@@ -846,10 +846,39 @@ function watcherNginxExport(obj){
 	})
 }
 /**
-* 批量导出多个node的配置信息
+* 批量下载多个client下个多个watcher
 * @param obj
 */
 function nginxCfgsExport(obj){
+	var watchersUrl= 'http://'+areaIP+':'+areaPort+"/watchers";
+	var ClientID = $("#clientsList").find("tr:first").attr("ClientID");
+	var NodeIP = $("#clientsList").find("tr:first").attr("NodeIP");
+	var exportWatcherIDHtml = ""	
+	$.ajax({
+		url : watchersUrl,
+		dataType: "json",
+		contentType: "text/html; charset=UTF-8",
+		type: "get", 
+		headers: {
+			"Content-Type": "application/json",
+			"Accept": "application/json",
+		},
+		data: {
+			"ClientID":ClientID,
+			"NodeIP":NodeIP
+		},
+		success :function(data){
+			var data=data;
+			for(var wn=0; wn<data.length; wn++){
+				var ewatcherID = data[wn].WatcherID;
+				var eWatchNamespaceSets = data[wn].WatchNamespaceSets;
+				exportWatcherIDHtml += '<tr><td><input type="checkbox" class="chkItem chkWatcherItem" WatcherID="'+ewatcherID+'"></td>'
+		  							+'<td>'+ewatcherID+'</td><td>'+eWatchNamespaceSets+'</td></tr>';
+			}
+			$("#exportNginxWatcherbody").empty().append(exportWatcherIDHtml);
+		}		
+	});
+	
 	var DownloadInfo = new Array();
 	var checkedNodeItems = $(".chkNodeItem:checked");
 	for(var nodeNum=0; nodeNum< checkedNodeItems.length;nodeNum++){
@@ -863,29 +892,50 @@ function nginxCfgsExport(obj){
 	var checkedWatchers =$(".chkWatcherItem:checked");
 	for(var cw=0; cw<checkedWatchers.length; cw++){
 		watcherIDArray.push(checkedWatchers[cw].getAttribute("WatcherID"));
-	}	
-	var DownloadData = {
-		"ClientInfoSet":DownloadInfo,
-		"WatcherIDSet":watcherIDArray
-	};
-	var downloadUrl = 'http://'+areaIP+':'+areaPort+'/nginxcfg/Alldownload';
-	$.ajax({
-	    url : downloadUrl,
-		dataType: "json",
-		contentType: "text/html; charset=UTF-8",
-		type: "post", 
-		headers: {
-			"Content-Type": "application/json",
-			"Accept": "application/json",
-		},
-		data: JSON.stringify(DownloadData),
-		success :function(data){
-			//var data=data;
-//			location.href= 'http://'+areaIP+':'+areaPort+'/nginxcfg/batchDownload';
-			location.href= 'http://'+areaIP+':'+areaPort+data.NginxCfgDownloadURL;
+	}
+
+	layer.open({
+		type: 1,
+		title: "导出watcher",
+		area: ['450px','400px'],
+		content: $("#exportNginxWatcher"),
+		btn: ['确定','取消'],
+		yes: function(index, layero){
+			var watcherIDArray = new Array();
+			var checkedWatchers =$(".chkWatcherItem:checked");
+			for(var cw=0; cw<checkedWatchers.length; cw++){
+				watcherIDArray.push(checkedWatchers[cw].getAttribute("WatcherID"));
+			}
+			var exportClientWatchersUrl = 'http://'+areaIP+':'+areaPort+'/nginxcfg/singleClientDownload';
+			var clientsDownloadData = {
+				"ClientInfoSet":DownloadInfo,
+				"WatcherIDSet":watcherIDArray
+			};
+			var clientsdownloadUrl = 'http://'+areaIP+':'+areaPort+'/nginxcfg/Alldownload';
+			$.ajax({
+			    url : clientsdownloadUrl,
+				dataType: "json",
+				contentType: "text/html; charset=UTF-8",
+				type: "post", 
+				headers: {
+					"Content-Type": "application/json",
+					"Accept": "application/json",
+				},
+				data: JSON.stringify(clientsDownloadData),
+				success :function(data){
+					//var data=data;
+		//			location.href= 'http://'+areaIP+':'+areaPort+'/nginxcfg/batchDownload';
+					location.href= 'http://'+areaIP+':'+areaPort+data.NginxCfgDownloadURL;
+				}
+					
+			});
 		}
-			
-	});
+	})
+
+
+
+
+	
 }
 /*批量 删除 一个client下的多个watcher*/
 function delWatcher(){
