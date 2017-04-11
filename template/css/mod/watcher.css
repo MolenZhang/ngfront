@@ -115,3 +115,12 @@ button.btn-start{
 .warningInfo span{
 	margin-top: 6px;
 }
+.btn-apiVersion{
+	float: right;
+	padding: 1px 5px;
+    height: 28px;
+    margin-top: 4px;
+}
+a{
+	cursor: pointer;
+}

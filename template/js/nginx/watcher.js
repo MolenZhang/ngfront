@@ -15,6 +15,8 @@ $(document).ready(function () {
 	var areaTypeInfo = locationUrl.search.substring(locationUrl.search.indexOf("areaType=")+9,locationUrl.search.indexOf("&Watcher"));
 	WatcherID = locationUrl.search.substring(locationUrl.search.indexOf("WatcherID=")+10,locationUrl.search.length);
 
+	showWatcher(NodeIPInfo,ClientIDInfo);
+	
 	 $(document).on('click','.fa-nodeEdit',function(){
 		 $(this).parent().hide();
 		 $(this).parent().next().show();
@@ -87,9 +89,9 @@ $(document).ready(function () {
 	});
 	
 	//k8s Api 版本  保存按钮
-	$("#KubernetesAPIVersionSaveBtn").unbind().click(function(){
-	//$(document).on('click','#KubernetesAPIVersionSaveBtn',function(){
-		alert("#KubernetesAPIVersionSaveBtn")
+	//$("#KubernetesAPIVersionSaveBtn").unbind().click(function(){
+	$(document).on('click','#KubernetesAPIVersionSaveBtn',function(){
+		//alert("#KubernetesAPIVersionSaveBtn")
 		var changeVal = $("#KubernetesAPIVersionInfo").val();
 		$("#KubernetesAPIVersionOldVal").empty().append(changeVal);
 		var KubernetesMasterHostVal = $("#KubernetesMasterHostOldVal").html();
@@ -97,12 +99,11 @@ $(document).ready(function () {
 		showNamespacesEcharts(KubernetesMasterHostVal,changeVal,JobZoneType)
 	 });
 	//日志打印级别  保存按钮
-	$("#LogPrintLevelInfo").unbind().click(function(){
-	//$(document).on('click','#LogPrintLevelSaveBtn',function(){
-		alert("LogPrintLevelInfo;");
-		var changeVal = $("#LogPrintLevelInfo").val();
-		$("#LogPrintLevelOldVal").empty().append(changeVal);
-	});
+	// $("#LogPrintLevelInfo").unbind().click(function(){
+	// 	alert("LogPrintLevelInfo;");
+	// 	var changeVal = $("#LogPrintLevelInfo").val();
+	// 	$("#LogPrintLevelOldVal").empty().append(changeVal);
+	// });
 	//nginx server类型  保存按钮
 	$(document).on('click','#DefaultNginxServerTypeSaveBtn',function(){
 		var changeVal = $("#DefaultNginxServerTypeInfo").val();
@@ -161,7 +162,7 @@ $(document).ready(function () {
 		$("#StandbyUpstreamNodesOldVal").empty().append(changeVal);
 	});
 	
-	showWatcher(NodeIPInfo,ClientIDInfo);
+	
 	
 	 
  });/*reday*/
@@ -196,7 +197,7 @@ $(document).ready(function () {
 			var NginxRealCfgDirPath = objTestWatcher.Watcher.NginxRealCfgDirPath;
 			var NginxTestCfgDirPath = objTestWatcher.Watcher.NginxTestCfgDirPath;
 			var DownloadCfgDirPath = objTestWatcher.Watcher.DownloadCfgDirPath;
-			var LogPrintLevel = objTestWatcher.Watcher.LogPrintLevel;
+			//var LogPrintLevel = objTestWatcher.Watcher.LogPrintLevel;
 			var DefaultNginxServerType = objTestWatcher.Watcher.DefaultNginxServerType;
 			var DomainSuffix = objTestWatcher.Watcher.DomainSuffix;
 			var WorkMode = objTestWatcher.Watcher.WorkMode;
@@ -220,7 +221,7 @@ $(document).ready(function () {
 			$("#imgStatusInfo").append(imgHtml);
 			var watcherCfgHtml = '';
 			watcherCfgHtml += '<tr>'+
-									'<td>k8s Master节点IP端口</td>'+
+									'<td style="width:27%">k8s Master节点IP端口</td>'+
 											'<td class="firstTd"><span id="KubernetesMasterHostOldVal" value="'+KubernetesMasterHost+'">'+KubernetesMasterHost+'</span><i class="fa fa-edit fa-nodeEdit"></i></td>'+
 											'<td class="editItem"><input class="editInput" id="KubernetesMasterHostInfo" type="text" placeholder="" name="KubernetesMasterHost" value="'+KubernetesMasterHost+'">'+
 											'<i class="fa fa-save fa-nodeSave" id="KubernetesMasterHostSaveBtn"></i><i class="fa fa-times fa-nodeTimes"></i></td>'+
@@ -232,7 +233,7 @@ $(document).ready(function () {
 											'<option value="api/v1">api/v1</option>'+
 											'<option value="api">api</option>'+
 											'</select>'+
-											'<i class="fa fa-save fa-nodeSave" id="KubernetesAPIVersionSaveBtn"></i><i class="fa fa-times fa-nodeTimes"></i></td>'+
+											'<button class="btn btn-danger btn-xs btn-apiVersion" id="KubernetesAPIVersionSaveBtn">获取租户</button><i class="fa fa-times fa-nodeTimes"></i></td>'+
 										'</tr>'+
 										'<tr>'+
 											'<td class="firstTd">nginx 重载命令</td>'+
@@ -274,12 +275,12 @@ $(document).ready(function () {
 											'<td class="editItem"><input class="editInput" id="DownloadCfgDirPathInfo" type="text" value="'+DownloadCfgDirPath+'">'+
 											'<i class="fa fa-save fa-nodeSave" id="DownloadCfgDirPathSaveBtn"></i><i class="fa fa-times fa-nodeTimes"></i></td>'+
 										'</tr>'+
-										'<tr>'+
+										/*'<tr>'+
 											'<td class="firstTd">日志打印级别</td>'+
 											'<td><span id="LogPrintLevelOldVal">'+LogPrintLevel+'</span><i class="fa fa-edit fa-nodeEdit"></i></td>'+
 											'<td class="editItem"><select id="LogPrintLevelInfo"><option vlaue="info">info</option><option value="debug">debug</option><option value="warn">warn</option><option value="error">error</option><option value="fatal">fatal</option></select>'+
 											'<i class="fa fa-save fa-nodeSave" id="LogPrintLevelSaveBtn"></i><i class="fa fa-times fa-nodeTimes"></i></td>'+
-										'</tr>'+
+										'</tr>'+*/
 										'<tr>'+
 											'<td class="firstTd">nginx server类型</td>'+
 											'<td><span id="DefaultNginxServerTypeOldVal">'+DefaultNginxServerType+'</span><i class="fa fa-edit fa-nodeEdit"></i></td>'+
@@ -334,7 +335,7 @@ $(document).ready(function () {
 										'</tr>';
 			$("#watcherBasicInfo").append(watcherBasicHtml);
 			
-			//showNamespacesEcharts(KubernetesMasterHost,KubernetesAPIVersion,JobZoneType);
+			showNamespacesEcharts(KubernetesMasterHost,KubernetesAPIVersion,JobZoneType);
 		}
 	});
 }
@@ -482,7 +483,7 @@ function watcherSubmit(NodeIPInfo,ClientIDInfo){
 	var NginxRealCfgDirPath = $("#NginxRealCfgDirPathOldVal").html();
 	var NginxTestCfgDirPath = $("#NginxTestCfgDirPathOldVal").html();
 	var DownloadCfgDirPath = $("#DownloadCfgDirPathOldVal").html();
-	var LogPrintLevel = $("#LogPrintLevelOldVal").html();
+	//var LogPrintLevel = $("#LogPrintLevelOldVal").html();
 	var DefaultNginxServerType = $("#DefaultNginxServerTypeOldVal").html();
 	var DomainSuffix = $("#DomainSuffixOldVal").html();
 	var WorkMode = $("#WorkModeOldVal").html();
@@ -502,7 +503,7 @@ function watcherSubmit(NodeIPInfo,ClientIDInfo){
 			"NginxRealCfgDirPath":NginxRealCfgDirPath,
 			"NginxTestCfgDirPath":NginxTestCfgDirPath,
 			"DownloadCfgDirPath":DownloadCfgDirPath,
-			"LogPrintLevel":LogPrintLevel,
+			//"LogPrintLevel":LogPrintLevel,
 			"DefaultNginxServerType":DefaultNginxServerType,
 			"DomainSuffix":DomainSuffix,
 			"WorkMode":WorkMode,
@@ -555,7 +556,7 @@ function stopControl(NodeIPInfo,ClientIDInfo){
 	var NginxRealCfgDirPath = $("#NginxRealCfgDirPathOldVal").html();
 	var NginxTestCfgDirPath = $("#NginxTestCfgDirPathOldVal").html();
 	var DownloadCfgDirPath = $("#DownloadCfgDirPathOldVal").html();
-	var LogPrintLevel = $("#LogPrintLevelOldVal").html();
+	//var LogPrintLevel = $("#LogPrintLevelOldVal").html();
 	var DefaultNginxServerType = $("#DefaultNginxServerTypeOldVal").html();
 	var DomainSuffix = $("#DomainSuffixOldVal").html();
 	var WorkMode = $("#WorkModeOldVal").html();
@@ -575,7 +576,7 @@ function stopControl(NodeIPInfo,ClientIDInfo){
 			"NginxRealCfgDirPath":NginxRealCfgDirPath,
 			"NginxTestCfgDirPath":NginxTestCfgDirPath,
 			"DownloadCfgDirPath":DownloadCfgDirPath,
-			"LogPrintLevel":LogPrintLevel,
+			//"LogPrintLevel":LogPrintLevel,
 			"DefaultNginxServerType":DefaultNginxServerType,
 			"DomainSuffix":DomainSuffix,
 			"WorkMode":WorkMode,

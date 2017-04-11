@@ -48,3 +48,26 @@ function sliderFn(sliderId, max, min, value){
 
     return sliderObj;
 }
+
+function testFun(){
+    var testUrl = "http://"+areaIP+":"+areaPort+"/watchers/"+WatcherID+"?NodeIP="+NodeIP+"&ClientID="+ClientID;
+    var testData = {
+        "aaa":test,
+        "bbb":test1
+    }
+    
+    $.ajax({
+        url: testUrl,
+        dataType: "json",
+        contentType: "text/html; charset=UTF-8",
+        type:"get",            // get put post delete
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+        },
+        data: JSON.stringify(testData),
+        success:function(data){
+            var data=data;
+        }
+    });
+}

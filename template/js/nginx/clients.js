@@ -135,7 +135,7 @@ function issuedCfg(obj){
 			var NginxRealCfgDirPath = $("#NginxRealCfgDirPathInfo").val();
 			var NginxTestCfgDirPath = $("#NginxTestCfgDirPathInfo").val();
 			var DownloadCfgDirPath = $("#DownloadCfgDirPathInfo").val();
-			var LogPrintLevel = $("#LogPrintLevelInfo").val();
+			//var LogPrintLevel = $("#LogPrintLevelInfo").val();
 			var DefaultNginxServerType = $("#DefaultNginxServerTypeInfo").val();
 			var DomainSuffix = $("#DomainSuffixInfo").val();
 			var WorkMode = $("#WorkModeInfo").val();
@@ -165,7 +165,7 @@ function issuedCfg(obj){
 					"NginxRealCfgDirPath":NginxRealCfgDirPath,
 					"NginxTestCfgDirPath":NginxTestCfgDirPath,
 					"DownloadCfgDirPath":DownloadCfgDirPath,
-					"LogPrintLevel":LogPrintLevel,
+					//"LogPrintLevel":LogPrintLevel,
 					"DefaultNginxServerType":DefaultNginxServerType,
 					"DomainSuffix":DomainSuffix,
 					"WorkMode":WorkMode,
@@ -357,10 +357,11 @@ function addOneWatcher(obj){
 				WatchNamespaceSets= ["all"];
 			}
 
+			var NginxReloadCommand = $("#NginxReloadCommandInfo").val();
 			var NginxRealCfgDirPath = $("#addNginxRealCfgDirPathInfo").val();
 			var NginxTestCfgDirPath = $("#addNginxTestCfgDirPathInfo").val();
 			var DownloadCfgDirPath = $("#addDownloadCfgDirPathInfo").val();
-			var LogPrintLevel = $("#addLogPrintLevelInfo").val();
+			//var LogPrintLevel = $("#addLogPrintLevelInfo").val();
 			var DefaultNginxServerType = $("#addDefaultNginxServerTypeInfo").val();
 			var DomainSuffix = $("#addDomainSuffixInfo").val();
 			var WorkMode = $("#addWorkModeInfo").val();
@@ -375,6 +376,7 @@ function addOneWatcher(obj){
 				"NodeIP":NodeIP,
 				"ClientID":ClientID,
 				"WatcherCfg":{
+					"NginxReloadCommand":NginxReloadCommand,
 					"NginxListenPort":NginxListenPort,
 					"WatchNamespaceSets":WatchNamespaceSets,
 					"NginxRealCfgDirPath":NginxRealCfgDirPath,
@@ -437,7 +439,7 @@ function delOneWatcher(obj){
 	var WatcherID = $(obj).parent().attr("WatcherID");
 	var NodeIP = $(obj).parent().parent().attr("NodeIP");
 	var ClientID = $(obj).parent().parent().attr("ClientID");
-	var deleteUrl = "http://"+areaIP+":"+areaPort+"/nginxcfg/"+WatcherID+"?NodeIP="+NodeIP+"&ClientID="+ClientID;
+	var deleteUrl = "http://"+areaIP+":"+areaPort+"/watchers/"+WatcherID+"?NodeIP="+NodeIP+"&ClientID="+ClientID;
 
 	layer.open({
 		title: "删除", //不显示标题
