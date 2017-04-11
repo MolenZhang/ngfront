@@ -91,14 +91,14 @@ $(document).ready(function () {
 	
 	//k8s Api 版本  保存按钮
 	//$("#KubernetesAPIVersionSaveBtn").unbind().click(function(){
-	$(document).on('click','#KubernetesAPIVersionSaveBtn',function(){
-		//alert("#KubernetesAPIVersionSaveBtn")
-		var changeVal = $("#KubernetesAPIVersionInfo").val();
-		$("#KubernetesAPIVersionOldVal").empty().append(changeVal);
-		var KubernetesMasterHostVal = $("#KubernetesMasterHostOldVal").html();
-		$("#namespacesInfo").empty();
-		//showNamespacesEcharts(KubernetesMasterHostVal,changeVal,JobZoneType)
-	 });
+	// $(document).on('click','#KubernetesAPIVersionSaveBtn',function(){
+	// 	//alert("#KubernetesAPIVersionSaveBtn")
+	// 	var changeVal = $("#KubernetesAPIVersionInfo").val();
+	// 	$("#KubernetesAPIVersionOldVal").empty().append(changeVal);
+	// 	var KubernetesMasterHostVal = $("#KubernetesMasterHostOldVal").html();
+	// 	$("#namespacesInfo").empty();
+	// 	//showNamespacesEcharts(KubernetesMasterHostVal,changeVal,JobZoneType)
+	//  });
 	//日志打印级别  保存按钮
 	// $("#LogPrintLevelInfo").unbind().click(function(){
 	// 	alert("LogPrintLevelInfo;");
@@ -117,10 +117,10 @@ $(document).ready(function () {
 	});
 	
 	//k8s Master节点IP端口 保存按钮
-	$(document).on('click','#KubernetesMasterHostSaveBtn',function(){
-		var changeVal = $("#KubernetesMasterHostInfo").val();
-		$("#KubernetesMasterHostOldVal").empty().append(changeVal);
-	});
+	// $(document).on('click','#KubernetesMasterHostSaveBtn',function(){
+	// 	var changeVal = $("#KubernetesMasterHostInfo").val();
+	// 	$("#KubernetesMasterHostOldVal").empty().append(changeVal);
+	// });
 	//nginx监听端口
 	$(document).on('click','#NginxListenPortSaveBtn',function(){
 		var changeVal = $("#NginxListenPortInfo").val();
@@ -225,18 +225,18 @@ $(document).ready(function () {
 			var watcherCfgHtml = '';
 			watcherCfgHtml += '<tr>'+
 									'<td style="width:27%">k8s Master节点IP端口</td>'+
-											'<td class="firstTd"><span id="KubernetesMasterHostOldVal" value="'+KubernetesMasterHost+'">'+KubernetesMasterHost+'</span><i class="fa fa-edit fa-nodeEdit"></i></td>'+
-											'<td class="editItem"><input class="editInput" id="KubernetesMasterHostInfo" type="text" placeholder="" name="KubernetesMasterHost" value="'+KubernetesMasterHost+'">'+
-											'<i class="fa fa-save fa-nodeSave" id="KubernetesMasterHostSaveBtn"></i><i class="fa fa-times fa-nodeTimes"></i></td>'+
+											'<td class="firstTd"><span id="KubernetesMasterHostOldVal" value="'+KubernetesMasterHost+'">'+KubernetesMasterHost+'</span><i class="fa fa-edit fa-nodeEdit hide"></i></td>'+
+											//'<td class="editItem"><input class="editInput" id="KubernetesMasterHostInfo" type="text" placeholder="" name="KubernetesMasterHost" value="'+KubernetesMasterHost+'">'+
+											//'<i class="fa fa-save fa-nodeSave" id="KubernetesMasterHostSaveBtn"></i><i class="fa fa-times fa-nodeTimes"></i></td>'+
 										'</tr>'+
 										'<tr>'+
 											'<td class="firstTd">k8s Api 版本</td>'+
-											'<td><span id="KubernetesAPIVersionOldVal">'+KubernetesAPIVersion+'</span><i class="fa fa-edit fa-nodeEdit"></i></td>'+
-											'<td class="editItem" id="apiVersion"><select id="KubernetesAPIVersionInfo" name="KubernetesAPIVersion">'+
-											'<option value="api/v1">api/v1</option>'+
-											'<option value="api">api</option>'+
-											'</select>'+
-											'<button class="btn btn-danger btn-xs btn-apiVersion" id="KubernetesAPIVersionSaveBtn">获取租户</button><i class="fa fa-times fa-nodeTimes"></i></td>'+
+											'<td><span id="KubernetesAPIVersionOldVal">'+KubernetesAPIVersion+'</span><i class="fa fa-edit fa-nodeEdit hide"></i></td>'+
+											// '<td class="editItem" id="apiVersion"><select id="KubernetesAPIVersionInfo" name="KubernetesAPIVersion">'+
+											// '<option value="api/v1">api/v1</option>'+
+											// '<option value="api">api</option>'+
+											// '</select>'+
+											// '<button class="btn btn-danger btn-xs btn-apiVersion" id="KubernetesAPIVersionSaveBtn">获取租户</button><i class="fa fa-times fa-nodeTimes"></i></td>'+
 										'</tr>'+
 										'<tr>'+
 											'<td class="firstTd">nginx 重载命令</td>'+
@@ -476,7 +476,7 @@ function showNamespaces(KubernetesMasterHost,KubernetesAPIVersion){
 
 //提交watcher表单
 function watcherSubmit(NodeIPInfo,ClientIDInfo){
-	var submitUrl = "http://"+areaIP+":"+areaPort+"/watcher";
+	var submitUrl = "http://"+areaIP+":"+areaPort+"/watchers/"+WatcherID;
 	
 				
 	var KubernetesMasterHost = $("#KubernetesMasterHostOldVal").html();
@@ -524,7 +524,7 @@ function watcherSubmit(NodeIPInfo,ClientIDInfo){
     		url : submitUrl,
 			dataType: "json",
 			contentType: "text/html; charset=UTF-8",
-    		type: "POST",
+    		type: "put",
 			headers: {
 				"Content-Type": "application/json",
 				"Accept": "application/json",
