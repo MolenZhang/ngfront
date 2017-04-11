@@ -408,7 +408,7 @@ func (svc *ServiceInfo) Init() {
 		Reads(CfgWebMsg{}))
 
 	//删除某个特定的监视器配置
-	ws.Route(ws.DELETE("/{watcherID}").To(deleteWatcherInfoByID).
+	ws.Route(ws.DELETE("/").To(deleteWatcherInfoByID).
 		Doc("delete a specific watcher cfg").
 		Operation("deleteSpecificWatcherInfo").
 		Param(ws.PathParameter("watcherID", "watcherID由监控的租户列表组成").DataType("int")).
