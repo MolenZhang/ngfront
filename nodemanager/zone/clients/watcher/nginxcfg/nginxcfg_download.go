@@ -187,7 +187,14 @@ func singleClientWatcherCfgDownloadByWatcherID(request *restful.Request, respons
 		fout.Write(resp)
 
 		//处理kubeNg发来的数据
-		bkpDownloadFile := "/tmp/molly/" + watcherID + "_" + downloadTime
+		bkpDownloadFile := "/tmp/molly/" +
+			clientInfo.NodeIP +
+			"_" +
+			clientInfo.ClientID +
+			"_" +
+			watcherID +
+			"_" +
+			downloadTime
 		os.MkdirAll(bkpDownloadFile, os.ModePerm)
 		untarCmd := "tar -zxvf " + writeFileTar + " -C " + bkpDownloadFile
 		cmd := exec.Command("bash", "-c", untarCmd)
@@ -214,20 +221,16 @@ func (svc *ServiceInfo) nginxCfgSingleClientDownload(request *restful.Request, r
 	file, _ := os.Open(filePath)
 	defer file.Close()
 
-	fileName := path.Base(filePath)
-	fileName = url.QueryEscape(filePath)
+	//fileName := path.Base(filePath)
+	//fileName = url.QueryEscape(filePath)
 	response.AddHeader("Content-Type", "application/octet-stream")
-	response.AddHeader("content-disposition", "attachment; filename="+fileName)
+	response.AddHeader("content-disposition", "attachment; filename="+"NginxCfg.tar.gz")
 	io.Copy(response.ResponseWriter, file)
 
 	logdebug.Println(logdebug.LevelDebug, "前端下载文件完成")
+
 	//下载完成后删除本地下载文件
-	/*
-		if err := os.Remove(filePath); err != nil {
-			logdebug.Println(logdebug.LevelDebug, "删除本地下载文件失败", err)
-		}
-		logdebug.Println(logdebug.LevelDebug, "删除本地下载文件成功")
-	*/
+	fileDeleted(filePath)
 }
 
 type allClientDownloadInfo struct {
@@ -235,4 +238,90 @@ type allClientDownloadInfo struct {
 }
 
 //下载所有节点上的配置信息
-func allNginxCfgDownload(request *restful.Request, response *restful.Response) {}
+func allNginxCfgDownload(request *restful.Request, response *restful.Response) {
+	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<根据指定watcherID下载配置信息>>>>>>>>>>>>")
+	var NginxCfgDownloadURL string
+	reqDownloadInfo := allClientDownloadInfo{}
+	if err := request.ReadEntity(&reqDownloadInfo); err != nil {
+		response.WriteError(http.StatusInternalServerError, err)
+		return
+	}
+
+	logdebug.Println(logdebug.LevelDebug, "解析前端发来数据", reqDownloadInfo)
+
+	allNodesInfo := nodes.GetAllNodesInfo()
+
+	os.MkdirAll("/tmp/molen", os.ModePerm)
+
+	for _, watcherID := range reqDownloadInfo.WatcherIDSet {
+
+		for _, singleNodeInfo := range allNodesInfo {
+
+			NginxCfgDownloadURL = "http://" +
+				singleNodeInfo.Client.NodeIP +
+				singleNodeInfo.Client.APIServerPort +
+				"/" +
+				singleNodeInfo.Client.DownloadCfgAPIServerPath +
+				"/" +
+				watcherID
+
+			resp, _ := communicate.SendRequestByJSON(communicate.GET, NginxCfgDownloadURL, nil)
+
+			downloadTime := time.Now().Format("01-02_15_04_05")
+
+			writeFileTar := "/tmp/molen" +
+				"/" +
+				singleNodeInfo.Client.NodeIP +
+				"_" +
+				singleNodeInfo.Client.ClientID +
+				watcherID +
+				"_" +
+				downloadTime +
+				".tar"
+
+			fout, _ := os.Create(writeFileTar)
+			fout.Write(resp)
+
+			//处理kubeNg发来的数据
+			bkpDownloadFile := "/tmp/molly" +
+				"/" +
+				singleNodeInfo.Client.NodeIP +
+				"_" +
+				singleNodeInfo.Client.ClientID +
+				"_" +
+				watcherID + "_" + downloadTime
+
+			os.MkdirAll(bkpDownloadFile, os.ModePerm)
+			untarCmd := "tar -zxvf " + writeFileTar + " -C " + bkpDownloadFile
+			cmd := exec.Command("bash", "-c", untarCmd)
+			cmd.Run()
+		}
+	}
+	//将kubeNG发来的数据 整理打包 准备发给web前端
+	tarCmd := "tar -zcvf " + "/tmp/molly.tar.gz" + " /tmp/molly"
+	cmd := exec.Command("bash", "-c", tarCmd)
+	cmd.Run()
+	respMsg := webRespMsg{
+		NginxCfgDownloadURL: "/nginxcfg/singleClientDownload/tarDownload",
+	}
+
+	logdebug.Println(logdebug.LevelDebug, "发给前端数据", respMsg)
+	response.WriteHeaderAndJson(200, respMsg, "application/json")
+
+}
+
+func fileDeleted(filePath string) {
+	if _, err := os.Stat("/tmp/molen"); err == nil {
+		os.Remove("tmp/molen")
+	}
+
+	if _, err := os.Stat("/tmp/molly"); err == nil {
+		os.Remove("/tmp/molly")
+	}
+
+	if err := os.Remove(filePath); err != nil {
+		logdebug.Println(logdebug.LevelDebug, "删除本地下载文件失败", err)
+	}
+	logdebug.Println(logdebug.LevelDebug, "删除本地下载文件成功")
+
+}
