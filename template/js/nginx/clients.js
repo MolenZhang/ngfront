@@ -815,16 +815,16 @@ function watcherNginxExport(obj){
 		content: $("#exportNginxWatcher"),
 		btn: ['确定','取消'],
 		yes: function(index, layero){
-			var watcherIDArray = new Array();
+			var WatcherIDSet = new Array();
 			var checkedWatchers =$(".chkWatcherItem:checked");
 			for(var cw=0; cw<checkedWatchers.length; cw++){
-				watcherIDArray.push(checkedWatchers[cw].getAttribute("WatcherID"));
+				WatcherIDSet.push(checkedWatchers[cw].getAttribute("WatcherID"));
 			}
 			var exportClientWatchersUrl = 'http://'+areaIP+':'+areaPort+'/nginxcfg/singleClientDownload';
 			var DownloadData = {
 					"NodeIP": NodeIP,
 					"ClientID": ClientID,
-					"WatcherIDSet": watcherIDArray
+					"WatcherIDSet": WatcherIDSet
 				};
 			$.ajax({
 				url : exportClientWatchersUrl,
@@ -926,6 +926,7 @@ function nginxCfgsExport(obj){
 					//var data=data;
 		//			location.href= 'http://'+areaIP+':'+areaPort+'/nginxcfg/batchDownload';
 					location.href= 'http://'+areaIP+':'+areaPort+data.NginxCfgDownloadURL;
+					layer.close(index);
 				}
 					
 			});
