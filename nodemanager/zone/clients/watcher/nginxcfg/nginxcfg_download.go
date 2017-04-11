@@ -233,14 +233,22 @@ func (svc *ServiceInfo) nginxCfgSingleClientDownload(request *restful.Request, r
 	fileDeleted(filePath)
 }
 
+// ClientInfo 客户端信息
+type singleClientInfo struct {
+	NodeIP   string
+	ClientID string
+}
 type allClientDownloadInfo struct {
-	WatcherIDSet []string
+	ClientInfoSet []singleClientInfo
+	WatcherIDSet  []string
 }
 
 //下载所有节点上的配置信息
 func allNginxCfgDownload(request *restful.Request, response *restful.Response) {
-	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<根据指定watcherID下载配置信息>>>>>>>>>>>>")
+	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<根据指定watcherID下载所有配置信息>>>>>>>>>>>>")
+
 	var NginxCfgDownloadURL string
+
 	reqDownloadInfo := allClientDownloadInfo{}
 	if err := request.ReadEntity(&reqDownloadInfo); err != nil {
 		response.WriteError(http.StatusInternalServerError, err)
@@ -249,19 +257,24 @@ func allNginxCfgDownload(request *restful.Request, response *restful.Response) {
 
 	logdebug.Println(logdebug.LevelDebug, "解析前端发来数据", reqDownloadInfo)
 
-	allNodesInfo := nodes.GetAllNodesInfo()
-
 	os.MkdirAll("/tmp/molen", os.ModePerm)
 
 	for _, watcherID := range reqDownloadInfo.WatcherIDSet {
 
-		for _, singleNodeInfo := range allNodesInfo {
+		for _, singleNodeInfo := range reqDownloadInfo.ClientInfoSet {
 
+			client := nodes.ClientInfo{
+				NodeIP:   singleNodeInfo.NodeIP,
+				ClientID: singleNodeInfo.ClientID,
+			}
+
+			key := client.CreateKey()
+			clientInfo := nodes.GetClientInfo(key)
 			NginxCfgDownloadURL = "http://" +
-				singleNodeInfo.Client.NodeIP +
-				singleNodeInfo.Client.APIServerPort +
+				clientInfo.NodeIP +
+				clientInfo.APIServerPort +
 				"/" +
-				singleNodeInfo.Client.DownloadCfgAPIServerPath +
+				clientInfo.DownloadCfgAPIServerPath +
 				"/" +
 				watcherID
 
@@ -271,9 +284,10 @@ func allNginxCfgDownload(request *restful.Request, response *restful.Response) {
 
 			writeFileTar := "/tmp/molen" +
 				"/" +
-				singleNodeInfo.Client.NodeIP +
+				clientInfo.NodeIP +
 				"_" +
-				singleNodeInfo.Client.ClientID +
+				clientInfo.ClientID +
+				"_" +
 				watcherID +
 				"_" +
 				downloadTime +
@@ -285,9 +299,9 @@ func allNginxCfgDownload(request *restful.Request, response *restful.Response) {
 			//处理kubeNg发来的数据
 			bkpDownloadFile := "/tmp/molly" +
 				"/" +
-				singleNodeInfo.Client.NodeIP +
+				clientInfo.NodeIP +
 				"_" +
-				singleNodeInfo.Client.ClientID +
+				clientInfo.ClientID +
 				"_" +
 				watcherID + "_" + downloadTime
 
@@ -312,11 +326,11 @@ func allNginxCfgDownload(request *restful.Request, response *restful.Response) {
 
 func fileDeleted(filePath string) {
 	if _, err := os.Stat("/tmp/molen"); err == nil {
-		os.Remove("tmp/molen")
+		os.RemoveAll("tmp/molen")
 	}
 
 	if _, err := os.Stat("/tmp/molly"); err == nil {
-		os.Remove("/tmp/molly")
+		os.RemoveAll("/tmp/molly")
 	}
 
 	if err := os.Remove(filePath); err != nil {
