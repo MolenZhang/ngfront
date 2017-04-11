@@ -81,13 +81,13 @@ func (svc *ServiceInfo) batchNginxCfgsDownload(request *restful.Request, respons
 		key := client.CreateKey()
 		clientInfo := nodes.GetClientInfo(key)
 
-		NginxCfgDownloadURL := "http://" +
+		nginxCfgDownloadURL := "http://" +
 			clientInfo.NodeIP +
 			clientInfo.APIServerPort +
 			"/" +
 			clientInfo.DownloadCfgAPIServerPath
 
-		resp, _ := http.Get(NginxCfgDownloadURL)
+		resp, _ := http.Get(nginxCfgDownloadURL)
 		defer resp.Body.Close()
 		body, _ := ioutil.ReadAll(resp.Body)
 		os.MkdirAll("/tmp/molen", os.ModePerm)
@@ -151,6 +151,8 @@ func singleClientWatcherCfgDownloadByWatcherID(request *restful.Request, respons
 		return
 	}
 
+	logdebug.Println(logdebug.LevelDebug, "解析前端发来数据", reqDownloadInfo)
+
 	for _, watcherID := range reqDownloadInfo.WatcherIDSet {
 
 		client := nodes.ClientInfo{
@@ -199,6 +201,7 @@ func singleClientWatcherCfgDownloadByWatcherID(request *restful.Request, respons
 		NginxCfgDownloadURL: "/nginxcfg/singleClientDownload/tarDownload",
 	}
 
+	logdebug.Println(logdebug.LevelDebug, "发给前端数据", respMsg)
 	response.WriteHeaderAndJson(200, respMsg, "application/json")
 
 }
@@ -226,6 +229,7 @@ func (svc *ServiceInfo) nginxCfgSingleClientDownload(request *restful.Request, r
 }
 
 type allClientDownloadInfo struct {
+	WatcherIDSet []string
 }
 
 //下载所有节点上的配置信息
