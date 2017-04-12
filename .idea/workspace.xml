@@ -15,8 +15,8 @@
       <file leaf-file-name="nginxcfg.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="300">
-              <caret line="393" column="73" lean-forward="true" selection-start-line="393" selection-start-column="73" selection-end-line="393" selection-end-column="73" />
+            <state relative-caret-position="428">
+              <caret line="288" column="24" lean-forward="false" selection-start-line="288" selection-start-column="24" selection-end-line="288" selection-end-column="80" />
               <folding>
                 <element signature="e#18#182#0" expanded="true" />
               </folding>
@@ -27,11 +27,31 @@
       <file leaf-file-name="nginxcfg_compare.go" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg_compare.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="361">
-              <caret line="19" column="65" lean-forward="true" selection-start-line="19" selection-start-column="65" selection-end-line="19" selection-end-column="65" />
+            <state relative-caret-position="604">
+              <caret line="328" column="72" lean-forward="false" selection-start-line="328" selection-start-column="72" selection-end-line="328" selection-end-column="72" />
               <folding>
-                <element signature="e#18#178#0" expanded="true" />
+                <element signature="e#18#190#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="communicate.go" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/communicate/communicate.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="237">
+              <caret line="31" column="5" lean-forward="false" selection-start-line="31" selection-start-column="5" selection-end-line="31" selection-end-column="5" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="custom.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/template/js/customer/custom.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="438">
+              <caret line="89" column="0" lean-forward="true" selection-start-line="89" selection-start-column="0" selection-end-line="89" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -46,11 +66,32 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="communicate.go" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/communicate/communicate.go">
+      <file leaf-file-name="clients.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/template/js/nginx/clients.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="456">
-              <caret line="31" column="5" lean-forward="false" selection-start-line="31" selection-start-column="5" selection-end-line="31" selection-end-column="5" />
+            <state relative-caret-position="-51">
+              <caret line="602" column="73" lean-forward="false" selection-start-line="602" selection-start-column="73" selection-end-line="602" selection-end-column="73" />
+              <folding>
+                <marker date="1491986353003" expanded="true" signature="2518:2553" ph="..." />
+                <marker date="1491986353003" expanded="true" signature="10373:10394" ph="..." />
+                <marker date="1491986353003" expanded="true" signature="10424:10430" ph=" " />
+                <marker date="1491986353003" expanded="true" signature="10611:10629" ph="..." />
+                <marker date="1491986353003" expanded="true" signature="11007:11013" ph=" " />
+                <marker date="1491986353003" expanded="true" signature="11099:11105" ph=" " />
+                <marker date="1491986353003" expanded="true" signature="11168:11189" ph="..." />
+                <marker date="1491986353003" expanded="true" signature="11263:11269" ph=" " />
+                <marker date="1491986353003" expanded="true" signature="19315:19333" ph="..." />
+                <marker date="1491986353003" expanded="true" signature="23373:23391" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="nginxcfg_web.go" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg_web.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="889">
+              <caret line="132" column="58" lean-forward="false" selection-start-line="132" selection-start-column="58" selection-end-line="132" selection-end-column="58" />
               <folding />
             </state>
           </provider>
@@ -59,28 +100,9 @@
       <file leaf-file-name="nodes.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/nodemanager/nodes/nodes.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="152">
-              <caret line="15" column="5" lean-forward="false" selection-start-line="15" selection-start-column="5" selection-end-line="15" selection-end-column="5" />
+            <state relative-caret-position="237">
+              <caret line="76" column="26" lean-forward="false" selection-start-line="76" selection-start-column="26" selection-end-line="76" selection-end-column="26" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="clients.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/template/js/nginx/clients.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="19">
-              <caret line="1" column="22" lean-forward="false" selection-start-line="1" selection-start-column="22" selection-end-line="1" selection-end-column="22" />
-              <folding>
-                <marker date="1491977313487" expanded="true" signature="7343:7345" ph="//..." />
-                <marker date="1491977313487" expanded="true" signature="10396:10417" ph="..." />
-                <marker date="1491977313487" expanded="true" signature="10447:10453" ph=" " />
-                <marker date="1491977313487" expanded="true" signature="10634:10652" ph="..." />
-                <marker date="1491977313487" expanded="true" signature="11030:11036" ph=" " />
-                <marker date="1491977313487" expanded="true" signature="11122:11128" ph=" " />
-                <marker date="1491977313487" expanded="true" signature="11191:11212" ph="..." />
-                <marker date="1491977313487" expanded="true" signature="11286:11292" ph=" " />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -88,18 +110,8 @@
       <file leaf-file-name="nginxcfg_download.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg_download.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="931">
+            <state relative-caret-position="361">
               <caret line="60" column="24" lean-forward="false" selection-start-line="60" selection-start-column="24" selection-end-line="60" selection-end-column="24" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="nginxcfg_web.go" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg_web.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2508">
-              <caret line="132" column="58" lean-forward="false" selection-start-line="132" selection-start-column="58" selection-end-line="132" selection-end-column="58" />
               <folding />
             </state>
           </provider>
@@ -111,18 +123,6 @@
             <state relative-caret-position="19">
               <caret line="15" column="8" lean-forward="false" selection-start-line="15" selection-start-column="8" selection-end-line="15" selection-end-column="8" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="watcher.go" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/watcher.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="675">
-              <caret line="66" column="50" lean-forward="false" selection-start-line="66" selection-start-column="50" selection-end-line="66" selection-end-column="50" />
-              <folding>
-                <element signature="e#56#254#0" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -146,6 +146,7 @@
         <option value="$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg_web.go" />
         <option value="$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg.go" />
         <option value="$PROJECT_DIR$/template/js/customer/custom.js" />
+        <option value="$PROJECT_DIR$/template/js/nginx/clients.js" />
         <option value="$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg_compare.go" />
       </list>
     </option>
@@ -383,6 +384,8 @@
   </component>
   <component name="PropertiesComponent">
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.path.for.package.jscs" value="project" />
+    <property name="node.js.selected.package.jscs" value="" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -457,7 +460,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -518,14 +520,16 @@
         <state relative-caret-position="19">
           <caret line="1" column="22" lean-forward="false" selection-start-line="1" selection-start-column="22" selection-end-line="1" selection-end-column="22" />
           <folding>
-            <marker date="1491977313487" expanded="true" signature="7343:7345" ph="//..." />
-            <marker date="1491977313487" expanded="true" signature="10396:10417" ph="..." />
-            <marker date="1491977313487" expanded="true" signature="10447:10453" ph=" " />
-            <marker date="1491977313487" expanded="true" signature="10634:10652" ph="..." />
-            <marker date="1491977313487" expanded="true" signature="11030:11036" ph=" " />
-            <marker date="1491977313487" expanded="true" signature="11122:11128" ph=" " />
-            <marker date="1491977313487" expanded="true" signature="11191:11212" ph="..." />
-            <marker date="1491977313487" expanded="true" signature="11286:11292" ph=" " />
+            <marker date="1491986353003" expanded="true" signature="2518:2553" ph="..." />
+            <marker date="1491986353003" expanded="true" signature="10373:10394" ph="..." />
+            <marker date="1491986353003" expanded="true" signature="10424:10430" ph=" " />
+            <marker date="1491986353003" expanded="true" signature="10611:10629" ph="..." />
+            <marker date="1491986353003" expanded="true" signature="11007:11013" ph=" " />
+            <marker date="1491986353003" expanded="true" signature="11099:11105" ph=" " />
+            <marker date="1491986353003" expanded="true" signature="11168:11189" ph="..." />
+            <marker date="1491986353003" expanded="true" signature="11263:11269" ph=" " />
+            <marker date="1491986353003" expanded="true" signature="19315:19333" ph="..." />
+            <marker date="1491986353003" expanded="true" signature="23373:23391" ph="..." />
           </folding>
         </state>
       </provider>
@@ -575,6 +579,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1220">
           <caret line="39" column="23" lean-forward="true" selection-start-line="39" selection-start-column="23" selection-end-line="39" selection-end-column="23" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -609,55 +614,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/template/js/nginx/clients.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="19">
-          <caret line="1" column="22" lean-forward="false" selection-start-line="1" selection-start-column="22" selection-end-line="1" selection-end-column="22" />
-          <folding>
-            <marker date="1491977313487" expanded="true" signature="7343:7345" ph="//..." />
-            <marker date="1491977313487" expanded="true" signature="10396:10417" ph="..." />
-            <marker date="1491977313487" expanded="true" signature="10447:10453" ph=" " />
-            <marker date="1491977313487" expanded="true" signature="10634:10652" ph="..." />
-            <marker date="1491977313487" expanded="true" signature="11030:11036" ph=" " />
-            <marker date="1491977313487" expanded="true" signature="11122:11128" ph=" " />
-            <marker date="1491977313487" expanded="true" signature="11191:11212" ph="..." />
-            <marker date="1491977313487" expanded="true" signature="11286:11292" ph=" " />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/communicate/communicate.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="456">
-          <caret line="31" column="5" lean-forward="false" selection-start-line="31" selection-start-column="5" selection-end-line="31" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg_web.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2508">
-          <caret line="132" column="58" lean-forward="false" selection-start-line="132" selection-start-column="58" selection-end-line="132" selection-end-column="58" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg_download.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="931">
-          <caret line="60" column="24" lean-forward="false" selection-start-line="60" selection-start-column="24" selection-end-line="60" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/template/js/customer/custom.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="656">
-          <caret line="92" column="1" lean-forward="false" selection-start-line="92" selection-start-column="1" selection-end-line="92" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/watcher.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="675">
@@ -676,24 +632,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/nodemanager/nodes/nodes.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="15" column="5" lean-forward="false" selection-start-line="15" selection-start-column="5" selection-end-line="15" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="393" column="73" lean-forward="true" selection-start-line="393" selection-start-column="73" selection-end-line="393" selection-end-column="73" />
-          <folding>
-            <element signature="e#18#182#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://D:/Go/src/fmt/print.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="237">
@@ -702,12 +640,81 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg_compare.go">
+    <entry file="file://$PROJECT_DIR$/nodemanager/nodes/nodes.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="237">
+          <caret line="76" column="26" lean-forward="false" selection-start-line="76" selection-start-column="26" selection-end-line="76" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/template/js/customer/custom.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="438">
+          <caret line="89" column="0" lean-forward="true" selection-start-line="89" selection-start-column="0" selection-end-line="89" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/template/js/nginx/clients.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-51">
+          <caret line="602" column="73" lean-forward="false" selection-start-line="602" selection-start-column="73" selection-end-line="602" selection-end-column="73" />
+          <folding>
+            <marker date="1491986353003" expanded="true" signature="2518:2553" ph="..." />
+            <marker date="1491986353003" expanded="true" signature="10373:10394" ph="..." />
+            <marker date="1491986353003" expanded="true" signature="10424:10430" ph=" " />
+            <marker date="1491986353003" expanded="true" signature="10611:10629" ph="..." />
+            <marker date="1491986353003" expanded="true" signature="11007:11013" ph=" " />
+            <marker date="1491986353003" expanded="true" signature="11099:11105" ph=" " />
+            <marker date="1491986353003" expanded="true" signature="11168:11189" ph="..." />
+            <marker date="1491986353003" expanded="true" signature="11263:11269" ph=" " />
+            <marker date="1491986353003" expanded="true" signature="19315:19333" ph="..." />
+            <marker date="1491986353003" expanded="true" signature="23373:23391" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/communicate/communicate.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="237">
+          <caret line="31" column="5" lean-forward="false" selection-start-line="31" selection-start-column="5" selection-end-line="31" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg_download.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="361">
-          <caret line="19" column="65" lean-forward="true" selection-start-line="19" selection-start-column="65" selection-end-line="19" selection-end-column="65" />
+          <caret line="60" column="24" lean-forward="false" selection-start-line="60" selection-start-column="24" selection-end-line="60" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg_web.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="889">
+          <caret line="132" column="58" lean-forward="false" selection-start-line="132" selection-start-column="58" selection-end-line="132" selection-end-column="58" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="428">
+          <caret line="288" column="24" lean-forward="false" selection-start-line="288" selection-start-column="24" selection-end-line="288" selection-end-column="80" />
           <folding>
-            <element signature="e#18#178#0" expanded="true" />
+            <element signature="e#18#182#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg_compare.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="604">
+          <caret line="328" column="72" lean-forward="false" selection-start-line="328" selection-start-column="72" selection-end-line="328" selection-end-column="72" />
+          <folding>
+            <element signature="e#18#190#0" expanded="true" />
           </folding>
         </state>
       </provider>

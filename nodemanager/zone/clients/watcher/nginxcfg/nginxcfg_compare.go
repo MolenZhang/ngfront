@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/emicklei/go-restful"
+	"net/http"
 	"ngfront/communicate"
 	"ngfront/logdebug"
 	"ngfront/nodemanager/nodes"
@@ -297,7 +298,7 @@ func getAllWatcherURL(clientsSet []string, request *restful.Request, response *r
 		"/" +
 		clientInfo.WatchManagerAPIServerPath
 
-	logdebug.Println(logdebug.LevelDebug, "从kubeng获取ClientA的配置URL=", clientBURL)
+	logdebug.Println(logdebug.LevelDebug, "从kubeng获取ClientB的配置URL=", clientBURL)
 
 	return
 }
@@ -313,11 +314,22 @@ func (svc *ServiceInfo) compareAllWatchersNginxCfgs(request *restful.Request, re
 
 	clienAGetAllWatcherURL, clienBGetAllWatcherURL := getAllWatcherURL(clientsSet, request, response)
 
-	respA, _ := communicate.SendRequestByJSON(communicate.GET, clienAGetAllWatcherURL, nil)
+	respA, errA := communicate.SendRequestByJSON(communicate.GET, clienAGetAllWatcherURL, nil)
+	if errA != nil {
+		response.WriteError(http.StatusInternalServerError, errA)
+
+		return
+	}
+
 	clientAWatchers := make(map[string]nodes.WatchManagerCfg, 0)
 	json.Unmarshal(respA, &clientAWatchers)
 
-	respB, _ := communicate.SendRequestByJSON(communicate.GET, clienBGetAllWatcherURL, nil)
+	respB, errB := communicate.SendRequestByJSON(communicate.GET, clienBGetAllWatcherURL, nil)
+	if errB != nil {
+		response.WriteError(http.StatusInternalServerError, errB)
+
+		return
+	}
 	clientBWatchers := make(map[string]nodes.WatchManagerCfg, 0)
 	json.Unmarshal(respB, &clientBWatchers)
 
@@ -373,13 +385,25 @@ func (svc *ServiceInfo) compareSingleWatchersNginxCfgs(request *restful.Request,
 
 	clientANginxCfgURL, clientBNginxCfgURL := getNginxCfgByWatcherURL(clientsSet, watcherID, request, response)
 
-	respA, _ := communicate.SendRequestByJSON(communicate.GET, clientANginxCfgURL, nil)
+	respA, errA := communicate.SendRequestByJSON(communicate.GET, clientANginxCfgURL, nil)
+	if errA != nil {
+		response.WriteError(http.StatusInternalServerError, errA)
+
+		return
+	}
+
 	clientAMap := make(map[string]map[string]KubeNGConfig, 0)
 	json.Unmarshal(respA, &clientAMap)
 
 	//logdebug.Println(logdebug.LevelDebug, "根据watcherID获取的数据", clientAMap)
 
-	respB, _ := communicate.SendRequestByJSON(communicate.GET, clientBNginxCfgURL, nil)
+	respB, errB := communicate.SendRequestByJSON(communicate.GET, clientBNginxCfgURL, nil)
+	if errB != nil {
+		response.WriteError(http.StatusInternalServerError, errB)
+
+		return
+	}
+
 	clientBMap := make(map[string]map[string]KubeNGConfig, 0)
 	json.Unmarshal(respB, &clientBMap)
 

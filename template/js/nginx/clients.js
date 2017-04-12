@@ -584,8 +584,7 @@ function compareClient(obj){
 		}
 	});
 	
-	var NodeIPB = $(".compareItem:checked").attr("NodeIP");
-	var clientB = $(".compareItem:checked").attr("ClientID");
+
 	layer.open({
 		type: 1,
 		title: '对比Client',
@@ -600,6 +599,8 @@ function compareClient(obj){
 				})
 				
 			}else{
+                var NodeIPB = $(".compareItem:checked").attr("NodeIP");
+                var clientB = $(".compareItem:checked").attr("ClientID");
 				var compareClientK8sUrl = 'http://'+areaIP+':'+areaPort+'/nginxcfg/compare/'+thisClientID+'-'+clientB+'/?NodeIPA='+thisNodeIP+'&NodeIPB='+NodeIPB+'?AppSrcType=k8s';
 				$.ajax({
 			        url: compareClientK8sUrl,
