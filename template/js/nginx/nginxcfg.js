@@ -1,8 +1,8 @@
  var NodeIP = "";
  var ClientID = "";
  var JobZoneType = "";
- var areaIP = "192.168.19.128";
- var areaPort = "8083";
+ var areaIP = "localhost";
+ var areaPort = "port";
  var KubernetesMasterHost = "";
  var KubernetesAPIVersion = "";
  $(document).ready(function () {
@@ -127,8 +127,6 @@
 
 //展示同一个node下的所有nginx配置
 function showAllNgs(NodeIP,ClientID){
-	//var areaIP = "192.168.19.128";
-	//var areaPort = "8083";
 	var showAllNgsUrl = "http://"+areaIP+":"+areaPort+"/nginxcfg?NodeIP="+NodeIP+"&ClientID="+ClientID;
 	$.ajax({
 			url : showAllNgsUrl,
@@ -643,8 +641,6 @@ function localRefreshNg(obj){
       "AppSrcType": AppSrcType
      };
 
-		//var areaIP = "192.168.19.128";
-		//var areaPort = "8083";
 	var AppNameAndNamespace = Namespace+'-'+AppName;
 	var saveUrl = "http://"+areaIP+":"+areaPort+"/nginxcfg?AppNameAndNamespace="+AppNameAndNamespace+"&NodeIP="+NodeIP+"&ClientID="+ClientID;
 	$.ajax({
@@ -854,8 +850,8 @@ function localRefreshNg(obj){
 	 * @param obj
 	 */
 	function findNgByOneApp(obj){
-		var areaIP = "192.168.19.128";
-		var areaPort = "8083";
+		var areaIP = "localhost";
+		var areaPort = "port";
 		//var area=$("#area").val();
 		var appName = $(obj).val();
 		var namespace= $(obj).parent().next().find("#search_user").val();
@@ -898,8 +894,6 @@ function localRefreshNg(obj){
 		  "AppSrcType": AppSrcType
 	    };
 
-	    //var areaIP = "192.168.19.128";
-		//var areaPort = "8083";
 		var deleteUrl = "http://"+areaIP+":"+areaPort+"/nginxcfg?NodeIP="+NodeIP+"&ClientID="+ClientID;
 
 	    layer.open({
@@ -1029,9 +1023,6 @@ function localRefreshNg(obj){
 	    if($(".IsDefaultCfg-true")){
 	     	$(".IsDefaultCfg-true").parent().parent().remove();
 	    }
-
-		//var areaIP = "192.168.19.128";
-		//var areaPort = "8083";
 		
 		var saveUrl = "http://"+areaIP+":"+areaPort+"/nginxcfg?NodeIP="+NodeIP+"&ClientID="+ClientID;
 		$.ajax({
@@ -1284,8 +1275,6 @@ function localRefreshNg(obj){
 	function issuedCfgIps(obj){
 		var NodesInfo = new Array();
 		var issuedCfgDataInfo = "";
-		//var areaIP = "192.168.19.128";
-		//var areaPort = "8083";
 		var areaUrl = "http://"+areaIP+":"+areaPort+"/clients";
 		//var watcherUrl = "http://"+areaIP+":"+areaPort+"/ngfront/zone/clients/watcher?NodeIP=";
 		console.log(areaUrl);

@@ -5,8 +5,8 @@ var WatchNamespaceSets = "";
 var NodeIPInfo ="";
 var ClientIDInfo = "";
 var WatcherID = "";
-var areaIP = "192.168.19.128";
-var areaPort = "8083";
+var areaIP = "localhost";
+var areaPort = "port";
 $(document).ready(function () {
 	var locationUrl = window.location;
 	//http://172.16.13.110:8083/ngfront/zone/clients/watcher?NodeIP=10.10.3.9&ClientID=21343&areaType=user
@@ -168,8 +168,6 @@ $(document).ready(function () {
  });/*reday*/
 
   function showWatcher(NodeIPInfo,ClientIDInfo){
-	//var areaIP = "192.168.19.128";
-	//var areaPort = "8083";
 	var watcherUrl = "http://"+areaIP+":"+areaPort+"/watchers/watcher/"+WatcherID;
 	$.ajax({
 		"url":watcherUrl,
@@ -342,8 +340,8 @@ $(document).ready(function () {
 
 //生成监控echart图
 function showNamespacesEcharts(KubernetesMasterHost,KubernetesAPIVersion,JobZoneType){
-	//var areaIP = "192.168.19.128";
-	//var areaPort = "8083";
+	//var areaIP = "localhost";
+	//var areaPort = "port";
 	var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/namespaces";
 	
 	$.ajax({
@@ -446,8 +444,8 @@ function showNamespaces(NamespacesList){
 }
 
 function loadNamespaces(KubernetesMasterHost,KubernetesAPIVersion){
-	//var areaIP = "192.168.19.128";
-	//var areaPort = "8083";
+	//var areaIP = "localhost";
+	//var areaPort = "port";
 	var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/namespaces";
 	
 	$.ajax({
@@ -469,8 +467,6 @@ function loadNamespaces(KubernetesMasterHost,KubernetesAPIVersion){
 
 //提交watcher表单
 function watcherSubmit(NodeIPInfo,ClientIDInfo){
-	//var areaIP = "192.168.19.128";
-	//var areaPort = "8083";
 	var submitUrl = "http://"+areaIP+":"+areaPort+"/watcher";
 	
 				
@@ -543,8 +539,6 @@ function watcherSubmit(NodeIPInfo,ClientIDInfo){
 
 //停止监控
 function stopControl(NodeIPInfo,ClientIDInfo){
-	//var areaIP = "192.168.19.128";
-	//var areaPort = "8083";
 	var submitUrl = "http://"+areaIP+":"+areaPort+"/watcher";
 	
 	var KubernetesMasterHost = $("#KubernetesMasterHostOldVal").html();
@@ -607,27 +601,6 @@ function stopControl(NodeIPInfo,ClientIDInfo){
 	 * 导出一个node的配置信息
 	 * @param obj
 	 */
-<<<<<<< HEAD
-	function nginxExport(obj){
-	        	var downloadData={
-	        		"NodeIP": NodeIPInfo,
-	        		"ClientID":ClientIDInfo
-	        	};
-	        	//var areaIP = "192.168.19.128";
-				//var areaPort = "8083";
-				var downloadUrl = 'http://'+areaIP+':'+areaPort+'/nginxcfg/download';
-	        	$.ajax({
-					url : downloadUrl,
-		    		type: "get", 
-					data: downloadData,
-					success :function(data){
-			//	location.href = 'http://'+areaIP+':'+areaPort+'/nginxcfg/download?NodeIP='+NodeIPInfo+'&ClientID='+ClientIDInfo+'&User='+ngDownUser+'&Password='+ngDownPwd;
-				location.href = data.NginxCfgDownloadURL
-			//			layer.close(indexMsg);
-					}
-				});
-	}
-=======
 	// function nginxExport(obj){
 	//         	var downloadData={
 	//         		"NodeIP": NodeIPInfo,
@@ -645,7 +618,6 @@ function stopControl(NodeIPInfo,ClientIDInfo){
 	// 				}
 	// 			});
 	// }
->>>>>>> 9a447401aabd8dc04ef847d76fc1d4e2ce17cfde
 
 	
 
