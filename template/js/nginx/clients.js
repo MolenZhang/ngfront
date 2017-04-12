@@ -601,8 +601,30 @@ function compareClient(obj){
 				
 			}else{
 				var compareClientK8sUrl = 'http://'+areaIP+':'+areaPort+'/nginxcfg/compare/'+thisClientID+'-'+clientB+'/?NodeIPA='+thisNodeIP+'&NodeIPB='+NodeIPB+'?AppSrcType=k8s';
+				$.ajax({
+			        url: compareClientK8sUrl,
+			        dataType: "json",
+			        contentType: "text/html; charset=UTF-8",
+			        type:"get",           
+			        headers: {
+			            "Content-Type": "application/json",
+			            "Accept": "application/json",
+			        },
+			        success:function(data){
+			            var data=data;
+			            if(data.Result == true){
+			            	layer.msg('相同！', {icon: 1});
+			            }else{
+			            	layer.alert(data.ErrorMsg, {
+							  icon: 2,
+							  title:"不同",
+							  skin: 'layer-ext-moon'
+							})
+			            }
+			        }
+    			});					
 			}
-		    
+		    layer.close(index);
 		},
 		btn2: function(index, layero){
 			if($(".compareItem:checked").length==0){
@@ -613,8 +635,30 @@ function compareClient(obj){
 				
 			}else{
 				var compareClientExternUrl = 'http://'+areaIP+':'+areaPort+'/nginxcfg/compare/'+thisClientID+'-'+clientB+'/?NodeIPA='+thisNodeIP+'&NodeIPB='+NodeIPB+'?AppSrcType=extern';
+				$.ajax({
+			        url: compareClientExternUrl,
+			        dataType: "json",
+			        contentType: "text/html; charset=UTF-8",
+			        type:"get",           
+			        headers: {
+			            "Content-Type": "application/json",
+			            "Accept": "application/json",
+			        },
+			        success:function(data){
+			            var data=data;
+			            if(data.Result == true){
+			            	layer.msg('相同！', {icon: 1});
+			            }else{
+			            	layer.alert(data.ErrorMsg, {
+							  icon: 2,
+							  title:"不同",
+							  skin: 'layer-ext-moon'
+							})
+			            }
+			        }
+    			});					
 			}
-		    
+		    layer.close(index);
 		},
 		btn3: function(index, layero){
 		    layer.close(index);
@@ -665,10 +709,10 @@ function compareClientOneWatcher(obj){
 		}
 	});
 	
-	
+	var titleCon = '对比两个Client中的一个watcher (WatcherID='+thisWatcherID+')';
 	layer.open({
 		type: 1,
-		title: '对比Client',
+		title: titleCon,
 		area: ['800px','450px'],
 		content: $("#compareClientInfo"),
 		btn: ['k8s对比','外部对比','取消'],
@@ -682,10 +726,31 @@ function compareClientOneWatcher(obj){
 			}else{
 				var NodeIPB = $(".compareItem:checked").attr("NodeIP");
 				var clientB = $(".compareItem:checked").attr("ClientID");
-				var compareClientK8sUrl = 'http://'+areaIP+':'+areaPort+'/nginxcfg/compare/'+thisClientID+'-'+clientB+'/'+thisWatcherID+'/?NodeIPA='+thisNodeIP+'&NodeIPB='+NodeIPB+'?AppSrcType=k8s';
-														
+				var compareClientOneWatcherK8sUrl = 'http://'+areaIP+':'+areaPort+'/nginxcfg/compare/'+thisClientID+'-'+clientB+'/'+thisWatcherID+'/?NodeIPA='+thisNodeIP+'&NodeIPB='+NodeIPB+'?AppSrcType=k8s';
+				$.ajax({
+			        url: compareClientOneWatcherK8sUrl,
+			        dataType: "json",
+			        contentType: "text/html; charset=UTF-8",
+			        type:"get",           
+			        headers: {
+			            "Content-Type": "application/json",
+			            "Accept": "application/json",
+			        },
+			        success:function(data){
+			            var data=data;
+			            if(data.Result == true){
+			            	layer.msg('相同！', {icon: 1});
+			            }else{
+			            	layer.alert(data.ErrorMsg, {
+							  icon: 2,
+							  title:"不同",
+							  skin: 'layer-ext-moon'
+							})
+			            }
+			        }
+    			});										
 			}
-		    
+		    layer.close(index);
 		},
 		btn2: function(index, layero){
 			if($(".compareItem:checked").length==0){
@@ -695,9 +760,31 @@ function compareClientOneWatcher(obj){
 				})
 				
 			}else{
-				var compareClientExternUrl = 'http://'+areaIP+':'+areaPort+'/nginxcfg/compare/'+thisClientID+'-'+clientB+'/'+thisWatcherID+'/?NodeIPA='+thisNodeIP+'&NodeIPB='+NodeIPB+'?AppSrcType=extern';
+				var compareClientOneWatcherExternUrl = 'http://'+areaIP+':'+areaPort+'/nginxcfg/compare/'+thisClientID+'-'+clientB+'/'+thisWatcherID+'/?NodeIPA='+thisNodeIP+'&NodeIPB='+NodeIPB+'?AppSrcType=extern';
+				$.ajax({
+			        url: compareClientOneWatcherExternUrl,
+			        dataType: "json",
+			        contentType: "text/html; charset=UTF-8",
+			        type:"get",           
+			        headers: {
+			            "Content-Type": "application/json",
+			            "Accept": "application/json",
+			        },
+			        success:function(data){
+			            var data=data;
+			            if(data.Result == true){
+			            	layer.msg('相同！', {icon: 1});
+			            }else{
+			            	layer.alert(data.ErrorMsg, {
+							  icon: 2,
+							  title:"不同",
+							  skin: 'layer-ext-moon'
+							})
+			            }
+			        }
+    			});
 			}
-		    
+		    layer.close(index);
 		},
 		btn3: function(index, layero){
 		    layer.close(index);
