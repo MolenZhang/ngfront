@@ -391,6 +391,17 @@ func (svc *ServiceInfo) Init() {
 		Operation("downloadfile"))
 	//	Reads(WebReqMsg{}))
 
+	ws.Route(ws.GET("/compare/{clientA-clientB}").To(svc.compareAllWatchersNginxCfgs).
+		Doc("对比2个client的所有watcher下的nginx配置").
+		Operation("compareAllWatchersNginxCfgs").
+		Param(ws.PathParameter("clientA-clientB", "需要对比的2个clientID").DataType("string")))
+
+	ws.Route(ws.GET("/compare/{clientA-clientB}/{watcherID}").To(svc.compareSingleWatchersNginxCfgs).
+		Doc("对比2个client的指定watcher下的nginx配置").
+		Operation("downloadfile").
+		Param(ws.PathParameter("clientA-clientB watcherID", "需要对比的2个clientID watcherID").DataType("string")))
+	//Reads(WebReqMsg{}))
+
 	restful.Add(ws)
 
 	return
