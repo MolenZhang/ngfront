@@ -49,7 +49,7 @@ function sliderFn(sliderId, max, min, value){
     return sliderObj;
 }
 
-function testFun(){
+/*function testFun(){
     var testUrl = "http://"+192.168.85.130+":"+8083+"/watchers/"+WatcherID+"?NodeIP="+NodeIP+"&ClientID="+ClientID;
     var testData = {
         "aaa":test,
@@ -70,4 +70,4 @@ function testFun(){
             var data=data;
         }
     });
-}
+}*/

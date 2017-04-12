@@ -65,8 +65,9 @@
 											id="nodePlayBtn"><i class="fa fa-play" title="启动"></i></a>
 										<a href="javascript:void(0);"
 											id="userStopBtn"><i class="fa fa-power-off" title="停止"></i></a> -->
-										<a onclick="nginxCfgsExport(this)" class="issuedBtn no-drop"><i class="fa fa-download" title="下发配置"></i></a></span>
-										<a onclick="issuedCfg(this)" class="issuedBtn no-drop"><i class="fa fa-sort-amount-asc" title="下发配置"></i></a></span>
+										<a onclick="addOneWatcher(this)"><i class="fa fa-plus" title="新增watcher"></i></a>
+										<a onclick="nginxCfgsExport(this)" class="issuedBtn no-drop"><i class="fa fa-download" title="导出配置"></i></a>
+										<!-- <a onclick="issuedCfg(this)" class="issuedBtn no-drop"><i class="fa fa-sort-amount-asc" title="下发配置"></i></a> -->
 										<a href="javascript:window.location.reload(true);"
 											id="userReloadBtn"><i class="fa fa-repeat" title="刷新"></i></a>
 									</div>
@@ -319,6 +320,23 @@
 							</select>
 						</td>
 					</tr>		
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div id="compareClientInfo" style="display: none">
+		<div class="cfgTable">
+			<table class="table">
+				<thead>
+					<tr>
+						<th style="text-indent: 10px;">&nbsp;</th>
+						<th>客户端ID</th>
+						<th>节点IP</th>
+						<th>端口</th>
+					</tr>
+				</thead>
+				<tbody id="compareClientbody">
+					
 				</tbody>
 			</table>
 		</div>
