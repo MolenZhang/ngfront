@@ -39,8 +39,6 @@
  });/*reday*/
 
 function showClients(areaType){
-	//var areaIP = "localhost";
-	//var areaPort = "port";
 	var areaUrl = "http://"+areaIP+":"+areaPort+"/clients";
 	$.ajax({
 		"url":areaUrl,
@@ -113,8 +111,6 @@ function issuedCfg(obj){
 		content: $("#issuedCfgInfo"),
 		btn: ['确定','取消'],
 		yes: function(index,layero){
-			//var areaIP = "localhost";
-			//var areaPort = "port";
 			var issuedUrl = "http://"+areaIP+":"+areaPort+"/watcher/all";
 
 			var KubernetesMasterHost = $("#KubernetesMasterHostInfo").val();
@@ -199,8 +195,6 @@ function loadNamespaces(){
 	$(".editNamespacesTd").removeClass("hide");
 	var KubernetesMasterHost = $("#KubernetesMasterHostInfo").val();
 	var KubernetesAPIVersion = $("#KubernetesAPIVersionInfo").val();
-	//var areaIP = "localhost";
-	//var areaPort = "port";
 	var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/namespaces";
 	
 	$.ajax({
@@ -601,7 +595,9 @@ function compareClient(obj){
 			}else{
                 var NodeIPB = $(".compareItem:checked").attr("NodeIP");
                 var clientB = $(".compareItem:checked").attr("ClientID");
-				var compareClientK8sUrl = 'http://'+areaIP+':'+areaPort+'/nginxcfg/compare/'+thisClientID+'-'+clientB+'/?NodeIPA='+thisNodeIP+'&NodeIPB='+NodeIPB+'?AppSrcType=k8s';
+
+				var compareClientK8sUrl = 'http://'+areaIP+':'+areaPort+'/nginxcfg/compare/'+thisClientID+'-'+clientB+'?NodeIPA='+thisNodeIP+'&NodeIPB='+NodeIPB+'&AppSrcType=k8s';
+
 				$.ajax({
 			        url: compareClientK8sUrl,
 			        dataType: "json",
@@ -635,7 +631,7 @@ function compareClient(obj){
 				})
 				
 			}else{
-				var compareClientExternUrl = 'http://'+areaIP+':'+areaPort+'/nginxcfg/compare/'+thisClientID+'-'+clientB+'/?NodeIPA='+thisNodeIP+'&NodeIPB='+NodeIPB+'?AppSrcType=extern';
+				var compareClientExternUrl = 'http://'+areaIP+':'+areaPort+'/nginxcfg/compare/'+thisClientID+'-'+clientB+'?NodeIPA='+thisNodeIP+'&NodeIPB='+NodeIPB+'&AppSrcType=extern';
 				$.ajax({
 			        url: compareClientExternUrl,
 			        dataType: "json",
@@ -727,7 +723,7 @@ function compareClientOneWatcher(obj){
 			}else{
 				var NodeIPB = $(".compareItem:checked").attr("NodeIP");
 				var clientB = $(".compareItem:checked").attr("ClientID");
-				var compareClientOneWatcherK8sUrl = 'http://'+areaIP+':'+areaPort+'/nginxcfg/compare/'+thisClientID+'-'+clientB+'/'+thisWatcherID+'/?NodeIPA='+thisNodeIP+'&NodeIPB='+NodeIPB+'?AppSrcType=k8s';
+				var compareClientOneWatcherK8sUrl = 'http://'+areaIP+':'+areaPort+'/nginxcfg/compare/'+thisClientID+'-'+clientB+'/'+thisWatcherID+'?NodeIPA='+thisNodeIP+'&NodeIPB='+NodeIPB+'&AppSrcType=k8s';
 				$.ajax({
 			        url: compareClientOneWatcherK8sUrl,
 			        dataType: "json",
@@ -761,7 +757,7 @@ function compareClientOneWatcher(obj){
 				})
 				
 			}else{
-				var compareClientOneWatcherExternUrl = 'http://'+areaIP+':'+areaPort+'/nginxcfg/compare/'+thisClientID+'-'+clientB+'/'+thisWatcherID+'/?NodeIPA='+thisNodeIP+'&NodeIPB='+NodeIPB+'?AppSrcType=extern';
+				var compareClientOneWatcherExternUrl = 'http://'+areaIP+':'+areaPort+'/nginxcfg/compare/'+thisClientID+'-'+clientB+'/'+thisWatcherID+'?NodeIPA='+thisNodeIP+'&NodeIPB='+NodeIPB+'&AppSrcType=extern';
 				$.ajax({
 			        url: compareClientOneWatcherExternUrl,
 			        dataType: "json",
