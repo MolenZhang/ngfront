@@ -49,7 +49,8 @@ function sliderFn(sliderId, max, min, value){
     return sliderObj;
 }
 
-function testFun(){
+
+/*function testFun(){
     var testUrl = "http://192.168.85.130:8083/watchers/1/stop?NodeIP=192.168.85.130&ClientID=73093";
     var testData = {
     }
@@ -68,7 +69,9 @@ function testFun(){
             var data=data;
         }
     });
-}
+}*/
+
+
 
 function testFunForWatcherTestOK(){
     var testUrl = "http://192.168.85.130:8083/watchers/1/stop?NodeIP=192.168.85.130&ClientID=73093";
@@ -84,6 +87,7 @@ function testFunForWatcherTestOK(){
             "Content-Type": "application/json",
             "Accept": "application/json",
         },
+<<<<<<< HEAD
         // data: JSON.stringify(testData),
         success: function (data) {
             var data = data;
@@ -91,3 +95,11 @@ function testFunForWatcherTestOK(){
 
     }
 }
+=======
+       // data: JSON.stringify(testData),
+        success:function(data){
+            var data=data;
+        }
+    })
+}
+>>>>>>> 9a447401aabd8dc04ef847d76fc1d4e2ce17cfde
