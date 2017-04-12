@@ -16,7 +16,7 @@
         <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/watcher.go">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="304">
-              <caret line="66" column="50" lean-forward="true" selection-start-line="66" selection-start-column="50" selection-end-line="66" selection-end-column="50" />
+              <caret line="66" column="50" lean-forward="false" selection-start-line="66" selection-start-column="50" selection-end-line="66" selection-end-column="50" />
               <folding>
                 <element signature="e#56#254#0" expanded="true" />
               </folding>
@@ -37,8 +37,8 @@
       <file leaf-file-name="nginxcfg.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="300">
-              <caret line="393" column="76" lean-forward="false" selection-start-line="393" selection-start-column="76" selection-end-line="393" selection-end-column="76" />
+            <state relative-caret-position="389">
+              <caret line="97" column="72" lean-forward="true" selection-start-line="97" selection-start-column="8" selection-end-line="97" selection-end-column="72" />
               <folding>
                 <element signature="e#18#182#0" expanded="true" />
               </folding>
@@ -49,11 +49,31 @@
       <file leaf-file-name="nginxcfg_compare.go" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg_compare.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="523">
-              <caret line="28" column="75" lean-forward="false" selection-start-line="28" selection-start-column="75" selection-end-line="28" selection-end-column="75" />
+            <state relative-caret-position="228">
+              <caret line="12" column="5" lean-forward="false" selection-start-line="12" selection-start-column="5" selection-end-line="12" selection-end-column="5" />
               <folding>
-                <element signature="e#18#102#0" expanded="true" />
+                <element signature="e#18#171#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="communicate.go" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/communicate/communicate.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="237">
+              <caret line="31" column="5" lean-forward="false" selection-start-line="31" selection-start-column="5" selection-end-line="31" selection-end-column="5" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="nodes.go" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/nodemanager/nodes/nodes.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="446">
+              <caret line="50" column="1" lean-forward="false" selection-start-line="50" selection-start-column="1" selection-end-line="50" selection-end-column="1" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -64,89 +84,89 @@
             <state relative-caret-position="19">
               <caret line="1" column="22" lean-forward="false" selection-start-line="1" selection-start-column="22" selection-end-line="1" selection-end-column="22" />
               <folding>
-                <marker date="1491962870121" expanded="true" signature="7367:7369" ph="//..." />
-                <marker date="1491962870121" expanded="true" signature="7367:8172" ph="{...}" />
-                <marker date="1491962870121" expanded="true" signature="7446:8168" ph="{&quot;url&quot;: apiVersionUrl...}" />
-                <marker date="1491962870121" expanded="true" signature="7496:7623" ph="{&quot;KubernetesMasterHost&quot;: KubernetesMasterHost...}" />
-                <marker date="1491962870121" expanded="true" signature="7651:8165" ph="{...}" />
-                <marker date="1491962870121" expanded="true" signature="7789:8161" ph="{...}" />
-                <marker date="1491962870121" expanded="true" signature="7837:8039" ph="{...}" />
-                <marker date="1491962870121" expanded="true" signature="8174:8217" ph="/** 批量导出一个node的配置信息 ...*/" />
-                <marker date="1491962870121" expanded="true" signature="8248:9228" ph="{...}" />
-                <marker date="1491962870121" expanded="true" signature="8400:8599" ph="{...}" />
-                <marker date="1491962870121" expanded="true" signature="8423:8560" ph="{...}" />
-                <marker date="1491962870121" expanded="true" signature="8749:9223" ph="{&quot;url&quot;: downloadUrl...}" />
-                <marker date="1491962870121" expanded="true" signature="8879:8962" ph="{&quot;Content-Type&quot;: &quot;application/json&quot;...}" />
-                <marker date="1491962870121" expanded="true" signature="9031:9215" ph="{...}" />
-                <marker date="1491962870121" expanded="true" signature="9038:9133" ph="//..." />
-                <marker date="1491962870121" expanded="true" signature="9229:9235" ph="/*...*/" />
-                <marker date="1491962870121" expanded="true" signature="9260:10157" ph="{...}" />
-                <marker date="1491962870121" expanded="true" signature="9326:10000" ph="{...}" />
-                <marker date="1491962870121" expanded="true" signature="9556:9995" ph="{&quot;url&quot;: watchersUrl...}" />
-                <marker date="1491962870121" expanded="true" signature="9677:9757" ph="{&quot;Content-Type&quot;: &quot;application/json&quot;...}" />
-                <marker date="1491962870121" expanded="true" signature="9768:9819" ph="{&quot;ClientID&quot;: ClientID...}" />
-                <marker date="1491962870121" expanded="true" signature="9847:9986" ph="{...}" />
-                <marker date="1491962870121" expanded="true" signature="10004:10155" ph="{...}" />
-                <marker date="1491962870121" expanded="true" signature="10204:11881" ph="{...}" />
-                <marker date="1491962870121" expanded="true" signature="10420:10441" ph="..." />
-                <marker date="1491962870121" expanded="true" signature="10471:10477" ph=" " />
-                <marker date="1491962870121" expanded="true" signature="10658:10676" ph="..." />
-                <marker date="1491962870121" expanded="true" signature="10766:11854" ph="{...}" />
-                <marker date="1491962870121" expanded="true" signature="10984:11069" ph="{...}" />
-                <marker date="1491962870121" expanded="true" signature="11054:11060" ph=" " />
-                <marker date="1491962870121" expanded="true" signature="11073:11161" ph="{...}" />
-                <marker date="1491962870121" expanded="true" signature="11146:11152" ph=" " />
-                <marker date="1491962870121" expanded="true" signature="11215:11236" ph="..." />
-                <marker date="1491962870121" expanded="true" signature="11310:11316" ph=" " />
-                <marker date="1491962870121" expanded="true" signature="11883:11889" ph="/*...*/" />
-                <marker date="1491962870121" expanded="true" signature="11917:15317" ph="{...}" />
-                <marker date="1491962870121" expanded="true" signature="11985:15314" ph="{&quot;title&quot;: '新增watcher'...}" />
-                <marker date="1491962870121" expanded="true" signature="12124:15311" ph="{...}" />
-                <marker date="1491962870121" expanded="true" signature="12549:12727" ph="{...}" />
-                <marker date="1491962870121" expanded="true" signature="12658:12722" ph="{...}" />
-                <marker date="1491962870121" expanded="true" signature="12731:12770" ph="{...}" />
-                <marker date="1491962870121" expanded="true" signature="13588:14187" ph="{&quot;NodeIP&quot;: NodeIP...}" />
-                <marker date="1491962870121" expanded="true" signature="13653:14182" ph="{&quot;NginxReloadCommand&quot;: NginxReloadCommand...}" />
-                <marker date="1491962870121" expanded="true" signature="14300:15282" ph="{&quot;url&quot;: watchersUrl...}" />
-                <marker date="1491962870121" expanded="true" signature="14427:14510" ph="{&quot;Content-Type&quot;: &quot;application/json&quot;...}" />
-                <marker date="1491962870121" expanded="true" signature="14577:15271" ph="{...}" />
-                <marker date="1491962870121" expanded="true" signature="14611:15263" ph="{&quot;url&quot;: watchersUrl...}" />
-                <marker date="1491962870121" expanded="true" signature="14747:14836" ph="{&quot;Content-Type&quot;: &quot;application/json&quot;...}" />
-                <marker date="1491962870121" expanded="true" signature="14909:15248" ph="{...}" />
-                <marker date="1491962870121" expanded="true" signature="15320:15326" ph="/*...*/" />
-                <marker date="1491962870121" expanded="true" signature="15354:16376" ph="{...}" />
-                <marker date="1491962870121" expanded="true" signature="15647:16372" ph="{&quot;title&quot;: &quot;删除&quot;...}" />
-                <marker date="1491962870121" expanded="true" signature="15743:16306" ph="{...}" />
-                <marker date="1491962870121" expanded="true" signature="15755:16277" ph="{&quot;url&quot;: deleteUrl...}" />
-                <marker date="1491962870121" expanded="true" signature="15881:15967" ph="{&quot;Content-Type&quot;: &quot;application/json&quot;...}" />
-                <marker date="1491962870121" expanded="true" signature="15995:16272" ph="{...}" />
-                <marker date="1491962870121" expanded="true" signature="16044:16131" ph="{...}" />
-                <marker date="1491962870121" expanded="true" signature="16135:16258" ph="{...}" />
-                <marker date="1491962870121" expanded="true" signature="16174:16250" ph="{&quot;title&quot;: &quot;删除失败&quot;...}" />
-                <marker date="1491962870121" expanded="true" signature="16341:16369" ph="{...}" />
-                <marker date="1491962870121" expanded="true" signature="16377:16394" ph="/*...*/" />
-                <marker date="1491962870121" expanded="true" signature="16423:17269" ph="{...}" />
-                <marker date="1491962870121" expanded="true" signature="16713:17265" ph="{&quot;url&quot;: stopUrl...}" />
-                <marker date="1491962870121" expanded="true" signature="16861:16962" ph="{&quot;Content-Type&quot;: &quot;application/json&quot;...}" />
-                <marker date="1491962870121" expanded="true" signature="16994:17259" ph="{...}" />
-                <marker date="1491962870121" expanded="true" signature="17056:17136" ph="{...}" />
-                <marker date="1491962870121" expanded="true" signature="17140:17249" ph="{...}" />
-                <marker date="1491962870121" expanded="true" signature="17177:17243" ph="{&quot;title&quot;: &quot;停止失败&quot;...}" />
-                <marker date="1491962870121" expanded="true" signature="17270:17288" ph="/*...*/" />
-                <marker date="1491962870121" expanded="true" signature="17318:18167" ph="{...}" />
-                <marker date="1491962870121" expanded="true" signature="17610:18163" ph="{&quot;url&quot;: startUrl...}" />
-                <marker date="1491962870121" expanded="true" signature="17759:17860" ph="{&quot;Content-Type&quot;: &quot;application/json&quot;...}" />
-                <marker date="1491962870121" expanded="true" signature="17892:18157" ph="{...}" />
-                <marker date="1491962870121" expanded="true" signature="17954:18034" ph="{...}" />
-                <marker date="1491962870121" expanded="true" signature="18038:18147" ph="{...}" />
-                <marker date="1491962870121" expanded="true" signature="18075:18141" ph="{&quot;title&quot;: &quot;启动失败&quot;...}" />
-                <marker date="1491962870121" expanded="true" signature="18169:18175" ph="/*...*/" />
-                <marker date="1491962870121" expanded="true" signature="18201:18630" ph="{...}" />
-                <marker date="1491962870121" expanded="true" signature="18325:18396" ph="{&quot;NodeIP&quot;: NodeIPInfo...}" />
-                <marker date="1491962870121" expanded="true" signature="18488:18626" ph="{&quot;url&quot;: downloadUrl...}" />
-                <marker date="1491962870121" expanded="true" signature="18574:18623" ph="{...}" />
-                <marker date="1491962870121" expanded="true" signature="18654:18716" ph="{...}" />
-                <marker date="1491962870121" expanded="true" signature="18742:18836" ph="{...}" />
+                <marker date="1491967142824" expanded="true" signature="7367:7369" ph="//..." />
+                <marker date="1491967142824" expanded="true" signature="7367:8172" ph="{...}" />
+                <marker date="1491967142824" expanded="true" signature="7446:8168" ph="{&quot;url&quot;: apiVersionUrl...}" />
+                <marker date="1491967142824" expanded="true" signature="7496:7623" ph="{&quot;KubernetesMasterHost&quot;: KubernetesMasterHost...}" />
+                <marker date="1491967142824" expanded="true" signature="7651:8165" ph="{...}" />
+                <marker date="1491967142824" expanded="true" signature="7789:8161" ph="{...}" />
+                <marker date="1491967142824" expanded="true" signature="7837:8039" ph="{...}" />
+                <marker date="1491967142824" expanded="true" signature="8174:8217" ph="/** 批量导出一个node的配置信息 ...*/" />
+                <marker date="1491967142824" expanded="true" signature="8248:9228" ph="{...}" />
+                <marker date="1491967142824" expanded="true" signature="8400:8599" ph="{...}" />
+                <marker date="1491967142824" expanded="true" signature="8423:8560" ph="{...}" />
+                <marker date="1491967142824" expanded="true" signature="8749:9223" ph="{&quot;url&quot;: downloadUrl...}" />
+                <marker date="1491967142824" expanded="true" signature="8879:8962" ph="{&quot;Content-Type&quot;: &quot;application/json&quot;...}" />
+                <marker date="1491967142824" expanded="true" signature="9031:9215" ph="{...}" />
+                <marker date="1491967142824" expanded="true" signature="9038:9133" ph="//..." />
+                <marker date="1491967142824" expanded="true" signature="9229:9235" ph="/*...*/" />
+                <marker date="1491967142824" expanded="true" signature="9260:10157" ph="{...}" />
+                <marker date="1491967142824" expanded="true" signature="9326:10000" ph="{...}" />
+                <marker date="1491967142824" expanded="true" signature="9556:9995" ph="{&quot;url&quot;: watchersUrl...}" />
+                <marker date="1491967142824" expanded="true" signature="9677:9757" ph="{&quot;Content-Type&quot;: &quot;application/json&quot;...}" />
+                <marker date="1491967142824" expanded="true" signature="9768:9819" ph="{&quot;ClientID&quot;: ClientID...}" />
+                <marker date="1491967142824" expanded="true" signature="9847:9986" ph="{...}" />
+                <marker date="1491967142824" expanded="true" signature="10004:10155" ph="{...}" />
+                <marker date="1491967142824" expanded="true" signature="10204:11881" ph="{...}" />
+                <marker date="1491967142824" expanded="true" signature="10420:10441" ph="..." />
+                <marker date="1491967142824" expanded="true" signature="10471:10477" ph=" " />
+                <marker date="1491967142824" expanded="true" signature="10658:10676" ph="..." />
+                <marker date="1491967142824" expanded="true" signature="10766:11854" ph="{...}" />
+                <marker date="1491967142824" expanded="true" signature="10984:11069" ph="{...}" />
+                <marker date="1491967142824" expanded="true" signature="11054:11060" ph=" " />
+                <marker date="1491967142824" expanded="true" signature="11073:11161" ph="{...}" />
+                <marker date="1491967142824" expanded="true" signature="11146:11152" ph=" " />
+                <marker date="1491967142824" expanded="true" signature="11215:11236" ph="..." />
+                <marker date="1491967142824" expanded="true" signature="11310:11316" ph=" " />
+                <marker date="1491967142824" expanded="true" signature="11883:11889" ph="/*...*/" />
+                <marker date="1491967142824" expanded="true" signature="11917:15317" ph="{...}" />
+                <marker date="1491967142824" expanded="true" signature="11985:15314" ph="{&quot;title&quot;: '新增watcher'...}" />
+                <marker date="1491967142824" expanded="true" signature="12124:15311" ph="{...}" />
+                <marker date="1491967142824" expanded="true" signature="12549:12727" ph="{...}" />
+                <marker date="1491967142824" expanded="true" signature="12658:12722" ph="{...}" />
+                <marker date="1491967142824" expanded="true" signature="12731:12770" ph="{...}" />
+                <marker date="1491967142824" expanded="true" signature="13588:14187" ph="{&quot;NodeIP&quot;: NodeIP...}" />
+                <marker date="1491967142824" expanded="true" signature="13653:14182" ph="{&quot;NginxReloadCommand&quot;: NginxReloadCommand...}" />
+                <marker date="1491967142824" expanded="true" signature="14300:15282" ph="{&quot;url&quot;: watchersUrl...}" />
+                <marker date="1491967142824" expanded="true" signature="14427:14510" ph="{&quot;Content-Type&quot;: &quot;application/json&quot;...}" />
+                <marker date="1491967142824" expanded="true" signature="14577:15271" ph="{...}" />
+                <marker date="1491967142824" expanded="true" signature="14611:15263" ph="{&quot;url&quot;: watchersUrl...}" />
+                <marker date="1491967142824" expanded="true" signature="14747:14836" ph="{&quot;Content-Type&quot;: &quot;application/json&quot;...}" />
+                <marker date="1491967142824" expanded="true" signature="14909:15248" ph="{...}" />
+                <marker date="1491967142824" expanded="true" signature="15320:15326" ph="/*...*/" />
+                <marker date="1491967142824" expanded="true" signature="15354:16376" ph="{...}" />
+                <marker date="1491967142824" expanded="true" signature="15647:16372" ph="{&quot;title&quot;: &quot;删除&quot;...}" />
+                <marker date="1491967142824" expanded="true" signature="15743:16306" ph="{...}" />
+                <marker date="1491967142824" expanded="true" signature="15755:16277" ph="{&quot;url&quot;: deleteUrl...}" />
+                <marker date="1491967142824" expanded="true" signature="15881:15967" ph="{&quot;Content-Type&quot;: &quot;application/json&quot;...}" />
+                <marker date="1491967142824" expanded="true" signature="15995:16272" ph="{...}" />
+                <marker date="1491967142824" expanded="true" signature="16044:16131" ph="{...}" />
+                <marker date="1491967142824" expanded="true" signature="16135:16258" ph="{...}" />
+                <marker date="1491967142824" expanded="true" signature="16174:16250" ph="{&quot;title&quot;: &quot;删除失败&quot;...}" />
+                <marker date="1491967142824" expanded="true" signature="16341:16369" ph="{...}" />
+                <marker date="1491967142824" expanded="true" signature="16377:16394" ph="/*...*/" />
+                <marker date="1491967142824" expanded="true" signature="16423:17269" ph="{...}" />
+                <marker date="1491967142824" expanded="true" signature="16713:17265" ph="{&quot;url&quot;: stopUrl...}" />
+                <marker date="1491967142824" expanded="true" signature="16861:16962" ph="{&quot;Content-Type&quot;: &quot;application/json&quot;...}" />
+                <marker date="1491967142824" expanded="true" signature="16994:17259" ph="{...}" />
+                <marker date="1491967142824" expanded="true" signature="17056:17136" ph="{...}" />
+                <marker date="1491967142824" expanded="true" signature="17140:17249" ph="{...}" />
+                <marker date="1491967142824" expanded="true" signature="17177:17243" ph="{&quot;title&quot;: &quot;停止失败&quot;...}" />
+                <marker date="1491967142824" expanded="true" signature="17270:17288" ph="/*...*/" />
+                <marker date="1491967142824" expanded="true" signature="17318:18167" ph="{...}" />
+                <marker date="1491967142824" expanded="true" signature="17610:18163" ph="{&quot;url&quot;: startUrl...}" />
+                <marker date="1491967142824" expanded="true" signature="17759:17860" ph="{&quot;Content-Type&quot;: &quot;application/json&quot;...}" />
+                <marker date="1491967142824" expanded="true" signature="17892:18157" ph="{...}" />
+                <marker date="1491967142824" expanded="true" signature="17954:18034" ph="{...}" />
+                <marker date="1491967142824" expanded="true" signature="18038:18147" ph="{...}" />
+                <marker date="1491967142824" expanded="true" signature="18075:18141" ph="{&quot;title&quot;: &quot;启动失败&quot;...}" />
+                <marker date="1491967142824" expanded="true" signature="18169:18175" ph="/*...*/" />
+                <marker date="1491967142824" expanded="true" signature="18201:18630" ph="{...}" />
+                <marker date="1491967142824" expanded="true" signature="18325:18396" ph="{&quot;NodeIP&quot;: NodeIPInfo...}" />
+                <marker date="1491967142824" expanded="true" signature="18488:18626" ph="{&quot;url&quot;: downloadUrl...}" />
+                <marker date="1491967142824" expanded="true" signature="18574:18623" ph="{...}" />
+                <marker date="1491967142824" expanded="true" signature="18654:18716" ph="{...}" />
+                <marker date="1491967142824" expanded="true" signature="18742:18836" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -155,8 +175,8 @@
       <file leaf-file-name="nginxcfg_download.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg_download.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="370">
-              <caret line="32" column="55" lean-forward="true" selection-start-line="32" selection-start-column="8" selection-end-line="32" selection-end-column="55" />
+            <state relative-caret-position="-807">
+              <caret line="60" column="24" lean-forward="false" selection-start-line="60" selection-start-column="24" selection-end-line="60" selection-end-column="24" />
               <folding />
             </state>
           </provider>
@@ -165,8 +185,8 @@
       <file leaf-file-name="nginxcfg_web.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg_web.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="490">
-              <caret line="132" column="58" lean-forward="true" selection-start-line="132" selection-start-column="58" selection-end-line="132" selection-end-column="58" />
+            <state relative-caret-position="504">
+              <caret line="132" column="58" lean-forward="false" selection-start-line="132" selection-start-column="58" selection-end-line="132" selection-end-column="58" />
               <folding />
             </state>
           </provider>
@@ -175,28 +195,8 @@
       <file leaf-file-name="nginxcfg_kubeng.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg_kubeng.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1296">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="bytes_decl.go" pinned="false" current-in-tab="false">
-        <entry file="file://D:/Go/src/bytes/bytes_decl.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="437">
-              <caret line="23" column="5" lean-forward="false" selection-start-line="23" selection-start-column="5" selection-end-line="23" selection-end-column="5" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="request.go" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../github.com/emicklei/go-restful/request.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="237">
-              <caret line="68" column="18" lean-forward="false" selection-start-line="68" selection-start-column="18" selection-end-line="68" selection-end-column="18" />
+            <state relative-caret-position="104">
+              <caret line="27" column="17" lean-forward="false" selection-start-line="27" selection-start-column="5" selection-end-line="27" selection-end-column="17" />
               <folding />
             </state>
           </provider>
@@ -628,6 +628,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1220">
           <caret line="39" column="23" lean-forward="true" selection-start-line="39" selection-start-column="23" selection-end-line="39" selection-end-column="23" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -635,6 +636,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -657,7 +659,7 @@
     <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/watcher.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="304">
-          <caret line="66" column="50" lean-forward="true" selection-start-line="66" selection-start-column="50" selection-end-line="66" selection-end-column="50" />
+          <caret line="66" column="50" lean-forward="false" selection-start-line="66" selection-start-column="50" selection-end-line="66" selection-end-column="50" />
           <folding>
             <element signature="e#56#254#0" expanded="true" />
           </folding>
@@ -672,126 +674,142 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/template/js/nginx/clients.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="19">
+          <caret line="1" column="22" lean-forward="false" selection-start-line="1" selection-start-column="22" selection-end-line="1" selection-end-column="22" />
+          <folding>
+            <marker date="1491967142824" expanded="true" signature="7367:7369" ph="//..." />
+            <marker date="1491967142824" expanded="true" signature="7367:8172" ph="{...}" />
+            <marker date="1491967142824" expanded="true" signature="7446:8168" ph="{&quot;url&quot;: apiVersionUrl...}" />
+            <marker date="1491967142824" expanded="true" signature="7496:7623" ph="{&quot;KubernetesMasterHost&quot;: KubernetesMasterHost...}" />
+            <marker date="1491967142824" expanded="true" signature="7651:8165" ph="{...}" />
+            <marker date="1491967142824" expanded="true" signature="7789:8161" ph="{...}" />
+            <marker date="1491967142824" expanded="true" signature="7837:8039" ph="{...}" />
+            <marker date="1491967142824" expanded="true" signature="8174:8217" ph="/** 批量导出一个node的配置信息 ...*/" />
+            <marker date="1491967142824" expanded="true" signature="8248:9228" ph="{...}" />
+            <marker date="1491967142824" expanded="true" signature="8400:8599" ph="{...}" />
+            <marker date="1491967142824" expanded="true" signature="8423:8560" ph="{...}" />
+            <marker date="1491967142824" expanded="true" signature="8749:9223" ph="{&quot;url&quot;: downloadUrl...}" />
+            <marker date="1491967142824" expanded="true" signature="8879:8962" ph="{&quot;Content-Type&quot;: &quot;application/json&quot;...}" />
+            <marker date="1491967142824" expanded="true" signature="9031:9215" ph="{...}" />
+            <marker date="1491967142824" expanded="true" signature="9038:9133" ph="//..." />
+            <marker date="1491967142824" expanded="true" signature="9229:9235" ph="/*...*/" />
+            <marker date="1491967142824" expanded="true" signature="9260:10157" ph="{...}" />
+            <marker date="1491967142824" expanded="true" signature="9326:10000" ph="{...}" />
+            <marker date="1491967142824" expanded="true" signature="9556:9995" ph="{&quot;url&quot;: watchersUrl...}" />
+            <marker date="1491967142824" expanded="true" signature="9677:9757" ph="{&quot;Content-Type&quot;: &quot;application/json&quot;...}" />
+            <marker date="1491967142824" expanded="true" signature="9768:9819" ph="{&quot;ClientID&quot;: ClientID...}" />
+            <marker date="1491967142824" expanded="true" signature="9847:9986" ph="{...}" />
+            <marker date="1491967142824" expanded="true" signature="10004:10155" ph="{...}" />
+            <marker date="1491967142824" expanded="true" signature="10204:11881" ph="{...}" />
+            <marker date="1491967142824" expanded="true" signature="10420:10441" ph="..." />
+            <marker date="1491967142824" expanded="true" signature="10471:10477" ph=" " />
+            <marker date="1491967142824" expanded="true" signature="10658:10676" ph="..." />
+            <marker date="1491967142824" expanded="true" signature="10766:11854" ph="{...}" />
+            <marker date="1491967142824" expanded="true" signature="10984:11069" ph="{...}" />
+            <marker date="1491967142824" expanded="true" signature="11054:11060" ph=" " />
+            <marker date="1491967142824" expanded="true" signature="11073:11161" ph="{...}" />
+            <marker date="1491967142824" expanded="true" signature="11146:11152" ph=" " />
+            <marker date="1491967142824" expanded="true" signature="11215:11236" ph="..." />
+            <marker date="1491967142824" expanded="true" signature="11310:11316" ph=" " />
+            <marker date="1491967142824" expanded="true" signature="11883:11889" ph="/*...*/" />
+            <marker date="1491967142824" expanded="true" signature="11917:15317" ph="{...}" />
+            <marker date="1491967142824" expanded="true" signature="11985:15314" ph="{&quot;title&quot;: '新增watcher'...}" />
+            <marker date="1491967142824" expanded="true" signature="12124:15311" ph="{...}" />
+            <marker date="1491967142824" expanded="true" signature="12549:12727" ph="{...}" />
+            <marker date="1491967142824" expanded="true" signature="12658:12722" ph="{...}" />
+            <marker date="1491967142824" expanded="true" signature="12731:12770" ph="{...}" />
+            <marker date="1491967142824" expanded="true" signature="13588:14187" ph="{&quot;NodeIP&quot;: NodeIP...}" />
+            <marker date="1491967142824" expanded="true" signature="13653:14182" ph="{&quot;NginxReloadCommand&quot;: NginxReloadCommand...}" />
+            <marker date="1491967142824" expanded="true" signature="14300:15282" ph="{&quot;url&quot;: watchersUrl...}" />
+            <marker date="1491967142824" expanded="true" signature="14427:14510" ph="{&quot;Content-Type&quot;: &quot;application/json&quot;...}" />
+            <marker date="1491967142824" expanded="true" signature="14577:15271" ph="{...}" />
+            <marker date="1491967142824" expanded="true" signature="14611:15263" ph="{&quot;url&quot;: watchersUrl...}" />
+            <marker date="1491967142824" expanded="true" signature="14747:14836" ph="{&quot;Content-Type&quot;: &quot;application/json&quot;...}" />
+            <marker date="1491967142824" expanded="true" signature="14909:15248" ph="{...}" />
+            <marker date="1491967142824" expanded="true" signature="15320:15326" ph="/*...*/" />
+            <marker date="1491967142824" expanded="true" signature="15354:16376" ph="{...}" />
+            <marker date="1491967142824" expanded="true" signature="15647:16372" ph="{&quot;title&quot;: &quot;删除&quot;...}" />
+            <marker date="1491967142824" expanded="true" signature="15743:16306" ph="{...}" />
+            <marker date="1491967142824" expanded="true" signature="15755:16277" ph="{&quot;url&quot;: deleteUrl...}" />
+            <marker date="1491967142824" expanded="true" signature="15881:15967" ph="{&quot;Content-Type&quot;: &quot;application/json&quot;...}" />
+            <marker date="1491967142824" expanded="true" signature="15995:16272" ph="{...}" />
+            <marker date="1491967142824" expanded="true" signature="16044:16131" ph="{...}" />
+            <marker date="1491967142824" expanded="true" signature="16135:16258" ph="{...}" />
+            <marker date="1491967142824" expanded="true" signature="16174:16250" ph="{&quot;title&quot;: &quot;删除失败&quot;...}" />
+            <marker date="1491967142824" expanded="true" signature="16341:16369" ph="{...}" />
+            <marker date="1491967142824" expanded="true" signature="16377:16394" ph="/*...*/" />
+            <marker date="1491967142824" expanded="true" signature="16423:17269" ph="{...}" />
+            <marker date="1491967142824" expanded="true" signature="16713:17265" ph="{&quot;url&quot;: stopUrl...}" />
+            <marker date="1491967142824" expanded="true" signature="16861:16962" ph="{&quot;Content-Type&quot;: &quot;application/json&quot;...}" />
+            <marker date="1491967142824" expanded="true" signature="16994:17259" ph="{...}" />
+            <marker date="1491967142824" expanded="true" signature="17056:17136" ph="{...}" />
+            <marker date="1491967142824" expanded="true" signature="17140:17249" ph="{...}" />
+            <marker date="1491967142824" expanded="true" signature="17177:17243" ph="{&quot;title&quot;: &quot;停止失败&quot;...}" />
+            <marker date="1491967142824" expanded="true" signature="17270:17288" ph="/*...*/" />
+            <marker date="1491967142824" expanded="true" signature="17318:18167" ph="{...}" />
+            <marker date="1491967142824" expanded="true" signature="17610:18163" ph="{&quot;url&quot;: startUrl...}" />
+            <marker date="1491967142824" expanded="true" signature="17759:17860" ph="{&quot;Content-Type&quot;: &quot;application/json&quot;...}" />
+            <marker date="1491967142824" expanded="true" signature="17892:18157" ph="{...}" />
+            <marker date="1491967142824" expanded="true" signature="17954:18034" ph="{...}" />
+            <marker date="1491967142824" expanded="true" signature="18038:18147" ph="{...}" />
+            <marker date="1491967142824" expanded="true" signature="18075:18141" ph="{&quot;title&quot;: &quot;启动失败&quot;...}" />
+            <marker date="1491967142824" expanded="true" signature="18169:18175" ph="/*...*/" />
+            <marker date="1491967142824" expanded="true" signature="18201:18630" ph="{...}" />
+            <marker date="1491967142824" expanded="true" signature="18325:18396" ph="{&quot;NodeIP&quot;: NodeIPInfo...}" />
+            <marker date="1491967142824" expanded="true" signature="18488:18626" ph="{&quot;url&quot;: downloadUrl...}" />
+            <marker date="1491967142824" expanded="true" signature="18574:18623" ph="{...}" />
+            <marker date="1491967142824" expanded="true" signature="18654:18716" ph="{...}" />
+            <marker date="1491967142824" expanded="true" signature="18742:18836" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg_download.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-807">
+          <caret line="60" column="24" lean-forward="false" selection-start-line="60" selection-start-column="24" selection-end-line="60" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/nodemanager/nodes/nodes.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="446">
+          <caret line="50" column="1" lean-forward="false" selection-start-line="50" selection-start-column="1" selection-end-line="50" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/communicate/communicate.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="237">
+          <caret line="31" column="5" lean-forward="false" selection-start-line="31" selection-start-column="5" selection-end-line="31" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg_kubeng.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1296">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="104">
+          <caret line="27" column="17" lean-forward="false" selection-start-line="27" selection-start-column="5" selection-end-line="27" selection-end-column="17" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg_web.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="490">
-          <caret line="132" column="58" lean-forward="true" selection-start-line="132" selection-start-column="58" selection-end-line="132" selection-end-column="58" />
+        <state relative-caret-position="504">
+          <caret line="132" column="58" lean-forward="false" selection-start-line="132" selection-start-column="58" selection-end-line="132" selection-end-column="58" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg_download.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="370">
-          <caret line="32" column="55" lean-forward="true" selection-start-line="32" selection-start-column="8" selection-end-line="32" selection-end-column="55" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/template/js/nginx/clients.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="19">
-          <caret line="1" column="22" lean-forward="false" selection-start-line="1" selection-start-column="22" selection-end-line="1" selection-end-column="22" />
-          <folding>
-            <marker date="1491962870121" expanded="true" signature="7367:7369" ph="//..." />
-            <marker date="1491962870121" expanded="true" signature="7367:8172" ph="{...}" />
-            <marker date="1491962870121" expanded="true" signature="7446:8168" ph="{&quot;url&quot;: apiVersionUrl...}" />
-            <marker date="1491962870121" expanded="true" signature="7496:7623" ph="{&quot;KubernetesMasterHost&quot;: KubernetesMasterHost...}" />
-            <marker date="1491962870121" expanded="true" signature="7651:8165" ph="{...}" />
-            <marker date="1491962870121" expanded="true" signature="7789:8161" ph="{...}" />
-            <marker date="1491962870121" expanded="true" signature="7837:8039" ph="{...}" />
-            <marker date="1491962870121" expanded="true" signature="8174:8217" ph="/** 批量导出一个node的配置信息 ...*/" />
-            <marker date="1491962870121" expanded="true" signature="8248:9228" ph="{...}" />
-            <marker date="1491962870121" expanded="true" signature="8400:8599" ph="{...}" />
-            <marker date="1491962870121" expanded="true" signature="8423:8560" ph="{...}" />
-            <marker date="1491962870121" expanded="true" signature="8749:9223" ph="{&quot;url&quot;: downloadUrl...}" />
-            <marker date="1491962870121" expanded="true" signature="8879:8962" ph="{&quot;Content-Type&quot;: &quot;application/json&quot;...}" />
-            <marker date="1491962870121" expanded="true" signature="9031:9215" ph="{...}" />
-            <marker date="1491962870121" expanded="true" signature="9038:9133" ph="//..." />
-            <marker date="1491962870121" expanded="true" signature="9229:9235" ph="/*...*/" />
-            <marker date="1491962870121" expanded="true" signature="9260:10157" ph="{...}" />
-            <marker date="1491962870121" expanded="true" signature="9326:10000" ph="{...}" />
-            <marker date="1491962870121" expanded="true" signature="9556:9995" ph="{&quot;url&quot;: watchersUrl...}" />
-            <marker date="1491962870121" expanded="true" signature="9677:9757" ph="{&quot;Content-Type&quot;: &quot;application/json&quot;...}" />
-            <marker date="1491962870121" expanded="true" signature="9768:9819" ph="{&quot;ClientID&quot;: ClientID...}" />
-            <marker date="1491962870121" expanded="true" signature="9847:9986" ph="{...}" />
-            <marker date="1491962870121" expanded="true" signature="10004:10155" ph="{...}" />
-            <marker date="1491962870121" expanded="true" signature="10204:11881" ph="{...}" />
-            <marker date="1491962870121" expanded="true" signature="10420:10441" ph="..." />
-            <marker date="1491962870121" expanded="true" signature="10471:10477" ph=" " />
-            <marker date="1491962870121" expanded="true" signature="10658:10676" ph="..." />
-            <marker date="1491962870121" expanded="true" signature="10766:11854" ph="{...}" />
-            <marker date="1491962870121" expanded="true" signature="10984:11069" ph="{...}" />
-            <marker date="1491962870121" expanded="true" signature="11054:11060" ph=" " />
-            <marker date="1491962870121" expanded="true" signature="11073:11161" ph="{...}" />
-            <marker date="1491962870121" expanded="true" signature="11146:11152" ph=" " />
-            <marker date="1491962870121" expanded="true" signature="11215:11236" ph="..." />
-            <marker date="1491962870121" expanded="true" signature="11310:11316" ph=" " />
-            <marker date="1491962870121" expanded="true" signature="11883:11889" ph="/*...*/" />
-            <marker date="1491962870121" expanded="true" signature="11917:15317" ph="{...}" />
-            <marker date="1491962870121" expanded="true" signature="11985:15314" ph="{&quot;title&quot;: '新增watcher'...}" />
-            <marker date="1491962870121" expanded="true" signature="12124:15311" ph="{...}" />
-            <marker date="1491962870121" expanded="true" signature="12549:12727" ph="{...}" />
-            <marker date="1491962870121" expanded="true" signature="12658:12722" ph="{...}" />
-            <marker date="1491962870121" expanded="true" signature="12731:12770" ph="{...}" />
-            <marker date="1491962870121" expanded="true" signature="13588:14187" ph="{&quot;NodeIP&quot;: NodeIP...}" />
-            <marker date="1491962870121" expanded="true" signature="13653:14182" ph="{&quot;NginxReloadCommand&quot;: NginxReloadCommand...}" />
-            <marker date="1491962870121" expanded="true" signature="14300:15282" ph="{&quot;url&quot;: watchersUrl...}" />
-            <marker date="1491962870121" expanded="true" signature="14427:14510" ph="{&quot;Content-Type&quot;: &quot;application/json&quot;...}" />
-            <marker date="1491962870121" expanded="true" signature="14577:15271" ph="{...}" />
-            <marker date="1491962870121" expanded="true" signature="14611:15263" ph="{&quot;url&quot;: watchersUrl...}" />
-            <marker date="1491962870121" expanded="true" signature="14747:14836" ph="{&quot;Content-Type&quot;: &quot;application/json&quot;...}" />
-            <marker date="1491962870121" expanded="true" signature="14909:15248" ph="{...}" />
-            <marker date="1491962870121" expanded="true" signature="15320:15326" ph="/*...*/" />
-            <marker date="1491962870121" expanded="true" signature="15354:16376" ph="{...}" />
-            <marker date="1491962870121" expanded="true" signature="15647:16372" ph="{&quot;title&quot;: &quot;删除&quot;...}" />
-            <marker date="1491962870121" expanded="true" signature="15743:16306" ph="{...}" />
-            <marker date="1491962870121" expanded="true" signature="15755:16277" ph="{&quot;url&quot;: deleteUrl...}" />
-            <marker date="1491962870121" expanded="true" signature="15881:15967" ph="{&quot;Content-Type&quot;: &quot;application/json&quot;...}" />
-            <marker date="1491962870121" expanded="true" signature="15995:16272" ph="{...}" />
-            <marker date="1491962870121" expanded="true" signature="16044:16131" ph="{...}" />
-            <marker date="1491962870121" expanded="true" signature="16135:16258" ph="{...}" />
-            <marker date="1491962870121" expanded="true" signature="16174:16250" ph="{&quot;title&quot;: &quot;删除失败&quot;...}" />
-            <marker date="1491962870121" expanded="true" signature="16341:16369" ph="{...}" />
-            <marker date="1491962870121" expanded="true" signature="16377:16394" ph="/*...*/" />
-            <marker date="1491962870121" expanded="true" signature="16423:17269" ph="{...}" />
-            <marker date="1491962870121" expanded="true" signature="16713:17265" ph="{&quot;url&quot;: stopUrl...}" />
-            <marker date="1491962870121" expanded="true" signature="16861:16962" ph="{&quot;Content-Type&quot;: &quot;application/json&quot;...}" />
-            <marker date="1491962870121" expanded="true" signature="16994:17259" ph="{...}" />
-            <marker date="1491962870121" expanded="true" signature="17056:17136" ph="{...}" />
-            <marker date="1491962870121" expanded="true" signature="17140:17249" ph="{...}" />
-            <marker date="1491962870121" expanded="true" signature="17177:17243" ph="{&quot;title&quot;: &quot;停止失败&quot;...}" />
-            <marker date="1491962870121" expanded="true" signature="17270:17288" ph="/*...*/" />
-            <marker date="1491962870121" expanded="true" signature="17318:18167" ph="{...}" />
-            <marker date="1491962870121" expanded="true" signature="17610:18163" ph="{&quot;url&quot;: startUrl...}" />
-            <marker date="1491962870121" expanded="true" signature="17759:17860" ph="{&quot;Content-Type&quot;: &quot;application/json&quot;...}" />
-            <marker date="1491962870121" expanded="true" signature="17892:18157" ph="{...}" />
-            <marker date="1491962870121" expanded="true" signature="17954:18034" ph="{...}" />
-            <marker date="1491962870121" expanded="true" signature="18038:18147" ph="{...}" />
-            <marker date="1491962870121" expanded="true" signature="18075:18141" ph="{&quot;title&quot;: &quot;启动失败&quot;...}" />
-            <marker date="1491962870121" expanded="true" signature="18169:18175" ph="/*...*/" />
-            <marker date="1491962870121" expanded="true" signature="18201:18630" ph="{...}" />
-            <marker date="1491962870121" expanded="true" signature="18325:18396" ph="{&quot;NodeIP&quot;: NodeIPInfo...}" />
-            <marker date="1491962870121" expanded="true" signature="18488:18626" ph="{&quot;url&quot;: downloadUrl...}" />
-            <marker date="1491962870121" expanded="true" signature="18574:18623" ph="{...}" />
-            <marker date="1491962870121" expanded="true" signature="18654:18716" ph="{...}" />
-            <marker date="1491962870121" expanded="true" signature="18742:18836" ph="{...}" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="393" column="76" lean-forward="false" selection-start-line="393" selection-start-column="76" selection-end-line="393" selection-end-column="76" />
+        <state relative-caret-position="389">
+          <caret line="97" column="72" lean-forward="true" selection-start-line="97" selection-start-column="8" selection-end-line="97" selection-end-column="72" />
           <folding>
             <element signature="e#18#182#0" expanded="true" />
           </folding>
@@ -800,10 +818,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg_compare.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="523">
-          <caret line="28" column="75" lean-forward="false" selection-start-line="28" selection-start-column="75" selection-end-line="28" selection-end-column="75" />
+        <state relative-caret-position="228">
+          <caret line="12" column="5" lean-forward="false" selection-start-line="12" selection-start-column="5" selection-end-line="12" selection-end-column="5" />
           <folding>
-            <element signature="e#18#102#0" expanded="true" />
+            <element signature="e#18#171#0" expanded="true" />
           </folding>
         </state>
       </provider>
