@@ -79,11 +79,15 @@ function testFunForWatcherTestOK(){
         url: testUrl,
         dataType: "json",
         contentType: "text/html; charset=UTF-8",
-        type:"put",            // get put post delete
+        type: "put",            // get put post delete
         headers: {
             "Content-Type": "application/json",
             "Accept": "application/json",
         },
-       // data: JSON.stringify(testData),
-        success:function(data){
-            var data=data;
+        // data: JSON.stringify(testData),
+        success: function (data) {
+            var data = data;
+        }
+
+    }
+}

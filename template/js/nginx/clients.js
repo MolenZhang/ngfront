@@ -1,6 +1,6 @@
  var areaType = "";
- var areaIP = "localhost";
- var areaPort = "port";
+ var areaIP = "192.168.252.138";
+ var areaPort = "8011";
  $(document).ready(function () {
 	var locationUrl = window.location;
 	//http://192.168.252.133:8083/ngfront/zone/clients?areaType=user
@@ -39,8 +39,8 @@
  });/*reday*/
 
 function showClients(areaType){
-	//var areaIP = "localhost";
-	//var areaPort = "port";
+	//var areaIP = "192.168.252.138";
+	//var areaPort = "8011";
 	var areaUrl = "http://"+areaIP+":"+areaPort+"/clients";
 	$.ajax({
 		"url":areaUrl,
@@ -114,8 +114,8 @@ function issuedCfg(obj){
 		content: $("#issuedCfgInfo"),
 		btn: ['确定','取消'],
 		yes: function(index,layero){
-			//var areaIP = "localhost";
-			//var areaPort = "port";
+			//var areaIP = "192.168.252.138";
+			//var areaPort = "8011";
 			var issuedUrl = "http://"+areaIP+":"+areaPort+"/watcher/all";
 
 			var KubernetesMasterHost = $("#KubernetesMasterHostInfo").val();
@@ -200,8 +200,8 @@ function loadNamespaces(){
 	$(".editNamespacesTd").removeClass("hide");
 	var KubernetesMasterHost = $("#KubernetesMasterHostInfo").val();
 	var KubernetesAPIVersion = $("#KubernetesAPIVersionInfo").val();
-	//var areaIP = "localhost";
-	//var areaPort = "port";
+	//var areaIP = "192.168.252.138";
+	//var areaPort = "8011";
 	var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/namespaces";
 	
 	$.ajax({
