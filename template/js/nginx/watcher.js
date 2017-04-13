@@ -162,7 +162,9 @@ $(document).ready(function () {
 		$("#StandbyUpstreamNodesOldVal").empty().append(changeVal);
 	});
 	
-	
+	$(document).on('click','.isUsed_true',function(){
+		return false;
+	});
 	
 	 
  });/*reday*/
@@ -360,8 +362,6 @@ function showNamespacesEcharts(KubernetesMasterHost,KubernetesAPIVersion,JobZone
 				NamespacesList.push(NamespacesInfos[namespacesNum].Namespace);
 			}
 			var NamespacesAppCounts = data.AppList;
-			//生成配置中的租户项
-			//showNamespaces(NamespacesList);
 			//echart画图位置
 			var myChart = echarts.init(document.getElementById('main'));
 			option = {
@@ -455,9 +455,9 @@ function showNamespaces(KubernetesMasterHost,KubernetesAPIVersion){
 				var eveNamespace = NamespacesInfos[namespacesNum].Namespace;
 				var eveIsUsedStatue = NamespacesInfos[namespacesNum].IsUsed;
 				if(eveIsUsedStatue==true){
-					namespacesHtml += '<label class="namespacesLabel"><input type="checkbox" class="namespacesChk isUsed_'+eveIsUsedStatue+'" value="'+eveNamespace+'" disabled>'+eveNamespace+'</label>';
+					namespacesHtml += '<label class="namespacesLabel isUsed_'+eveIsUsedStatue+'" disabled="disabled"><input type="checkbox" class="namespacesChk" value="'+eveNamespace+'">'+eveNamespace+'</label>';
 				}else{
-					namespacesHtml += '<label class="namespacesLabel"><input type="checkbox" class="namespacesChk isUsed_'+eveIsUsedStatue+'" value="'+eveNamespace+'">'+eveNamespace+'</label>';
+					namespacesHtml += '<label class="namespacesLabel isUsed_'+eveIsUsedStatue+'"><input type="checkbox" class="namespacesChk" value="'+eveNamespace+'">'+eveNamespace+'</label>';
 				}
 			}
 			$("#namespacesInfo").empty().append(namespacesHtml);

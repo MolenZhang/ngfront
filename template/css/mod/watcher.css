@@ -127,6 +127,6 @@ a{
 .isUsed_true{
 	cursor: no-drop;
 }
-.isUsed_false{
-	cursor: no-drop;
-}
+/* .isUsed_false{
+	cursor: pointer;
+} */
