@@ -5,8 +5,8 @@ var WatchNamespaceSets = "";
 var NodeIPInfo ="";
 var ClientIDInfo = "";
 var WatcherID = "";
-var areaIP = "localhost";
-var areaPort = "port";
+var areaIP = "192.168.19.128";
+var areaPort = "8083";
 $(document).ready(function () {
 	var locationUrl = window.location;
 	//http://172.16.13.110:8083/ngfront/zone/clients/watcher?NodeIP=10.10.3.9&ClientID=21343&areaType=user
@@ -340,8 +340,8 @@ $(document).ready(function () {
 
 //生成监控echart图
 function showNamespacesEcharts(KubernetesMasterHost,KubernetesAPIVersion,JobZoneType){
-	//var areaIP = "localhost";
-	//var areaPort = "port";
+	//var areaIP = "192.168.19.128";
+	//var areaPort = "8083";
 	var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/namespaces";
 	
 	$.ajax({
@@ -444,8 +444,8 @@ function showNamespaces(NamespacesList){
 }
 
 function loadNamespaces(KubernetesMasterHost,KubernetesAPIVersion){
-	//var areaIP = "localhost";
-	//var areaPort = "port";
+	//var areaIP = "192.168.19.128";
+	//var areaPort = "8083";
 	var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/namespaces";
 	
 	$.ajax({
