@@ -83,7 +83,7 @@ $(document).ready(function () {
 	}); 
 	//编辑租户监控checkbox
 	$(document).on('click','#editNamespacesBtn',function(){
-		loadNamespaces(KubernetesMasterHost,KubernetesAPIVersion);
+		showNamespaces(KubernetesMasterHost,KubernetesAPIVersion);
 		$(this).parent().hide();
 		$(this).parent().next().show();
 	});
@@ -436,22 +436,8 @@ function showNamespacesEcharts(KubernetesMasterHost,KubernetesAPIVersion,JobZone
 	});
 }
 //生成配置中的租户项
-function showNamespaces(NamespacesList){
-	var namespacesHtml = "";
-	if(NamespacesList != null){
-		for(var i=0; i<NamespacesList.length; i++){
-			var	eveNamespace = NamespacesList[i];
-			namespacesHtml += '<label class="namespacesLabel"><input type="checkbox" class="namespacesChk" value="'+eveNamespace+'">'+eveNamespace+'</label>';
-		}
-		$("#namespacesInfo").empty().append(namespacesHtml);
-	}
-}
-
-function loadNamespaces(KubernetesMasterHost,KubernetesAPIVersion){
-	//var areaIP = "localhost";
-	//var areaPort = "port";
+function showNamespaces(KubernetesMasterHost,KubernetesAPIVersion){
 	var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/namespaces";
-	
 	$.ajax({
 		"url":apiVersionUrl,
 		"type":"get",
@@ -462,12 +448,22 @@ function loadNamespaces(KubernetesMasterHost,KubernetesAPIVersion){
 		},
 		"success":function(data){
 			var data = eval("("+data+")");
-			var NamespacesList = data.NamespacesList;
-			showNamespaces(NamespacesList);
+			var NamespacesInfos = data.NamespacesInfo;
+			
+			var namespacesHtml = "";
+			for(var namespacesNum=0; namespacesNum<NamespacesInfos.length; namespacesNum++){
+				var eveNamespace = NamespacesInfos[namespacesNum].Namespace;
+				var eveIsUsedStatue = NamespacesInfos[namespacesNum].IsUsed;
+				if(eveIsUsedStatue==true){
+					namespacesHtml += '<label class="namespacesLabel"><input type="checkbox" class="namespacesChk isUsed_'+eveIsUsedStatue+'" value="'+eveNamespace+'" disabled>'+eveNamespace+'</label>';
+				}else{
+					namespacesHtml += '<label class="namespacesLabel"><input type="checkbox" class="namespacesChk isUsed_'+eveIsUsedStatue+'" value="'+eveNamespace+'">'+eveNamespace+'</label>';
+				}
+			}
+			$("#namespacesInfo").empty().append(namespacesHtml);
 		}
 	});
 }
-			
 
 //提交watcher表单
 function watcherSubmit(NodeIPInfo,ClientIDInfo){

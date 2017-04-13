@@ -124,3 +124,9 @@ button.btn-start{
 a{
 	cursor: pointer;
 }
+.isUsed_true{
+	cursor: no-drop;
+}
+.isUsed_false{
+	cursor: no-drop;
+}
