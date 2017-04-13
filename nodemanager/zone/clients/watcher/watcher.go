@@ -19,14 +19,16 @@ type SaveNamespaceInfo struct {
 	WatchNamespaceSets []string
 }
 
+// NamespaceInfo 租户信息
 type NamespaceInfo struct {
-	Namespace  string
-	UsedStatus bool
+	Namespace string
+	IsUsed    bool
 }
 
+/*
 // WebWatcherManagerCfgs 将后端的监视信息由map转换成前端所需的arry
 var WebWatcherManagerCfgs []nodes.WatchManagerCfg
-
+*/
 type namespacesUseMark struct {
 	NamespacesInfo []NamespaceInfo
 	AppList        [][]AppInfo
@@ -50,7 +52,7 @@ type watcherStatusInfo struct {
 	WatcherCfg nodes.WatchManagerCfg
 }
 
-//前端需批量操作的节点内容
+//BatchWatcherWebMsg 前端需批量操作的节点内容
 type BatchWatcherWebMsg struct {
 	BatchNodesInfo []watcherNodeInfo
 	WatcherCfg     nodes.WatchManagerCfg
@@ -75,11 +77,10 @@ type ResponseBody struct {
 	WatcherCfg   nodes.WatchManagerCfg
 }
 
-//WatcherCfgConvertToWebCfg map转换arry函数
-func WatcherCfgConvertToWebCfg(kubengWatchersMap map[int]nodes.WatchManagerCfg) []nodes.WatchManagerCfg {
+func mapConvertToArray(kubengWatchersMap map[int]nodes.WatchManagerCfg) []nodes.WatchManagerCfg {
 
 	sortKeys := make([]int, 0)
-	for mapKey, _ := range kubengWatchersMap {
+	for mapKey := range kubengWatchersMap {
 		sortKeys = append(sortKeys, mapKey)
 	}
 
@@ -178,7 +179,7 @@ func getAllWatcherInfo(request *restful.Request, response *restful.Response) {
 	resp, _ := communicate.SendRequestByJSON(communicate.GET, watcherAPIServerURL, nil)
 	json.Unmarshal(resp, &webMsg)
 
-	respMsg := WatcherCfgConvertToWebCfg(webMsg)
+	respMsg := mapConvertToArray(webMsg)
 	logdebug.Println(logdebug.LevelDebug, "获取所有监视器信息：", webMsg)
 	response.WriteHeaderAndJson(200, respMsg, "application/json")
 
@@ -334,8 +335,8 @@ func getWatchNamespacesDetailInfo(w http.ResponseWriter, r *http.Request) {
 	//将kubeng传来的租户 保存 并置标志位为false
 	for _, namespace := range namespaces.NamespacesList {
 		newNamespace := NamespaceInfo{
-			Namespace:  namespace,
-			UsedStatus: false,
+			Namespace: namespace,
+			IsUsed:    false,
 		}
 		namespacesInfo = append(namespacesInfo, newNamespace)
 	}
@@ -369,9 +370,9 @@ func getWatchNamespacesDetailInfo(w http.ResponseWriter, r *http.Request) {
 
 	//将前端已经勾选过的租户进行标记
 	for _, namespaceUsed := range saveNamespacesFromWeb {
-		for index, _ := range namespacesInfo {
+		for index := range namespacesInfo {
 			if namespaceUsed == namespacesInfo[index].Namespace {
-				namespacesInfo[index].UsedStatus = true
+				namespacesInfo[index].IsUsed = true
 			}
 		}
 	}
