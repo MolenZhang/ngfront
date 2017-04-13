@@ -4,7 +4,7 @@ package watcher
 import (
 	"encoding/json"
 	"html/template"
-	//"io/ioutil"
+	"io/ioutil"
 	"net/http"
 	"ngfront/communicate"
 	"ngfront/logdebug"
@@ -13,6 +13,31 @@ import (
 	"github.com/emicklei/go-restful"
 	"sort"
 )
+
+var watcherNamespaceSet map[int]SaveNamespaceInfo
+
+//SaveNamespaceInfo 保存已经监控的租户
+type SaveNamespaceInfo struct {
+	WatchNamespaceSets []string
+}
+
+type NamespaceInfo struct {
+	Namespace  string
+	UsedStatus bool
+}
+
+// WebWatcherManagerCfgs 将后端的监视信息由map转换成前端所需的arry
+var WebWatcherManagerCfgs []nodes.WatchManagerCfg
+
+var (
+	namespacesInfo        []NamespaceInfo
+	saveNamespacesFromWeb []string
+)
+
+type namespacesUseMark struct {
+	NamespacesInfo []NamespaceInfo
+	AppList        [][]AppInfo
+}
 
 //前端单个watcher需展示的信息
 type watcherInfo struct {
@@ -56,9 +81,6 @@ type ResponseBody struct {
 	ErrCode      int32
 	WatcherCfg   nodes.WatchManagerCfg
 }
-
-// WebWatcherManagerCfgs 将后端的监视信息由map转换成前端所需的arry
-var WebWatcherManagerCfgs []nodes.WatchManagerCfg
 
 //WatcherCfgConvertToWebCfg map转换arry函数
 func WatcherCfgConvertToWebCfg(kubengWatchersMap map[int]nodes.WatchManagerCfg) []nodes.WatchManagerCfg {
@@ -194,48 +216,32 @@ func postWatcherInfo(request *restful.Request, response *restful.Response) {
 	err := request.ReadEntity(&webMsg)
 	if err != nil {
 		response.WriteError(http.StatusInternalServerError, err)
-
 		return
 	}
 	logdebug.Println(logdebug.LevelDebug, "新增时 前端传来的数据：", webMsg)
-	/*
-		allNodesInfo := nodes.AllNodesInfo{}
-		for i, v := range allNodesInfo.allNodesInfoMap {
 
-		}
-	*/
-	client := nodes.ClientInfo{
-		NodeIP:   webMsg.NodeIP,
-		ClientID: webMsg.ClientID,
+	//	getNamespacesFromWeb(webMsg.WatcherCfg.WatchNamespaceSets)
+
+	//给每一个client 发送watcher信息
+	allNodesInfo := nodes.GetAllNodesInfo()
+	for _, singleNodeInfo := range allNodesInfo {
+
+		createWatcherURL := "http://" +
+			singleNodeInfo.Client.NodeIP +
+			singleNodeInfo.Client.APIServerPort +
+			"/" +
+			singleNodeInfo.Client.WatchManagerAPIServerPath
+
+		communicate.SendRequestByJSON(communicate.POST, createWatcherURL, webMsg.WatcherCfg)
+
+		logdebug.Println(logdebug.LevelDebug, "前端创建watcher时发给kubeng的URL：", createWatcherURL)
 	}
-	key := client.CreateKey()
-	clientInfo := nodes.GetClientInfo(key)
 
-	createWatcherURL := "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.WatchManagerAPIServerPath
-
-	resp, _ := communicate.SendRequestByJSON(communicate.POST, createWatcherURL, webMsg.WatcherCfg)
-	respBody := ResponseBody{}
-	json.Unmarshal(resp, &respBody)
-
-	//	getNamespacesFromWeb(respBody.WatcherCfg.WatchNamespaceSets)
-
-	logdebug.Println(logdebug.LevelDebug, "返回给前端时 后台传来的数据：", respBody)
+	respBody := ResponseBody{
+		Result: true,
+	}
 	response.WriteHeaderAndJson(200, respBody, "application/json")
 	return
-
-}
-
-// SaveNamespacesFromWeb 保存前端已经选择的租户集合
-type SaveNamespacesFromWeb struct {
-	namespaceSets []string
-}
-
-var saveNamespacesFromWeb SaveNamespacesFromWeb
-
-func getNamespacesFromWeb(namespaces []string) {
-	for _, namespace := range namespaces {
-		saveNamespacesFromWeb.namespaceSets = append(saveNamespacesFromWeb.namespaceSets, namespace)
-	}
 }
 
 //对应前端编辑按钮
@@ -307,6 +313,14 @@ func batchPostWatcherInfo(request *restful.Request, response *restful.Response) 
 	return
 }
 
+/*
+//保存前端已经勾选过的租户信息
+func getNamespacesFromWeb(namespaces []string) {
+	for _, namespace := range namespaces {
+		saveNamespacesFromWeb.NamespaceSets = append(saveNamespacesFromWeb.NamespaceSets, namespace)
+	}
+}
+*/
 //使用界面传过来的IP VERSION获取所要监控的k8s集群租户的详细信息(统计有多少服务)
 func getWatchNamespacesDetailInfo(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
@@ -319,9 +333,61 @@ func getWatchNamespacesDetailInfo(w http.ResponseWriter, r *http.Request) {
 
 	namespaces := getNamespacesDetailInfoFromK8s(getNamespacesURL, jobZoneType)
 
+	//将kubeng传来的租户 保存 并置标志位为false
+	for _, namespace := range namespaces.NamespacesList {
+		newNamespace := NamespaceInfo{
+			Namespace:  namespace,
+			UsedStatus: false,
+		}
+		namespacesInfo = append(namespacesInfo, newNamespace)
+	}
+
+	logdebug.Println(logdebug.LevelDebug, "******保存的租户信息*****:", namespacesInfo)
+	//筛选前端已经勾选过的租户 并将标志位置为true
+	namespaceUsedMap := nodes.GetAllNodesInfo()
+	var watcherURL string
+	for _, nodeInfo := range namespaceUsedMap {
+		watcherURL = "http://" +
+			nodeInfo.Client.NodeIP +
+			nodeInfo.Client.APIServerPort +
+			"/" +
+			nodeInfo.Client.WatchManagerAPIServerPath
+		break //循环一次即可
+	}
+	resp, err := http.Get(watcherURL)
+	if err != nil {
+		logdebug.Println(logdebug.LevelDebug, err)
+		return
+	}
+	defer resp.Body.Close()
+	body, _ := ioutil.ReadAll(resp.Body)
+
+	json.Unmarshal(body, &watcherNamespaceSet)
+
+	//将map 转换成 arry
+	for _, watcherNamespace := range watcherNamespaceSet {
+		saveNamespacesFromWeb = watcherNamespace.WatchNamespaceSets
+	}
+
+	for _, namespaceUsed := range saveNamespacesFromWeb {
+		for index, _ := range namespacesInfo {
+			if namespaceUsed == namespacesInfo[index].Namespace {
+				namespacesInfo[index].UsedStatus = true
+			}
+		}
+	}
+
+	logdebug.Println(logdebug.LevelDebug, "******保存的租户信息并标记显示*****:", namespacesInfo)
+	//将所有标记过的租户传给前端使用
+	webNamespacesResp := namespacesUseMark{
+		NamespacesInfo: namespacesInfo,
+		AppList:        namespaces.AppInfoList,
+	}
+
 	logdebug.Println(logdebug.LevelDebug, "从后台获取到的租户详细信息:", namespaces)
+	logdebug.Println(logdebug.LevelDebug, "发送给前端的租户详细信息:", webNamespacesResp)
 	//通信结构 json格式转换
-	jsonTypeMsg, err := json.Marshal(namespaces)
+	jsonTypeMsg, err := json.Marshal(webNamespacesResp)
 	if err != nil {
 		logdebug.Println(logdebug.LevelError, err)
 
