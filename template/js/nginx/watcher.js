@@ -86,6 +86,7 @@ $(document).ready(function () {
 		showNamespaces(KubernetesMasterHost,KubernetesAPIVersion);
 		$(this).parent().hide();
 		$(this).parent().next().show();
+		
 	});
 	
 	//k8s Api 版本  保存按钮
@@ -96,7 +97,7 @@ $(document).ready(function () {
 		$("#KubernetesAPIVersionOldVal").empty().append(changeVal);
 		var KubernetesMasterHostVal = $("#KubernetesMasterHostOldVal").html();
 		$("#namespacesInfo").empty();
-		showNamespacesEcharts(KubernetesMasterHostVal,changeVal,JobZoneType)
+		//showNamespacesEcharts(KubernetesMasterHostVal,changeVal,JobZoneType)
 	 });
 	//日志打印级别  保存按钮
 	// $("#LogPrintLevelInfo").unbind().click(function(){
@@ -342,8 +343,6 @@ $(document).ready(function () {
 
 //生成监控echart图
 function showNamespacesEcharts(KubernetesMasterHost,KubernetesAPIVersion,JobZoneType){
-	//var areaIP = "localhost";
-	//var areaPort = "port";
 	var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/namespaces";
 	
 	$.ajax({
@@ -437,6 +436,7 @@ function showNamespacesEcharts(KubernetesMasterHost,KubernetesAPIVersion,JobZone
 }
 //生成配置中的租户项
 function showNamespaces(KubernetesMasterHost,KubernetesAPIVersion){
+	
 	var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/namespaces";
 	$.ajax({
 		"url":apiVersionUrl,
@@ -454,13 +454,15 @@ function showNamespaces(KubernetesMasterHost,KubernetesAPIVersion){
 			for(var namespacesNum=0; namespacesNum<NamespacesInfos.length; namespacesNum++){
 				var eveNamespace = NamespacesInfos[namespacesNum].Namespace;
 				var eveIsUsedStatue = NamespacesInfos[namespacesNum].IsUsed;
-				if(eveIsUsedStatue==true){
-					namespacesHtml += '<label class="namespacesLabel isUsed_'+eveIsUsedStatue+'" disabled="disabled"><input type="checkbox" class="namespacesChk" value="'+eveNamespace+'">'+eveNamespace+'</label>';
-				}else{
-					namespacesHtml += '<label class="namespacesLabel isUsed_'+eveIsUsedStatue+'"><input type="checkbox" class="namespacesChk" value="'+eveNamespace+'">'+eveNamespace+'</label>';
-				}
+				namespacesHtml += '<label class="namespacesLabel isUsed_'+eveIsUsedStatue+'"><input type="checkbox" class="namespacesChk name_'+eveNamespace+'" value="'+eveNamespace+'">'+eveNamespace+'</label>';
 			}
 			$("#namespacesInfo").empty().append(namespacesHtml);
+			
+			//WatchNamespaceSets=["daien", "hahaha"]
+			for( var n=0; n<WatchNamespaceSets.length; n++){
+				var checkedNamespaces = '.name_'+WatchNamespaceSets[n];
+				$(checkedNamespaces).prop("checked",true);
+			}
 		}
 	});
 }
