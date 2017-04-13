@@ -14,8 +14,6 @@ import (
 	"sort"
 )
 
-var watcherNamespaceSet map[int]SaveNamespaceInfo
-
 //SaveNamespaceInfo 保存已经监控的租户
 type SaveNamespaceInfo struct {
 	WatchNamespaceSets []string
@@ -28,11 +26,6 @@ type NamespaceInfo struct {
 
 // WebWatcherManagerCfgs 将后端的监视信息由map转换成前端所需的arry
 var WebWatcherManagerCfgs []nodes.WatchManagerCfg
-
-var (
-	namespacesInfo        []NamespaceInfo
-	saveNamespacesFromWeb []string
-)
 
 type namespacesUseMark struct {
 	NamespacesInfo []NamespaceInfo
@@ -324,13 +317,18 @@ func getNamespacesFromWeb(namespaces []string) {
 //使用界面传过来的IP VERSION获取所要监控的k8s集群租户的详细信息(统计有多少服务)
 func getWatchNamespacesDetailInfo(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
+	var (
+		namespacesInfo        []NamespaceInfo
+		watcherNamespaceSet   map[int]SaveNamespaceInfo
+		saveNamespacesFromWeb []string
+	)
 
 	kubernetesMasterHost := r.Form.Get("KubernetesMasterHost")
 	kubernetesAPIVersion := r.Form.Get("KubernetesAPIVersion")
 	jobZoneType := r.Form.Get("JobZoneType")
 
 	getNamespacesURL := kubernetesMasterHost + "/" + kubernetesAPIVersion + "/namespaces"
-
+	logdebug.Println(logdebug.LevelDebug, "获取租户请求的URL", getNamespacesURL)
 	namespaces := getNamespacesDetailInfoFromK8s(getNamespacesURL, jobZoneType)
 
 	//将kubeng传来的租户 保存 并置标志位为false
@@ -369,6 +367,7 @@ func getWatchNamespacesDetailInfo(w http.ResponseWriter, r *http.Request) {
 		saveNamespacesFromWeb = watcherNamespace.WatchNamespaceSets
 	}
 
+	//将前端已经勾选过的租户进行标记
 	for _, namespaceUsed := range saveNamespacesFromWeb {
 		for index, _ := range namespacesInfo {
 			if namespaceUsed == namespacesInfo[index].Namespace {
