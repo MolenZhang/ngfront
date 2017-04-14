@@ -548,7 +548,7 @@ function watcherSubmit(NodeIPInfo,ClientIDInfo){
 
 //停止监控
 function stopControl(NodeIPInfo,ClientIDInfo){
-	var submitUrl = "http://"+areaIP+":"+areaPort+"/watcher";
+	var submitUrl = "http://"+areaIP+":"+areaPort+"/watcher"+WatcherID;
 	
 	var KubernetesMasterHost = $("#KubernetesMasterHostOldVal").html();
 	var KubernetesAPIVersion =$("#KubernetesAPIVersionOldVal").html();
