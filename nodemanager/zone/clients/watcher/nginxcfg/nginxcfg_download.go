@@ -138,7 +138,7 @@ func (svc *ServiceInfo) nginxCfgRedictDownload(request *restful.Request, respons
 type singleClientDownloadInfo struct {
 	NodeIP       string
 	ClientID     string
-	watcherIDSet []string
+	WatcherIDSet []string
 }
 
 //下载单个节点上的所选watcherID的配置信息
@@ -151,7 +151,7 @@ func singleClientWatcherCfgDownloadByWatcherID(request *restful.Request, respons
 		return
 	}
 
-	for _, watcherID := range reqDownloadInfo.watcherIDSet {
+	for _, watcherID := range reqDownloadInfo.WatcherIDSet {
 
 		client := nodes.ClientInfo{
 			NodeIP:   reqDownloadInfo.NodeIP,
@@ -223,6 +223,9 @@ func (svc *ServiceInfo) nginxCfgSingleClientDownload(request *restful.Request, r
 	}
 	logdebug.Println(logdebug.LevelDebug, "删除本地下载文件成功")
 
+}
+
+type allClientDownloadInfo struct {
 }
 
 //下载所有节点上的配置信息
