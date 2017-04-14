@@ -5,7 +5,9 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
+	"ngfront/communicate"
 	"ngfront/logdebug"
+	"ngfront/nodemanager/nodes"
 )
 
 //NamespaceList 租户列表
@@ -174,6 +176,132 @@ func getServiceFromK8s(url string) (epList EndpointsList) {
 		return
 	}
 	json.Unmarshal(body, &epList)
+
+	return
+}
+
+func (watcherNamespacesInfo *SaveNamespaceInfo) isNamespaceInSet(namespace string) bool {
+	for _, usedNamespace := range watcherNamespacesInfo.WatchNamespaceSets {
+		if usedNamespace == namespace {
+			return true
+		}
+		continue
+	}
+	return false
+}
+
+func initWebMsg(w http.ResponseWriter, r *http.Request, webAllNamespacesInfo *[]NamespaceInfo) (
+	allNamespacesDetailInfoFromK8s NamespacesDetailInfo) {
+	var kubernetesAPIVersion string
+	var kubernetesMasterHost string
+	var jobZoneType string
+
+	allNodesInfo := nodes.GetAllNodesInfo()
+
+	for _, nodeInfo := range allNodesInfo {
+		kubernetesMasterHost = nodeInfo.Client.K8sMasterHost
+		kubernetesAPIVersion = nodeInfo.Client.K8sAPIVersion
+		jobZoneType = nodeInfo.Client.JobZoneType
+		break
+	}
+
+	getNamespacesURL := kubernetesMasterHost +
+		"/" +
+		kubernetesAPIVersion +
+		"/namespaces"
+
+	logdebug.Println(logdebug.LevelDebug, "获取租户请求的URL", getNamespacesURL)
+	allNamespacesDetailInfoFromK8s = getNamespacesDetailInfoFromK8s(getNamespacesURL, jobZoneType)
+	logdebug.Println(logdebug.LevelDebug, "从k8s获取租户信息", allNamespacesDetailInfoFromK8s)
+
+	//init 将k8s获取到的所有租户信息 填充到将要发给web前端的数组中
+	for _, namespace := range allNamespacesDetailInfoFromK8s.NamespacesList {
+		newNamespace := NamespaceInfo{
+			Namespace: namespace,
+			IsUsed:    false,
+		}
+		*webAllNamespacesInfo = append(*webAllNamespacesInfo, newNamespace)
+	}
+
+	return
+}
+
+func getWatchersInfoFromKubeNG() (allWatchersNamespacesInfo map[int]SaveNamespaceInfo) {
+	allNodesInfo := nodes.GetAllNodesInfo()
+	if len(allNodesInfo) == 0 {
+		return
+	}
+
+	watcherURL := ""
+	for key := range allNodesInfo {
+		watcherURL = "http://" +
+			allNodesInfo[key].Client.NodeIP +
+			allNodesInfo[key].Client.APIServerPort +
+			"/" +
+			allNodesInfo[key].Client.WatchManagerAPIServerPath
+
+		break
+	}
+	resp, _ := communicate.SendRequestByJSON(communicate.GET, watcherURL, nil)
+	json.Unmarshal(resp, &allWatchersNamespacesInfo)
+
+	return
+}
+
+func markUsedNamesapces(webAllNamespacesInfo []NamespaceInfo, allWatchersNamespacesInfo map[int]SaveNamespaceInfo) {
+
+	for _, watcherNamespacesInfo := range allWatchersNamespacesInfo {
+		for index, namespaceInfo := range webAllNamespacesInfo {
+			//	for _, namespaceInfo := range webAllNamespacesInfo {
+			if watcherNamespacesInfo.isNamespaceInSet(namespaceInfo.Namespace) {
+				webAllNamespacesInfo[index].IsUsed = true
+				webAllNamespacesInfo[index].WatcherID = watcherNamespacesInfo.WatcherID
+				//namespaceInfo.IsUsed = true
+				//	namespaceInfo.WatcherID = watcherNamespacesInfo.WatcherID
+			}
+		}
+	}
+
+	logdebug.Println(logdebug.LevelDebug, "******保存的租户信息并标记显示*****:", webAllNamespacesInfo)
+
+	return
+}
+
+func respToWebFront(w http.ResponseWriter, webAllNamespacesInfo []NamespaceInfo, namespacesDetail NamespacesDetailInfo) {
+	webNamespacesResp := namespacesUseMark{
+		NamespacesInfo: webAllNamespacesInfo,
+		AppList:        namespacesDetail.AppInfoList,
+	}
+
+	//通信结构 json格式转换
+	jsonTypeMsg, err := json.Marshal(webNamespacesResp)
+	if err != nil {
+		logdebug.Println(logdebug.LevelError, err)
+	}
+
+	w.Write(jsonTypeMsg)
+
+	return
+}
+
+//使用界面传过来的IP VERSION获取所要监控的k8s集群租户的详细信息(统计有多少服务)
+func getWatchNamespacesDetailInfo(w http.ResponseWriter, r *http.Request) {
+	var webAllNamespacesInfo []NamespaceInfo                //from k8s ....modify(填充) ..... to web front
+	var allWatchersNamespacesInfo map[int]SaveNamespaceInfo // from kubeng already be watched 租户
+
+	//初始化将要发给前端的所有租户的信息
+	namespacesDetail := initWebMsg(w, r, &webAllNamespacesInfo)
+	logdebug.Println(logdebug.LevelDebug, "初始状态下的所有租户信息", webAllNamespacesInfo)
+
+	//从kubeng获取已经被监视的租户信息
+	allWatchersNamespacesInfo = getWatchersInfoFromKubeNG()
+	logdebug.Println(logdebug.LevelDebug, "前端已经使用的租户信息", allWatchersNamespacesInfo)
+
+	markUsedNamesapces(webAllNamespacesInfo, allWatchersNamespacesInfo)
+	logdebug.Println(logdebug.LevelDebug, "标记过后的所有租户信息", webAllNamespacesInfo)
+
+	//将所有标记过的租户传给前端使用
+	respToWebFront(w, webAllNamespacesInfo, namespacesDetail)
 
 	return
 }
