@@ -388,6 +388,98 @@ func getSingleWatcherInfo(request *restful.Request, response *restful.Response) 
 
 }
 
+/*
+type AppInfo struct {
+	AppSrcType   string
+	NameSpaceApp string
+}
+*/
+
+//WatcherCfg 租户列表
+type WatcherCfg struct {
+	WatcherNamespaceSets []string
+}
+
+// NamespaceAppInfo 单个租户下的所有服务
+type NamespaceAppInfo struct {
+	Namespace   string
+	AppInfoList []AppInfo
+}
+
+// NamespaceAppInfoList  单个watcherID下所有的租户以及所有服务列表
+type NamespaceAppInfoList struct {
+	NamespaceAppsList []NamespaceAppInfo
+}
+
+func getNamespaceInfoByWatcherID(request *restful.Request, response *restful.Response) {
+	logdebug.Println(logdebug.LevelDebug, "<<<<<<根据watcherID获取租户信息和服务信息>>>>>>")
+
+	var (
+		watcherCfg           WatcherCfg
+		namespaceAppInfoList NamespaceAppInfoList
+		getEndpointsURL      string
+	)
+
+	endpointList := EndpointsList{}
+	appInfoList := []AppInfo{}
+
+	watcherID := request.PathParameter("watcherID")
+
+	request.Request.ParseForm()
+
+	client := nodes.ClientInfo{
+		NodeIP:   request.Request.Form.Get("NodeIP"),
+		ClientID: request.Request.Form.Get("ClientID"),
+	}
+
+	key := client.CreateKey()
+
+	clientInfo := nodes.GetClientInfo(key)
+
+	kubernetesMasterHost := clientInfo.K8sMasterHost
+	kubernetesAPIVersion := clientInfo.K8sAPIVersion
+	jobZoneType := clientInfo.JobZoneType
+
+	namespacesURL := "http://" +
+		clientInfo.NodeIP +
+		clientInfo.ClientID +
+		clientInfo.WatchManagerAPIServerPath +
+		watcherID
+	resp, _ := communicate.SendRequestByJSON(communicate.GET, namespacesURL, nil)
+
+	logdebug.Println(logdebug.LevelDebug, "根据wacherID 获取租户信息的URL", namespacesURL)
+
+	json.Unmarshal(resp, &watcherCfg)
+
+	logdebug.Println(logdebug.LevelDebug, "根据wacherID 获取的租户信息", watcherCfg)
+
+	for _, namespace := range watcherCfg.WatcherNamespaceSets {
+		for index := range namespaceAppInfoList.NamespaceAppsList {
+
+			//获取单个监视器下的所有租户信息
+			namespaceAppInfoList.NamespaceAppsList[index].Namespace = namespace
+
+			//获取单个租户下的所有服务信息
+			getEndpointsURL = kubernetesMasterHost +
+				"/" +
+				kubernetesAPIVersion +
+				"/namespaces" +
+				namespace +
+				"/endpoints"
+
+			logdebug.Println(logdebug.LevelDebug, "根据namespace获取服务信息的URL", namespacesURL)
+			endpointList = getServiceFromK8s(getEndpointsURL)
+
+			appInfoList = getAppListFromEpList(endpointList, jobZoneType)
+
+			namespaceAppInfoList.NamespaceAppsList[index].AppInfoList = appInfoList
+		}
+	}
+
+	logdebug.Println(logdebug.LevelDebug, "发给前端的租户以及服务信息", namespaceAppInfoList)
+	response.WriteHeaderAndJson(200, namespaceAppInfoList, "application/json")
+}
+
 //Init 初始化函数
 func (svc *ServiceInfo) Init() {
 	http.HandleFunc("/ngfront/zone/clients/watcher", loadWatcherPage)
@@ -440,8 +532,8 @@ func (svc *ServiceInfo) Init() {
 	ws.Route(ws.GET("/{watcherID}").To(getWatcherInfoByID).
 		Doc("get a specific  watcher cfg").
 		Operation("getSpecificWatcherInfo").
-		Param(ws.PathParameter("watcherID", "watcherID由监控的租户列表组成").DataType("int")).
-		Reads(CfgWebMsg{}))
+		Param(ws.PathParameter("watcherID", "watcherID由监控的租户列表组成").DataType("int")))
+	//		Reads())
 
 	//批量下发监视管理器配置 POST http://localhost:8888/watcher
 	ws.Route(ws.POST("/all").To(batchPostWatcherInfo).
@@ -451,6 +543,14 @@ func (svc *ServiceInfo) Init() {
 		Reads(BatchWatcherWebMsg{})) // from the request
 
 	//停止或开启监视器
+	ws.Route(ws.PUT("/{watcherID}/{status}").To(changeWatcherManagerStatus).
+		// docs
+		Doc("change watcher manager watcherStatus").
+		Operation("stopWatcherManager").
+		Param(ws.PathParameter("watcherID", "watcherID由监控的租户列表组成").DataType("int")).
+		Param(ws.PathParameter("status", "前端监控状态").DataType("string")))
+
+	//根据watcherID获取相应的租户信息
 	ws.Route(ws.PUT("/{watcherID}/{status}").To(changeWatcherManagerStatus).
 		// docs
 		Doc("change watcher manager watcherStatus").

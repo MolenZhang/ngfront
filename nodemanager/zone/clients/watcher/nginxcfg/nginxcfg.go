@@ -52,6 +52,8 @@ func (svc *ServiceInfo) getAllNginxCfgs(request *restful.Request, response *rest
 
 	request.Request.ParseForm()
 
+	watcherID := request.PathParameter("watcherID")
+
 	client := nodes.ClientInfo{
 		NodeIP:   request.Request.Form.Get("NodeIP"),
 		ClientID: request.Request.Form.Get("ClientID"),
@@ -66,7 +68,8 @@ func (svc *ServiceInfo) getAllNginxCfgs(request *restful.Request, response *rest
 		"/" +
 		clientInfo.NginxCfgsAPIServerPath +
 		"/" +
-		AppSrcTypeKubernetes
+		AppSrcTypeKubernetes +
+		watcherID
 
 	getExternAppCfgsURL := "http://" +
 		clientInfo.NodeIP +
@@ -74,7 +77,8 @@ func (svc *ServiceInfo) getAllNginxCfgs(request *restful.Request, response *rest
 		"/" +
 		clientInfo.NginxCfgsAPIServerPath +
 		"/" +
-		AppSrcTypeExtern
+		AppSrcTypeExtern +
+		watcherID
 
 	webAppCfgs := WebNginxCfgs{
 		NodeIP:        clientInfo.NodeIP,
@@ -334,7 +338,9 @@ func (svc *ServiceInfo) Init() {
 	ws.Route(ws.GET("/").To(svc.getAllNginxCfgs).
 		// docs
 		Doc("get all nginx cfgs").
-		Operation("getAllNginxCfgs"))
+		Operation("getAllNginxCfgs").
+		Param(ws.PathParameter("watcherID", "watcherID由监控的租户列表组成").DataType("int")))
+	//	Reads(CfgWebMsg{}))
 
 	//get single
 	ws.Route(ws.GET("/{namespace-appname}").To(svc.getSingleNginxCfg).
