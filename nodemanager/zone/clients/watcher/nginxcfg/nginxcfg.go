@@ -401,6 +401,19 @@ func (svc *ServiceInfo) Init() {
 		Operation("downloadfile").
 		Param(ws.PathParameter("clientA-clientB watcherID", "需要对比的2个clientID watcherID").DataType("string")))
 	//Reads(WebReqMsg{}))
+	ws.Route(ws.GET("/singleClientDownload").To(singleClientWatcherCfgDownloadByWatcherID).
+		Doc("download single client nginxCfg by watcherID").
+		Operation("downloadfile").
+		Reads(BatchDownloadCfgsInfo{}))
+
+	ws.Route(ws.GET("/allClientDownload").To(allNginxCfgDownload).
+		Doc("download all client nginxCfg").
+		Operation("downloadfile").
+		Reads(BatchDownloadCfgsInfo{}))
+
+	ws.Route(ws.GET("/singleClientDownload/tarDownload").To(svc.nginxCfgSingleClientDownload).
+		Doc("download nginx config").
+		Operation("downloadfile"))
 
 	restful.Add(ws)
 
