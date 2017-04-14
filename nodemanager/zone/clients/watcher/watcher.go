@@ -116,21 +116,34 @@ func getWatcherInfoByID(request *restful.Request, response *restful.Response) {
 
 }
 
+type deleteWatcherCfg struct {
+	WatcherIDSet []string
+}
+
 func deleteWatcherInfoByID(request *restful.Request, response *restful.Response) {
 	logdebug.Println(logdebug.LevelDebug, "根据前端提供的watcherID删除对应监视器信息")
-	watcherID := request.PathParameter("watcherID")
 
-	allNodesInfo := nodes.GetAllNodesInfo()
-	for _, singleNodeInfo := range allNodesInfo {
+	reqMsg := deleteWatcherCfg{}
+	err := request.ReadEntity(&reqMsg)
+	if err != nil {
+		response.WriteError(http.StatusInternalServerError, err)
+		return
+	}
 
-		deleteWatcherURL := "http://" +
-			singleNodeInfo.Client.NodeIP +
-			singleNodeInfo.Client.APIServerPort +
-			"/" +
-			singleNodeInfo.Client.WatchManagerAPIServerPath +
-			"/" +
-			watcherID
-		communicate.SendRequestByJSON(communicate.DELETE, deleteWatcherURL, nil)
+	for _, watcherID := range reqMsg.WatcherIDSet {
+
+		allNodesInfo := nodes.GetAllNodesInfo()
+		for _, singleNodeInfo := range allNodesInfo {
+
+			deleteWatcherURL := "http://" +
+				singleNodeInfo.Client.NodeIP +
+				singleNodeInfo.Client.APIServerPort +
+				"/" +
+				singleNodeInfo.Client.WatchManagerAPIServerPath +
+				"/" +
+				watcherID
+			communicate.SendRequestByJSON(communicate.DELETE, deleteWatcherURL, nil)
+		}
 	}
 
 	webRespMsg := ResponseBody{
@@ -408,10 +421,9 @@ func (svc *ServiceInfo) Init() {
 		Reads(CfgWebMsg{}))
 
 	//删除某个特定的监视器配置
-	ws.Route(ws.DELETE("/{watcherID}").To(deleteWatcherInfoByID).
+	ws.Route(ws.DELETE("/").To(deleteWatcherInfoByID).
 		Doc("delete a specific watcher cfg").
 		Operation("deleteSpecificWatcherInfo").
-		Param(ws.PathParameter("watcherID", "watcherID由监控的租户列表组成").DataType("int")).
 		Reads(CfgWebMsg{}))
 
 	//获取某个特定的监视器配置

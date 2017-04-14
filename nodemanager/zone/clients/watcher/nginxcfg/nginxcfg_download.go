@@ -172,8 +172,9 @@ func singleClientWatcherCfgDownloadByWatcherID(request *restful.Request, respons
 			watcherID
 
 		resp, _ := communicate.SendRequestByJSON(communicate.GET, NginxCfgDownloadURL, nil)
+
 		os.MkdirAll("/tmp/molen", os.ModePerm)
-		downloadTime := time.Now().Format("01-02/15:04:05")
+		downloadTime := time.Now().Format("01-02_15_04_05")
 
 		writeFileTar := "/tmp/molen" +
 			"/" +
@@ -186,7 +187,7 @@ func singleClientWatcherCfgDownloadByWatcherID(request *restful.Request, respons
 		fout.Write(resp)
 
 		//处理kubeNg发来的数据
-		bkpDownloadFile := "/tmp/molly/" + "/" + watcherID + "_" + ".tar"
+		bkpDownloadFile := "/tmp/molly/" + watcherID + "_" + downloadTime
 		os.MkdirAll(bkpDownloadFile, os.ModePerm)
 		untarCmd := "tar -zxvf " + writeFileTar + " -C " + bkpDownloadFile
 		cmd := exec.Command("bash", "-c", untarCmd)
@@ -221,11 +222,12 @@ func (svc *ServiceInfo) nginxCfgSingleClientDownload(request *restful.Request, r
 
 	logdebug.Println(logdebug.LevelDebug, "前端下载文件完成")
 	//下载完成后删除本地下载文件
-	if err := os.Remove(filePath); err != nil {
-		logdebug.Println(logdebug.LevelDebug, "删除本地下载文件失败", err)
-	}
-	logdebug.Println(logdebug.LevelDebug, "删除本地下载文件成功")
-
+	/*
+		if err := os.Remove(filePath); err != nil {
+			logdebug.Println(logdebug.LevelDebug, "删除本地下载文件失败", err)
+		}
+		logdebug.Println(logdebug.LevelDebug, "删除本地下载文件成功")
+	*/
 }
 
 type allClientDownloadInfo struct {
