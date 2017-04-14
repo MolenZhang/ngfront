@@ -63,52 +63,15 @@
 
  //加载所有租户option
  function showAllUsers(){
- 	
-	var showNamespacesUrl = "http://"+areaIP+":"+areaPort+"/watchers/"+WatcherID;
-// 	var data = {
-//     "NamespaceAppsList": [
-//         {
-//             "Namespace": "clyxys",
-//             "AppInfoList": [
-               
-//             ]
-//         },
-//         {
-//             "Namespace": "coptest",
-//             "AppInfoList": [
-//                 {
-//                     "AppSrcType": "k8s",
-//                     "NameSpaceApp": "aldddot"
-//                 },
-//                 {
-//                     "AppSrcType": "k8saaa",
-//                     "NameSpaceApp": "daiffen"
-//                 }
-//             ]
-//         },
-//         {
-//             "Namespace": "pxx",
-//             "AppInfoList": [
-//                 {
-//                     "AppSrcType": "k8s333",
-//                     "NameSpaceApp": "al333ot"
-//                 },
-//                 {
-//                     "AppSrcType": "k8s33",
-//                     "NameSpaceApp": "daie33n"
-//                 }
-//             ]
-//         }
-//     ]
-// };
-	var aaadata={
-	"NodeIP":NodeIP,
-	"ClientID":ClientID
-	},
+	var showNamespacesUrl = "http://"+areaIP+":"+areaPort+"/watchers/"+WatcherID+"?NodeIP="+NodeIP+"&ClientID="+ClientID;
+	// var NamespacesData={
+	// "NodeIP":NodeIP,
+	// "ClientID":ClientID
+	// };
 	$.ajax({
 		"url":showNamespacesUrl,
 		"type":"get",
-		"data":JSON.stringify(aaadata),
+		//"data":JSON.stringify(NamespacesData),
 		"success":function(data){
 			var data = eval("("+data+")");
 			var userOptionHtml = "";
