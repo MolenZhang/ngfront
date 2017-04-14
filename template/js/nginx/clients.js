@@ -1,6 +1,6 @@
  var areaType = "";
- var areaIP = "localhost";
- var areaPort = "port";
+ var areaIP = "192.168.252.138";
+ var areaPort = "8011";
  $(document).ready(function () {
 	var locationUrl = window.location;
 	//http://192.168.252.133:8083/ngfront/zone/clients?areaType=user
