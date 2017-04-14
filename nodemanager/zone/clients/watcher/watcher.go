@@ -449,6 +449,7 @@ func getNamespaceInfoByWatcherID(request *restful.Request, response *restful.Res
 		clientInfo.APIServerPort +
 		"/" +
 		clientInfo.WatchManagerAPIServerPath +
+		"/" +
 		watcherID
 	resp, _ := communicate.SendRequestByJSON(communicate.GET, namespacesURL, nil)
 
