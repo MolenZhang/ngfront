@@ -24,11 +24,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="nginxcfg.go" pinned="false" current-in-tab="true">
+      <file leaf-file-name="nginxcfg.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="376">
-              <caret line="410" column="42" lean-forward="true" selection-start-line="410" selection-start-column="42" selection-end-line="410" selection-end-column="42" />
+            <state relative-caret-position="243">
+              <caret line="403" column="69" lean-forward="false" selection-start-line="403" selection-start-column="69" selection-end-line="403" selection-end-column="69" />
               <folding>
                 <element signature="e#18#182#0" expanded="true" />
               </folding>
@@ -68,13 +68,13 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="nginxcfg_download.go" pinned="false" current-in-tab="false">
+      <file leaf-file-name="nginxcfg_download.go" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg_download.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="304">
-              <caret line="215" column="36" lean-forward="false" selection-start-line="215" selection-start-column="24" selection-end-line="215" selection-end-column="36" />
+            <state relative-caret-position="428">
+              <caret line="331" column="42" lean-forward="true" selection-start-line="331" selection-start-column="42" selection-end-line="331" selection-end-column="42" />
               <folding>
-                <marker date="1492160579818" expanded="false" signature="25:113" ph="..." />
+                <marker date="1492163033851" expanded="false" signature="25:113" ph="..." />
               </folding>
             </state>
           </provider>
@@ -156,8 +156,8 @@
         <option value="$PROJECT_DIR$/nodemanager/zone/clients/watcher/watcher_namespaces.go" />
         <option value="$PROJECT_DIR$/ngfront.go" />
         <option value="$PROJECT_DIR$/nodemanager/zone/clients/tools/tools.go" />
-        <option value="$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg_download.go" />
         <option value="$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg.go" />
+        <option value="$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg_download.go" />
       </list>
     </option>
   </component>
@@ -496,7 +496,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -575,16 +574,16 @@
         <state relative-caret-position="19">
           <caret line="1" column="22" lean-forward="false" selection-start-line="1" selection-start-column="22" selection-end-line="1" selection-end-column="22" />
           <folding>
-            <marker date="1492157896577" expanded="true" signature="2451:2486" ph="..." />
-            <marker date="1492157896577" expanded="true" signature="10180:10201" ph="..." />
-            <marker date="1492157896577" expanded="true" signature="10231:10237" ph=" " />
-            <marker date="1492157896577" expanded="true" signature="10418:10436" ph="..." />
-            <marker date="1492157896577" expanded="true" signature="10814:10820" ph=" " />
-            <marker date="1492157896577" expanded="true" signature="10906:10912" ph=" " />
-            <marker date="1492157896577" expanded="true" signature="10975:10996" ph="..." />
-            <marker date="1492157896577" expanded="true" signature="11070:11076" ph=" " />
-            <marker date="1492157896577" expanded="true" signature="19443:19461" ph="..." />
-            <marker date="1492157896577" expanded="true" signature="23647:23665" ph="..." />
+            <marker date="1492162871126" expanded="true" signature="2451:2486" ph="..." />
+            <marker date="1492162871126" expanded="true" signature="10180:10201" ph="..." />
+            <marker date="1492162871126" expanded="true" signature="10231:10237" ph=" " />
+            <marker date="1492162871126" expanded="true" signature="10418:10436" ph="..." />
+            <marker date="1492162871126" expanded="true" signature="10814:10820" ph=" " />
+            <marker date="1492162871126" expanded="true" signature="10906:10912" ph=" " />
+            <marker date="1492162871126" expanded="true" signature="10975:10996" ph="..." />
+            <marker date="1492162871126" expanded="true" signature="11070:11076" ph=" " />
+            <marker date="1492162871126" expanded="true" signature="19443:19461" ph="..." />
+            <marker date="1492162871126" expanded="true" signature="23647:23665" ph="..." />
           </folding>
         </state>
       </provider>
@@ -594,7 +593,7 @@
         <state relative-caret-position="931">
           <caret line="60" column="24" lean-forward="false" selection-start-line="60" selection-start-column="24" selection-end-line="60" selection-end-column="24" />
           <folding>
-            <marker date="1492160579818" expanded="false" signature="25:113" ph="..." />
+            <marker date="1492163033851" expanded="false" signature="25:113" ph="..." />
           </folding>
         </state>
       </provider>
@@ -684,26 +683,26 @@
         <state relative-caret-position="-57">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <marker date="1492157896584" expanded="true" signature="21385:23769" ph="{...}" />
-            <marker date="1492157896584" expanded="true" signature="22456:23201" ph="{&quot;NodeIP&quot;: NodeIPInfo...}" />
-            <marker date="1492157896584" expanded="true" signature="22526:23198" ph="{&quot;KubernetesMasterHost&quot;: KubernetesMasterHost...}" />
-            <marker date="1492157896584" expanded="true" signature="23268:23765" ph="{&quot;url&quot;: submitUrl...}" />
-            <marker date="1492157896584" expanded="true" signature="23390:23470" ph="{&quot;Content-Type&quot;: &quot;application/json&quot;...}" />
-            <marker date="1492157896584" expanded="true" signature="23540:23758" ph="{...}" />
-            <marker date="1492157896584" expanded="true" signature="23592:23750" ph="/*...*/" />
-            <marker date="1492157896584" expanded="true" signature="23823:25972" ph="{...}" />
-            <marker date="1492157896584" expanded="true" signature="24888:25633" ph="{&quot;NodeIP&quot;: NodeIPInfo...}" />
-            <marker date="1492157896584" expanded="true" signature="24958:25630" ph="{&quot;KubernetesMasterHost&quot;: KubernetesMasterHost...}" />
-            <marker date="1492157896584" expanded="true" signature="25645:25968" ph="{&quot;url&quot;: submitUrl...}" />
-            <marker date="1492157896584" expanded="true" signature="25767:25847" ph="{&quot;Content-Type&quot;: &quot;application/json&quot;...}" />
-            <marker date="1492157896584" expanded="true" signature="25917:25961" ph="{...}" />
-            <marker date="1492157896584" expanded="true" signature="25974:26015" ph="/** 导出一个node的配置信息 ...*/" />
-            <marker date="1492157896584" expanded="true" signature="26017:26593" ph="//..." />
-            <marker date="1492157896584" expanded="true" signature="26599:26624" ph="//..." />
-            <marker date="1492157896584" expanded="true" signature="26630:27478" ph="//..." />
-            <marker date="1492157896584" expanded="true" signature="27501:27563" ph="{...}" />
-            <marker date="1492157896584" expanded="true" signature="27589:27686" ph="{...}" />
-            <marker date="1492157896584" expanded="true" signature="27713:27866" ph="{...}" />
+            <marker date="1492162871137" expanded="true" signature="23457:23851" ph="{...}" />
+            <marker date="1492162871137" expanded="true" signature="22456:23201" ph="{&quot;NodeIP&quot;: NodeIPInfo...}" />
+            <marker date="1492162871137" expanded="true" signature="22526:23198" ph="{&quot;KubernetesMasterHost&quot;: KubernetesMasterHost...}" />
+            <marker date="1492162871137" expanded="true" signature="23457:23847" ph="{&quot;url&quot;: submitUrl...}" />
+            <marker date="1492162871137" expanded="true" signature="23472:23552" ph="{&quot;Content-Type&quot;: &quot;application/json&quot;...}" />
+            <marker date="1492162871137" expanded="true" signature="23622:23840" ph="{...}" />
+            <marker date="1492162871137" expanded="true" signature="23674:23832" ph="/*...*/" />
+            <marker date="1492162871137" expanded="true" signature="23905:26054" ph="{...}" />
+            <marker date="1492162871137" expanded="true" signature="24970:25715" ph="{&quot;NodeIP&quot;: NodeIPInfo...}" />
+            <marker date="1492162871137" expanded="true" signature="25040:25712" ph="{&quot;KubernetesMasterHost&quot;: KubernetesMasterHost...}" />
+            <marker date="1492162871137" expanded="true" signature="25727:26050" ph="{&quot;url&quot;: submitUrl...}" />
+            <marker date="1492162871137" expanded="true" signature="25849:25929" ph="{&quot;Content-Type&quot;: &quot;application/json&quot;...}" />
+            <marker date="1492162871137" expanded="true" signature="25999:26043" ph="{...}" />
+            <marker date="1492162871137" expanded="true" signature="26056:26097" ph="/** 导出一个node的配置信息 ...*/" />
+            <marker date="1492162871137" expanded="true" signature="26099:26675" ph="//..." />
+            <marker date="1492162871137" expanded="true" signature="26681:26706" ph="//..." />
+            <marker date="1492162871137" expanded="true" signature="26712:27560" ph="//..." />
+            <marker date="1492162871137" expanded="true" signature="27583:27645" ph="{...}" />
+            <marker date="1492162871137" expanded="true" signature="27671:27768" ph="{...}" />
+            <marker date="1492162871137" expanded="true" signature="27795:27948" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -733,16 +732,16 @@
         <state relative-caret-position="-65">
           <caret line="348" column="58" lean-forward="true" selection-start-line="348" selection-start-column="58" selection-end-line="349" selection-end-column="64" />
           <folding>
-            <marker date="1492157896577" expanded="true" signature="2451:2486" ph="..." />
-            <marker date="1492157896577" expanded="true" signature="10180:10201" ph="..." />
-            <marker date="1492157896577" expanded="true" signature="10231:10237" ph=" " />
-            <marker date="1492157896577" expanded="true" signature="10418:10436" ph="..." />
-            <marker date="1492157896577" expanded="true" signature="10814:10820" ph=" " />
-            <marker date="1492157896577" expanded="true" signature="10906:10912" ph=" " />
-            <marker date="1492157896577" expanded="true" signature="10975:10996" ph="..." />
-            <marker date="1492157896577" expanded="true" signature="11070:11076" ph=" " />
-            <marker date="1492157896577" expanded="true" signature="19443:19461" ph="..." />
-            <marker date="1492157896577" expanded="true" signature="23647:23665" ph="..." />
+            <marker date="1492162871126" expanded="true" signature="2451:2486" ph="..." />
+            <marker date="1492162871126" expanded="true" signature="10180:10201" ph="..." />
+            <marker date="1492162871126" expanded="true" signature="10231:10237" ph=" " />
+            <marker date="1492162871126" expanded="true" signature="10418:10436" ph="..." />
+            <marker date="1492162871126" expanded="true" signature="10814:10820" ph=" " />
+            <marker date="1492162871126" expanded="true" signature="10906:10912" ph=" " />
+            <marker date="1492162871126" expanded="true" signature="10975:10996" ph="..." />
+            <marker date="1492162871126" expanded="true" signature="11070:11076" ph=" " />
+            <marker date="1492162871126" expanded="true" signature="19443:19461" ph="..." />
+            <marker date="1492162871126" expanded="true" signature="23647:23665" ph="..." />
           </folding>
         </state>
       </provider>
@@ -829,22 +828,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg_download.go">
+    <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="304">
-          <caret line="215" column="36" lean-forward="false" selection-start-line="215" selection-start-column="24" selection-end-line="215" selection-end-column="36" />
+        <state relative-caret-position="243">
+          <caret line="403" column="69" lean-forward="false" selection-start-line="403" selection-start-column="69" selection-end-line="403" selection-end-column="69" />
           <folding>
-            <marker date="1492160579818" expanded="false" signature="25:113" ph="..." />
+            <element signature="e#18#182#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg.go">
+    <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg_download.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="376">
-          <caret line="410" column="42" lean-forward="true" selection-start-line="410" selection-start-column="42" selection-end-line="410" selection-end-column="42" />
+        <state relative-caret-position="428">
+          <caret line="331" column="42" lean-forward="true" selection-start-line="331" selection-start-column="42" selection-end-line="331" selection-end-column="42" />
           <folding>
-            <element signature="e#18#182#0" expanded="true" />
+            <marker date="1492163033851" expanded="false" signature="25:113" ph="..." />
           </folding>
         </state>
       </provider>
