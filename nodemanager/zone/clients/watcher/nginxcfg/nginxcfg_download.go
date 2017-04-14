@@ -325,7 +325,7 @@ func downloadClientsNginxCfgsByWatcherIDs(request *restful.Request, response *re
 
 func fileDeleted(filePath string) {
 	if _, err := os.Stat("/tmp/molen"); err == nil {
-		os.RemoveAll("tmp/molen")
+		os.RemoveAll("/tmp/molen")
 	}
 
 	if _, err := os.Stat("/tmp/molly"); err == nil {
