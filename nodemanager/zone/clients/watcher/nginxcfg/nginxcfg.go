@@ -69,6 +69,7 @@ func (svc *ServiceInfo) getAllNginxCfgs(request *restful.Request, response *rest
 		clientInfo.NginxCfgsAPIServerPath +
 		"/" +
 		AppSrcTypeKubernetes +
+		"/watchers/" +
 		watcherID
 
 	getExternAppCfgsURL := "http://" +
@@ -78,8 +79,10 @@ func (svc *ServiceInfo) getAllNginxCfgs(request *restful.Request, response *rest
 		clientInfo.NginxCfgsAPIServerPath +
 		"/" +
 		AppSrcTypeExtern +
+		"/watchers/" +
 		watcherID
-
+	logdebug.Println(logdebug.LevelDebug, "getK8sAppCfgsURL ", getK8sAppCfgsURL)
+	logdebug.Println(logdebug.LevelDebug, "getExternAppCfgsURL ", getExternAppCfgsURL)
 	webAppCfgs := WebNginxCfgs{
 		NodeIP:        clientInfo.NodeIP,
 		ClientID:      client.ClientID,
@@ -335,7 +338,7 @@ func (svc *ServiceInfo) Init() {
 		Consumes(restful.MIME_XML, restful.MIME_JSON).
 		Produces(restful.MIME_JSON, restful.MIME_XML) // you can specify this per route as well
 	//get all
-	ws.Route(ws.GET("/").To(svc.getAllNginxCfgs).
+	ws.Route(ws.GET("/all/{watcherID}").To(svc.getAllNginxCfgs).
 		// docs
 		Doc("get all nginx cfgs").
 		Operation("getAllNginxCfgs").

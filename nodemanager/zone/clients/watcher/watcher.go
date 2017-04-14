@@ -425,12 +425,16 @@ func getNamespaceInfoByWatcherID(request *restful.Request, response *restful.Res
 
 	watcherID := request.PathParameter("watcherID")
 
+	logdebug.Println(logdebug.LevelDebug, "前端发来watcherID:", watcherID)
 	request.Request.ParseForm()
 
 	client := nodes.ClientInfo{
 		NodeIP:   request.Request.Form.Get("NodeIP"),
 		ClientID: request.Request.Form.Get("ClientID"),
 	}
+
+	logdebug.Println(logdebug.LevelDebug, "前端发来NodeIP:", client.NodeIP)
+	logdebug.Println(logdebug.LevelDebug, "前端发来ClientID:", client.ClientID)
 
 	key := client.CreateKey()
 
@@ -527,13 +531,20 @@ func (svc *ServiceInfo) Init() {
 		Doc("delete a specific watcher cfg").
 		Operation("deleteSpecificWatcherInfo").
 		Reads(CfgWebMsg{}))
+	/*
+		//获取某个特定的监视器配置
+		ws.Route(ws.GET("/{watcherID}").To(getWatcherInfoByID).
+			Doc("get a specific  watcher cfg").
+			Operation("getSpecificWatcherInfo").
+			Param(ws.PathParameter("watcherID", "watcherID由监控的租户列表组成").DataType("int")))
+		//		Reads())
+	*/
 
 	//获取某个特定的监视器配置
-	ws.Route(ws.GET("/{watcherID}").To(getWatcherInfoByID).
+	ws.Route(ws.GET("/{watcherID}").To(getNamespaceInfoByWatcherID).
 		Doc("get a specific  watcher cfg").
 		Operation("getSpecificWatcherInfo").
 		Param(ws.PathParameter("watcherID", "watcherID由监控的租户列表组成").DataType("int")))
-	//		Reads())
 
 	//批量下发监视管理器配置 POST http://localhost:8888/watcher
 	ws.Route(ws.POST("/all").To(batchPostWatcherInfo).
