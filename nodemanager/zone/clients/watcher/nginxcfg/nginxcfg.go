@@ -72,6 +72,9 @@ func (svc *ServiceInfo) getAllNginxCfgs(request *restful.Request, response *rest
 		"/watchers/" +
 		watcherID
 
+	logdebug.Println(logdebug.LevelDebug, "前端发来NodeIP", clientInfo.NodeIP)
+	logdebug.Println(logdebug.LevelDebug, "前端发来ClientID", clientInfo.ClientID)
+
 	getExternAppCfgsURL := "http://" +
 		clientInfo.NodeIP +
 		clientInfo.APIServerPort +

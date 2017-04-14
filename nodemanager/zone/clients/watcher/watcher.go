@@ -388,13 +388,6 @@ func getSingleWatcherInfo(request *restful.Request, response *restful.Response) 
 
 }
 
-/*
-type AppInfo struct {
-	AppSrcType   string
-	NameSpaceApp string
-}
-*/
-
 //WatcherCfg 租户列表
 type WatcherCfg struct {
 	WatchNamespaceSets []string
@@ -483,6 +476,7 @@ func getNamespaceInfoByWatcherID(request *restful.Request, response *restful.Res
 	}
 	logdebug.Println(logdebug.LevelDebug, "发给前端的租户以及服务信息", namespaceAppInfoList)
 	response.WriteHeaderAndJson(200, namespaceAppInfoList, "application/json")
+	return
 }
 
 //Init 初始化函数
