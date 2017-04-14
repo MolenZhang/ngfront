@@ -11,6 +11,7 @@ import (
 	"ngfront/nodemanager/zone/clients/watcher/nginxcfg"
 	//"log"
 	"net/http"
+	"ngfront/nodemanager/zone/clients/tools"
 )
 
 //NGFrontManager  ngfront 管理器
@@ -21,6 +22,7 @@ type NGFrontManager struct {
 	ClientsAPIServer  clients.ServiceInfo
 	WatcherAPIServer  watcher.ServiceInfo
 	NginxCfgAPIServer nginxcfg.ServiceInfo
+	TestToolAPIServer tools.ServiceInfo
 }
 
 var ngFrontManager NGFrontManager
@@ -41,6 +43,8 @@ func init() {
 	ngFrontManager.WatcherAPIServer.Init()
 
 	ngFrontManager.NginxCfgAPIServer.Init()
+
+	ngFrontManager.TestToolAPIServer.Init()
 
 	return
 }
