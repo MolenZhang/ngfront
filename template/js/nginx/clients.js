@@ -982,14 +982,17 @@ function delWatcher(){
 			for(var cw=0; cw<checkedWatchers.length; cw++){
 				watcherIDArray.push(checkedWatchers[cw].getAttribute("WatcherID"));
 			}
-			
-			var delWatcherUrl = 'http://'+areaIP+':'+areaPort+'/nginxcfg';
+			var delWatcherData = {
+				    "WatcherIDSet": watcherIDArray
+				}
+
+			var delWatcherUrl = 'http://'+areaIP+':'+areaPort+'/watchers';
 			$.ajax({
 			    url: delWatcherUrl,
 			    dataType: "json",
 			    contentType: "text/html; charset=UTF-8",
-			    type:"post",  
-			    data: watcherIDArray,         
+			    type:"delete",  
+			    data: JSON.stringify(delWatcherData),         
 			    headers: {
 			        "Content-Type": "application/json",
 			        "Accept": "application/json",
