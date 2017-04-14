@@ -163,8 +163,10 @@ $(document).ready(function () {
 		$("#StandbyUpstreamNodesOldVal").empty().append(changeVal);
 	});
 	
-	$(document).on('click','.isUsed_true',function(){
-		return false;
+	$(document).on('click','.namespacesLabel',function(){
+		if(this.getAttribute("isUsed")=="true"&&this.getAttribute("evewatcherid")!=WatcherID){
+			return false;
+		}
 	});
 	
 	 
@@ -454,7 +456,12 @@ function showNamespaces(KubernetesMasterHost,KubernetesAPIVersion){
 			for(var namespacesNum=0; namespacesNum<NamespacesInfos.length; namespacesNum++){
 				var eveNamespace = NamespacesInfos[namespacesNum].Namespace;
 				var eveIsUsedStatue = NamespacesInfos[namespacesNum].IsUsed;
-				namespacesHtml += '<label class="namespacesLabel isUsed_'+eveIsUsedStatue+'"><input type="checkbox" class="namespacesChk name_'+eveNamespace+'" value="'+eveNamespace+'">'+eveNamespace+'</label>';
+				var eveWatcherID = NamespacesInfos[namespacesNum].WatcherID;
+				if(eveIsUsedStatue == true && eveWatcherID !=WatcherID){
+					namespacesHtml += '<label class="namespacesLabel" isUsed="'+eveIsUsedStatue+'" eveWatcherID="'+eveWatcherID+'" style="cursor:no-drop;text-decoration: line-through"><input type="checkbox" class="namespacesChk name_'+eveNamespace+'" value="'+eveNamespace+'">'+eveNamespace+'</label>';
+				}else{
+					namespacesHtml += '<label class="namespacesLabel" isUsed="'+eveIsUsedStatue+'" eveWatcherID="'+eveWatcherID+'"><input type="checkbox" class="namespacesChk name_'+eveNamespace+'" value="'+eveNamespace+'">'+eveNamespace+'</label>';
+				}
 			}
 			$("#namespacesInfo").empty().append(namespacesHtml);
 			
