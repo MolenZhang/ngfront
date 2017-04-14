@@ -96,7 +96,7 @@ function showClients(areaType){
                                     	'<a><i class="fa fa-power-off hide"></i></a>'+
                                     	/*'<a href="'+watcherUrl+NodeIP+'&ClientID='+ClientID+'&areaType='+areaType+'"><i class="fa fa-gear"></i></a>'+*/
                                     	
-                                    	'<a onclick="watcherNginxExport(this)"><i>导出配置</i></a>'+
+                                    	'<a onclick="watcherNginxExport(this)"><i>下载配置</i></a>'+
                                     	'<a onclick="compareClient(this)" ClientID="'+ClientID+'" NodeIP="'+NodeIP+'"><i>对比</i></a>'+
                                     '</td>'+
                                     '</tr>';
@@ -477,8 +477,8 @@ function stopOneWatcher(obj){
         success:function(data){
             var data=data;
             if(data.Result==true){
-				$(obj).parent().parent().remove();
 				layer.msg('停止成功！', {icon: 1});
+				setTimeout("window.location.reload()", 1500 );
 			}else{
 				layer.alert(data.ErrorMessage, {
 				icon: 2,
@@ -507,8 +507,8 @@ function startOneWatcher(obj){
         success:function(data){
             var data=data;
             if(data.Result==true){
-				$(obj).parent().parent().remove();
 				layer.msg('启动成功！', {icon: 1});
+				setTimeout("window.location.reload()", 1500 );
 			}else{
 				layer.alert(data.ErrorMessage, {
 				icon: 2,
@@ -810,7 +810,7 @@ function watcherNginxExport(obj){
 
 	layer.open({
 		type: 1,
-		title: "导出watcher",
+		title: "下载watcher",
 		area: ['450px','400px'],
 		content: $("#exportNginxWatcher"),
 		btn: ['确定','取消'],
@@ -896,7 +896,7 @@ function nginxCfgsExport(obj){
 
 	layer.open({
 		type: 1,
-		title: "导出watcher",
+		title: "下载watcher",
 		area: ['450px','400px'],
 		content: $("#exportNginxWatcher"),
 		btn: ['确定','取消'],
@@ -906,12 +906,12 @@ function nginxCfgsExport(obj){
 			for(var cw=0; cw<checkedWatchers.length; cw++){
 				watcherIDArray.push(checkedWatchers[cw].getAttribute("WatcherID"));
 			}
-			var exportClientWatchersUrl = 'http://'+areaIP+':'+areaPort+'/nginxcfg/singleClientDownload';
+			
 			var clientsDownloadData = {
 				"ClientInfoSet":DownloadInfo,
 				"WatcherIDSet":watcherIDArray
 			};
-			var clientsdownloadUrl = 'http://'+areaIP+':'+areaPort+'/nginxcfg/Alldownload';
+			var clientsdownloadUrl = 'http://'+areaIP+':'+areaPort+'/nginxcfg/allClientDownload';
 			$.ajax({
 			    url : clientsdownloadUrl,
 				dataType: "json",
@@ -1001,6 +1001,7 @@ function delWatcher(){
 			        var data=data;
 			        if(data.Result == true){
 			            layer.msg('删除成功！', {icon: 1});
+			            setTimeout("window.location.reload()", 1500 );
 			        }else{
 			            layer.alert(data.ErrorMsg, {
 							icon: 2,
