@@ -397,7 +397,7 @@ type AppInfo struct {
 
 //WatcherCfg 租户列表
 type WatcherCfg struct {
-	WatcherNamespaceSets []string
+	WatchNamespaceSets []string
 }
 
 // NamespaceAppInfo 单个租户下的所有服务
@@ -459,29 +459,28 @@ func getNamespaceInfoByWatcherID(request *restful.Request, response *restful.Res
 
 	logdebug.Println(logdebug.LevelDebug, "根据wacherID 获取的租户信息", watcherCfg)
 
-	for _, namespace := range watcherCfg.WatcherNamespaceSets {
-		for index := range namespaceAppInfoList.NamespaceAppsList {
+	for _, namespace := range watcherCfg.WatchNamespaceSets {
+		namespaceAppsList := NamespaceAppInfo{}
+		namespaceAppsList.Namespace = namespace
 
-			//获取单个监视器下的所有租户信息
-			namespaceAppInfoList.NamespaceAppsList[index].Namespace = namespace
+		//获取单个租户下的所有服务信息
+		getEndpointsURL = kubernetesMasterHost +
+			"/" +
+			kubernetesAPIVersion +
+			"/namespaces" +
+			"/" +
+			namespace +
+			"/endpoints"
 
-			//获取单个租户下的所有服务信息
-			getEndpointsURL = kubernetesMasterHost +
-				"/" +
-				kubernetesAPIVersion +
-				"/namespaces" +
-				namespace +
-				"/endpoints"
+		logdebug.Println(logdebug.LevelDebug, "根据namespace获取服务信息的URL", getEndpointsURL)
+		endpointList = getServiceFromK8s(getEndpointsURL)
 
-			logdebug.Println(logdebug.LevelDebug, "根据namespace获取服务信息的URL", namespacesURL)
-			endpointList = getServiceFromK8s(getEndpointsURL)
+		appInfoList = getAppListFromEpList(endpointList, jobZoneType)
+		namespaceAppsList.AppInfoList = appInfoList
 
-			appInfoList = getAppListFromEpList(endpointList, jobZoneType)
+		namespaceAppInfoList.NamespaceAppsList = append(namespaceAppInfoList.NamespaceAppsList, namespaceAppsList)
 
-			namespaceAppInfoList.NamespaceAppsList[index].AppInfoList = appInfoList
-		}
 	}
-
 	logdebug.Println(logdebug.LevelDebug, "发给前端的租户以及服务信息", namespaceAppInfoList)
 	response.WriteHeaderAndJson(200, namespaceAppInfoList, "application/json")
 }
