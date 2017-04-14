@@ -71,6 +71,28 @@ type PortsObject struct {
 	Port int
 }
 
+//SaveNamespaceInfo 保存已经监控的租户
+type SaveNamespaceInfo struct {
+	WatchNamespaceSets []string
+	WatcherID          int
+}
+
+// NamespaceInfo 租户信息
+type NamespaceInfo struct {
+	Namespace string
+	IsUsed    bool
+	WatcherID int
+}
+
+/*
+// WebWatcherManagerCfgs 将后端的监视信息由map转换成前端所需的arry
+var WebWatcherManagerCfgs []nodes.WatchManagerCfg
+*/
+type namespacesUseMark struct {
+	NamespacesInfo []NamespaceInfo
+	AppList        [][]AppInfo
+}
+
 //从k8s获取集群namespaces
 func getNamespacesFromK8s(url string) (namespaces []string) {
 	logdebug.Println(logdebug.LevelDebug, "请求watcher 数据 url=", url)

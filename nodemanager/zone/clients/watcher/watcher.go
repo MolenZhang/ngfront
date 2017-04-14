@@ -13,28 +13,6 @@ import (
 	"sort"
 )
 
-//SaveNamespaceInfo 保存已经监控的租户
-type SaveNamespaceInfo struct {
-	WatchNamespaceSets []string
-	WatcherID          int
-}
-
-// NamespaceInfo 租户信息
-type NamespaceInfo struct {
-	Namespace string
-	IsUsed    bool
-	WatcherID int
-}
-
-/*
-// WebWatcherManagerCfgs 将后端的监视信息由map转换成前端所需的arry
-var WebWatcherManagerCfgs []nodes.WatchManagerCfg
-*/
-type namespacesUseMark struct {
-	NamespacesInfo []NamespaceInfo
-	AppList        [][]AppInfo
-}
-
 //前端单个watcher需展示的信息
 type watcherInfo struct {
 	Client  nodes.ClientInfo
