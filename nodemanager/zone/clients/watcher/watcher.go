@@ -496,6 +496,7 @@ func getWatcherInfo(request *restful.Request, response *restful.Response) {
 	}
 
 	logdebug.Println(logdebug.LevelDebug, "watcher 初始化信息 ", webResp)
+	response.WriteHeaderAndJson(200, webResp, "application/json")
 	return
 
 }
