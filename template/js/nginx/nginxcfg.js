@@ -251,10 +251,10 @@ function showNgsHtml(data){
 									+'</div>'
 									+'<div class="serverPartCon">'
 									+'<div class="nginx-label col-md-offset-1">'
-									+'<span>listen:</span><input type="text" id="ListenPort" name="ListenPort" value="'+CfgsList.ListenPort+'">;'
+									+'<span>listen:</span><input type="text" id="ListenPort" name="ListenPort" value="'+CfgsList.ListenPort+'" disabled>;'
 									+'</div>'
 									+'<div class="nginx-label col-md-offset-1">'
-									+'<span>server_name:</span><input type="text" id="ServerName"  name="ServerName" value="'+CfgsList.ServerName+'">;'
+									+'<span>server_name:</span><input type="text" id="ServerName"  name="ServerName" value="'+CfgsList.ServerName+'" disabled>;'
 									+'</div>'
 									+'<div class="nginx-label col-md-offset-1">'
 									+'<span>location:</span><input type="text" id="Location" name="Location" value="'+CfgsList.Location+'">{'
@@ -419,7 +419,7 @@ function showNgsHtml(data){
 			+'<input type="checkbox" class="ngConfigCheckbox"/> '
 			+'<span class="hide addOneSerPartAfter"><i class="fa fa-plus fa-one fa-serverPlus" onClick="addOneSerPart(this)"></i></span> '
 			+'<span class="hide addOneSerPartAfter"><i class="fa fa-sort-amount-asc fa-one" onClick="issuedCfgIps(this)"></i></span> '
-			+'<span title="提交配置"><i class="fa fa-check-square fa-one" onClick="nginxFormCommOne(this)"></i></span> '
+			+'<span title="提交配置"><i class="fa fa-plus-circle fa-one" onClick="nginxFormCommOne(this)"></i></span> '
 			+'<span title="删除"><i class="fa fa-trash fa-one" onClick="removeOneSerPart(this)"></i></span> '
 			+'<span title="伸缩"><i class="fa fa-caret-down fa-one" onClick="toggleOneSerPart(this)"></i></span> '
 			+'<span class="textNotSet">未提交的配置</span>'
@@ -514,6 +514,7 @@ function showNgsHtml(data){
 			+'</div>'
 			+'</div>';
 		$(obj).parent().parent().after(str);
+		layer.msg('添加成功，待提交！', {icon: 1});
 	}
 	
 	/**
@@ -713,10 +714,10 @@ function localRefreshNg(obj){
 							+'</div>'
 							+'<div class="serverPartCon">'
 							+'<div class="nginx-label col-md-offset-1">'
-							+'<span>listen:</span><input type="text" id="ListenPort" name="ListenPort" value="'+CfgsList.ListenPort+'">;'
+							+'<span>listen:</span><input type="text" id="ListenPort" name="ListenPort" value="'+CfgsList.ListenPort+'" disabled>;'
 							+'</div>'
 							+'<div class="nginx-label col-md-offset-1">'
-							+'<span>server_name:</span><input type="text" id="ServerName"  name="ServerName" value="'+CfgsList.ServerName+'">;'
+							+'<span>server_name:</span><input type="text" id="ServerName"  name="ServerName" value="'+CfgsList.ServerName+'" disabled>;'
 							+'</div>'
 							+'<div class="nginx-label col-md-offset-1">'
 							+'<span>location:</span><input type="text" id="Location" name="Location" value="'+CfgsList.Location+'">{'
@@ -794,6 +795,7 @@ function localRefreshNg(obj){
 								+'</form> '
 								+'</div>';
 			 	ngConfigPart.empty().append(saveDataHtml);
+			 	layer.msg( "保存成功！", {icon: 1});
 			}
 		}
 	});
@@ -1095,10 +1097,10 @@ function localRefreshNg(obj){
 						+'</div>'
 						+'<div class="serverPartCon">'
 						+'<div class="nginx-label col-md-offset-1">'
-						+'<span>listen:</span><input type="text" id="ListenPort" name="ListenPort" value="'+CfgsList.ListenPort+'">;'
+						+'<span>listen:</span><input type="text" id="ListenPort" name="ListenPort" value="'+CfgsList.ListenPort+'" disabled>;'
 						+'</div>'
 						+'<div class="nginx-label col-md-offset-1">'
-						+'<span>server_name:</span><input type="text" id="ServerName"  name="ServerName" value="'+CfgsList.ServerName+'">;'
+						+'<span>server_name:</span><input type="text" id="ServerName"  name="ServerName" value="'+CfgsList.ServerName+'" disabled>;'
 						+'</div>'
 						+'<div class="nginx-label col-md-offset-1">'
 						+'<span>location:</span><input type="text" id="Location" name="Location" value="'+CfgsList.Location+'">{'
@@ -1176,6 +1178,7 @@ function localRefreshNg(obj){
 						+'</form> '
 						+'</div>';
 		 	ngConfigPart.empty().append(saveDataHtml);
+		 	layer.msg( "提交成功！", {icon: 1});
 			//}
 			}
 		});

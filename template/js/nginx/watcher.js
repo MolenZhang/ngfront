@@ -345,24 +345,119 @@ $(document).ready(function () {
 
 //生成监控echart图
 function showNamespacesEcharts(KubernetesMasterHost,KubernetesAPIVersion,JobZoneType){
-	var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/namespaces";
-	
+	// var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/namespaces";
+	// $.ajax({
+	// 	"url":apiVersionUrl,
+	// 	"type":"get",
+	// 	"data":{
+	// 		"KubernetesMasterHost":KubernetesMasterHost,
+	// 		"KubernetesAPIVersion":KubernetesAPIVersion,
+	// 		"JobZoneType":JobZoneType
+	// 	},
+	// 	"success":function(data){
+	// 		var data = eval("("+data+")");
+	// 		var NamespacesInfos = data.NamespacesInfo;
+	// 		var NamespacesList = new Array();
+	// 		for(var namespacesNum=0; namespacesNum<NamespacesInfos.length; namespacesNum++){
+	// 			NamespacesList.push(NamespacesInfos[namespacesNum].Namespace);
+	// 		}
+	// 		var NamespacesAppCounts = data.AppList;
+	// 		//echart画图位置
+	// 		var myChart = echarts.init(document.getElementById('main'));
+	// 		option = {
+	// 				    color: ['#3398DB'],
+	// 				    title: {
+	// 				        text: '该节点各租户中服务个数'
+	// 				    },
+	// 				    tooltip : {
+	// 				        trigger: 'axis',
+	// 				        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+	// 				            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+	// 				        }
+	// 				    },
+	// 				    grid: {
+	// 				        left: '3%',
+	// 				        right: '4%',
+	// 				        bottom: '12%',
+	// 				        containLabel: true
+	// 				    },
+	// 				    dataZoom: [
+	// 				               {
+	// 				                   show: true,
+	// 				                   realtime: true,
+	// 				                   start: 0,
+	// 				                   end: 100
+	// 				               },
+	// 				               {
+	// 				                   type: 'inside',
+	// 				                   realtime: true,
+	// 				                   start: 0,
+	// 				                   end: 100
+	// 				               }
+	// 				           ],
+	// 				    xAxis : [],
+	// 				    yAxis : [
+	// 				        {
+	// 				            type : 'value'
+	// 				        }
+	// 				    ],
+	// 				    series : []
+	// 				};
+	// 		//node上租户的个数
+	// 		var optionxAxis = {
+	// 				            type : 'category',
+	// 				            data : NamespacesList,
+	// 				            axisTick: {
+	// 				                alignWithLabel: true
+	// 				            }
+	// 				        }
+	// 		option.xAxis.push(optionxAxis);
+	// 		//租户中服务的个数
+	// 		var NamespacesSerNum = new Array();
+	// 		if(NamespacesAppCounts != null){
+	// 			for(var i = 0; i<NamespacesAppCounts.length; i++){
+	// 				var eveNamespacesNum = 0;
+	// 				if(NamespacesAppCounts[i] != null){
+	// 					eveNamespacesNum = NamespacesAppCounts[i].length;
+	// 				}
+	// 				NamespacesSerNum.push(eveNamespacesNum);
+	// 			}
+	// 			var optionSeries = {
+	// 					        name:'服务个数',
+	// 					        type:'bar',
+	// 					        barWidth: '60%',
+	// 					        data: NamespacesSerNum 
+	// 					    };
+	// 			option.series.push(optionSeries);
+	// 			myChart.setOption(option);
+	// 		}
+			
+	// 	}
+	// });
+	var showNamespacesUrl = "http://"+areaIP+":"+areaPort+"/watchers/"+WatcherID+"?NodeIP="+NodeIPInfo+"&ClientID="+ClientIDInfo;
 	$.ajax({
-		"url":apiVersionUrl,
+		"url":showNamespacesUrl,
 		"type":"get",
-		"data":{
-			"KubernetesMasterHost":KubernetesMasterHost,
-			"KubernetesAPIVersion":KubernetesAPIVersion,
-			"JobZoneType":JobZoneType
-		},
 		"success":function(data){
-			var data = eval("("+data+")");
-			var NamespacesInfos = data.NamespacesInfo;
+			var data = data;
+			var NamespaceAppsList = data.NamespaceAppsList;
+			
+			//租户中服务的个数
+			var NamespacesSerNum = new Array();
+			//租户名称
 			var NamespacesList = new Array();
-			for(var namespacesNum=0; namespacesNum<NamespacesInfos.length; namespacesNum++){
-				NamespacesList.push(NamespacesInfos[namespacesNum].Namespace);
+			for(var i=0; i<NamespaceAppsList.length; i++){
+				var Namespace = NamespaceAppsList[i].Namespace;
+				var serNum = "";
+				if(NamespaceAppsList[i].AppInfoList==null){
+					serNum = 0;
+				}else{
+					serNum = NamespaceAppsList[i].AppInfoList.length;
+				}
+				
+				NamespacesList.push(Namespace);
+				NamespacesSerNum.push(serNum);
 			}
-			var NamespacesAppCounts = data.AppList;
 			//echart画图位置
 			var myChart = echarts.init(document.getElementById('main'));
 			option = {
@@ -413,26 +508,15 @@ function showNamespacesEcharts(KubernetesMasterHost,KubernetesAPIVersion,JobZone
 					            }
 					        }
 			option.xAxis.push(optionxAxis);
-			//租户中服务的个数
-			var NamespacesSerNum = new Array();
-			if(NamespacesAppCounts != null){
-				for(var i = 0; i<NamespacesAppCounts.length; i++){
-					var eveNamespacesNum = 0;
-					if(NamespacesAppCounts[i] != null){
-						eveNamespacesNum = NamespacesAppCounts[i].length;
-					}
-					NamespacesSerNum.push(eveNamespacesNum);
-				}
-				var optionSeries = {
-						        name:'服务个数',
-						        type:'bar',
-						        barWidth: '60%',
-						        data: NamespacesSerNum 
-						    };
-				option.series.push(optionSeries);
-				myChart.setOption(option);
-			}
 			
+			var optionSeries = {
+						    name:'服务个数',
+						    type:'bar',
+						    barWidth: '60%',
+						    data: NamespacesSerNum 
+						};
+			option.series.push(optionSeries);
+			myChart.setOption(option);
 		}
 	});
 }
@@ -493,7 +577,7 @@ function watcherSubmit(NodeIPInfo,ClientIDInfo){
 	var DomainSuffix = $("#DomainSuffixOldVal").html();
 	var WorkMode = $("#WorkModeOldVal").html();
 	var NginxTestCommand = $("#NginxTestCommandOldVal").html();
-	var StandbyUpstreamNodes = $("#StandbyUpstreamNodesOldVal").html().split(",");
+	//var StandbyUpstreamNodes = $("#StandbyUpstreamNodesOldVal").html().split(",");
 	var K8sWatcherStatus = "start";
 	var WebMsg = {
 		"NodeIP": NodeIPInfo,
@@ -513,7 +597,7 @@ function watcherSubmit(NodeIPInfo,ClientIDInfo){
 			"DomainSuffix":DomainSuffix,
 			"WorkMode":WorkMode,
 			"NginxTestCommand":NginxTestCommand,
-		    "StandbyUpstreamNodes": StandbyUpstreamNodes,
+		    //"StandbyUpstreamNodes": StandbyUpstreamNodes,
 		    "K8sWatcherStatus":K8sWatcherStatus
 		}
 	};
@@ -532,16 +616,11 @@ function watcherSubmit(NodeIPInfo,ClientIDInfo){
 			data: JSON.stringify(WebMsg),
 			
     		success : function(data) {
-				data = eval("(" + data + ")");
-    			
-    			/*data = eval("(" + data + ")");
-    			if (data.status=="400") {
-    				
-    			} else if (data.status=="500") {
-    				
-    			}else {
-    				
-    			}*/
+				var data =  data ;
+				if(data.Result == true){
+					layer.msg('启动成功', {icon: 1});
+					setTimeout("window.location.reload()", 1500 );
+				}	
     		}
     	});
 }
@@ -564,7 +643,7 @@ function stopControl(NodeIPInfo,ClientIDInfo){
 	var DomainSuffix = $("#DomainSuffixOldVal").html();
 	var WorkMode = $("#WorkModeOldVal").html();
 	var NginxTestCommand = $("#NginxTestCommandOldVal").html();
-	var StandbyUpstreamNodes = $("#StandbyUpstreamNodesOldVal").html().split(",");
+	//var StandbyUpstreamNodes = $("#StandbyUpstreamNodesOldVal").html().split(",");
 	var K8sWatcherStatus = "stop";
 	var WebMsg = {
 		"NodeIP": NodeIPInfo,
@@ -584,7 +663,7 @@ function stopControl(NodeIPInfo,ClientIDInfo){
 			"DomainSuffix":DomainSuffix,
 			"WorkMode":WorkMode,
 			"NginxTestCommand":NginxTestCommand,
-		    "StandbyUpstreamNodes": StandbyUpstreamNodes,
+		    //"StandbyUpstreamNodes": StandbyUpstreamNodes,
 		    "K8sWatcherStatus":K8sWatcherStatus
 		}
 	};
@@ -601,7 +680,11 @@ function stopControl(NodeIPInfo,ClientIDInfo){
 			data: JSON.stringify(WebMsg),
 			
     		success : function(data) {
-				data = eval("(" + data + ")");
+				var data =  data ;
+				if(data.Result == true){
+					layer.msg('停止成功', {icon: 1});
+					setTimeout("window.location.reload()", 1500 );
+				}
     		}
     	});
 }
