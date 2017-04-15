@@ -479,6 +479,27 @@ func getNamespaceInfoByWatcherID(request *restful.Request, response *restful.Res
 	return
 }
 
+// WatcherInitInfoResp watcher初始信息
+type WatcherInitInfoResp struct {
+	K8sMasterHost string
+	K8sAPIVersion string
+}
+
+func getWatcherInfo(request *restful.Request, response *restful.Response) {
+
+	webResp := WatcherInitInfoResp{}
+	allNodesInfo := nodes.GetAllNodesInfo()
+	for _, singleNodeInfo := range allNodesInfo {
+		webResp.K8sMasterHost = singleNodeInfo.Client.K8sMasterHost
+		webResp.K8sAPIVersion = singleNodeInfo.Client.K8sAPIVersion
+		break
+	}
+
+	logdebug.Println(logdebug.LevelDebug, "watcher 初始化信息 ", webResp)
+	return
+
+}
+
 //Init 初始化函数
 func (svc *ServiceInfo) Init() {
 	http.HandleFunc("/ngfront/zone/clients/watcher", loadWatcherPage)
@@ -526,14 +547,6 @@ func (svc *ServiceInfo) Init() {
 		Doc("delete a specific watcher cfg").
 		Operation("deleteSpecificWatcherInfo").
 		Reads(CfgWebMsg{}))
-	/*
-		//获取某个特定的监视器配置
-		ws.Route(ws.GET("/{watcherID}").To(getWatcherInfoByID).
-			Doc("get a specific  watcher cfg").
-			Operation("getSpecificWatcherInfo").
-			Param(ws.PathParameter("watcherID", "watcherID由监控的租户列表组成").DataType("int")))
-		//		Reads())
-	*/
 
 	//获取某个特定的监视器配置
 	ws.Route(ws.GET("/{watcherID}").To(getNamespaceInfoByWatcherID).
@@ -563,6 +576,11 @@ func (svc *ServiceInfo) Init() {
 		Operation("stopWatcherManager").
 		Param(ws.PathParameter("watcherID", "watcherID由监控的租户列表组成").DataType("int")).
 		Param(ws.PathParameter("status", "前端监控状态").DataType("string")))
+
+	ws.Route(ws.GET("/watcherInfo").To(getWatcherInfo).
+		Doc("get watcher init information").
+		Operation("getwatcherInfo"))
+	//		Reads())
 
 	restful.Add(ws)
 
