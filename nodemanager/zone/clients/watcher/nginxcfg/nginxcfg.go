@@ -23,6 +23,13 @@ type ServiceInfo struct {
 }
 
 //ResponseBody 用于衡量每次restful请求的执行结果(通常是PUT POST)
+type deleteResponseBody struct {
+	Result       bool
+	ErrorMessage string
+	NginxConf    KubeNGConfig
+	ErrCode      int32
+}
+
 type ResponseBody struct {
 	Result       bool
 	ErrorMessage string
@@ -214,34 +221,49 @@ func (svc *ServiceInfo) updateNginxCfg(request *restful.Request, response *restf
 
 //delete
 func (svc *ServiceInfo) deleteSingleNginxCfg(request *restful.Request, response *restful.Response) {
+	logdebug.Println(logdebug.LevelDebug, "<<<<<<前端开始删除服务配置>>>>>>")
 
-	nginxCfgURL, delSingleNginxCfg := buildCommunicateInfo(request, response)
-	appCfgURL := nginxCfgURL +
-		"/" +
-		delSingleNginxCfg.Namespace +
-		"-" +
-		delSingleNginxCfg.AppName +
-		"/" +
-		delSingleNginxCfg.ServerName +
-		":" +
-		delSingleNginxCfg.ListenPort
+	var nginxCfgURL string
 
-	kubeNGCfg := delSingleNginxCfg.convertToKubeNGCfg()
-
-	logdebug.Println(logdebug.LevelDebug, "删除服务的一条nginx配置!", appCfgURL)
-
-	recvData, err := communicate.SendRequestByJSON(communicate.DELETE, appCfgURL, kubeNGCfg)
-	if err != nil {
+	nginxCfg := WebConfig{}
+	if err := request.ReadEntity(&nginxCfg); err != nil {
 		logdebug.Println(logdebug.LevelError, err)
-
-		response.WriteError(http.StatusInternalServerError, err)
-
 		return
 	}
 
-	resp := parseRespFromKubeNG(recvData)
+	allNodesInfo := nodes.GetAllNodesInfo()
+	for _, singleNodeInfo := range allNodesInfo {
 
-	response.WriteHeaderAndJson(200, resp, "application/json")
+		nginxCfgURL = "http://" + singleNodeInfo.Client.NodeIP + singleNodeInfo.Client.APIServerPort + "/" + singleNodeInfo.Client.NginxCfgsAPIServerPath + "/" + nginxCfg.AppSrcType
+
+		appCfgURL := nginxCfgURL +
+			"/" +
+			nginxCfg.Namespace +
+			"-" +
+			nginxCfg.AppName +
+			"/" +
+			nginxCfg.ServerName +
+			":" +
+			nginxCfg.ListenPort
+
+		kubeNGCfg := nginxCfg.convertToKubeNGCfg()
+
+		logdebug.Println(logdebug.LevelDebug, "删除服务的一条nginx配置URL:", appCfgURL)
+
+		respMsg := deleteResponseBody{}
+		resp, _ := communicate.SendRequestByJSON(communicate.DELETE, appCfgURL, kubeNGCfg)
+
+		json.Unmarshal(resp, &respMsg)
+		if respMsg.Result == false {
+			response.WriteHeaderAndJson(200, respMsg, "application/json")
+			return
+		}
+	}
+
+	respMsg := deleteResponseBody{
+		Result: true,
+	}
+	response.WriteHeaderAndJson(200, respMsg, "application/json")
 
 	return
 }

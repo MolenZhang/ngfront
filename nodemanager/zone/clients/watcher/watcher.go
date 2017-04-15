@@ -120,8 +120,8 @@ type deleteWatcherCfg struct {
 	WatcherIDSet []string
 }
 
-func deleteWatcherInfoByID(request *restful.Request, response *restful.Response) {
-	logdebug.Println(logdebug.LevelDebug, "根据前端提供的watcherID删除对应监视器信息")
+func deleteWatcherInfo(request *restful.Request, response *restful.Response) {
+	logdebug.Println(logdebug.LevelDebug, "删除对应监视器信息")
 
 	reqMsg := deleteWatcherCfg{}
 	err := request.ReadEntity(&reqMsg)
@@ -208,8 +208,6 @@ func postWatcherInfo(request *restful.Request, response *restful.Response) {
 		return
 	}
 	logdebug.Println(logdebug.LevelDebug, "新增时 前端传来的数据：", webMsg)
-
-	//	getNamespacesFromWeb(webMsg.WatcherCfg.WatchNamespaceSets)
 
 	//给每一个client 发送watcher信息
 	allNodesInfo := nodes.GetAllNodesInfo()
@@ -544,7 +542,7 @@ func (svc *ServiceInfo) Init() {
 		Reads(CfgWebMsg{}))
 
 	//删除某个特定的监视器配置
-	ws.Route(ws.DELETE("/").To(deleteWatcherInfoByID).
+	ws.Route(ws.DELETE("/").To(deleteWatcherInfo).
 		Doc("delete a specific watcher cfg").
 		Operation("deleteSpecificWatcherInfo").
 		Reads(CfgWebMsg{}))
@@ -563,14 +561,6 @@ func (svc *ServiceInfo) Init() {
 		Reads(BatchWatcherWebMsg{})) // from the request
 
 	//停止或开启监视器
-	ws.Route(ws.PUT("/{watcherID}/{status}").To(changeWatcherManagerStatus).
-		// docs
-		Doc("change watcher manager watcherStatus").
-		Operation("stopWatcherManager").
-		Param(ws.PathParameter("watcherID", "watcherID由监控的租户列表组成").DataType("int")).
-		Param(ws.PathParameter("status", "前端监控状态").DataType("string")))
-
-	//根据watcherID获取相应的租户信息
 	ws.Route(ws.PUT("/{watcherID}/{status}").To(changeWatcherManagerStatus).
 		// docs
 		Doc("change watcher manager watcherStatus").
