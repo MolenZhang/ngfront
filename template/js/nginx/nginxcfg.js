@@ -2,8 +2,8 @@
  var ClientID = "";
  var JobZoneType = "";
  var WatcherID="";
- var areaIP = "192.168.85.130";
- var areaPort = "8083";
+ var areaIP = "localhost";
+ var areaPort = "port";
  // var KubernetesMasterHost = "";
  // var KubernetesAPIVersion = "";
  $(document).ready(function () {
@@ -842,8 +842,8 @@ function localRefreshNg(obj){
 	 * @param obj
 	 */
 	function findNgByOneApp(obj){
-		var areaIP = "192.168.85.130";
-		var areaPort = "8083";
+		var areaIP = "localhost";
+		var areaPort = "port";
 		//var area=$("#area").val();
 		var appName = $(obj).val();
 		var namespace= $(obj).parent().next().find("#search_user").val();
