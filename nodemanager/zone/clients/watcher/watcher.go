@@ -547,7 +547,7 @@ func (svc *ServiceInfo) Init() {
 		Operation("deleteSpecificWatcherInfo").
 		Reads(CfgWebMsg{}))
 
-	//获取某个特定的监视器配置
+	//获取某个特定的监视器下所有的租户以及租户所对应的服务信息
 	ws.Route(ws.GET("/{watcherID}").To(getNamespaceInfoByWatcherID).
 		Doc("get a specific  watcher cfg").
 		Operation("getSpecificWatcherInfo").
