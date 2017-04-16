@@ -225,8 +225,8 @@ func initWebMsg(w http.ResponseWriter, r *http.Request, webAllNamespacesInfo *[]
 		//		jobZoneType = nodeInfo.Client.JobZoneType
 		break
 	}
-
-	jobZoneType = r.PostForm.Get("JobZoneType")
+	r.ParseForm()
+	jobZoneType = r.Form.Get("JobZoneType")
 
 	logdebug.Println(logdebug.LevelDebug, "获取租户时发来的工作区域：", jobZoneType)
 	getNamespacesURL := kubernetesMasterHost +
