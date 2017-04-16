@@ -223,9 +223,11 @@ func initWebMsg(w http.ResponseWriter, r *http.Request, webAllNamespacesInfo *[]
 	for _, nodeInfo := range allNodesInfo {
 		kubernetesMasterHost = nodeInfo.Client.K8sMasterHost
 		kubernetesAPIVersion = nodeInfo.Client.K8sAPIVersion
-		jobZoneType = nodeInfo.Client.JobZoneType
+		//		jobZoneType = nodeInfo.Client.JobZoneType
 		break
 	}
+
+	jobZoneType = r.PostForm.Get("jobZoneType")
 
 	getNamespacesURL := kubernetesMasterHost +
 		"/" +

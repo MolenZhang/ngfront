@@ -117,6 +117,7 @@ func getWatcherInfoByID(request *restful.Request, response *restful.Response) {
 }
 
 type deleteWatcherCfg struct {
+	JobZoneType  string
 	WatcherIDSet []string
 }
 
@@ -134,6 +135,10 @@ func deleteWatcherInfo(request *restful.Request, response *restful.Response) {
 
 		allNodesInfo := nodes.GetAllNodesInfo()
 		for _, singleNodeInfo := range allNodesInfo {
+
+			if singleNodeInfo.Client.JobZoneType != reqMsg.JobZoneType {
+				continue
+			}
 
 			deleteWatcherURL := "http://" +
 				singleNodeInfo.Client.NodeIP +
@@ -213,6 +218,10 @@ func postWatcherInfo(request *restful.Request, response *restful.Response) {
 	allNodesInfo := nodes.GetAllNodesInfo()
 	for _, singleNodeInfo := range allNodesInfo {
 
+		if singleNodeInfo.Client.JobZoneType != webMsg.WatcherCfg.JobZoneType {
+			continue
+		}
+
 		createWatcherURL := "http://" +
 			singleNodeInfo.Client.NodeIP +
 			singleNodeInfo.Client.APIServerPort +
@@ -257,6 +266,10 @@ func putWatcherInfoByID(request *restful.Request, response *restful.Response) {
 
 	allNodesInfo := nodes.GetAllNodesInfo()
 	for _, singleNodeInfo := range allNodesInfo {
+
+		if singleNodeInfo.Client.JobZoneType != webMsg.WatcherCfg.JobZoneType {
+			continue
+		}
 
 		updateWatcherCfgURL := "http://" +
 			singleNodeInfo.Client.NodeIP +
