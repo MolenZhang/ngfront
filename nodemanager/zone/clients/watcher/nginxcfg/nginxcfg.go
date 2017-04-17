@@ -418,22 +418,6 @@ func (svc *ServiceInfo) Init() {
 		Operation("deleteAllNginxConfig").
 		Reads(WebConfig{})) // from the request
 
-	ws.Route(ws.GET("/download/{watcherID}").To(svc.nginxCfgDownload).
-		Doc("download nginx config").
-		Operation("downloadfile").
-		Param(ws.PathParameter("watcherID", "watcherID由监控的租户列表组成").DataType("int")).
-		Reads(WebReqMsg{}))
-
-	ws.Route(ws.POST("/Alldownload").To(svc.batchNginxCfgsDownload).
-		Doc("download all nginx configs").
-		Operation("downloadfile").
-		Reads(BatchDownloadCfgsInfo{}))
-
-	ws.Route(ws.GET("/batchDownload").To(svc.nginxCfgRedictDownload).
-		Doc("download nginx config").
-		Operation("downloadfile"))
-	//	Reads(WebReqMsg{}))
-
 	ws.Route(ws.GET("/compare/{clientA-clientB}").To(svc.compareAllWatchersNginxCfgs).
 		Doc("对比2个client的所有watcher下的nginx配置").
 		Operation("compareAllWatchersNginxCfgs").
