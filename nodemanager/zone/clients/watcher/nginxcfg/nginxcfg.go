@@ -220,19 +220,26 @@ func (svc *ServiceInfo) updateNginxCfg(request *restful.Request, response *restf
 }
 
 //delete
-func (svc *ServiceInfo) deleteSingleNginxCfg(request *restful.Request, response *restful.Response) {
+func (svc *ServiceInfo) deleteNginxCfg(request *restful.Request, response *restful.Response) {
 	logdebug.Println(logdebug.LevelDebug, "<<<<<<前端开始删除服务配置>>>>>>")
 
 	var nginxCfgURL string
+	request.Request.ParseForm()
+	jobZoneType := request.Request.Form.Get("JobZoneType")
 
 	nginxCfg := WebConfig{}
 	if err := request.ReadEntity(&nginxCfg); err != nil {
 		logdebug.Println(logdebug.LevelError, err)
 		return
 	}
-
+	logdebug.Println(logdebug.LevelDebug, "删除的服务位于 jobZoneType： ", jobZoneType)
 	allNodesInfo := nodes.GetAllNodesInfo()
 	for _, singleNodeInfo := range allNodesInfo {
+
+		logdebug.Println(logdebug.LevelDebug, "上线保存的  jobZoneType： ", singleNodeInfo.Client.JobZoneType)
+		if singleNodeInfo.Client.JobZoneType != jobZoneType {
+			continue
+		}
 
 		nginxCfgURL = "http://" + singleNodeInfo.Client.NodeIP + singleNodeInfo.Client.APIServerPort + "/" + singleNodeInfo.Client.NginxCfgsAPIServerPath + "/" + nginxCfg.AppSrcType
 
@@ -398,11 +405,11 @@ func (svc *ServiceInfo) Init() {
 		Operation("putNginxManagerConfig").
 		Reads(WebConfig{})) // from the request
 
-	//delete
-	ws.Route(ws.DELETE("/").To(svc.deleteSingleNginxCfg).
+	//delete 删除同一个区域下所有client上同一watcherID 下的某个nginx配置
+	ws.Route(ws.DELETE("/").To(svc.deleteNginxCfg).
 		// docs
 		Doc("删除一个服务的单个Nginx配置").
-		Operation("deleteSingleNginxConfig").
+		Operation("deleteNginxConfig").
 		Reads(WebConfig{})) // from the request
 
 	ws.Route(ws.DELETE("/all").To(svc.deleteAllNginxCfgs).

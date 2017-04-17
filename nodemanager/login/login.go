@@ -152,12 +152,16 @@ func syncWatcherCfgInfo(nodeIP, apiServerPort, watchManagerAPIServerPath, jobZon
 	allNodesInfo := nodes.GetAllNodesInfo()
 	//如果集群中没有节点信息 则添加 不删除
 	if 0 != len(allNodesInfo) {
-		for watcherID := range newWatcherInfo {
-			newClientSingleWatcherURL := newClientWatcherURL + "/" + strconv.Itoa(watcherID)
-			communicate.SendRequestByJSON(communicate.DELETE, newClientSingleWatcherURL, nil)
+		for _, singleNodeInfo := range allNodesInfo {
+			if singleNodeInfo.Client.JobZoneType == jobZoneType {
+				for watcherID := range newWatcherInfo {
+					newClientSingleWatcherURL := newClientWatcherURL + "/" + strconv.Itoa(watcherID)
+					communicate.SendRequestByJSON(communicate.DELETE, newClientSingleWatcherURL, nil)
+				}
+				break
+			}
 		}
 	}
-
 	// 判断区域 从旧的NodesInfo中选区域相同的任一client信息上的watcher信息同步给新上线的client
 	for _, nodeInfo := range nodes.GetAllNodesInfo() {
 
