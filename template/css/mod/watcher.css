@@ -131,3 +131,6 @@ a{
 	padding-left: 20px;
 	color:red;
 }
+#WatchNamespaceSetsOldVal{
+	word-break: break-all;
+}
