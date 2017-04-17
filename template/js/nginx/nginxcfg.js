@@ -73,7 +73,8 @@
 		"type":"get",
 		//"data":JSON.stringify(NamespacesData),
 		"success":function(data){
-			var data = eval("("+data+")");
+			//var data = eval("("+data+")");
+			var data = data;
 			var userOptionHtml = "";
 			NamespaceAppsList = data.NamespaceAppsList;
 			for(var i=0; i<NamespaceAppsList.length; i++){
@@ -100,7 +101,7 @@
 				}else{
 					serviceOptionHtml += '<option value="">-----请选择-----</option>';
 					for(var m=0; m<AppInfoList.length; m++){
-						var NameSpaceApp = AppInfoList[m].NameSpaceApp;
+						var NamespacesApp = AppInfoList[m].NamespacesApp;
 						var AppSrcType = AppInfoList[m].AppSrcType;
 						var AppSrcTypeText = "";
 						if(AppSrcType == "k8s"){
@@ -108,7 +109,7 @@
 						}else{
 							AppSrcTypeText = "外部服务";
 						}
-						serviceOptionHtml += '<option value="'+NameSpaceApp+'" namespacesName="'+Namespace+'">'+NameSpaceApp+'('+AppSrcTypeText+')'+'</option>';
+						serviceOptionHtml += '<option value="'+NamespacesApp+'" namespacesName="'+Namespace+'" AppSrcType="'+AppSrcType+'">'+NamespacesApp+'('+AppSrcTypeText+')'+'</option>';
 					}
 				}
 				$("#search_service").empty().append(serviceOptionHtml);
@@ -119,7 +120,7 @@
 
 //展示同一个node下的所有nginx配置
 function showAllNgs(NodeIP,ClientID){
-	var showAllNgsUrl = "http://"+areaIP+":"+areaPort+"/nginxcfg?NodeIP="+NodeIP+"&ClientID="+ClientID;
+	var showAllNgsUrl = "http://"+areaIP+":"+areaPort+"/nginxcfg/all/"+WatcherID+"?NodeIP="+NodeIP+"&ClientID="+ClientID;
 	$.ajax({
 			url : showAllNgsUrl,
 			dataType: "json",
@@ -846,6 +847,7 @@ function localRefreshNg(obj){
 		//var area=$("#area").val();
 		var appName = $(obj).val();
 		var namespace= $(obj).parent().next().find("#search_user").val();
+		var AppSrcType = $("#search_service>option:selected").attr("appsrctype");
 		var AppNameAndNamespace = namespace+'-'+appName;
 	 	var OneAppUrl = "http://"+areaIP+":"+areaPort+"/nginxcfg/"+AppNameAndNamespace+"?NodeIP="+NodeIP+"&ClientID="+ClientID+"&AppSrcType="+AppSrcType;
 		layer.msg('加载中', {
