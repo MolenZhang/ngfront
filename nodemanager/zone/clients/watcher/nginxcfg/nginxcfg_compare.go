@@ -238,7 +238,7 @@ func getNginxCfgByWatcherURL(clientsSet []string, watcherID string, request *res
 		clientInfo.NginxCfgsAPIServerPath +
 		"/" +
 		appSrcType +
-		"/" +
+		"/watchers/" +
 		watcherID
 
 	logdebug.Println(logdebug.LevelDebug, "从kubeng获取ClientA的配置URL=", clientAURL)
@@ -258,7 +258,7 @@ func getNginxCfgByWatcherURL(clientsSet []string, watcherID string, request *res
 		clientInfo.NginxCfgsAPIServerPath +
 		"/" +
 		appSrcType +
-		"/" +
+		"/watchers/" +
 		watcherID
 
 	logdebug.Println(logdebug.LevelDebug, "从kubeng获取ClientA的配置URL=", clientBURL)
