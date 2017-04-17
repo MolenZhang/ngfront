@@ -13,8 +13,8 @@ import (
 )
 
 const (
-	tmpLocalDownloadLocation string = "/tmp/molen"
-	tmpWebDownloadLocation   string = "/tmp/molly"
+	tmpLocalDownloadLocation string = "/tmp/molly"
+	tmpWebDownloadLocation   string = "/tmp/molen"
 	localDownloadFileName    string = "/tmp/molly.tar.gz"
 	webDownloadFileName      string = "NginxCfg.tar.gz"
 	webNginxCfgDownloadURL   string = "/nginxcfg/singleClientDownload/tarDownload"
