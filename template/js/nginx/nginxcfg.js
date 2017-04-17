@@ -1,23 +1,25 @@
  var NodeIP = "";
  var ClientID = "";
  var JobZoneType = "";
+ var WatcherID="";
  var areaIP = "localhost";
  var areaPort = "port";
- var KubernetesMasterHost = "";
- var KubernetesAPIVersion = "";
+ // var KubernetesMasterHost = "";
+ // var KubernetesAPIVersion = "";
  $(document).ready(function () {
  	var locationUrl = window.location;
 	//http://192.168.252.133:8011/ngfront/zone/clients/watcher/nginxcfg?NodeIP=192.168.252.133&ClientID=71906&KubernetesMasterHost=http://192.168.0.75:8080&KubernetesAPIVersion=api/v1&JobZoneType=all
  	NodeIP = locationUrl.search.substring(locationUrl.search.indexOf("NodeIP=")+7,locationUrl.search.indexOf("&C"));
-	ClientID = locationUrl.search.substring(locationUrl.search.indexOf("ClientID=")+9,locationUrl.search.indexOf("&KubernetesMasterHost"));
-	KubernetesMasterHost = locationUrl.search.substring(locationUrl.search.indexOf("KubernetesMasterHost=")+21,locationUrl.search.indexOf("&KubernetesAPIVersion"));
-	KubernetesAPIVersion = locationUrl.search.substring(locationUrl.search.indexOf("KubernetesAPIVersion=")+21,locationUrl.search.indexOf("&J"));
-	JobZoneType = locationUrl.search.substring(locationUrl.search.indexOf("JobZoneType=")+12,locationUrl.search.length);
-	
+	ClientID = locationUrl.search.substring(locationUrl.search.indexOf("ClientID=")+9,locationUrl.search.indexOf("&J"));
+	// KubernetesMasterHost = locationUrl.search.substring(locationUrl.search.indexOf("KubernetesMasterHost=")+21,locationUrl.search.indexOf("&KubernetesAPIVersion"));
+	// KubernetesAPIVersion = locationUrl.search.substring(locationUrl.search.indexOf("KubernetesAPIVersion=")+21,locationUrl.search.indexOf("&J"));
+	JobZoneType = locationUrl.search.substring(locationUrl.search.indexOf("JobZoneType=")+12,locationUrl.search.indexOf("&W"));
+	WatcherID = locationUrl.search.substring(locationUrl.search.indexOf("WatcherID=")+10,locationUrl.search.length);
 	showAllNgs(NodeIP,ClientID);
 	
  	//加载所有租户option
-	showAllUsers(KubernetesMasterHost,KubernetesAPIVersion,JobZoneType);
+	//showAllUsers(KubernetesMasterHost,KubernetesAPIVersion,JobZoneType);
+	showAllUsers();
     //折叠ibox
     $(document).on('click','.collapse-link',function(){
         var ibox = $(this).closest('div.ibox');
@@ -60,70 +62,93 @@
  });/*reday*/
 
  //加载所有租户option
- var NamespacesList = "";
- var NamespacesAppCounts = "";
-
- function showAllUsers(KubernetesMasterHost,KubernetesAPIVersion,JobZoneType){
+ function showAllUsers(){
  	
-	var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/namespaces";
-	
+	var showNamespacesUrl = "http://"+areaIP+":"+areaPort+"/watchers/"+WatcherID+"&NodeIP="+NodeIP+"&ClientID="+ClientID;
+// 	var data = {
+//     "NamespaceAppsList": [
+//         {
+//             "Namespace": "clyxys",
+//             "AppInfoList": [
+               
+//             ]
+//         },
+//         {
+//             "Namespace": "coptest",
+//             "AppInfoList": [
+//                 {
+//                     "AppSrcType": "k8s",
+//                     "NameSpaceApp": "aldddot"
+//                 },
+//                 {
+//                     "AppSrcType": "k8saaa",
+//                     "NameSpaceApp": "daiffen"
+//                 }
+//             ]
+//         },
+//         {
+//             "Namespace": "pxx",
+//             "AppInfoList": [
+//                 {
+//                     "AppSrcType": "k8s333",
+//                     "NameSpaceApp": "al333ot"
+//                 },
+//                 {
+//                     "AppSrcType": "k8s33",
+//                     "NameSpaceApp": "daie33n"
+//                 }
+//             ]
+//         }
+//     ]
+// };
+
 	$.ajax({
-		"url":apiVersionUrl,
+		"url":showNamespacesUrl,
 		"type":"get",
-		"data":{
-			"KubernetesMasterHost":KubernetesMasterHost,
-			"KubernetesAPIVersion":KubernetesAPIVersion,
-			"JobZoneType":JobZoneType
-		},
 		"success":function(data){
 			var data = eval("("+data+")");
-			NamespacesList = data.NamespacesList;
-			NamespacesAppCounts = data.AppInfoList;
-			//租户option
 			var userOptionHtml = "";
-			if(NamespacesList != null){
-				for(var nsNum=0; nsNum<NamespacesList.length; nsNum++){
-				userOptionHtml += '<option value="'+NamespacesList[nsNum]+'">'+NamespacesList[nsNum]+'</option>';
-				}
-				$("#search_user").append(userOptionHtml);
+			NamespaceAppsList = data.NamespaceAppsList;
+			for(var i=0; i<NamespaceAppsList.length; i++){
+				var Namespace = NamespaceAppsList[i].Namespace;
+				userOptionHtml += '<option value="'+Namespace+'">'+Namespace+'</option>';
 			}
-			
+			$("#search_user").append(userOptionHtml);
 		}
 	})
  }
- var AppSrcType="";
  function searchByUser(obj){
  	var userVal = $(obj).val();
- 	if(userVal==""){
- 		showAllNgs(NodeIP,ClientID);
- 	}else{
- 		//租户option改变生成对应的服务
-		var serviceOptionHtml = "";
-		for(var i=0; i<NamespacesList.length; i++){
-			if(NamespacesList[i] == userVal ){
-				if(NamespacesAppCounts[i] != null){
-					serviceOptionHtml += '<option value="">-----请选择-----</option>'
-					for(var j=0; j<NamespacesAppCounts[i].length; j++){
-						AppSrcType = NamespacesAppCounts[i][j].AppSrcType;
+ 	var serviceOptionHtml = "";
+ 	if(userVal=="all"){
+  		showAllNgs(NodeIP,ClientID);
+  		$("#search_service").empty().append('<option value=""></option>');
+  	}else{
+  		for(var j=0; j<NamespaceAppsList.length; j++){
+			var Namespace = NamespaceAppsList[j].Namespace;
+			if(userVal == Namespace){
+				var AppInfoList = NamespaceAppsList[j].AppInfoList;
+				if(AppInfoList.length==0){
+					serviceOptionHtml += '<option>--无服务--</option>';
+				}else{
+					serviceOptionHtml += '<option value="">-----请选择-----</option>';
+					for(var m=0; m<AppInfoList.length; m++){
+						var NameSpaceApp = AppInfoList[m].NameSpaceApp;
+						var AppSrcType = AppInfoList[m].AppSrcType;
 						var AppSrcTypeText = "";
 						if(AppSrcType == "k8s"){
 							AppSrcTypeText = "K8S服务";
 						}else{
 							AppSrcTypeText = "外部服务";
 						}
-
-					serviceOptionHtml += '<option value="'+NamespacesAppCounts[i][j].NamespacesApp+'" namespacesName="'+NamespacesList[i]+'">'+NamespacesAppCounts[i][j].NamespacesApp+'('+AppSrcTypeText+')'+'</option>';
+						serviceOptionHtml += '<option value="'+NameSpaceApp+'" namespacesName="'+Namespace+'">'+NameSpaceApp+'('+AppSrcTypeText+')'+'</option>';
 					}
-					
-				}else{
-					serviceOptionHtml += '<option>--无服务--</option>';
 				}
 				$("#search_service").empty().append(serviceOptionHtml);
 			}
-			
-	 	}
- 	}
-}
+		}
+  	}
+ }
 
 //展示同一个node下的所有nginx配置
 function showAllNgs(NodeIP,ClientID){
@@ -140,8 +165,7 @@ function showAllNgs(NodeIP,ClientID){
 			"success":function(data){
 				showNgsHtml(data);
 			}	
-	})
-	
+	})	
 }
 
 function showNgsHtml(data){

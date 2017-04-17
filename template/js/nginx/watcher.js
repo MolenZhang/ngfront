@@ -1,5 +1,5 @@
-var KubernetesMasterHost = "";
-var KubernetesAPIVersion = ""; 
+// var KubernetesMasterHost = "";
+// var KubernetesAPIVersion = ""; 
 var JobZoneType = "";
 var WatchNamespaceSets = "";
 var NodeIPInfo ="";
@@ -55,8 +55,8 @@ $(document).ready(function () {
 	 });
 	//进入Nginx配置管理界面
 	$(document).on('click','.btn-toNginx',function(){
-		 location.href = "/ngfront/zone/clients/watcher/nginxcfg?NodeIP="+NodeIPInfo+"&ClientID="+ClientIDInfo+"&KubernetesMasterHost="+KubernetesMasterHost+"&KubernetesAPIVersion="+KubernetesAPIVersion+"&JobZoneType="+JobZoneType ;
-
+		// location.href = "/ngfront/zone/clients/watcher/nginxcfg?NodeIP="+NodeIPInfo+"&ClientID="+ClientIDInfo+"&KubernetesMasterHost="+KubernetesMasterHost+"&KubernetesAPIVersion="+KubernetesAPIVersion+"&JobZoneType="+JobZoneType+"&WatcherID="+WatcherID ;
+		location.href = "/ngfront/zone/clients/watcher/nginxcfg?NodeIP="+NodeIPInfo+"&ClientID="+ClientIDInfo+"&JobZoneType="+JobZoneType+"&WatcherID="+WatcherID ;
 	 });
 	
 	//租户监控checkbox   保存按钮
@@ -548,7 +548,7 @@ function watcherSubmit(NodeIPInfo,ClientIDInfo){
 
 //停止监控
 function stopControl(NodeIPInfo,ClientIDInfo){
-	var submitUrl = "http://"+areaIP+":"+areaPort+"/watcher"+WatcherID;
+	var submitUrl = "http://"+areaIP+":"+areaPort+"/watchers/"+WatcherID;
 	
 	var KubernetesMasterHost = $("#KubernetesMasterHostOldVal").html();
 	var KubernetesAPIVersion =$("#KubernetesAPIVersionOldVal").html();
@@ -593,7 +593,7 @@ function stopControl(NodeIPInfo,ClientIDInfo){
     		url : submitUrl,
 			dataType: "json",
 			contentType: "text/html; charset=UTF-8",
-    		type: "POST",
+    		type: "put",
 			headers: {
 				"Content-Type": "application/json",
 				"Accept": "application/json",
