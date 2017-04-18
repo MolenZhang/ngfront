@@ -354,49 +354,6 @@ func (svc *ServiceInfo) createNginxCfg(request *restful.Request, response *restf
 	return
 }
 
-/*
-//post all
-func (svc *ServiceInfo) createAllNginxCfg(request *restful.Request, response *restful.Response) {
-	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<nginx配置批量下发>>>>>>>>>>>>")
-
-	batchNgCfg := BatchNginxCfgInfo{}
-
-	if err := request.ReadEntity(&batchNgCfg); err != nil {
-		logdebug.Println(logdebug.LevelError, err)
-		return
-	}
-
-	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<前端批量配置信息>>>>>>>>>>>>", batchNgCfg.NodesInfo)
-	for _, batchClientInfo := range batchNgCfg.NodesInfo {
-		client := nodes.ClientInfo{
-			NodeIP:   batchClientInfo.NodeIP,
-			ClientID: batchClientInfo.ClientID,
-		}
-
-		key := client.CreateKey()
-		clientInfo := nodes.GetClientInfo(key)
-
-		nginxCfgURL := "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.NginxCfgsAPIServerPath + "/" + batchNgCfg.WebNginxCfg.AppSrcType
-
-		kubeNGCfg := batchNgCfg.WebNginxCfg.convertToKubeNGCfg()
-
-		_, err := communicate.SendRequestByJSON(communicate.POST, nginxCfgURL, kubeNGCfg)
-		if err != nil {
-			logdebug.Println(logdebug.LevelError, err)
-
-			response.WriteError(http.StatusInternalServerError, err)
-
-			return
-		}
-
-	}
-
-	resp := ResponseBody{
-		Result: true,
-	}
-	response.WriteHeaderAndJson(200, resp, "application/json")
-}
-*/
 //Init 初始化函数
 func (svc *ServiceInfo) Init() {
 	http.HandleFunc("/ngfront/zone/clients/watcher/nginxcfg", showNginxCfgPage)
@@ -428,14 +385,6 @@ func (svc *ServiceInfo) Init() {
 		Operation("postSingleNginxManagerConfig").
 		Reads(WebConfig{})) // from the request
 
-	/*
-		//postAll - createAll
-		ws.Route(ws.POST("/all").To(svc.createAllNginxCfg).
-			// docs
-			Doc("post nginx manager config").
-			Operation("postAllNginxManagerConfig").
-			Reads(BatchNginxCfgInfo{})) // from the request
-	*/
 	//put update
 	ws.Route(ws.PUT("/").To(svc.updateNginxCfg).
 		// docs
@@ -462,13 +411,11 @@ func (svc *ServiceInfo) Init() {
 	//Reads(WebReqMsg{}))
 	ws.Route(ws.POST("/singleClientDownload").To(downloadSingleClientNginxCfgsByWatcherIDs).
 		Doc("download single client nginxCfg by watcherID").
-		Operation("downloadfile").
-		Reads(BatchDownloadCfgsInfo{}))
+		Operation("downloadfile"))
 
 	ws.Route(ws.POST("/allClientDownload").To(downloadClientsNginxCfgsByWatcherIDs).
 		Doc("download all client nginxCfg").
-		Operation("downloadfile").
-		Reads(BatchDownloadCfgsInfo{}))
+		Operation("downloadfile"))
 
 	ws.Route(ws.GET("/singleClientDownload/tarDownload").To(svc.realDownload).
 		Doc("download nginx config").

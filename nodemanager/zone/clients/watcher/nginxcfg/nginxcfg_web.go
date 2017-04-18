@@ -1,37 +1,5 @@
 package nginxcfg
 
-//"encoding/json"
-//"html/template"
-//"net/http"
-//"ngfront/communicate"
-//"ngfront/logdebug"
-//"ngfront/nodemanager/nodes"
-
-//"github.com/emicklei/go-restful"
-
-// 前端批量下载信息
-type BatchDownloadCfgsInfo struct {
-	DownloadClientInfo []BatchDownloadCfgInfo
-}
-
-//var BatchDownloadCfgsInfo []BatchDownloadCfgInfo
-
-type BatchDownloadCfgInfo struct {
-	NodeIP   string
-	ClientID string
-}
-
-type ClientInfo struct {
-	NodeIP   string
-	ClientID string
-}
-
-//BatchNginxCfgInfo 批量配置下发信息
-type BatchNginxCfgInfo struct {
-	NodesInfo   []ClientInfo
-	WebNginxCfg WebConfig
-}
-
 //UserRules 用户自定义的规则结构
 type UserRules struct {
 	RuleCMD   string
