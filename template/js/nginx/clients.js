@@ -323,7 +323,7 @@ function addOneWatcher(obj){
 		url : addwatcherUrl,
 		dataType: "json",
 		contentType: "text/html; charset=UTF-8",
-		type: "post", 
+		type: "get", 
 		headers: {
 			"Content-Type": "application/json",
 			"Accept": "application/json",
@@ -837,6 +837,10 @@ function watcherNginxExport(obj){
 			for(var cw=0; cw<checkedWatchers.length; cw++){
 				WatcherIDSet.push(checkedWatchers[cw].getAttribute("WatcherID"));
 			}
+			if(WatcherIDSet.length==0){
+				layer.msg('请选择至少一个watcher！', {icon: 2});
+				return false;
+			}
 			var exportClientWatchersUrl = 'http://'+areaIP+':'+areaPort+'/nginxcfg/singleClientDownload';
 			var DownloadData = {
 					"NodeIP": NodeIP,
@@ -923,7 +927,10 @@ function nginxCfgsExport(obj){
 			for(var cw=0; cw<checkedWatchers.length; cw++){
 				watcherIDArray.push(checkedWatchers[cw].getAttribute("WatcherID"));
 			}
-			
+			if(watcherIDArray.length==0){
+				layer.msg('请选择至少一个watcher！', {icon: 2});
+				return false;
+			}
 			var clientsDownloadData = {
 				"ClientInfoSet":DownloadInfo,
 				"WatcherIDSet":watcherIDArray
@@ -998,6 +1005,10 @@ function delWatcher(){
 			var checkedWatchers =$(".chkWatcherItem:checked");
 			for(var cw=0; cw<checkedWatchers.length; cw++){
 				watcherIDArray.push(checkedWatchers[cw].getAttribute("WatcherID"));
+			}
+			if(watcherIDArray.length==0){
+				layer.msg('请选择至少一个watcher！', {icon: 2});
+				return false;
 			}
 			var delWatcherData = {
 				    "WatcherIDSet": watcherIDArray
