@@ -1,12 +1,12 @@
- var areaType = "";
+ var JobZoneType = "";
  var areaIP = "localhost";
  var areaPort = "port";
  $(document).ready(function () {
 	var locationUrl = window.location;
 	//http://192.168.252.133:8083/ngfront/zone/clients?areaType=user
-	areaType=locationUrl.search.substring(locationUrl.search.indexOf("=")+1,locationUrl.search.length); 
+	JobZoneType=locationUrl.search.substring(locationUrl.search.indexOf("=")+1,locationUrl.search.length); 
 	
-	showClients(areaType);
+	showClients(JobZoneType);
 
 	 //全选
 	$(".chkAll").click(function(){
@@ -52,7 +52,7 @@
 	
  });/*reday*/
 
-function showClients(areaType){
+function showClients(JobZoneType){
 	var areaUrl = "http://"+areaIP+":"+areaPort+"/clients";
 	$.ajax({
 		"url":areaUrl,
@@ -68,7 +68,7 @@ function showClients(areaType){
 		 if(dataType!=""){
 			 
 			 //第二个界面
-			 if(dataType == areaType){
+			 if(dataType == JobZoneType){
 			 	var clientsVal = objTest[areaNum].Clients;
 			 	var clientsHtml = "";
 			 	for(var i=0; i<clientsVal.length;i++){
@@ -117,7 +117,7 @@ function issuedCfg(obj){
 		return
 	}else{
 
-	$("#JobZoneTypeOldVal").empty().append(areaType);
+	$("#JobZoneTypeOldVal").empty().append(JobZoneType);
 	layer.open({
 		type: 1,
 		title: '下发配置',
@@ -168,7 +168,7 @@ function issuedCfg(obj){
 					"KubernetesMasterHost": KubernetesMasterHost,
 					"KubernetesAPIVersion":KubernetesAPIVersion,
 					"NginxReloadCommand":NginxReloadCommand,
-					"JobZoneType":areaType,
+					"JobZoneType":JobZoneType,
 					"NginxListenPort":NginxListenPort,
 					"WatchNamespaceSets":WatchNamespaceSets,
 					"NginxRealCfgDirPath":NginxRealCfgDirPath,
@@ -217,7 +217,7 @@ function loadNamespaces(){
 		"data":{
 			"KubernetesMasterHost":KubernetesMasterHost,
 			"KubernetesAPIVersion":KubernetesAPIVersion,
-			"JobZoneType":areaType
+			"JobZoneType":JobZoneType
 		},
 		"success":function(data){
 			var data = eval("("+data+")");
@@ -277,7 +277,7 @@ function watcherAll(obj){
 	}
 }
 function showWatcherHtml(data,ClientID,NodeIP){
-	var watcherHtmlUrl = "http://"+areaIP+":"+areaPort+"/ngfront/zone/clients/watcher?NodeIP="+NodeIP+'&ClientID='+ClientID+'&areaType='+areaType+'&WatcherID=';
+	var watcherHtmlUrl = "http://"+areaIP+":"+areaPort+"/ngfront/zone/clients/watcher?NodeIP="+NodeIP+'&ClientID='+ClientID+'&areaType='+JobZoneType+'&WatcherID=';
 	var watchersHtml = '<tr class="needHideWatcher" style="background-color:#ddd">'
 					   +'<th colspan="2">&nbsp;</th>'
                        +'<th>watcherID</th>'
@@ -316,7 +316,7 @@ function showWatcherHtml(data,ClientID,NodeIP){
 
 /*新增*/
 function addOneWatcher(obj){
-	$("#addJobZoneTypeOldVal").empty().append(areaType);
+	$("#addJobZoneTypeOldVal").empty().append(JobZoneType);
 	layer.open({
 		type: 1,
 		title: '新增watcher',
@@ -538,7 +538,7 @@ function compareClient(obj){
 				dataType = clientData[areaNum].JobZoneType;
 				if(dataType!=""){
 					//弹窗获得nodeip  clientid
-					if(dataType == areaType){
+					if(dataType == JobZoneType){
 						var clientsVal = clientData[areaNum].Clients;
 						var clientsHtml = "";
 						for(var i=0; i<clientsVal.length;i++){
@@ -668,7 +668,7 @@ function compareClientOneWatcher(obj){
 				dataType = clientData[areaNum].JobZoneType;
 				if(dataType!=""){
 					//弹窗获得nodeip  clientid
-					if(dataType == areaType){
+					if(dataType == JobZoneType){
 						var clientsVal = clientData[areaNum].Clients;
 						var clientsHtml = "";
 						for(var i=0; i<clientsVal.length;i++){
@@ -1022,5 +1022,5 @@ function areaRefresh(){
 	location.href = "http://"+areaIP+":"+areaPort+"/ngfront";
 }
 function clientsRefresh(){
-	location.href = "http://"+areaIP+":"+areaPort+"/ngfront/zone/clients?areaType="+areaType;
+	location.href = "http://"+areaIP+":"+areaPort+"/ngfront/zone/clients?areaType="+JobZoneType;
 }

@@ -537,9 +537,8 @@ function showNgsHtml(data){
  	 * 局部刷新
  	 */
  	function RulesData(RulesDiv){
- 		var itemRules = "";
+ 		var itemRules = new Array();
 		for(var i=0; i<RulesDiv.length; i++){
-			itemRules = new Array();
 			var tranRulesDiv = RulesDiv[i];
 			var RuleCMD = $(tranRulesDiv).find(".RuleCMD").val();
 			var RuleParam = $(tranRulesDiv).find(".RuleParam").val();
