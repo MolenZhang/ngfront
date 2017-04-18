@@ -2,8 +2,8 @@
  var ClientID = "";
  var JobZoneType = "";
  var WatcherID="";
- var areaIP = "localhost";
- var areaPort = "port";
+ var areaIP = "";
+ var areaPort = "";
  // var KubernetesMasterHost = "";
  // var KubernetesAPIVersion = "";
  $(document).ready(function () {
@@ -120,6 +120,8 @@
 
 //展示同一个node下的所有nginx配置
 function showAllNgs(NodeIP,ClientID){
+	areaIP = $("#areaIP").val();
+	areaPort = $("#areaPort").val();
 	var showAllNgsUrl = "http://"+areaIP+":"+areaPort+"/nginxcfg/all/"+WatcherID+"?NodeIP="+NodeIP+"&ClientID="+ClientID;
 	$.ajax({
 			url : showAllNgsUrl,
@@ -843,8 +845,8 @@ function localRefreshNg(obj){
 	 * @param obj
 	 */
 	function findNgByOneApp(obj){
-		var areaIP = "localhost";
-		var areaPort = "port";
+		// var areaIP = "localhost";
+		// var areaPort = "port";
 		//var area=$("#area").val();
 		var appName = $(obj).val();
 		var namespace= $(obj).parent().next().find("#search_user").val();

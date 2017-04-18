@@ -1,6 +1,6 @@
  var JobZoneType = "";
- var areaIP = "localhost";
- var areaPort = "port";
+ var areaIP = "";
+ var areaPort = "";
  $(document).ready(function () {
 	var locationUrl = window.location;
 	//http://192.168.252.133:8083/ngfront/zone/clients?areaType=user
@@ -53,6 +53,8 @@
  });/*reday*/
 
 function showClients(JobZoneType){
+	areaIP = $("#areaIP").val();
+	areaPort = $("#areaPort").val();
 	var areaUrl = "http://"+areaIP+":"+areaPort+"/clients";
 	$.ajax({
 		"url":areaUrl,
