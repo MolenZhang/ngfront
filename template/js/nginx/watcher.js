@@ -577,7 +577,7 @@ function watcherSubmit(NodeIPInfo,ClientIDInfo){
 	var DomainSuffix = $("#DomainSuffixOldVal").html();
 	var WorkMode = $("#WorkModeOldVal").html();
 	var NginxTestCommand = $("#NginxTestCommandOldVal").html();
-	var StandbyUpstreamNodes = $("#StandbyUpstreamNodesOldVal").html().split(",");
+	//var StandbyUpstreamNodes = $("#StandbyUpstreamNodesOldVal").html().split(",");
 	var K8sWatcherStatus = "start";
 	var WebMsg = {
 		"NodeIP": NodeIPInfo,
@@ -597,7 +597,7 @@ function watcherSubmit(NodeIPInfo,ClientIDInfo){
 			"DomainSuffix":DomainSuffix,
 			"WorkMode":WorkMode,
 			"NginxTestCommand":NginxTestCommand,
-		    "StandbyUpstreamNodes": StandbyUpstreamNodes,
+		    //"StandbyUpstreamNodes": StandbyUpstreamNodes,
 		    "K8sWatcherStatus":K8sWatcherStatus
 		}
 	};
@@ -616,16 +616,11 @@ function watcherSubmit(NodeIPInfo,ClientIDInfo){
 			data: JSON.stringify(WebMsg),
 			
     		success : function(data) {
-				data = eval("(" + data + ")");
-    			
-    			/*data = eval("(" + data + ")");
-    			if (data.status=="400") {
-    				
-    			} else if (data.status=="500") {
-    				
-    			}else {
-    				
-    			}*/
+				var data =  data ;
+				if(data.Result == true){
+					layer.msg('启动成功', {icon: 1});
+					setTimeout("window.location.reload()", 1500 );
+				}	
     		}
     	});
 }
@@ -648,7 +643,7 @@ function stopControl(NodeIPInfo,ClientIDInfo){
 	var DomainSuffix = $("#DomainSuffixOldVal").html();
 	var WorkMode = $("#WorkModeOldVal").html();
 	var NginxTestCommand = $("#NginxTestCommandOldVal").html();
-	var StandbyUpstreamNodes = $("#StandbyUpstreamNodesOldVal").html().split(",");
+	//var StandbyUpstreamNodes = $("#StandbyUpstreamNodesOldVal").html().split(",");
 	var K8sWatcherStatus = "stop";
 	var WebMsg = {
 		"NodeIP": NodeIPInfo,
@@ -668,7 +663,7 @@ function stopControl(NodeIPInfo,ClientIDInfo){
 			"DomainSuffix":DomainSuffix,
 			"WorkMode":WorkMode,
 			"NginxTestCommand":NginxTestCommand,
-		    "StandbyUpstreamNodes": StandbyUpstreamNodes,
+		    //"StandbyUpstreamNodes": StandbyUpstreamNodes,
 		    "K8sWatcherStatus":K8sWatcherStatus
 		}
 	};
@@ -685,7 +680,11 @@ function stopControl(NodeIPInfo,ClientIDInfo){
 			data: JSON.stringify(WebMsg),
 			
     		success : function(data) {
-				data = eval("(" + data + ")");
+				var data =  data ;
+				if(data.Result == true){
+					layer.msg('停止成功', {icon: 1});
+					setTimeout("window.location.reload()", 1500 );
+				}
     		}
     	});
 }
