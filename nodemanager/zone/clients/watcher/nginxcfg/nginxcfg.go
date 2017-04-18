@@ -23,7 +23,7 @@ const (
 type ServiceInfo struct {
 }
 
-type deleteResponseBody struct {
+type webResponseBody struct {
 	Result       bool
 	ErrorMessage string
 	NginxConf    KubeNGConfig
@@ -194,86 +194,116 @@ func (svc *ServiceInfo) getSingleNginxCfg(request *restful.Request, response *re
 func (svc *ServiceInfo) updateNginxCfg(request *restful.Request, response *restful.Response) {
 	logdebug.Println(logdebug.LevelDebug, "更新服务的一条nginx配置")
 
-	nginxCfgURL, updateNginxCfg := buildCommunicateInfo(request, response)
-	appCfgURL := nginxCfgURL +
-		"/" +
-		updateNginxCfg.Namespace +
-		"-" +
-		updateNginxCfg.AppName +
-		"/" +
-		updateNginxCfg.ServerName +
-		":" +
-		updateNginxCfg.ListenPort
+	nginxCfg, jobZoneType := getWebInfo(request, response)
+	kubeNGCfg := nginxCfg.convertToKubeNGCfg()
 
-	logdebug.Println(logdebug.LevelDebug, "更新时 前端传来的nginx配置", updateNginxCfg)
-	kubeNGCfg := updateNginxCfg.convertToKubeNGCfg()
-	logdebug.Println(logdebug.LevelDebug, "更新时 传给后台的nginx配置", kubeNGCfg)
+	nodesInfo := nodes.GetAllNodesInfo()
+	for _, nodeInfo := range nodesInfo {
 
-	recvData, err := communicate.SendRequestByJSON(communicate.PUT, appCfgURL, kubeNGCfg)
-	if err != nil {
-		logdebug.Println(logdebug.LevelError, err)
+		client := nodeInfo.Client
 
-		response.WriteError(http.StatusInternalServerError, err)
+		if client.JobZoneType != jobZoneType {
+			continue
+		}
 
-		return
+		appCfgURL, _ := getAppInfoURL(client, nginxCfg)
+
+		recvData, err := communicate.SendRequestByJSON(communicate.PUT, appCfgURL, kubeNGCfg)
+		if err != nil {
+			logdebug.Println(logdebug.LevelError, err)
+
+			response.WriteError(http.StatusInternalServerError, err)
+
+			return
+		}
+
+		resp := parseRespFromKubeNG(recvData)
+		if resp.Result != true {
+			response.WriteHeaderAndJson(200, resp, "application/json")
+			return
+		}
 	}
 
-	resp := parseRespFromKubeNG(recvData)
+	webResp := webResponseBody{
+		Result: true,
+	}
 
-	response.WriteHeaderAndJson(200, resp, "application/json")
+	response.WriteHeaderAndJson(200, webResp, "application/json")
 
 	return
+}
+
+func getWebInfo(request *restful.Request, response *restful.Response) (nginxCfg WebConfig, jobZoneType string) {
+
+	request.Request.ParseForm()
+	jobZoneType = request.Request.Form.Get("JobZoneType")
+
+	//	nginxCfg := WebConfig{}
+	if err := request.ReadEntity(&nginxCfg); err != nil {
+		logdebug.Println(logdebug.LevelError, err)
+		return
+	}
+	return
+}
+
+func getAppInfoURL(client nodes.ClientInfo, nginxCfg WebConfig) (appCfgURL, nginxCfgURL string) {
+
+	nginxCfgURL = "http://" +
+		client.NodeIP +
+		client.APIServerPort +
+		"/" +
+		client.NginxCfgsAPIServerPath +
+		"/" +
+		nginxCfg.AppSrcType
+
+	appCfgURL = nginxCfgURL +
+		"/" +
+		nginxCfg.Namespace +
+		"-" +
+		nginxCfg.AppName +
+		"/" +
+		nginxCfg.ServerName +
+		":" +
+		nginxCfg.ListenPort
+
+	return
+
 }
 
 //delete
 func (svc *ServiceInfo) deleteNginxCfg(request *restful.Request, response *restful.Response) {
 	logdebug.Println(logdebug.LevelDebug, "<<<<<<前端开始删除服务配置>>>>>>")
 
-	var nginxCfgURL string
-	request.Request.ParseForm()
-	jobZoneType := request.Request.Form.Get("JobZoneType")
+	nginxCfg, jobZoneType := getWebInfo(request, response)
+	kubeNGCfg := nginxCfg.convertToKubeNGCfg()
 
-	nginxCfg := WebConfig{}
-	if err := request.ReadEntity(&nginxCfg); err != nil {
-		logdebug.Println(logdebug.LevelError, err)
-		return
-	}
-	logdebug.Println(logdebug.LevelDebug, "删除的服务位于 jobZoneType： ", jobZoneType)
 	allNodesInfo := nodes.GetAllNodesInfo()
 	for _, singleNodeInfo := range allNodesInfo {
 
-		logdebug.Println(logdebug.LevelDebug, "上线保存的  jobZoneType： ", singleNodeInfo.Client.JobZoneType)
-		if singleNodeInfo.Client.JobZoneType != jobZoneType {
+		client := singleNodeInfo.Client
+
+		if client.JobZoneType != jobZoneType {
 			continue
 		}
 
-		nginxCfgURL = "http://" + singleNodeInfo.Client.NodeIP + singleNodeInfo.Client.APIServerPort + "/" + singleNodeInfo.Client.NginxCfgsAPIServerPath + "/" + nginxCfg.AppSrcType
+		appCfgURL, _ := getAppInfoURL(client, nginxCfg)
 
-		appCfgURL := nginxCfgURL +
-			"/" +
-			nginxCfg.Namespace +
-			"-" +
-			nginxCfg.AppName +
-			"/" +
-			nginxCfg.ServerName +
-			":" +
-			nginxCfg.ListenPort
+		recvData, err := communicate.SendRequestByJSON(communicate.DELETE, appCfgURL, kubeNGCfg)
+		if err != nil {
+			logdebug.Println(logdebug.LevelError, err)
+			response.WriteError(http.StatusInternalServerError, err)
 
-		kubeNGCfg := nginxCfg.convertToKubeNGCfg()
+			return
+		}
 
-		logdebug.Println(logdebug.LevelDebug, "删除服务的一条nginx配置URL:", appCfgURL)
-
-		respMsg := deleteResponseBody{}
-		resp, _ := communicate.SendRequestByJSON(communicate.DELETE, appCfgURL, kubeNGCfg)
-
-		json.Unmarshal(resp, &respMsg)
-		if respMsg.Result == false {
-			response.WriteHeaderAndJson(200, respMsg, "application/json")
+		resp := parseRespFromKubeNG(recvData)
+		if resp.Result != true {
+			response.WriteHeaderAndJson(200, resp, "application/json")
 			return
 		}
 	}
 
-	respMsg := deleteResponseBody{
+	respMsg := webResponseBody{
 		Result: true,
 	}
 	response.WriteHeaderAndJson(200, respMsg, "application/json")
@@ -284,26 +314,47 @@ func (svc *ServiceInfo) deleteNginxCfg(request *restful.Request, response *restf
 //post
 func (svc *ServiceInfo) createNginxCfg(request *restful.Request, response *restful.Response) {
 	logdebug.Println(logdebug.LevelInfo, "新增服务的一条nginx配置!")
-	appCfgURL, createNginxCfg := buildCommunicateInfo(request, response)
 
-	kubeNGCfg := createNginxCfg.convertToKubeNGCfg()
+	nginxCfg, jobZoneType := getWebInfo(request, response)
 
-	recvData, err := communicate.SendRequestByJSON(communicate.POST, appCfgURL, kubeNGCfg)
-	if err != nil {
-		logdebug.Println(logdebug.LevelError, err)
+	kubeNGCfg := nginxCfg.convertToKubeNGCfg()
 
-		response.WriteError(http.StatusInternalServerError, err)
+	nodesInfo := nodes.GetAllNodesInfo()
+	for _, nodeInfo := range nodesInfo {
 
-		return
+		client := nodeInfo.Client
+		if client.JobZoneType != jobZoneType {
+			continue
+		}
+
+		_, nginxCfgURL := getAppInfoURL(client, nginxCfg)
+
+		recvData, err := communicate.SendRequestByJSON(communicate.POST, nginxCfgURL, kubeNGCfg)
+		if err != nil {
+			logdebug.Println(logdebug.LevelError, err)
+
+			response.WriteError(http.StatusInternalServerError, err)
+
+			return
+		}
+
+		resp := parseRespFromKubeNG(recvData)
+		if resp.Result != true {
+			response.WriteHeaderAndJson(200, resp, "application/json")
+			return
+		}
 	}
 
-	resp := parseRespFromKubeNG(recvData)
+	webResp := webResponseBody{
+		Result: true,
+	}
 
-	response.WriteHeaderAndJson(200, resp, "application/json")
+	response.WriteHeaderAndJson(200, webResp, "application/json")
 
 	return
 }
 
+/*
 //post all
 func (svc *ServiceInfo) createAllNginxCfg(request *restful.Request, response *restful.Response) {
 	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<nginx配置批量下发>>>>>>>>>>>>")
@@ -345,7 +396,7 @@ func (svc *ServiceInfo) createAllNginxCfg(request *restful.Request, response *re
 	}
 	response.WriteHeaderAndJson(200, resp, "application/json")
 }
-
+*/
 //Init 初始化函数
 func (svc *ServiceInfo) Init() {
 	http.HandleFunc("/ngfront/zone/clients/watcher/nginxcfg", showNginxCfgPage)
@@ -377,12 +428,14 @@ func (svc *ServiceInfo) Init() {
 		Operation("postSingleNginxManagerConfig").
 		Reads(WebConfig{})) // from the request
 
-	//postAll - createAll
-	ws.Route(ws.POST("/all").To(svc.createAllNginxCfg).
-		// docs
-		Doc("post nginx manager config").
-		Operation("postAllNginxManagerConfig").
-		Reads(BatchNginxCfgInfo{})) // from the request
+	/*
+		//postAll - createAll
+		ws.Route(ws.POST("/all").To(svc.createAllNginxCfg).
+			// docs
+			Doc("post nginx manager config").
+			Operation("postAllNginxManagerConfig").
+			Reads(BatchNginxCfgInfo{})) // from the request
+	*/
 	//put update
 	ws.Route(ws.PUT("/").To(svc.updateNginxCfg).
 		// docs
