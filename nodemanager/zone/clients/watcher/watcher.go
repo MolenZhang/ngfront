@@ -79,7 +79,7 @@ func loadWatcherPage(w http.ResponseWriter, r *http.Request) {
 	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<<加载watcher页面>>>>>>>>>>>>>")
 	//加载模板 显示内容是 批量操作client
 	templateDir := config.NgFrontCfg.TemplateDir
-	t, err := template.ParseFiles(templateDir + "/template/views/nginx/watcher.html")
+	t, err := template.ParseFiles(templateDir + "template/views/nginx/watcher.html")
 	if err != nil {
 		logdebug.Println(logdebug.LevelError, err)
 

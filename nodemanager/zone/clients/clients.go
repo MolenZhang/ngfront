@@ -32,7 +32,7 @@ func showClientsPage(w http.ResponseWriter, r *http.Request) {
 
 	//加载模板 显示内容是 批量操作client
 	templateDir := config.NgFrontCfg.TemplateDir
-	t, err := template.ParseFiles(templateDir + "/template/views/nginx/clients.html")
+	t, err := template.ParseFiles(templateDir + "template/views/nginx/clients.html")
 	if err != nil {
 		logdebug.Println(logdebug.LevelError, err)
 

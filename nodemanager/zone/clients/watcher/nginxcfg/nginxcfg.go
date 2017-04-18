@@ -44,7 +44,7 @@ func showNginxCfgPage(w http.ResponseWriter, r *http.Request) {
 	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<<加载nginx页面>>>>>>>>>>>>>")
 	//加载模板 显示内容是 批量操作nginx配置
 	templateDir := config.NgFrontCfg.TemplateDir
-	t, err := template.ParseFiles(templateDir + "/template/views/nginx/nginxcfg.html")
+	t, err := template.ParseFiles(templateDir + "template/views/nginx/nginxcfg.html")
 	if err != nil {
 		logdebug.Println(logdebug.LevelError, err)
 		return
