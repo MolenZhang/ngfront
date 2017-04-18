@@ -180,25 +180,9 @@ func getAllWatcherInfo(request *restful.Request, response *restful.Response) {
 	resp, _ := communicate.SendRequestByJSON(communicate.GET, watcherAPIServerURL, nil)
 	json.Unmarshal(resp, &webMsg)
 
-	logdebug.Println(logdebug.LevelDebug, "Map 获取所有监视器信息：", webMsg)
 	respMsg := mapConvertToArray(webMsg)
 	logdebug.Println(logdebug.LevelDebug, "Arr 获取所有监视器信息：", respMsg)
 	response.WriteHeaderAndJson(200, respMsg, "application/json")
-
-	return
-}
-
-func (webMsg *CfgWebMsg) getWatcherAPIServerURL() (watcherAPIServerURL string) {
-	client := nodes.ClientInfo{
-		NodeIP:   webMsg.NodeIP,
-		ClientID: webMsg.ClientID,
-	}
-
-	key := client.CreateKey()
-
-	clientInfo := nodes.GetClientInfo(key)
-
-	watcherAPIServerURL = "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.WatchManagerAPIServerPath
 
 	return
 }
@@ -269,15 +253,16 @@ func putWatcherInfoByID(request *restful.Request, response *restful.Response) {
 	allNodesInfo := nodes.GetAllNodesInfo()
 	for _, singleNodeInfo := range allNodesInfo {
 
-		if singleNodeInfo.Client.JobZoneType != webMsg.WatcherCfg.JobZoneType {
+		client := singleNodeInfo.Client
+		if client.JobZoneType != webMsg.WatcherCfg.JobZoneType {
 			continue
 		}
 
 		updateWatcherCfgURL := "http://" +
-			singleNodeInfo.Client.NodeIP +
-			singleNodeInfo.Client.APIServerPort +
+			client.NodeIP +
+			client.APIServerPort +
 			"/" +
-			singleNodeInfo.Client.WatchManagerAPIServerPath +
+			client.WatchManagerAPIServerPath +
 			"/" +
 			watcherID
 
@@ -323,42 +308,47 @@ func batchPostWatcherInfo(request *restful.Request, response *restful.Response) 
 	return
 }
 
-/*
-//保存前端已经勾选过的租户信息
-func getNamespacesFromWeb(namespaces []string) {
-	for _, namespace := range namespaces {
-		saveNamespacesFromWeb.NamespaceSets = append(saveNamespacesFromWeb.NamespaceSets, namespace)
-	}
-}
-*/
-
-//对应前端 启动 按钮
-func changeWatcherManagerStatus(request *restful.Request, response *restful.Response) {
-	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<更改监视器状态>>>>>>>>")
+func getWatcherInfoCfg(request *restful.Request) (requestURL string, clientInfo nodes.ClientInfo) {
 
 	watcherID := request.PathParameter("watcherID")
-	watcherStatus := request.PathParameter("status")
-
 	request.Request.ParseForm()
 	client := nodes.ClientInfo{
 		NodeIP:   request.Request.Form.Get("NodeIP"),
 		ClientID: request.Request.Form.Get("ClientID"),
 	}
 	key := client.CreateKey()
-	clientInfo := nodes.GetClientInfo(key)
+	clientInfo = nodes.GetClientInfo(key)
 
-	startWatcherCfgURL := "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.WatchManagerAPIServerPath + "/" + watcherID
-	logdebug.Println(logdebug.LevelDebug, "startWatcherCfgURL", startWatcherCfgURL)
+	requestURL = "http://" +
+		clientInfo.NodeIP +
+		clientInfo.APIServerPort +
+		"/" +
+		clientInfo.WatchManagerAPIServerPath +
+		"/" +
+		watcherID
+
+	return
+}
+
+//对应前端 启动 按钮
+func changeWatcherManagerStatus(request *restful.Request, response *restful.Response) {
+	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<更改监视器状态>>>>>>>>")
+
+	watcherStatus := request.PathParameter("status")
+
+	changeWatcherStatusURL, _ := getWatcherInfoCfg(request)
+
+	logdebug.Println(logdebug.LevelDebug, "changeWatcherStatusURL", changeWatcherStatusURL)
+
 	//get 对应watcherID的信息
 	respMsg := ResponseBody{}
-	resp, _ := communicate.SendRequestByJSON(communicate.GET, startWatcherCfgURL, nil)
+	resp, _ := communicate.SendRequestByJSON(communicate.GET, changeWatcherStatusURL, nil)
 	json.Unmarshal(resp, &respMsg.WatcherCfg)
 	respMsg.WatcherCfg.K8sWatcherStatus = watcherStatus
 
 	//put 更新监控状态位 并发给k8s
-	respWeb, _ := communicate.SendRequestByJSON(communicate.PUT, startWatcherCfgURL, respMsg.WatcherCfg)
+	respWeb, _ := communicate.SendRequestByJSON(communicate.PUT, changeWatcherStatusURL, respMsg.WatcherCfg)
 	json.Unmarshal(respWeb, &respMsg)
-	logdebug.Println(logdebug.LevelDebug, "watcherCfg", respMsg)
 
 	response.WriteHeaderAndJson(200, respMsg, "application/json")
 
@@ -368,26 +358,15 @@ func changeWatcherManagerStatus(request *restful.Request, response *restful.Resp
 func getSingleWatcherInfo(request *restful.Request, response *restful.Response) {
 	logdebug.Println(logdebug.LevelDebug, "获取具体watcherID监视器信息")
 
-	watcherID := request.PathParameter("watcherID")
-
-	request.Request.ParseForm()
-
-	client := nodes.ClientInfo{
-		NodeIP:   request.Request.Form.Get("NodeIP"),
-		ClientID: request.Request.Form.Get("ClientID"),
-	}
-
 	//watcher界面所需展示的数据较多 不止是watcher 还有client的部分信息
 	webMsg := watcherInfo{}
 
-	key := client.CreateKey()
+	watcherAPIServerURL, clientInfo := getWatcherInfoCfg(request)
 
-	clientInfo := nodes.GetClientInfo(key)
 	webMsg.Client = clientInfo
 
-	watcherAPIServerURL := "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.WatchManagerAPIServerPath + "/" + watcherID
-
 	logdebug.Println(logdebug.LevelDebug, "watcher INFO URL", watcherAPIServerURL)
+
 	respMsg := ResponseBody{}
 	resp, _ := communicate.SendRequestByJSON(communicate.GET, watcherAPIServerURL, nil)
 	json.Unmarshal(resp, &respMsg.WatcherCfg)
@@ -429,42 +408,21 @@ func getNamespaceInfoByWatcherID(request *restful.Request, response *restful.Res
 	endpointList := EndpointsList{}
 	appInfoList := []AppInfo{}
 
-	watcherID := request.PathParameter("watcherID")
-
-	logdebug.Println(logdebug.LevelDebug, "前端发来watcherID:", watcherID)
-	request.Request.ParseForm()
-
-	client := nodes.ClientInfo{
-		NodeIP:   request.Request.Form.Get("NodeIP"),
-		ClientID: request.Request.Form.Get("ClientID"),
-	}
-
-	logdebug.Println(logdebug.LevelDebug, "前端发来NodeIP:", client.NodeIP)
-	logdebug.Println(logdebug.LevelDebug, "前端发来ClientID:", client.ClientID)
-
-	key := client.CreateKey()
-
-	clientInfo := nodes.GetClientInfo(key)
+	namespacesURL, clientInfo := getWatcherInfoCfg(request)
+	logdebug.Println(logdebug.LevelDebug, "根据wacherID 获取租户信息的URL", namespacesURL)
 
 	kubernetesMasterHost := clientInfo.K8sMasterHost
 	kubernetesAPIVersion := clientInfo.K8sAPIVersion
 	jobZoneType := clientInfo.JobZoneType
 
-	namespacesURL := "http://" +
-		clientInfo.NodeIP +
-		clientInfo.APIServerPort +
-		"/" +
-		clientInfo.WatchManagerAPIServerPath +
-		"/" +
-		watcherID
+	//根据watcherID从路径watchmgr中获取前端已经勾选过的租户信息
 	resp, _ := communicate.SendRequestByJSON(communicate.GET, namespacesURL, nil)
-
-	logdebug.Println(logdebug.LevelDebug, "根据wacherID 获取租户信息的URL", namespacesURL)
 
 	json.Unmarshal(resp, &watcherCfg)
 
 	logdebug.Println(logdebug.LevelDebug, "根据wacherID 获取的租户信息", watcherCfg)
 
+	//根据各个租户信息获取每一个租户下的服务信息
 	for _, namespace := range watcherCfg.WatchNamespaceSets {
 		namespaceAppsList := NamespaceAppInfo{}
 		namespaceAppsList.Namespace = namespace
