@@ -5,8 +5,8 @@ var WatchNamespaceSets = "";
 var NodeIPInfo ="";
 var ClientIDInfo = "";
 var WatcherID = "";
-var areaIP = "localhost";
-var areaPort = "port";
+var areaIP = "192.168.19.128";
+var areaPort = "8083";
 $(document).ready(function () {
 	var locationUrl = window.location;
 	//http://172.16.13.110:8083/ngfront/zone/clients/watcher?NodeIP=10.10.3.9&ClientID=21343&areaType=user
@@ -158,10 +158,10 @@ $(document).ready(function () {
 		$("#NginxTestCommandOldVal").empty().append(changeVal);
 	});
 	//备用upstream服务器节点 保存按钮
-	$(document).on('click','#StandbyUpstreamNodesSaveBtn',function(){
-		var changeVal = $("#StandbyUpstreamNodesInfo").val();
-		$("#StandbyUpstreamNodesOldVal").empty().append(changeVal);
-	});
+	// $(document).on('click','#StandbyUpstreamNodesSaveBtn',function(){
+	// 	var changeVal = $("#StandbyUpstreamNodesInfo").val();
+	// 	$("#StandbyUpstreamNodesOldVal").empty().append(changeVal);
+	// });
 	
 	$(document).on('click','.namespacesLabel',function(){
 		if(this.getAttribute("isUsed")=="true"&&this.getAttribute("evewatcherid")!=WatcherID){
