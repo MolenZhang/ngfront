@@ -192,7 +192,9 @@ func (svc *ServiceInfo) updateNginxCfg(request *restful.Request, response *restf
 		":" +
 		updateNginxCfg.ListenPort
 
+	logdebug.Println(logdebug.LevelDebug, "更新时 前端传来的nginx配置", updateNginxCfg)
 	kubeNGCfg := updateNginxCfg.convertToKubeNGCfg()
+	logdebug.Println(logdebug.LevelDebug, "更新时 传给后台的nginx配置", kubeNGCfg)
 
 	recvData, err := communicate.SendRequestByJSON(communicate.PUT, appCfgURL, kubeNGCfg)
 	if err != nil {
