@@ -289,7 +289,7 @@ function showNgsHtml(data){
 	 								+'</select>'
 	 								+'<input type="text" id="LogFileDirPath" class="LogFileDirPath" name="LogFileDirPath" value="'+CfgsList.LogRule.LogFileDirPath+'">'
 							 		+'<input type="text" id="" name="" value="'+CfgsList.Location+'_access_log" disabled>'
-							 		+'<input type="text" id="LogTemplateName" class="LogTemplateName" name="LogTemplateName" value="'+CfgsList.LogRule.LogTemplateName+'">;'
+							 		+'<input type="text" id="LogTemplateName" class="LogTemplateName" name="LogTemplateName" value="'+CfgsList.LogRule.LogTemplateName+'" disabled>;'
 							 		+'</div>';
 					var LocationUserRulesStr='';
 					var LocationUserRules = CfgsList.LocationUserRules.UserRuleSet;

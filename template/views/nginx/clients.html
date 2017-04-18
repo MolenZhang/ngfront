@@ -213,10 +213,10 @@
 						<td class="firstTd">nginx配置规则检查命令</td>
 						<td class="editItem"><input class="editInput" id="NginxTestCommandInfo" type="text" value="nginx -t"></td>
 					</tr>
-					<tr>
+					<!-- <tr>
 						<td class="firstTd">备用upstream服务器节点</td>
 						<td class="editItem"><input class="editInput" id="StandbyUpstreamNodesInfo" type="text" name="StandbyUpstreamNodes" value="192.168.0.80,192.168.0.81,192.168.0.82"></td>
-					</tr>			
+					</tr>	 -->		
 				</tbody>
 			</table>
 		</div>
@@ -227,15 +227,16 @@
 				<tbody>
 					<tr>
 						<td>k8s Master节点IP端口</td>
-						<td class="editItem"><input class="editInput" id="addKubernetesMasterHostInfo" type="text" placeholder="" name="addKubernetesMasterHost" value="http://192.168.0.75:8080"></td>
+						<td class="editItem"><input class="editInput" id="addKubernetesMasterHostInfo" type="text" placeholder="" name="addKubernetesMasterHost" value="" disabled="true"></td>
 					</tr>
 					<tr>
 						<td class="firstTd">k8s Api 版本</td>
 						<td class="editItem" id="apiVersion">
-							<select id="addKubernetesAPIVersionInfo" name="KubernetesAPIVersion">
+							<input type="text" id="addKubernetesAPIVersionInfo" name="KubernetesAPIVersion" class="editInput" disabled="true" style="width:50%">
+							<!-- <select id="addKubernetesAPIVersionInfo" name="KubernetesAPIVersion" disabled="true">
 								<option value="api/v1">api/v1</option>
 								<option value="api">api</option>
-							</select>
+							</select> -->
 							<button type="button" class="btn btn-info" onclick="loadNamespaces()">获取租户</button>
 						</td>
 					</tr>
@@ -308,10 +309,10 @@
 						<td class="firstTd">nginx配置规则检查命令</td>
 						<td class="editItem"><input class="editInput" id="addNginxTestCommandInfo" type="text" value="nginx -t"></td>
 					</tr>
-					<tr>
+					<!-- <tr>
 						<td class="firstTd">备用upstream服务器节点</td>
 						<td class="editItem"><input class="editInput" id="addStandbyUpstreamNodesInfo" type="text" name="addStandbyUpstreamNodes" value="192.168.0.80,192.168.0.81,192.168.0.82"></td>
-					</tr>
+					</tr> -->
 					<tr>
 						<td class="firstTd">K8s监视器工作状态</td>
 						<td class="editItem">

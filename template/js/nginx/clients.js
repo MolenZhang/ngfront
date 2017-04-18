@@ -149,7 +149,7 @@ function issuedCfg(obj){
 			var DomainSuffix = $("#DomainSuffixInfo").val();
 			var WorkMode = $("#WorkModeInfo").val();
 			var NginxTestCommand = $("#NginxTestCommandInfo").val();
-			var StandbyUpstreamNodes = $("#StandbyUpstreamNodesInfo").val().split(",");
+			//var StandbyUpstreamNodes = $("#StandbyUpstreamNodesInfo").val().split(",");
 
 			var BatchNodesInfo = new Array();
 			var checkedNodeItems = $(".chkNodeItem:checked");
@@ -179,7 +179,7 @@ function issuedCfg(obj){
 					"DomainSuffix":DomainSuffix,
 					"WorkMode":WorkMode,
 					"NginxTestCommand":NginxTestCommand,
-				    "StandbyUpstreamNodes": StandbyUpstreamNodes,
+				    //"StandbyUpstreamNodes": StandbyUpstreamNodes,
 				}
 			};
 
@@ -317,6 +317,23 @@ function showWatcherHtml(data,ClientID,NodeIP){
 /*新增*/
 function addOneWatcher(obj){
 	$("#addJobZoneTypeOldVal").empty().append(JobZoneType);
+	var addwatcherUrl = 'http://'+areaIP+':'+areaPort+"/watchers/watcherInfo"
+	
+	$.ajax({
+		url : addwatcherUrl,
+		dataType: "json",
+		contentType: "text/html; charset=UTF-8",
+		type: "post", 
+		headers: {
+			"Content-Type": "application/json",
+			"Accept": "application/json",
+		},
+		success :function(data){
+			var data=data;
+			$("#addKubernetesMasterHostInfo").val(data.K8sMasterHost);
+			$("#addKubernetesAPIVersionInfo").val(data.K8sAPIVersion);
+		}
+	});
 	layer.open({
 		type: 1,
 		title: '新增watcher',
@@ -326,8 +343,8 @@ function addOneWatcher(obj){
 		yes: function(index,layero){
 			//var addUrl = "http://"+areaIP+":"+areaPort+"/watcher/all";
 
-			var KubernetesMasterHost = $("#addKubernetesMasterHostInfo").val();
-			var KubernetesAPIVersion =$("#addKubernetesAPIVersionInfo").val();
+			//var KubernetesMasterHost = $("#addKubernetesMasterHostInfo").val();
+			//var KubernetesAPIVersion =$("#addKubernetesAPIVersionInfo").val();
 			var NginxReloadCommand = $("#addNginxReloadCommandInfo").val();
 			var NginxListenPort = $("#addNginxListenPortInfo").val();
 			var WatchNamespaceSets = new Array();
@@ -349,7 +366,7 @@ function addOneWatcher(obj){
 			var DomainSuffix = $("#addDomainSuffixInfo").val();
 			var WorkMode = $("#addWorkModeInfo").val();
 			var NginxTestCommand = $("#addNginxTestCommandInfo").val();
-			var StandbyUpstreamNodes = $("#addStandbyUpstreamNodesInfo").val().split(",");
+			//var StandbyUpstreamNodes = $("#addStandbyUpstreamNodesInfo").val().split(",");
 			var K8sWatcherStatus = $("#addK8sWatcherStatus").val();
 			
 			var addCfgInfo = {
@@ -366,7 +383,7 @@ function addOneWatcher(obj){
 					"DomainSuffix":DomainSuffix,
 					"WorkMode":WorkMode,
 					"NginxTestCommand":NginxTestCommand,
-					"StandbyUpstreamNodes":StandbyUpstreamNodes,
+					//"StandbyUpstreamNodes":StandbyUpstreamNodes,
 					"K8sWatcherStatus":K8sWatcherStatus
 					}
 			};

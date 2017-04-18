@@ -308,12 +308,12 @@ $(document).ready(function () {
 											'<td class="editItem"><input class="editInput" id="NginxTestCommandInfo" type="text" value="'+NginxTestCommand+'">'+
 											'<i class="fa fa-save fa-nodeSave" id="NginxTestCommandSaveBtn"></i><i class="fa fa-times fa-nodeTimes"></i></td>'+
 										'</tr>'+
-										'<tr>'+
-											'<td class="firstTd">备用upstream服务器节点</td>'+
-											'<td><span id="StandbyUpstreamNodesOldVal">'+StandbyUpstreamNodes+'</span><i class="fa fa-edit fa-nodeEdit"></i></td>'+
-											'<td class="editItem"><input class="editInput" id="StandbyUpstreamNodesInfo" type="text" name="StandbyUpstreamNodes" value="'+StandbyUpstreamNodes+'">'+
-											'<i class="fa fa-save fa-nodeSave" id="StandbyUpstreamNodesSaveBtn"></i><i class="fa fa-times fa-nodeTimes"></i></td>'+
-										'</tr>'+
+										// '<tr>'+
+										// 	'<td class="firstTd">备用upstream服务器节点</td>'+
+										// 	'<td><span id="StandbyUpstreamNodesOldVal">'+StandbyUpstreamNodes+'</span><i class="fa fa-edit fa-nodeEdit"></i></td>'+
+										// 	'<td class="editItem"><input class="editInput" id="StandbyUpstreamNodesInfo" type="text" name="StandbyUpstreamNodes" value="'+StandbyUpstreamNodes+'">'+
+										// 	'<i class="fa fa-save fa-nodeSave" id="StandbyUpstreamNodesSaveBtn"></i><i class="fa fa-times fa-nodeTimes"></i></td>'+
+										// '</tr>'+
 										'<tr>'+
 											'<td class="firstTd">K8s监视器工作状态</td>'+
 											'<td><span id="K8sWatcherStatus">'+K8sWatcherStatus+'<span></td>'+
