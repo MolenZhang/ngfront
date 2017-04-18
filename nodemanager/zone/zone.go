@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"html/template"
 	"net/http"
+	"ngfront/config"
 	"ngfront/logdebug"
 	"ngfront/nodemanager/nodes"
 )
@@ -49,8 +50,8 @@ func convertZoneType(zoneType string) int {
 
 func loadHomePage(w http.ResponseWriter, r *http.Request) {
 	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<<加载主页>>>>>>>>>>>>>")
-
-	t, err := template.ParseFiles("template/views/nginx/area.html")
+	templateDir := config.NgFrontCfg.TemplateDir
+	t, err := template.ParseFiles(templateDir + "/template/views/nginx/area.html")
 	if err != nil {
 		logdebug.Println(logdebug.LevelError, err)
 
@@ -105,10 +106,10 @@ func getZoneInfo(w http.ResponseWriter, r *http.Request) {
 
 //Init 初始化函数
 func (svc *ServiceInfo) Init() {
-	http.Handle("/css/", http.FileServer(http.Dir("template")))
-	http.Handle("/js/", http.FileServer(http.Dir("template")))
-	http.Handle("/plugins/", http.FileServer(http.Dir("template")))
-	http.Handle("/images/", http.FileServer(http.Dir("template")))
+	http.Handle("/css/", http.FileServer(http.Dir("/opt/ngfront/template")))
+	http.Handle("/js/", http.FileServer(http.Dir("/opt/ngfront/template")))
+	http.Handle("/plugins/", http.FileServer(http.Dir("/opt/ngfront/template")))
+	http.Handle("/images/", http.FileServer(http.Dir("/opt/ngfront/template")))
 
 	http.HandleFunc("/ngfront", loadHomePage)
 	http.HandleFunc("/ngfront/zone", getZoneInfo)

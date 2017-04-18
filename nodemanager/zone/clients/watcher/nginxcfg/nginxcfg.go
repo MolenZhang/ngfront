@@ -6,6 +6,7 @@ import (
 	"html/template"
 	"net/http"
 	"ngfront/communicate"
+	"ngfront/config"
 	"ngfront/logdebug"
 	"ngfront/nodemanager/nodes"
 
@@ -22,7 +23,6 @@ const (
 type ServiceInfo struct {
 }
 
-//ResponseBody 用于衡量每次restful请求的执行结果(通常是PUT POST)
 type deleteResponseBody struct {
 	Result       bool
 	ErrorMessage string
@@ -30,6 +30,7 @@ type deleteResponseBody struct {
 	ErrCode      int32
 }
 
+//ResponseBody 用于衡量每次restful请求的执行结果(通常是PUT POST)
 type ResponseBody struct {
 	Result       bool
 	ErrorMessage string
@@ -42,7 +43,8 @@ type ResponseBody struct {
 func showNginxCfgPage(w http.ResponseWriter, r *http.Request) {
 	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<<加载nginx页面>>>>>>>>>>>>>")
 	//加载模板 显示内容是 批量操作nginx配置
-	t, err := template.ParseFiles("template/views/nginx/nginxcfg.html")
+	templateDir := config.NgFrontCfg.TemplateDir
+	t, err := template.ParseFiles(templateDir + "/template/views/nginx/nginxcfg.html")
 	if err != nil {
 		logdebug.Println(logdebug.LevelError, err)
 		return
@@ -53,9 +55,7 @@ func showNginxCfgPage(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
-//get all
-func (svc *ServiceInfo) getAllNginxCfgs(request *restful.Request, response *restful.Response) {
-	logdebug.Println(logdebug.LevelDebug, "获取完整的app nginx配置集合!")
+func getAppCfgsURL(request *restful.Request, response *restful.Response) (clientInfo nodes.ClientInfo, getK8sAppCfgsURL, getExternAppCfgsURL string) {
 
 	request.Request.ParseForm()
 
@@ -67,9 +67,9 @@ func (svc *ServiceInfo) getAllNginxCfgs(request *restful.Request, response *rest
 	}
 
 	key := client.CreateKey()
-	clientInfo := nodes.GetClientInfo(key)
+	clientInfo = nodes.GetClientInfo(key)
 
-	getK8sAppCfgsURL := "http://" +
+	getK8sAppCfgsURL = "http://" +
 		clientInfo.NodeIP +
 		clientInfo.APIServerPort +
 		"/" +
@@ -79,10 +79,7 @@ func (svc *ServiceInfo) getAllNginxCfgs(request *restful.Request, response *rest
 		"/watchers/" +
 		watcherID
 
-	logdebug.Println(logdebug.LevelDebug, "前端发来NodeIP", clientInfo.NodeIP)
-	logdebug.Println(logdebug.LevelDebug, "前端发来ClientID", clientInfo.ClientID)
-
-	getExternAppCfgsURL := "http://" +
+	getExternAppCfgsURL = "http://" +
 		clientInfo.NodeIP +
 		clientInfo.APIServerPort +
 		"/" +
@@ -93,20 +90,29 @@ func (svc *ServiceInfo) getAllNginxCfgs(request *restful.Request, response *rest
 		watcherID
 	logdebug.Println(logdebug.LevelDebug, "getK8sAppCfgsURL ", getK8sAppCfgsURL)
 	logdebug.Println(logdebug.LevelDebug, "getExternAppCfgsURL ", getExternAppCfgsURL)
+	return
+}
+
+//get all
+func (svc *ServiceInfo) getAllNginxCfgs(request *restful.Request, response *restful.Response) {
+	logdebug.Println(logdebug.LevelDebug, "获取完整的app nginx配置集合!")
+
+	clientInfo, k8sAppCfgsURL, externAppCfgsURL := getAppCfgsURL(request, response)
+
 	webAppCfgs := WebNginxCfgs{
 		NodeIP:        clientInfo.NodeIP,
-		ClientID:      client.ClientID,
+		ClientID:      clientInfo.ClientID,
 		APIServerPort: clientInfo.APIServerPort,
 	}
 
 	k8sCfgList := NginxCfgsList{
 		CfgType:  AppSrcTypeKubernetes,
-		CfgsList: getNginxCfgsListFromKubeNG(getK8sAppCfgsURL, AppSrcTypeKubernetes),
+		CfgsList: getNginxCfgsListFromKubeNG(k8sAppCfgsURL, AppSrcTypeKubernetes),
 	}
 
 	externCfgList := NginxCfgsList{
 		CfgType:  AppSrcTypeExtern,
-		CfgsList: getNginxCfgsListFromKubeNG(getExternAppCfgsURL, AppSrcTypeExtern),
+		CfgsList: getNginxCfgsListFromKubeNG(externAppCfgsURL, AppSrcTypeExtern),
 	}
 
 	webAppCfgs.NginxList = append(webAppCfgs.NginxList, k8sCfgList)
@@ -340,27 +346,6 @@ func (svc *ServiceInfo) createAllNginxCfg(request *restful.Request, response *re
 	response.WriteHeaderAndJson(200, resp, "application/json")
 }
 
-//delete all
-func (svc *ServiceInfo) deleteAllNginxCfgs(request *restful.Request, response *restful.Response) {
-	logdebug.Println(logdebug.LevelDebug, "删除一个服务的所有nginx配置")
-
-	nginxCfgURL, deleteAllNginxCfgs := buildCommunicateInfo(request, response)
-	appCfgURL := nginxCfgURL +
-		"/" +
-		deleteAllNginxCfgs.Namespace +
-		"-" +
-		deleteAllNginxCfgs.AppName
-
-	_, err := communicate.SendRequestByJSON(communicate.DELETE, appCfgURL, nil)
-	if err != nil {
-		logdebug.Println(logdebug.LevelError, err)
-
-		return
-	}
-
-	return
-}
-
 //Init 初始化函数
 func (svc *ServiceInfo) Init() {
 	http.HandleFunc("/ngfront/zone/clients/watcher/nginxcfg", showNginxCfgPage)
@@ -410,12 +395,6 @@ func (svc *ServiceInfo) Init() {
 		// docs
 		Doc("删除一个服务的单个Nginx配置").
 		Operation("deleteNginxConfig").
-		Reads(WebConfig{})) // from the request
-
-	ws.Route(ws.DELETE("/all").To(svc.deleteAllNginxCfgs).
-		// docs
-		Doc("删除一个服务的所有Nginx配置").
-		Operation("deleteAllNginxConfig").
 		Reads(WebConfig{})) // from the request
 
 	ws.Route(ws.GET("/compare/{clientA-clientB}").To(svc.compareAllWatchersNginxCfgs).

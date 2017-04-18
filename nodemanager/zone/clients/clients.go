@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"html/template"
 	"net/http"
+	"ngfront/config"
 	"ngfront/logdebug"
 	"ngfront/nodemanager/nodes"
 )
@@ -30,7 +31,8 @@ func showClientsPage(w http.ResponseWriter, r *http.Request) {
 	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<<加载client页面>>>>>>>>>>>>>")
 
 	//加载模板 显示内容是 批量操作client
-	t, err := template.ParseFiles("template/views/nginx/clients.html")
+	templateDir := config.NgFrontCfg.TemplateDir
+	t, err := template.ParseFiles(templateDir + "/template/views/nginx/clients.html")
 	if err != nil {
 		logdebug.Println(logdebug.LevelError, err)
 

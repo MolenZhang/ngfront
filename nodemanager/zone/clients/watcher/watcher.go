@@ -7,6 +7,7 @@ import (
 	"html/template"
 	"net/http"
 	"ngfront/communicate"
+	"ngfront/config"
 	"ngfront/logdebug"
 	"ngfront/nodemanager/nodes"
 	"sort"
@@ -77,7 +78,8 @@ func mapConvertToArray(kubengWatchersMap map[int]nodes.WatchManagerCfg) []nodes.
 func loadWatcherPage(w http.ResponseWriter, r *http.Request) {
 	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<<加载watcher页面>>>>>>>>>>>>>")
 	//加载模板 显示内容是 批量操作client
-	t, err := template.ParseFiles("template/views/nginx/watcher.html")
+	templateDir := config.NgFrontCfg.TemplateDir
+	t, err := template.ParseFiles(templateDir + "/template/views/nginx/watcher.html")
 	if err != nil {
 		logdebug.Println(logdebug.LevelError, err)
 
