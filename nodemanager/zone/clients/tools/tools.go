@@ -6,6 +6,7 @@ import (
 	"github.com/emicklei/go-restful"
 	"net/http"
 	"ngfront/communicate"
+	"ngfront/logdebug"
 	"ngfront/nodemanager/nodes"
 )
 
@@ -27,7 +28,8 @@ type ServiceInfo struct {
 }
 
 func (svc *ServiceInfo) execToolsCMD(request *restful.Request, response *restful.Response) {
-	nginxTestToolCMD := ""
+	logdebug.Println(logdebug.LevelDebug, "<<<<<<<前端测试nginx Tool>>>>>>>")
+	nginxTestToolCMD := NginxTestToolInfo{}
 
 	err := request.ReadEntity(&nginxTestToolCMD)
 	if err != nil {
@@ -36,9 +38,7 @@ func (svc *ServiceInfo) execToolsCMD(request *restful.Request, response *restful
 		return
 	}
 
-	testToolMsg := NginxTestToolInfo{
-		NginxCmdType: nginxTestToolCMD,
-	}
+	logdebug.Println(logdebug.LevelDebug, "前端传来的nginx测试命令：", nginxTestToolCMD)
 
 	request.Request.ParseForm()
 	client := nodes.ClientInfo{
@@ -48,15 +48,18 @@ func (svc *ServiceInfo) execToolsCMD(request *restful.Request, response *restful
 	key := client.CreateKey()
 	clientInfo := nodes.GetClientInfo(key)
 
-	url := "http://" +
+	logdebug.Println(logdebug.LevelDebug, "NodeIP:", client.NodeIP)
+	logdebug.Println(logdebug.LevelDebug, "ClientID:", client.ClientID)
+
+	nginxCmdTestURL := "http://" +
 		clientInfo.NodeIP +
 		clientInfo.APIServerPort +
 		"/" +
 		clientInfo.TestToolAPIServerPath
 
-	//url = "http://localhost:8877/testtool"
+	logdebug.Println(logdebug.LevelDebug, "Nginx Test URL:", nginxCmdTestURL)
 
-	resp, _ := communicate.SendRequestByJSON(communicate.POST, url, testToolMsg)
+	resp, _ := communicate.SendRequestByJSON(communicate.POST, nginxCmdTestURL, nginxTestToolCMD)
 
 	respMsg := ResponseBody{}
 
