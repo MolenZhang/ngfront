@@ -347,6 +347,7 @@ function addOneWatcher(obj){
 			//var KubernetesAPIVersion =$("#addKubernetesAPIVersionInfo").val();
 			var NginxReloadCommand = $("#addNginxReloadCommandInfo").val();
 			var NginxListenPort = $("#addNginxListenPortInfo").val();
+			var JobZoneType = $("#addJobZoneTypeOldVal").html();
 			var WatchNamespaceSets = new Array();
 			if($(".namespaceAll").css("display")=="none"){
 				var namespacesChk = $(".namespacesChk:checked");
@@ -375,6 +376,7 @@ function addOneWatcher(obj){
 				"WatcherCfg":{
 					"NginxReloadCommand":NginxReloadCommand,
 					"NginxListenPort":NginxListenPort,
+					"JobZoneType":JobZoneType,
 					"WatchNamespaceSets":WatchNamespaceSets,
 					"NginxRealCfgDirPath":NginxRealCfgDirPath,
 					"NginxTestCfgDirPath":NginxTestCfgDirPath,
