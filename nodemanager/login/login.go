@@ -163,19 +163,19 @@ func syncWatcherCfgInfo(nodeIP, apiServerPort, watchManagerAPIServerPath, jobZon
 		}
 	}
 	// 判断区域 从旧的NodesInfo中选区域相同的任一client信息上的watcher信息同步给新上线的client
-	for _, nodeInfo := range nodes.GetAllNodesInfo() {
-
+	for _, nodeInfo := range allNodesInfo {
+		if nodeInfo.Client.JobZoneType != jobZoneType {
+			continue
+		}
+		logdebug.Println(logdebug.LevelDebug, "新上线节点  URL", newClientWatcherURL)
 		addWatchersToNewClient(nodeInfo, jobZoneType, newClientWatcherURL)
+
 		break
 	}
 }
 
 func addWatchersToNewClient(nodeInfo nodes.NodeInfo, jobZoneType, newWatcherInfoURL string) {
 	keyForMap := make([]int, 0)
-
-	if nodeInfo.Client.JobZoneType != jobZoneType {
-		return
-	}
 
 	getOldWatcherInfoURL := "http://" +
 		nodeInfo.Client.NodeIP +
