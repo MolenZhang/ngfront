@@ -209,7 +209,7 @@ function loadNamespaces(){
 	$(".editNamespacesTd").removeClass("hide");
 	var KubernetesMasterHost = $("#KubernetesMasterHostInfo").val();
 	var KubernetesAPIVersion = $("#KubernetesAPIVersionInfo").val();
-	var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/namespaces";
+	var apiVersionUrl = "http://"+areaIP+":"+areaPort+"/namespaces?JobZoneType="+JobZoneType;
 	
 	$.ajax({
 		"url":apiVersionUrl,
@@ -871,6 +871,9 @@ function watcherNginxExport(obj){
 * @param obj
 */
 function nginxCfgsExport(obj){
+	if($(".chkNodeItem:checked").length==0){
+		return false;
+	}
 	var watchersUrl= 'http://'+areaIP+':'+areaPort+"/watchers";
 	var ClientID = $("#clientsList").find("tr:first").attr("ClientID");
 	var NodeIP = $("#clientsList").find("tr:first").attr("NodeIP");
@@ -1011,6 +1014,7 @@ function delWatcher(){
 				return false;
 			}
 			var delWatcherData = {
+					"JobZoneType": JobZoneType,
 				    "WatcherIDSet": watcherIDArray
 				}
 
