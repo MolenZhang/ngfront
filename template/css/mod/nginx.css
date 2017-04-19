@@ -130,6 +130,7 @@ input.serverCheckbox{
 }
 .operationBtns i{
 	margin-left:10px;
+	line-height: 50px;
 }
 .statusImg img{
 	width:27px;
@@ -261,5 +262,12 @@ i.fa-one{
 	cursor: no-drop;
 	color: #333;
 	display: none;
+}
+.floatLeft{
+	float:left;
+}
+.nginxTools{
+	padding-left: 4px!important;
+    margin-left: 5px;
 }
 

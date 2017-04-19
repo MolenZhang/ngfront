@@ -94,12 +94,21 @@ function showClients(JobZoneType){
                                     '<td>'+NodeIP+'</td>'+
                                     '<td>'+APIServerPort+'</td>'+
                                     '<td class="operationBtns" ClientID="'+ClientID+'" NodeIP="'+NodeIP+'">'+
-                                    	'<a><i class="fa fa-play hide"></i></a>'+
-                                    	'<a><i class="fa fa-power-off hide"></i></a>'+
-                                    	/*'<a href="'+watcherUrl+NodeIP+'&ClientID='+ClientID+'&areaType='+areaType+'"><i class="fa fa-gear"></i></a>'+*/
-                                    	
-                                    	'<a onclick="watcherNginxExport(this)"><i>下载配置</i></a>'+
-                                    	'<a onclick="compareClient(this)" ClientID="'+ClientID+'" NodeIP="'+NodeIP+'"><i>对比</i></a>'+
+                                    	'<a class="floatLeft" onclick="watcherNginxExport(this)"><i>下载配置</i></a>'+
+                                    	'<a class="floatLeft" onclick="compareClient(this)" ClientID="'+ClientID+'" NodeIP="'+NodeIP+'"><i>对比</i></a>'+
+                                    	'<ul class="nav navbar-nav floatLeft">'+
+                                    	'<li class="dropdown"><a class="dropdown-toggle nginxTools" data-toggle="dropdown"><em>Nginx工具</em><b class="caret"></b></a>'+
+                                    	'<ul class="dropdown-menu">'+
+                                    	'<li onclick="nginxTool(this)" status="start"><a>start</a></li>'+
+                                    	'<li onclick="nginxTool(this)" status="stop"><a>stop</a></li>'+
+                                    	'<li onclick="nginxTool(this)" status="test"><a>test</a></li>'+
+                                    	'<li onclick="nginxTool(this)" status="restart"><a>restart</a></li>'+
+                                    	'<li onclick="nginxTool(this)" status="reload"><a>reload</a></li>'+
+                                    	'<li onclick="nginxTool(this)" status="run"><a>run</a></li>'+
+                                    	'<li onclick="nginxTool(this)" status="killall"><a>killall</a></li>'+
+                                    	'</ul>'+
+                                    	'</li>'+
+                                    	'</ul></div>'+
                                     '</td>'+
                                     '</tr>';
 			 	}
@@ -1052,6 +1061,26 @@ function delWatcher(){
 		}
 		
 	})
+}
+//nginx工具
+function nginxTool(obj){
+	var nginxTestTool = $(obj).val();
+	var nginxToolUrl = 'http://'+areaIP+':'+areaPort+'/tools';
+	$.ajax({
+		url: nginxToolUrl,
+		dataType: "json",
+		contentType: "text/html; charset=UTF-8",
+		type:"post",  
+		data: nginxTestTool,         
+		headers: {
+			"Content-Type": "application/json",
+			"Accept": "application/json",
+		},
+		success:function(data){
+			var data=data;
+		}
+			
+    });	
 }
 
 function areaRefresh(){
