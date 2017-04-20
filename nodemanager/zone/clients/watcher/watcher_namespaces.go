@@ -213,10 +213,9 @@ func (watcherNamespacesInfo *SaveNamespaceInfo) isNamespaceInSet(namespace strin
 }
 
 func initWebMsg(w http.ResponseWriter, r *http.Request, webAllNamespacesInfo *[]NamespaceInfo) (
-	allNamespacesDetailInfoFromK8s NamespacesDetailInfo) {
+	allNamespacesDetailInfoFromK8s NamespacesDetailInfo, jobZoneType string) {
 	var kubernetesAPIVersion string
 	var kubernetesMasterHost string
-	var jobZoneType string
 
 	allNodesInfo := nodes.GetAllNodesInfo()
 
@@ -226,9 +225,10 @@ func initWebMsg(w http.ResponseWriter, r *http.Request, webAllNamespacesInfo *[]
 		//		jobZoneType = nodeInfo.Client.JobZoneType
 		break
 	}
+	r.ParseForm()
+	jobZoneType = r.Form.Get("JobZoneType")
 
-	jobZoneType = r.PostForm.Get("jobZoneType")
-
+	logdebug.Println(logdebug.LevelDebug, "获取租户时发来的工作区域：", jobZoneType)
 	getNamespacesURL := kubernetesMasterHost +
 		"/" +
 		kubernetesAPIVersion +
@@ -250,7 +250,7 @@ func initWebMsg(w http.ResponseWriter, r *http.Request, webAllNamespacesInfo *[]
 	return
 }
 
-func getWatchersInfoFromKubeNG() (allWatchersNamespacesInfo map[int]SaveNamespaceInfo) {
+func getWatchersInfoFromKubeNG(jobZoneType string) (allWatchersNamespacesInfo map[int]SaveNamespaceInfo) {
 	allNodesInfo := nodes.GetAllNodesInfo()
 	if len(allNodesInfo) == 0 {
 		return
@@ -258,6 +258,10 @@ func getWatchersInfoFromKubeNG() (allWatchersNamespacesInfo map[int]SaveNamespac
 
 	watcherURL := ""
 	for key := range allNodesInfo {
+		if allNodesInfo[key].Client.JobZoneType != jobZoneType {
+			continue
+		}
+
 		watcherURL = "http://" +
 			allNodesInfo[key].Client.NodeIP +
 			allNodesInfo[key].Client.APIServerPort +
@@ -266,6 +270,11 @@ func getWatchersInfoFromKubeNG() (allWatchersNamespacesInfo map[int]SaveNamespac
 
 		break
 	}
+	if watcherURL == "" {
+		logdebug.Println(logdebug.LevelError, "未匹配工作区域", jobZoneType)
+		return
+	}
+
 	resp, _ := communicate.SendRequestByJSON(communicate.GET, watcherURL, nil)
 	json.Unmarshal(resp, &allWatchersNamespacesInfo)
 
@@ -314,11 +323,11 @@ func getWatchNamespacesDetailInfo(w http.ResponseWriter, r *http.Request) {
 	var allWatchersNamespacesInfo map[int]SaveNamespaceInfo // from kubeng already be watched 租户
 
 	//初始化将要发给前端的所有租户的信息
-	namespacesDetail := initWebMsg(w, r, &webAllNamespacesInfo)
+	namespacesDetail, jobZoneType := initWebMsg(w, r, &webAllNamespacesInfo)
 	logdebug.Println(logdebug.LevelDebug, "初始状态下的所有租户信息", webAllNamespacesInfo)
 
 	//从kubeng获取已经被监视的租户信息
-	allWatchersNamespacesInfo = getWatchersInfoFromKubeNG()
+	allWatchersNamespacesInfo = getWatchersInfoFromKubeNG(jobZoneType)
 	logdebug.Println(logdebug.LevelDebug, "前端已经使用的租户信息", allWatchersNamespacesInfo)
 
 	markUsedNamesapces(webAllNamespacesInfo, allWatchersNamespacesInfo)

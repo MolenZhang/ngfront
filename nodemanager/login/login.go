@@ -2,14 +2,16 @@ package login
 
 import (
 	"encoding/json"
+	"github.com/emicklei/go-restful"
 	"io/ioutil"
 	"net/http"
+	"ngfront/communicate"
 	"ngfront/config"
 	"ngfront/logdebug"
 	"ngfront/nodemanager/nodes"
+	"sort"
+	"strconv"
 	"time"
-
-	"github.com/emicklei/go-restful"
 )
 
 //RequestBody 请求报文体
@@ -120,7 +122,10 @@ func (svc *ServiceInfo) login(request *restful.Request, response *restful.Respon
 		K8sMasterHost:             reqMsg.ReqBody.K8sMasterHost,
 		K8sAPIVersion:             reqMsg.ReqBody.K8sAPIVersion,
 	}
+	//同步监控数据信息到新的client
+	syncWatcherCfgInfo(reqMsg.ReqBody.NodeIP, reqMsg.ReqBody.APIServerPort, reqMsg.ReqBody.WatchManagerAPIServerPath, reqMsg.ReqBody.JobZoneType)
 
+	// 将新上线的节点信息 以及 watcher 信息 保存到nodesInfo中
 	nodes.AddClientData(clientInfo) //将IP+clientID 为key add进map
 	url := "http://" + reqMsg.ReqBody.NodeIP + reqMsg.ReqBody.APIServerPort + "/" + reqMsg.ReqBody.WatchManagerAPIServerPath
 	watcherCfgs := getWatcherCfgs(url)
@@ -134,6 +139,64 @@ func (svc *ServiceInfo) login(request *restful.Request, response *restful.Respon
 	response.WriteHeaderAndJson(200, reqMsg, "application/json")
 
 	return
+}
+
+func syncWatcherCfgInfo(nodeIP, apiServerPort, watchManagerAPIServerPath, jobZoneType string) {
+	//删除新上线的client信息的watcher信息 ---> 获取watcherID ---> 删除对应监控信息
+	newClientWatcherURL := "http://" + nodeIP + apiServerPort + "/" + watchManagerAPIServerPath
+	newWatcherInfo := map[int]nodes.WatchManagerCfg{}
+
+	resp, _ := communicate.SendRequestByJSON(communicate.GET, newClientWatcherURL, nil)
+	json.Unmarshal(resp, &newWatcherInfo)
+
+	allNodesInfo := nodes.GetAllNodesInfo()
+	//如果集群中没有节点信息 则添加 不删除
+	if 0 != len(allNodesInfo) {
+		for watcherID := range newWatcherInfo {
+			newClientSingleWatcherURL := newClientWatcherURL + "/" + strconv.Itoa(watcherID)
+			communicate.SendRequestByJSON(communicate.DELETE, newClientSingleWatcherURL, nil)
+		}
+	}
+
+	// 判断区域 从旧的NodesInfo中选区域相同的任一client信息上的watcher信息同步给新上线的client
+	for _, nodeInfo := range nodes.GetAllNodesInfo() {
+
+		addWatchersToNewClient(nodeInfo, jobZoneType, newClientWatcherURL)
+		break
+	}
+}
+
+func addWatchersToNewClient(nodeInfo nodes.NodeInfo, jobZoneType, newWatcherInfoURL string) {
+	keyForMap := make([]int, 0)
+
+	if nodeInfo.Client.JobZoneType != jobZoneType {
+		return
+	}
+
+	getOldWatcherInfoURL := "http://" +
+		nodeInfo.Client.NodeIP +
+		nodeInfo.Client.APIServerPort +
+		"/" +
+		nodeInfo.Client.WatchManagerAPIServerPath
+
+	syncWatcherInfo := map[int]nodes.WatchManagerCfg{}
+	resp, _ := communicate.SendRequestByJSON(communicate.GET, getOldWatcherInfoURL, nil)
+	json.Unmarshal(resp, &syncWatcherInfo)
+	//获取map的key值
+	for key, _ := range syncWatcherInfo {
+		keyForMap = append(keyForMap, key)
+	}
+
+	// 排序map的key值  同步时因map无序 导致节点之间的配置信息所对应的watcherID 不一致，因此需事先固定好顺序
+	sort.Ints(keyForMap)
+	logdebug.Println(logdebug.LevelDebug, "排序后的watcherID", keyForMap)
+
+	for _, key := range keyForMap {
+		logdebug.Println(logdebug.LevelDebug, "同步增加时的URL:", newWatcherInfoURL, key)
+
+		communicate.SendRequestByJSON(communicate.POST, newWatcherInfoURL, syncWatcherInfo[key])
+	}
+
 }
 
 func getWatcherCfgs(url string) map[int]nodes.WatchManagerCfg {
