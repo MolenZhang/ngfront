@@ -350,8 +350,9 @@ func (svc *ServiceInfo) createNginxCfg(request *restful.Request, response *restf
 		}
 	}
 
-	webResp := webResponseBody{
+	webResp := ResponseBody{
 		Result: true,
+		WebCfg: nginxCfg,
 	}
 
 	response.WriteHeaderAndJson(200, webResp, "application/json")
