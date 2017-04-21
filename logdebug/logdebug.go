@@ -77,7 +77,27 @@ func Println(logLevel int, v ...interface{}) {
 
 	logContent := "[" + printLevelConvertMap[logLevel] + "]" + "[" + f.Name() + ":" + strconv.Itoa(line) + "]"
 
-	log.Println(logContent, v)
+	//	log.Println(logContent, v)
+
+	logDir := "/opt/ngfront/log/"
+	os.Mkdir(logDir, 0754)
+	logFileName := logDir + "ngfront.log"
+	logFile, err := os.OpenFile(logFileName, os.O_APPEND|os.O_CREATE, 0754)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	defer logFile.Close()
+
+	writers := []io.Writer{
+		logFile,
+		os.Stdout,
+	}
+
+	fileAndStdoutWriter := io.MultiWriter(writers...)
+	gLogger := log.New(fileAndStdoutWriter, "\r\n", log.Ldate|log.Ltime|log.Lshortfile)
+
+	gLogger.Println(logContent, v)
 
 	return
 }
@@ -108,8 +128,9 @@ func Printf(logLevel int, format string, v ...interface{}) {
 	logContent := "[" + printLevelConvertMap[logLevel] + "]" + "[" + f.Name() + ":" + strconv.Itoa(line) + "]" + format
 
 	//	log.Println(logContent, v)
-
-	logFileName := "/opt/ngfront/log/ngfront.log"
+	logDir := "/opt/ngfront/log/"
+	os.Mkdir(logDir, 0754)
+	logFileName := logDir + "ngfront.log"
 	logFile, err := os.OpenFile(logFileName, os.O_RDWR|os.O_CREATE, 0777)
 	if err != nil {
 		log.Println(err)
