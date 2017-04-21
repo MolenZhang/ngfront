@@ -381,9 +381,13 @@ func (svc *ServiceInfo) deleteUserCfgs(request *restful.Request, response *restf
 
 		communicate.SendRequestByJSON(communicate.PUT, appCfgURL, userNginxCfg)
 	}
+	webResp := webResponseBody{
+		Result: true,
+	}
+
+	response.WriteHeaderAndJson(200, webResp, "application/json")
 
 	return
-
 }
 
 //Init 初始化函数
@@ -454,8 +458,8 @@ func (svc *ServiceInfo) Init() {
 		Operation("downloadfile"))
 
 	ws.Route(ws.PUT("/deleteUserCfgs").To(svc.deleteUserCfgs).
-		Doc("download nginx config").
-		Operation("downloadfile"))
+		Doc("delete user nginxCfg").
+		Operation("deleteUserCfgs"))
 
 	restful.Add(ws)
 

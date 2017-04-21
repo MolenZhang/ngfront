@@ -8,6 +8,7 @@ import (
 	"ngfront/communicate"
 	"ngfront/logdebug"
 	"ngfront/nodemanager/nodes"
+	"strings"
 )
 
 //ResponseBody 用于衡量每次restful请求的执行结果(通常是PUT POST)
@@ -34,6 +35,8 @@ type NginxTestToolInfo struct {
 //ServiceInfo 服务信息
 type ServiceInfo struct {
 }
+
+const nginxTestSuccessSymbol string = "successful\n"
 
 func (svc *ServiceInfo) execToolsCMD(request *restful.Request, response *restful.Response) {
 	logdebug.Println(logdebug.LevelDebug, "<<<<<<<前端测试nginx Tool>>>>>>>")
@@ -75,7 +78,16 @@ func (svc *ServiceInfo) execToolsCMD(request *restful.Request, response *restful
 
 	json.Unmarshal(resp, &respMsg)
 
-	if respMsg.ErrorMessage == "" || nginxTestToolCMD.NginxCmdType == "test" {
+	if nginxTestToolCMD.NginxCmdType == "test" {
+		if checkNginxTestResult(respMsg.ErrorMessage) == true {
+			webRespMsg.Result = true
+			webRespMsg.NginxCmd = respMsg.NginxCmd
+			response.WriteHeaderAndJson(200, webRespMsg, "application/json")
+			return
+		}
+	}
+
+	if respMsg.ErrorMessage == "" {
 		webRespMsg.Result = true
 		webRespMsg.NginxCmd = respMsg.NginxCmd
 		response.WriteHeaderAndJson(200, webRespMsg, "application/json")
@@ -88,6 +100,16 @@ func (svc *ServiceInfo) execToolsCMD(request *restful.Request, response *restful
 	response.WriteHeaderAndJson(200, webRespMsg, "application/json")
 
 	return
+}
+
+func checkNginxTestResult(testContent string) bool {
+	outPutWords := strings.Split(testContent, " ")
+	lastWordIndex := len(outPutWords) - 1
+
+	if outPutWords[lastWordIndex] == nginxTestSuccessSymbol {
+		return true
+	}
+	return false
 }
 
 //Init 初始化路由信息

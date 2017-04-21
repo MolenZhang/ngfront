@@ -1,8 +1,11 @@
 package logdebug
 
 import (
+	"io"
+	//"io/ioutil"
 	"log"
 	"ngfront/config"
+	"os"
 	"runtime"
 	"strconv"
 	"strings"
@@ -103,6 +106,26 @@ func Printf(logLevel int, format string, v ...interface{}) {
 	f := runtime.FuncForPC(pc)
 
 	logContent := "[" + printLevelConvertMap[logLevel] + "]" + "[" + f.Name() + ":" + strconv.Itoa(line) + "]" + format
-	log.Printf(logContent, v)
+
+	//	log.Println(logContent, v)
+
+	logFileName := "/opt/ngfront/log/ngfront.log"
+	logFile, err := os.OpenFile(logFileName, os.O_RDWR|os.O_CREATE, 0777)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	defer logFile.Close()
+
+	writers := []io.Writer{
+		logFile,
+		os.Stdout,
+	}
+
+	fileAndStdoutWriter := io.MultiWriter(writers...)
+	gLogger := log.New(fileAndStdoutWriter, "\r\n", log.Ldate|log.Ltime|log.Lshortfile)
+
+	gLogger.Println(logContent, v)
+
 	return
 }
