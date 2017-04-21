@@ -18,6 +18,14 @@ type ResponseBody struct {
 	//ErrCode      int32
 }
 
+//webResponseBody 返回给前端的信息
+type webResponseBody struct {
+	Result       bool
+	ErrorMessage string
+	NginxCmd     string
+	//ErrCode      int32
+}
+
 //NginxTestToolInfo 测试工具数据结构
 type NginxTestToolInfo struct {
 	NginxCmdType string
@@ -63,9 +71,21 @@ func (svc *ServiceInfo) execToolsCMD(request *restful.Request, response *restful
 
 	respMsg := ResponseBody{}
 
+	webRespMsg := webResponseBody{}
+
 	json.Unmarshal(resp, &respMsg)
 
-	response.WriteHeaderAndJson(200, respMsg, "application/json")
+	if respMsg.ErrorMessage == "" || nginxTestToolCMD.NginxCmdType == "test" {
+		webRespMsg.Result = true
+		webRespMsg.NginxCmd = respMsg.NginxCmd
+		response.WriteHeaderAndJson(200, webRespMsg, "application/json")
+		return
+	}
+
+	webRespMsg.ErrorMessage = respMsg.ErrorMessage
+	webRespMsg.NginxCmd = respMsg.NginxCmd
+	webRespMsg.Result = false
+	response.WriteHeaderAndJson(200, webRespMsg, "application/json")
 
 	return
 }
