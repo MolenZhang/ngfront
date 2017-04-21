@@ -270,4 +270,19 @@ i.fa-one{
 	padding-left: 4px!important;
     margin-left: 5px;
 }
+i.fa-btn{
+	background: url(/images/off_on.png) no-repeat;
+	width: 44px;
+	height: 17px;
+	display: inline-block;
+}
+i.fa-off{
+	background-position: 7px 2px;
+}
+i.fa-on{
+	background-position: 7px -16px;
+}
+.delPslCfg{
+	vertical-align: middle;
+}
 

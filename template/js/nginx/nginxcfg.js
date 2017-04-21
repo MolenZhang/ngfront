@@ -57,6 +57,15 @@
         	$(this).parents('table').find(".chkAll").prop('checked', $(this).is(":checked"));
         }
     });
+    $(document).on("click",".fa-off",function(){
+    	$(this).removeClass("fa-off").addClass("fa-on");
+    	$(this).next("span").css("color","#FF1C00");
+    	sendNginxCfg(this);
+    });
+    $(document).on("click",".fa-on",function(){
+    	$(this).removeClass("fa-on").addClass("fa-off");
+    	$(this).next("span").css("color","#676a6c")
+    });
 
 	
  });/*reday*/
@@ -196,7 +205,8 @@ function showNgsHtml(data){
                                     //+'<span title="同步"><i class="fa fa-sort-amount-asc fa-one" onclick="issuedCfgIps(this)"></i></span>'
                                     +'<span title="保存"><i class="fa fa-save fa-one" onClick="saveSerPart(this)"></i></span>'
                                     +'<span title="删除"><i class="fa fa-trash fa-one" onClick="delOneSerPart(this)"></i></span>'
-                                    +'<span title="伸缩"><i class="fa fa-caret-down fa-one" onClick="toggleOneSerPart(this)"></i></span>'
+                                    +'<span class="hide" title="伸缩"><i class="fa fa-caret-down fa-one" onClick="toggleOneSerPart(this)"></i></span>'
+                                    +'<span class="delPslCfg"><i class="fa-btn fa-off"></i><span>删除服务的同时删除该个性化配置</span></span>'
                                     +'<span class="ngConfigPartTit"></span>'
 									+'<div class="ngConfigPartCon">'
 									+'<form class="nginxForm '+IsDefaultCfgClass+'" method="post" action="" AppSrcType="'+nginxList.CfgType+'" IsDefaultCfg="'+CfgsList.IsDefaultCfg+'">'
@@ -419,11 +429,12 @@ function showNgsHtml(data){
 
 		var str='<div class="ngConfigPart" border:1px solid #FF0000 >' 
 			+'<input type="checkbox" class="ngConfigCheckbox"/> '
-			+'<span class="hide addOneSerPartAfter"><i class="fa fa-plus fa-one fa-serverPlus" onClick="addOneSerPart(this)"></i></span> '
+			+'<span class="hide addOneSerPartAfter" title="新增"><i class="fa fa-plus fa-one fa-serverPlus" onClick="addOneSerPart(this)"></i></span> '
+			+'<span class="hide addOneSerPartAfter" title="保存"><i class="fa fa-save fa-one" onClick="saveSerPart(this)"></i></span>'
 			//+'<span class="hide addOneSerPartAfter"><i class="fa fa-sort-amount-asc fa-one" onClick="issuedCfgIps(this)"></i></span> '
 			+'<span title="提交配置"><i class="fa fa-plus-circle fa-one" onClick="nginxFormCommOne(this)"></i></span> '
 			+'<span title="删除"><i class="fa fa-trash fa-one" onClick="removeOneSerPart(this)"></i></span> '
-			+'<span title="伸缩"><i class="fa fa-caret-down fa-one" onClick="toggleOneSerPart(this)"></i></span> '
+			+'<span class="hide" title="伸缩"><i class="fa fa-caret-down fa-one" onClick="toggleOneSerPart(this)"></i></span> '
 			+'<span class="textNotSet">未提交的配置</span>'
 			+'<span class="ngConfigPartTit"></span>'
 			+'<div class="ngConfigPartCon">'
@@ -469,7 +480,7 @@ function showNgsHtml(data){
 			+'<span>listen:</span><input type="text" id="ListenPort" class="ListenPort" name="ListenPort" value="'+ListenPort+'">;'
 			+'</div>'
 			+'<div class="nginx-label col-md-offset-1">'
-			+'<span>server_name:</span><input type="text" id="ServerName" class="ServerName"  name="ServerName" value="'+ServerName+'">;'
+			+'<span>server_name:</span><input type="text" id="ServerName" class="ServerName"  name="ServerName" value="'+ServerName+'" disabled>;'
 			+'</div>'
 			+'<div class="nginx-label col-md-offset-1">'
 			+'<span>location:</span><input type="text" id="Location" class="Location" name="Location" value="'+Location+'">{'
@@ -1344,6 +1355,103 @@ function localRefreshNg(obj){
 			}
 		})
 	}
+
+//删除服务的同事删除该个性化配置
+function sendNginxCfg(obj){
+	var ngConfigPart = $(obj).parent().parent().find('.nginxForm');
+		var ServerName = ngConfigPart.find("#ServerName").val();
+		var ListenPort = ngConfigPart.find("#ListenPort").val();
+		var RealServerPath = ngConfigPart.find(".RealServerPath").val();
+		var Namespace = ngConfigPart.find(".appNameAndNamespace").attr("namespace");
+		var AppName = ngConfigPart.find(".appNameAndNamespace").attr("appname");
+		var Location = ngConfigPart.find("#Location").val();
+		var ProxyRedirectSrcPath = ngConfigPart.find("#ProxyRedirectSrcPath").val();
+		var ProxyRedirectDestPath = ngConfigPart.find("#ProxyRedirectDestPath").val();
+		var IsUpstreamIPHash = ngConfigPart.find("#IsUpstreamIPHash").val();
+		if(IsUpstreamIPHash == "true"){
+			IsUpstreamIPHash = true;
+		}else{
+			IsUpstreamIPHash = false;
+		}
+		//OperationType 新建create 删除delete 更新update
+
+		var OperationType = "create";
+
+		var UpstreamUserRules = "";
+		if(ngConfigPart.find(".UpstreamUserRulesDiv")){
+			UpstreamUserRules = RulesData(ngConfigPart.find(".UpstreamUserRulesDiv"));
+		}else{
+			UpstreamUserRules = null;
+		}
+
+		var ServerUserRules = "";
+		if(ngConfigPart.find(".ServerUserRulesDiv")){
+			ServerUserRules = RulesData(ngConfigPart.find(".ServerUserRulesDiv"));
+		}else{
+			ServerUserRules = null;
+		}
+
+		var LocationUserRules ="";
+		if(ngConfigPart.find(".LocationUserRulesDiv")){
+			LocationUserRules = RulesData(ngConfigPart.find(".LocationUserRulesDiv"));
+		}else{
+			LocationUserRules = null;
+		}
+
+		var LogRuleName = ngConfigPart.find(".LogRuleName").val();
+		var LogFileDirPath = ngConfigPart.find(".LogFileDirPath").val();
+		var LogTemplateName = ngConfigPart.find(".LogTemplateName").val();
+		var DeleteUserCfgs = false;
+		var IsDefaultCfg = false;
+		var AppSrcType = ngConfigPart.attr("AppSrcType");
+		
+	var sendNginxCfgData = {
+      "ServerName": ServerName,
+      "ListenPort": ListenPort,
+      "RealServerPath": RealServerPath,
+      "Namespace": Namespace,
+      "AppName": AppName,
+      "Location": Location,
+      "ProxyRedirectSrcPath": ProxyRedirectSrcPath,
+      "ProxyRedirectDestPath": ProxyRedirectDestPath,
+      "IsUpstreamIPHash": IsUpstreamIPHash,
+      "OperationType": OperationType,
+      "UpstreamUserRules": {
+       "UserRuleSet": UpstreamUserRules
+      },
+      "ServerUserRules": {
+       "UserRuleSet": ServerUserRules
+      },
+      "LocationUserRules": {
+       "UserRuleSet": LocationUserRules
+      },
+      "LogRule": {
+       "LogRuleName": LogRuleName,
+       "LogFileDirPath": LogFileDirPath,
+       "LogTemplateName": LogTemplateName
+      },
+      "DeleteUserCfgs": DeleteUserCfgs,
+      "IsDefaultCfg": IsDefaultCfg,
+      "AppSrcType": AppSrcType
+     };
+
+	
+	var saveUrl = "http://"+areaIP+":"+areaPort+"/nginxcfg/deleteUserCfgs";
+	$.ajax({
+		url : saveUrl,
+		dataType: "json",
+		contentType: "text/html; charset=UTF-8",
+    	type: "put",
+		headers: {
+			"Content-Type": "application/json",
+			"Accept": "application/json",
+		},
+		data: JSON.stringify(sendNginxCfgData),
+		success :function(data){
+			var data=data;
+		}
+	})
+}
 	
 function areaRefresh(){
 	location.href = "http://"+areaIP+":"+areaPort+"/ngfront";
