@@ -1,17 +1,17 @@
 package main
 
 import (
+	"log"
+	"net/http"
 	"ngfront/config"
 	"ngfront/nodemanager/heart"
 	"ngfront/nodemanager/login"
 	"ngfront/nodemanager/nodes"
 	"ngfront/nodemanager/zone"
 	"ngfront/nodemanager/zone/clients"
+	"ngfront/nodemanager/zone/clients/tools"
 	"ngfront/nodemanager/zone/clients/watcher"
 	"ngfront/nodemanager/zone/clients/watcher/nginxcfg"
-	//"log"
-	"net/http"
-	"ngfront/nodemanager/zone/clients/tools"
 )
 
 //NGFrontManager  ngfront 管理器
@@ -50,6 +50,7 @@ func init() {
 }
 
 func main() {
+	showStartCfgInfo()
 	err := http.ListenAndServe(":"+config.NgFrontCfg.ListenPort, nil)
 	if err != nil {
 		panic(err)
@@ -58,4 +59,16 @@ func main() {
 	}
 
 	return
+}
+
+func showStartCfgInfo() {
+	log.Println("********************Ngfront Start Config*************************")
+	log.Println("[Ngfront 监听地址]:          ", config.NgFrontCfg.ListenIP)
+	log.Println("[Ngfront 监听端口]:          ", config.NgFrontCfg.ListenPort)
+	log.Println("[Ngfront 日志路径]:          ", config.NgFrontCfg.LogDir)
+	log.Println("[Ngfront 日志级别]:          ", config.NgFrontCfg.LogLevel)
+	log.Println("[Ngfront 模板路径]:          ", config.NgFrontCfg.TemplateDir)
+	log.Println("[Ngfront 心跳周期]:          ", config.NgFrontCfg.HeartCycle)
+	log.Println("[Ngfront 心跳地址]:          ", config.NgFrontCfg.HeartServerAddr)
+	log.Println("*****************************************************************\n\n")
 }

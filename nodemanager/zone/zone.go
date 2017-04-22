@@ -106,10 +106,12 @@ func getZoneInfo(w http.ResponseWriter, r *http.Request) {
 
 //Init 初始化函数
 func (svc *ServiceInfo) Init() {
-	http.Handle("/css/", http.FileServer(http.Dir("template")))
-	http.Handle("/js/", http.FileServer(http.Dir("template")))
-	http.Handle("/plugins/", http.FileServer(http.Dir("template")))
-	http.Handle("/images/", http.FileServer(http.Dir("template")))
+
+	templateDir := config.NgFrontCfg.TemplateDir
+	http.Handle("/css/", http.FileServer(http.Dir(templateDir+"template")))
+	http.Handle("/js/", http.FileServer(http.Dir(templateDir+"template")))
+	http.Handle("/plugins/", http.FileServer(http.Dir(templateDir+"template")))
+	http.Handle("/images/", http.FileServer(http.Dir(templateDir+"template")))
 
 	http.HandleFunc("/ngfront", loadHomePage)
 	http.HandleFunc("/ngfront/zone", getZoneInfo)

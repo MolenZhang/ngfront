@@ -95,7 +95,7 @@ func getAppCfgsURL(request *restful.Request, response *restful.Response) (client
 
 //get all
 func (svc *ServiceInfo) getAllNginxCfgs(request *restful.Request, response *restful.Response) {
-	logdebug.Println(logdebug.LevelDebug, "获取完整的app nginx配置集合!")
+	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<获取完整的app nginx配置集合!>>>>>>>>>")
 
 	clientInfo, k8sAppCfgsURL, externAppCfgsURL := getAppCfgsURL(request, response)
 
@@ -192,7 +192,7 @@ func (svc *ServiceInfo) getSingleNginxCfg(request *restful.Request, response *re
 
 // put
 func (svc *ServiceInfo) updateNginxCfg(request *restful.Request, response *restful.Response) {
-	logdebug.Println(logdebug.LevelDebug, "更新服务的一条nginx配置")
+	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<前端更新服务的一条nginx配置>>>>>>>>>")
 
 	nginxCfg, jobZoneType := getWebInfo(request, response)
 	kubeNGCfg := nginxCfg.convertToKubeNGCfg()
@@ -274,7 +274,7 @@ func getAppInfoURL(client nodes.ClientInfo, nginxCfg WebConfig) (appCfgURL, ngin
 
 //delete
 func (svc *ServiceInfo) deleteNginxCfg(request *restful.Request, response *restful.Response) {
-	logdebug.Println(logdebug.LevelDebug, "<<<<<<前端开始删除服务配置>>>>>>")
+	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<前端开始删除服务配置>>>>>>>>>")
 
 	nginxCfg, jobZoneType := getWebInfo(request, response)
 	kubeNGCfg := nginxCfg.convertToKubeNGCfg()
@@ -317,7 +317,7 @@ func (svc *ServiceInfo) deleteNginxCfg(request *restful.Request, response *restf
 
 //post
 func (svc *ServiceInfo) createNginxCfg(request *restful.Request, response *restful.Response) {
-	logdebug.Println(logdebug.LevelInfo, "新增服务的一条nginx配置!")
+	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<新增服务的一条nginx配置!>>>>>>>>>")
 
 	nginxCfg, jobZoneType := getWebInfo(request, response)
 
@@ -361,7 +361,7 @@ func (svc *ServiceInfo) createNginxCfg(request *restful.Request, response *restf
 }
 
 func (svc *ServiceInfo) deleteUserCfgs(request *restful.Request, response *restful.Response) {
-	logdebug.Println(logdebug.LevelDebug, "前端开始删除个性化配置")
+	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<前端开始删除个性化配置>>>>>>>>>")
 
 	request.Request.ParseForm()
 	jobZoneType := request.Request.Form.Get("JobZoneType")

@@ -59,9 +59,6 @@ func (svc *ServiceInfo) execToolsCMD(request *restful.Request, response *restful
 	key := client.CreateKey()
 	clientInfo := nodes.GetClientInfo(key)
 
-	logdebug.Println(logdebug.LevelDebug, "NodeIP:", client.NodeIP)
-	logdebug.Println(logdebug.LevelDebug, "ClientID:", client.ClientID)
-
 	nginxCmdTestURL := "http://" +
 		clientInfo.NodeIP +
 		clientInfo.APIServerPort +
