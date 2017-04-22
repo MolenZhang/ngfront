@@ -1,3 +1,4 @@
+//Package config 主要定义和初始化服务启动的参数以及将一些参数传递给js用于通信
 package config
 
 import (
@@ -32,7 +33,7 @@ const DefaultHeartTimeout = DefaultHeartCycle * 3
 //DefaultHeartServerPath 默认心跳服务器path
 const DefaultHeartServerPath = "/ngfront/heart"
 
-//DefaultListenIP
+//DefaultListenIP 默认的监控IP
 const DefaultListenIP = "localhost"
 
 //DefaultListenPort 默认监听端口
@@ -44,7 +45,7 @@ const DefaultLogLevel = "info"
 //DefaultTemplateDir 默认模板路径
 const DefaultTemplateDir = "./"
 
-//DefaultLogDIr 默认日志文件保存路径
+//DefaultLogDir 默认日志文件保存路径
 const DefaultLogDir = "/opt/ngfront/log/"
 
 // Init 初始配置参数

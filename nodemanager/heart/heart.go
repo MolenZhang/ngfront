@@ -1,3 +1,4 @@
+//Package heart 主要用于跟KubeNg进行心跳，将心跳失败的节点剔除
 package heart
 
 import (

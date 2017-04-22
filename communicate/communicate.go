@@ -1,6 +1,6 @@
+//Package communicate 主要用于http协议之间的数据通讯
+//比如http 的GET POST DELETE PUT GET 操作
 package communicate
-
-//通讯包
 
 import (
 	"encoding/json"

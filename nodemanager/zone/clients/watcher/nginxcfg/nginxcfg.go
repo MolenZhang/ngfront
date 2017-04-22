@@ -1,3 +1,10 @@
+/*Package nginxcfg 主要用于前端进行服务的nginx配置相关操作
+1、同一区域下的所有节点 新增一套nginx配置
+2、同一区域下的所有节点 删除一套nginx配置
+3、同一区域下的所有节点 更新一套nginx配置
+4、同一区域下的所有节点 获取一套nginx配置
+5、同一区域下的所有节点 获取所有nginx配置
+*/
 package nginxcfg
 
 import (

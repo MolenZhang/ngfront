@@ -1,3 +1,4 @@
+//Package zone 主要展示了所有的工作区域以及区域下的节点信息
 package zone
 
 //zone 就是Home

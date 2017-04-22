@@ -1,3 +1,4 @@
+//Package login 用于跟KubeNg通信，将上线的节点信息保存起来用于后续操作
 package login
 
 import (

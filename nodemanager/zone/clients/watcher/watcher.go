@@ -1,3 +1,11 @@
+/*Package watcher 主要用于前端监控集群信息以及节点信息
+主要有以下功能：
+	1、新增一个监视计划
+	2、删除一个监视计划
+	3、编辑一个监视计划
+	3、获取一个监视计划
+	4、租户筛选
+*/
 package watcher
 
 //watcher页面 展示具体的某一台client下的监视器信息 可以编辑
@@ -13,6 +21,22 @@ import (
 	"sort"
 	"strconv"
 )
+
+// 租户列表
+type watcherNamespaceSets struct {
+	WatchNamespaceSets []string
+}
+
+// NamespaceAppInfo 单个租户下的所有服务
+type NamespaceAppInfo struct {
+	Namespace   string
+	AppInfoList []AppInfo
+}
+
+// NamespaceAppInfoList  单个watcherID下所有的租户以及所有服务列表
+type NamespaceAppInfoList struct {
+	NamespaceAppsList []NamespaceAppInfo
+}
 
 //前端单个watcher需展示的信息
 type watcherInfo struct {
@@ -380,27 +404,11 @@ func getSingleWatcherInfo(request *restful.Request, response *restful.Response) 
 
 }
 
-//WatcherCfg 租户列表
-type WatcherCfg struct {
-	WatchNamespaceSets []string
-}
-
-// NamespaceAppInfo 单个租户下的所有服务
-type NamespaceAppInfo struct {
-	Namespace   string
-	AppInfoList []AppInfo
-}
-
-// NamespaceAppInfoList  单个watcherID下所有的租户以及所有服务列表
-type NamespaceAppInfoList struct {
-	NamespaceAppsList []NamespaceAppInfo
-}
-
 func getNamespaceInfoByWatcherID(request *restful.Request, response *restful.Response) {
 	logdebug.Println(logdebug.LevelDebug, "<<<<<<根据watcherID获取租户信息和服务信息>>>>>>")
 
 	var (
-		watcherCfg           WatcherCfg
+		watcherCfg           watcherNamespaceSets
 		namespaceAppInfoList NamespaceAppInfoList
 		getEndpointsURL      string
 	)
@@ -450,15 +458,15 @@ func getNamespaceInfoByWatcherID(request *restful.Request, response *restful.Res
 	return
 }
 
-// WatcherInitInfoResp watcher初始信息
-type WatcherInitInfoResp struct {
+// watcherInitInfoResp watcher初始信息
+type watcherInitInfoResp struct {
 	K8sMasterHost string
 	K8sAPIVersion string
 }
 
 func getWatcherInfo(request *restful.Request, response *restful.Response) {
 
-	webResp := WatcherInitInfoResp{}
+	webResp := watcherInitInfoResp{}
 	allNodesInfo := nodes.GetAllNodesInfo()
 	for _, singleNodeInfo := range allNodesInfo {
 		webResp.K8sMasterHost = singleNodeInfo.Client.K8sMasterHost

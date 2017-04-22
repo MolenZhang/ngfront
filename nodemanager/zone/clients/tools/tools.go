@@ -1,3 +1,4 @@
+//Package tools 主要用于前端进行nginx一些命令的测试，测试节点nginx的相关信息
 package tools
 
 import (

@@ -1,3 +1,7 @@
+/*Package logdebug 主要有以下两个功能
+1、定义日志打印级别
+2、将日志定向输入到指定文件中
+*/
 package logdebug
 
 import (

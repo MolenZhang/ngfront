@@ -1,3 +1,4 @@
+//Package nodes 主要保存了上线的节点信息以及跟kubeNg通信的各个API接口路径信息
 package nodes
 
 //关于Node的所有信息以及数据结构都在此保存 操作
@@ -34,6 +35,7 @@ type WatchManagerCfg struct {
 	WatcherID              int
 }
 
+//WatchManagerCfgs 保存上线的监控信息
 var WatchManagerCfgs map[int]WatchManagerCfg
 
 //ClientInfo 客户端信息(kubeng名义上是ngfront的客户端 实际上它提供了多个APIServer)

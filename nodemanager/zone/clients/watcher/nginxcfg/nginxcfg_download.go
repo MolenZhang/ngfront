@@ -159,7 +159,7 @@ func getDownloadURL(nodeIP, clientID, watcherID string) (nginxCfgDownloadURL str
 
 func (svc *ServiceInfo) realDownload(request *restful.Request, response *restful.Response) {
 
-	logdebug.Println(logdebug.LevelDebug, "前端开始下载")
+	logdebug.Println(logdebug.LevelDebug, "<<<<<<前端开始下载>>>>>>")
 	//write to web
 	filePath := localDownloadFileName
 	file, _ := os.Open(filePath)
