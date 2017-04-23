@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<title>nginx-KubeNG</title>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css"
+	href="/plugins/bootstrap-3.3.5/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css"
+	href="/plugins/Font-Awesome-master/css/font-awesome.css" />
+<link rel="stylesheet" type="text/css"
+	href="/css/core/base.css" />
+<link rel="stylesheet" type="text/css"
+	href="/css/mod/watcher.css" />
+</head>
+<body>
+	<header class="header">
+	    <div class="navbar navbar-fixed-top">
+	        <div class="container">
+	            <div class="navbar-header">
+	                <a href="javascript:void(0);">
+	                    <h2>KubeNG管理</h2>
+	                </a>
+	            </div>
+	            
+	        </div>
+	    </div>
+	</header>
+	
+	<div class="page-container">
+		<article>
+			<div class="page-main">
+				
+				<div class="contentMain">
+	                <aside class="aside-btn">
+	                    <div class="btns-group">
+	                        <a class="Record action" onclick="areaRefresh()">
+	                        <i class="fa fa-home"></i>nginx代理区域
+	                        </a> > 
+	                        <a class="Record action" onclick="clientsRefresh()">节点管理</a> > 
+	                        <a class="Record action" onclick="watcherRefresh()">KubeNG监视器管理</a>
+	                    </div>
+	                </aside>  
+	                <div class="item-obj">
+						<div class="n-nodes">
+							<div class="n-nodeLeft">
+								<p class="n-img" id="imgStatusInfo">
+									
+								</p>
+								
+								<p class="table-tit">相关配置</p>
+								<span class="table-titSec"><i class="fa fa-warning"></i>(注意：修改后的配置需重启监控才会生效)</span>
+								<form id="watcherForm" method='post'>
+									<table class="table">
+										<tbody id="watcherCfgInfo">
+										</tbody>
+									</table>
+								</form>
+							</div>
+							<div class="n-nodeRight">
+								<p class="table-tit">基本信息</p>
+									<table>
+										<tbody id="watcherBasicInfo">
+											
+										</tbody>
+									</table>
+								<div id="main" style="width: 90%;height:400px;margin-top:20px;padding-left:16px;"></div>
+							</div>
+						</div>
+					</div> 
+	            </div> 
+			</div>
+		</article>
+	</div>
+	<input type="hidden" value="" id="areaIP">
+	<input type="hidden" value="" id="areaPort">
+	<script type="text/javascript" src="/js/plugins/jquery-1.11.3.js"></script>
+	<script type="text/javascript" src="/plugins/bootstrap-3.3.5/dist/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="/plugins/layer/layer.js"></script>
+    <script type="text/javascript" src="/js/plugins/echarts.common.min.js"></script>
+    <script type="text/javascript" src="/js/customer/custom.js"></script>
+    <script type="text/javascript" src="/js/customer/ipPort.js"></script>
+    <script type="text/javascript" src="/js/nginx/watcher.js"></script>
+</body>
+</html> 

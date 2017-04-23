@@ -1,0 +1,136 @@
+.aside-btn {
+    height: 60px;
+    position: relative;
+    padding: 0 20px;
+    background: #EAEEF1;
+}
+.aside-btn .btns-group {
+    position: absolute;
+    bottom: 16px;
+}
+.btns-group .btn-white {
+    background: #fff;
+    color: #3C7BCA;
+    width: 150px;
+}
+.item-obj {
+    background-color: #fff;
+    padding-top:16px;
+    height:100%;
+}
+.n-nodes{
+	width: 100%;
+	height: 800px;
+}
+.n-img{
+	text-align:center;
+}
+.n-nodeLeft{
+	width:50%;
+	float:left;
+}
+.n-nodeLeft img{
+	width:100px;
+	height:100px;
+	background-color:#ddd;
+}
+td.editItem{
+	display:none;
+}
+.fa-nodeSave,.fa-nodeTimes,.fa-nodeEdit{
+	float:right;
+	line-height:35px;
+}
+.fa-nodeTimes{
+	margin-right: 10px;
+}
+
+.n-nodes table{
+	width:96%;
+	margin: 0 auto;
+}
+.n-nodes table tr{
+	height: 35px;
+}
+.n-nodes table tr td{
+	line-height: 35px;
+	padding-left: 12px;
+	border-bottom:1px solid #ccc;
+}
+.n-nodes table tr td:nth-child(1){
+	background-color: #efefef;
+	
+}
+.n-nodes table tr td input{
+	line-height: 24px;
+}
+.n-nodeRight{
+	width: 49%;
+	float:right;
+}
+.table-tit{
+	padding-left:20px;
+	font-size:18px;
+	font-weight:bolder;
+}
+
+button.btn-info{
+	margin-left:10px;
+}
+button.btn-start{
+	margin-left:16px;
+}
+.namespacesLabel{
+	width: 20%;
+}
+#saveNamespaces,#editNamespaces{
+	float: right;
+	line-height: 35px;
+}
+.editInput{
+	width:60%;
+}
+.ngInfo{
+	width: 88%;
+	float: left;
+	margin-top:15px;
+	margin-left: 10%;
+}
+.ngInfoInput{
+	width: 90%;
+	border-radius: 4px;
+}
+.ngInfoTit{
+	width:23%;
+	float: left;
+	text-align: right;
+}
+.ngInfoCon{
+	width:77%;
+	float: left;
+}
+.warningInfo{
+	color:#e8504f;
+}
+.warningInfo span{
+	margin-top: 6px;
+}
+.btn-apiVersion{
+	float: right;
+	padding: 1px 5px;
+    height: 28px;
+    margin-top: 4px;
+}
+a{
+	cursor: pointer;
+}
+/* .isUsed_true{
+	cursor: no-drop;
+} */
+.table-titSec{
+	padding-left: 20px;
+	color:red;
+}
+#WatchNamespaceSetsOldVal{
+	word-break: break-all;
+}

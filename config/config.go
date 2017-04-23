@@ -60,7 +60,13 @@ func Init() {
 
 	flag.Parse()
 
-	NgFrontCfg.HeartServerAddr = "http://" + NgFrontCfg.ListenIP + ":" + NgFrontCfg.ListenPort + DefaultHeartServerPath
+	if NgFrontCfg.ListenIP == "localhost" {
+		IPForKubeNg := convertToIPForJs()
+		if IPForKubeNg == "" {
+			return
+		}
+		NgFrontCfg.HeartServerAddr = "http://" + IPForKubeNg + ":" + NgFrontCfg.ListenPort + DefaultHeartServerPath
+	}
 
 	createCfgForJS(NgFrontCfg.ListenIP, NgFrontCfg.ListenPort)
 

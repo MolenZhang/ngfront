@@ -1,0 +1,293 @@
+/* area.html */
+.nginxForm{
+	margin-top:10px;
+	margin-bottom:10px;
+}
+.item-obj{
+	background-color: #fff;
+}
+.nginx-label{
+	margin-top:5px;
+	margin-bottom:5px;
+}
+.nginx-label input:not(.serverCheckbox){
+	border-radius:4px;
+	margin-left:3px;
+	margin-right:3px;
+	width:200px;
+}
+.nginx-label select{
+	height:28px;
+	width:200px;
+	border-radius:4px;
+	margin-left:3px;
+	margin-right:3px;
+	border: 1px solid #ccc;
+}
+.addSerBtn,.delSerBtn{
+	margin-left: 10px;
+}
+.nginxBtns{
+	margin-top: 50px;
+	margin-bottom: 30px;
+}
+i.self_a {
+	color: #676a6c;
+}
+.aside-btn {
+    height: 60px;
+    position: relative;
+    padding: 0 20px;
+    background: #EAEEF1;
+}
+.aside-btn .btns-group {
+    position: absolute;
+    bottom: 16px;
+}
+.btns-group .btn-white {
+    background: #fff;
+    color: #3C7BCA;
+}
+.searchFun{
+    text-align: center;
+    margin: 0px 10px;
+    margin-top: 20px;
+    float: right;
+}
+/* ibox */
+.addNginxCfg{
+	padding-top:30px;
+}
+.addNginxStepRow{
+	width: 96%;
+    margin: 0 auto;
+    margin-bottom: 20px;
+}
+.addNginxStepRow .col-sm-12 .ibox-title{
+	border-top: 1px solid #dadada;
+	border-left: 4px solid #337ab7;
+	border-right: 1px solid #dadada;
+	border-bottom: 1px solid #dadada;
+}
+.addNginxStepRow .col-sm-12:nth-child(even){
+	
+}
+.addNginxStepRow .col-sm-12 .ibox-content{
+	border-left: 4px solid #337ab7;
+	border-right: 1px solid #dadada;
+	
+}
+.ibox-tools a {
+    cursor: pointer;
+    margin-left: 8px;
+    color: #3c7bca;
+}
+.ibox-tools{
+    font-sizi:16px!important;
+}
+form span{
+	font-weight:bolder;
+}
+input.serverCheckbox{
+	vertical-align: middle;
+    margin: 0 auto;
+    height:18px;
+}
+.nginx-label span{
+	margin-left: 5px;
+}
+.nginx-label span i.fa{
+	color: #3c7bca;
+}
+.nginxCfgBtns{
+	float: right;
+	line-height: 20px;
+	margin-top:10px;
+	margin-right: 51px;
+    font-size: 17px;
+    color:#3c7bca;
+}
+.nginxCfgBtns span i{
+	margin-left:5px;
+}
+.waringInfo{
+	width:90%;
+	margin: 0 auto;
+	text-align:left;
+}
+.waringInfo img{
+	width: 100px;
+}
+.waringInfo span{
+	margin-left:40px;
+}
+.alert-warning{
+	margin-bottom: 0px;
+}
+.areaNodes{
+	display: flex;
+	padding-right:20px;
+}
+.operationBtns i{
+	margin-left:10px;
+	line-height: 50px;
+}
+.statusImg img{
+	width:27px;
+}
+/* area.html */
+.item-obj {
+    background-color: #fff;
+    height:600px;
+}
+#areas{
+	width:45%;
+	height:500px;
+	margin-top:20px;
+	margin-left:20px;
+	float:left;
+}
+.areasTable{
+	width:50%;
+	float:left;
+	margin-top:20px;
+}
+/* .areasTable table{
+	width:100%;
+	display:block;
+} */
+.areasTable table tr{
+	border-bottom:1px solid #ddd;
+}
+
+.center{
+	text-align:center;
+}
+a{
+	cursor:pointer;
+}
+#areaNodesTbody{
+	height: 480px;
+    display: block;
+    width: 100%;
+    border-bottom: 1px solid #ddd;
+}
+.tdType{
+	background-color:#f9f9f9;
+}
+.table-titleInfo{
+	width: 100%;
+}
+.table-title{
+	float: left;
+	height: 40px;
+	line-height: 40px;
+	border-bottom: 1px solid #ddd;
+}
+.table-tdFirst{
+	width: 35%;
+}
+.table-tdSec{
+	width: 64%;
+	text-indent:8px;
+}
+td.firstTd{
+	width: 30%;
+}
+.def-text{
+	color: #FF1C00;
+	padding-left: 5px;
+}
+.def-text span{
+	margin-left: 10px;
+}
+.def-input{
+	margin-top:6px;
+	/* margin-bottom: 4px; */
+}
+input.first-text{
+	width: 25%!important;
+}
+input.sec-text{
+	width: 60%!important;
+}
+i.fa-one{
+	padding-left: 4px;
+	color:#81a6ea;
+}
+/*clients.html*/
+.cfgTable{
+	padding: 18px 20px;
+}
+.cfgTable table tr{
+	border-bottom: 1px solid #ddd;
+}
+.cfgTable table tr td:first-of-type{
+	text-indent: 10px;
+}
+.editItem .editInput{
+	border-radius: 4px;
+	width:90%;
+	height: 35px;
+	line-height: 35px;
+}
+.editItem select{
+	border-radius: 4px;
+	width:50%;
+	height: 35px;
+	line-height: 35px;
+	border: 1px solid #ddd;
+}
+
+.no-drop i{
+	cursor: no-drop!important;
+	color: #ddd;
+}
+.fa-caret-right{
+	font-size: 16px;
+}
+.caretTd{
+	width: 3%;
+    text-align: center;
+}
+.start_stopBtn{
+	
+}
+.stop_stopBtn{
+	cursor: no-drop;
+	color: #333;
+	display: none;
+}
+.start_startBtn{
+	cursor: no-drop;
+	color: #333;
+	display: none;
+}
+.floatLeft{
+	float:left;
+}
+.nginxTools{
+	padding-left: 4px!important;
+    margin-left: 5px;
+}
+i.fa-btn{
+	background: url(/images/off_on.png) no-repeat;
+	width: 44px;
+	height: 17px;
+	display: inline-block;
+}
+i.fa-false{
+	background-position: 7px 2px;
+}
+i.fa-true{
+	background-position: 7px -16px;
+}
+.delPslCfg{
+	vertical-align: middle;
+}
+.text-false{
+	color:#676a6c;
+}
+.text-true{
+	color:#FF1C00;
+}

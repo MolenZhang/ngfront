@@ -1,0 +1,14 @@
+执行(%prep): /bin/sh -e /var/tmp/rpm-tmp.NsoIOd
+执行(%install): /bin/sh -e /var/tmp/rpm-tmp.4UZG8e
+处理文件：ngfront-1.0-1.x86_64
+Provides: ngfront = 1.0-1 ngfront(x86-64) = 1.0-1
+Requires(interp): /bin/sh /bin/sh /bin/sh /bin/sh
+Requires(rpmlib): rpmlib(CompressedFileNames) <= 3.0.4-1 rpmlib(FileDigests) <= 4.6.0-1 rpmlib(PayloadFilesHavePrefix) <= 4.0-1
+Requires(pre): /bin/sh
+Requires(post): /bin/sh
+Requires(preun): /bin/sh
+Requires(postun): /bin/sh
+Requires: libc.so.6()(64bit) libc.so.6(GLIBC_2.2.5)(64bit) libpthread.so.0()(64bit) libpthread.so.0(GLIBC_2.2.5)(64bit) libpthread.so.0(GLIBC_2.3.2)(64bit)
+检查未打包文件：/usr/lib/rpm/check-files /opt/gocode/src/ngfront/RPM/_CPack_Packages/RPM/ngfront-1.0-1.x86_64
+写道:/opt/gocode/src/ngfront/RPM/_CPack_Packages/RPM/ngfront-1.0-1.x86_64.rpm
+执行(%clean): /bin/sh -e /var/tmp/rpm-tmp.zKqR6O
