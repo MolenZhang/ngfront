@@ -65,8 +65,11 @@ func Init() {
 		if IPForKubeNg == "" {
 			return
 		}
-		NgFrontCfg.HeartServerAddr = "http://" + IPForKubeNg + ":" + NgFrontCfg.ListenPort + DefaultHeartServerPath
+		//重新赋值，将localhost转为具体的IP地址
+		NgFrontCfg.ListenIP = IPForKubeNg
 	}
+
+	NgFrontCfg.HeartServerAddr = "http://" + NgFrontCfg.ListenIP + ":" + NgFrontCfg.ListenPort + DefaultHeartServerPath
 
 	createCfgForJS(NgFrontCfg.ListenIP, NgFrontCfg.ListenPort)
 
