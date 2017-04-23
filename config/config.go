@@ -61,7 +61,7 @@ func Init() {
 	flag.Parse()
 
 	if NgFrontCfg.ListenIP == "localhost" {
-		IPForKubeNg := convertToIPForJs()
+		IPForKubeNg := convertLocalhostToRealIP()
 		if IPForKubeNg == "" {
 			return
 		}
@@ -87,7 +87,7 @@ func createCfgForJS(IP, Port string) {
 	//如果为localhost 则转换为js可识别的IP地址
 	jsIP := IP
 	if IP == "localhost" {
-		jsIP = convertToIPForJs()
+		jsIP = convertLocalhostToRealIP()
 		if jsIP == "" {
 			return
 		}
@@ -105,7 +105,7 @@ func createCfgForJS(IP, Port string) {
 	return
 }
 
-func convertToIPForJs() string {
+func convertLocalhostToRealIP() string {
 	addrs, err := net.InterfaceAddrs()
 
 	if err != nil {
