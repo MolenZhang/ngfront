@@ -37,7 +37,7 @@
 td.editItem{
 	display:none;
 }
-.fa-nodeSave,.fa-nodeTimes,.fa-nodeEdit{
+.fa-nodeSave,.fa-nodeSave1,.fa-nodeTimes,.fa-nodeEdit{
 	float:right;
 	line-height:35px;
 }

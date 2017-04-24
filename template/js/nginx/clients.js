@@ -293,15 +293,17 @@ function showWatcherHtml(data,ClientID,NodeIP){
 					   +'<th colspan="2">&nbsp;</th>'
                        +'<th>watcherID</th>'
                        +'<th>工作状态</th>'
-                       +'<th colspan="2">监控的租户</th>'
+                       +'<th>监控的租户</th>'
+                       +'<th>监控端口</th>'
                        +'<th style="text-indent: 10px;">操作</th>'
                        +'</tr>';
     
 	for(var wNum=0; wNum<data.length;wNum++){
 		var WatcherID = data[wNum].WatcherID;
 		var K8sWatcherStatus = data[wNum].K8sWatcherStatus;
+		var NginxListenPort = data[wNum].NginxListenPort;
 		var K8sWatcherStatusHtml = "";
-		var WatchNamespaceSets = data[wNum].WatchNamespaceSets
+		var WatchNamespaceSets = data[wNum].WatchNamespaceSets;
 		if(K8sWatcherStatus == "stop"){
 			K8sWatcherStatusHtml = '<img src="../../images/stop.png" alt=""/>&nbsp;未工作';
 		}else{
@@ -311,7 +313,8 @@ function showWatcherHtml(data,ClientID,NodeIP){
 				    +'<td colspan="2">&nbsp;</td>'
 					+'<td>'+WatcherID+'</td>'
 					+'<td class="statusImg">'+K8sWatcherStatusHtml+'</td>'
-					+'<td colspan="2">'+WatchNamespaceSets+'</td>'
+					+'<td>'+WatchNamespaceSets+'</td>'
+					+'<td>'+NginxListenPort+'</td>'
 					+'<td class="operationBtns" WatcherID="'+WatcherID+'">'
 					+'<a onclick="stopOneWatcher(this)" class="'+K8sWatcherStatus+'_stopBtn"><i>停止</i></a>'
 					+'<a onclick="startOneWatcher(this)" class="'+K8sWatcherStatus+'_startBtn"><i>启动</i></a>'
@@ -424,9 +427,8 @@ function addOneWatcher(obj){
 					"K8sWatcherStatus":K8sWatcherStatus
 					}
 			};
-			//var checkPort = checkPortFun(NginxListenPort);
+			//验证端口
 			var checkPortUrl = 'http://'+areaIP+':'+areaPort+'/watchers/portCheck?nginxListenPort='+NginxListenPort+'&jobZoneType='+JobZoneType;
-			var checkPortResult;
 			$.ajax({
 				url: checkPortUrl,
 				dataType: "json",
