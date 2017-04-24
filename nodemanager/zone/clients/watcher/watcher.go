@@ -529,38 +529,17 @@ func checkNginxListenPort(request *restful.Request, response *restful.Response) 
 	logdebug.Println(logdebug.LevelDebug, "<<<<<<检查前端输入的nginx listen port>>>>>>")
 
 	request.Request.ParseForm()
-	nginxListenPort := request.Request.Form.Get("nginxListenPort")
 	jobZoneType := request.Request.Form.Get("jobZoneType")
 
 	webResp := ResponseBody{}
 
-	logdebug.Println(logdebug.LevelDebug, "前端传来的端口值:", nginxListenPort)
 	logdebug.Println(logdebug.LevelDebug, "前端传来的工作区域:", jobZoneType)
 
 	for _, nodeInfo := range nodes.GetAllNodesInfo() {
 		client := nodeInfo.Client
 		if client.JobZoneType == jobZoneType {
-			watcherURL := "http://" +
-				client.NodeIP +
-				client.APIServerPort +
-				"/" +
-				client.WatchManagerAPIServerPath
-			logdebug.Println(logdebug.LevelDebug, "获取端口时所需的watcherURL:", watcherURL)
-			resp, _ := communicate.SendRequestByJSON(communicate.GET, watcherURL, nil)
-			nginxListenPortInWatchers := map[int]nodes.WatchManagerCfg{}
-			json.Unmarshal(resp, &nginxListenPortInWatchers)
-			logdebug.Println(logdebug.LevelDebug, "已经存在的监视计划信息:", nginxListenPortInWatchers)
+			dealNginxPort(client, request, response)
 
-			for _, value := range nginxListenPortInWatchers {
-				if value.NginxListenPort == nginxListenPort {
-					logdebug.Println(logdebug.LevelDebug, "已经保存的端口值:", value.NginxListenPort)
-					webResp.Result = false
-					webResp.ErrorMessage = "端口已占用，请更换端口"
-
-					response.WriteHeaderAndJson(200, webResp, "application/json")
-					return
-				}
-			}
 			break
 		}
 	}
@@ -568,6 +547,47 @@ func checkNginxListenPort(request *restful.Request, response *restful.Response) 
 	webResp.Result = true
 	response.WriteHeaderAndJson(200, webResp, "application/json")
 	return
+}
+
+func dealNginxPort(client nodes.ClientInfo, request *restful.Request, response *restful.Response) {
+
+	webResp := ResponseBody{}
+	request.Request.ParseForm()
+	nginxListenPort := request.Request.Form.Get("nginxListenPort")
+	watcherID := request.Request.Form.Get("watcherID")
+	intWatcherID, _ := strconv.Atoi(watcherID)
+
+	logdebug.Println(logdebug.LevelDebug, "前端传来的端口值:", nginxListenPort)
+	watcherURL := "http://" +
+		client.NodeIP +
+		client.APIServerPort +
+		"/" +
+		client.WatchManagerAPIServerPath
+	logdebug.Println(logdebug.LevelDebug, "获取端口时所需的watcherURL:", watcherURL)
+
+	resp, _ := communicate.SendRequestByJSON(communicate.GET, watcherURL, nil)
+
+	nginxListenPortInWatchers := map[int]nodes.WatchManagerCfg{}
+	json.Unmarshal(resp, &nginxListenPortInWatchers)
+	logdebug.Println(logdebug.LevelDebug, "已经存在的监视计划信息:", nginxListenPortInWatchers)
+
+	for _, value := range nginxListenPortInWatchers {
+		if value.NginxListenPort != nginxListenPort {
+			continue
+		}
+		if value.WatcherID == intWatcherID {
+			logdebug.Println(logdebug.LevelDebug, "更新的端口值与原端口相同")
+			webResp.Result = true
+			response.WriteHeaderAndJson(200, webResp, "application/json")
+			return
+		}
+
+		webResp.Result = false
+		webResp.ErrorMessage = "端口已占用，请更换端口"
+		response.WriteHeaderAndJson(200, webResp, "application/json")
+		return
+	}
+
 }
 
 //Init 初始化函数
