@@ -5,8 +5,8 @@ var WatchNamespaceSets = "";
 var NodeIPInfo ="";
 var ClientIDInfo = "";
 var WatcherID = "";
-var areaIP = "localhost";
-var areaPort = "port";
+var areaIP = "";
+var areaPort = "";
 $(document).ready(function () {
 	var locationUrl = window.location;
 	//http://172.16.13.110:8083/ngfront/zone/clients/watcher?NodeIP=10.10.3.9&ClientID=21343&areaType=user
@@ -173,6 +173,8 @@ $(document).ready(function () {
  });/*reday*/
 
   function showWatcher(NodeIPInfo,ClientIDInfo){
+  	areaIP = $("#areaIP").val();
+	areaPort = $("#areaPort").val();
 	var watcherUrl = "http://"+areaIP+":"+areaPort+"/watchers/watcher/"+WatcherID;
 	$.ajax({
 		"url":watcherUrl,

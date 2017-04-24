@@ -1,3 +1,7 @@
+/*var areaIP = "localhost";
+var areaPort = "port";*/
+var areaIP = "";
+var areaPort = "";
  $(document).ready(function () {
 	
 	 var option = {
@@ -44,8 +48,8 @@
  });/*reday*/
  
 function showAreaTable(option){
-	var areaIP = "localhost";
-	var areaPort = "port";
+	areaIP = $("#areaIP").val();
+	areaPort = $("#areaPort").val();
 	var areaUrl = "http://"+areaIP+":"+areaPort+"/ngfront/zone";
 	var clientsUrl = "http://"+areaIP+":"+areaPort+"/ngfront/zone/clients?areaType=";
 	$.ajax({
@@ -89,8 +93,6 @@ function showAreaTable(option){
 
 function areaRefresh(){
 	//location.replace(location.href);
-	var areaIP = "localhost";
-	var areaPort = "port";
 	location.href = "http://"+areaIP+":"+areaPort+"/ngfront";
 }
 
