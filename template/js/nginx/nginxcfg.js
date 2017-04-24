@@ -193,7 +193,7 @@ function showNgsHtml(data){
 									+'<input type="checkbox" class="ngConfigCheckbox"/>'
 									+'<span class="hide addOneSerPart" title="新增">'
 									+'<i class="fa fa-plus fa-serverPlus fa-one" onClick="addOneSerPart(this)" ServerName="'+CfgsList.ServerName+'" ListenPort="'+CfgsList.ListenPort+'" RealServerPath="'+CfgsList.RealServerPath+'" Namespace="'+CfgsList.Namespace+'" AppName="'+CfgsList.AppName+'" Location="'+CfgsList.Location+'" ProxyRedirectSrcPath="'+CfgsList.ProxyRedirectSrcPath+'" ProxyRedirectDestPath="'+CfgsList.ProxyRedirectDestPath+'" IsUpstreamIPHash="'+CfgsList.IsUpstreamIPHash+'" DeleteUserCfgs="'+CfgsList.DeleteUserCfgs+'" IsDefaultCfg="'+CfgsList.IsDefaultCfg+'" CfgType="'+nginxList.CfgType+'"></i></span>'
-                                    +'<span title="同步"><i class="fa fa-sort-amount-asc fa-one" onclick="issuedCfgIps(this)"></i></span>'
+                                    //+'<span title="同步"><i class="fa fa-sort-amount-asc fa-one" onclick="issuedCfgIps(this)"></i></span>'
                                     +'<span title="保存"><i class="fa fa-save fa-one" onClick="saveSerPart(this)"></i></span>'
                                     +'<span title="删除"><i class="fa fa-trash fa-one" onClick="delOneSerPart(this)"></i></span>'
                                     +'<span title="伸缩"><i class="fa fa-caret-down fa-one" onClick="toggleOneSerPart(this)"></i></span>'
@@ -420,7 +420,7 @@ function showNgsHtml(data){
 		var str='<div class="ngConfigPart" border:1px solid #FF0000 >' 
 			+'<input type="checkbox" class="ngConfigCheckbox"/> '
 			+'<span class="hide addOneSerPartAfter"><i class="fa fa-plus fa-one fa-serverPlus" onClick="addOneSerPart(this)"></i></span> '
-			+'<span class="hide addOneSerPartAfter"><i class="fa fa-sort-amount-asc fa-one" onClick="issuedCfgIps(this)"></i></span> '
+			//+'<span class="hide addOneSerPartAfter"><i class="fa fa-sort-amount-asc fa-one" onClick="issuedCfgIps(this)"></i></span> '
 			+'<span title="提交配置"><i class="fa fa-plus-circle fa-one" onClick="nginxFormCommOne(this)"></i></span> '
 			+'<span title="删除"><i class="fa fa-trash fa-one" onClick="removeOneSerPart(this)"></i></span> '
 			+'<span title="伸缩"><i class="fa fa-caret-down fa-one" onClick="toggleOneSerPart(this)"></i></span> '
@@ -636,7 +636,7 @@ function localRefreshNg(obj){
      };
 
 	var AppNameAndNamespace = Namespace+'-'+AppName;
-	var saveUrl = "http://"+areaIP+":"+areaPort+"/nginxcfg?AppNameAndNamespace="+AppNameAndNamespace+"&NodeIP="+NodeIP+"&ClientID="+ClientID;
+	var saveUrl = "http://"+areaIP+":"+areaPort+"/nginxcfg?JobZoneType="+JobZoneType;
 	$.ajax({
 		url : saveUrl,
 		dataType: "json",
@@ -845,7 +845,7 @@ function localRefreshNg(obj){
 	 * @param obj
 	 */
 	function findNgByOneApp(obj){
-		// var areaIP = "localhost";
+		// var areaIP = "192.168.19.128";
 		// var areaPort = "port";
 		//var area=$("#area").val();
 		var appName = $(obj).val();
@@ -1020,7 +1020,7 @@ function localRefreshNg(obj){
 	     	$(".IsDefaultCfg-true").parent().parent().remove();
 	    }
 		
-		var saveUrl = "http://"+areaIP+":"+areaPort+"/nginxcfg?NodeIP="+NodeIP+"&ClientID="+ClientID;
+		var saveUrl = "http://"+areaIP+":"+areaPort+"/nginxcfg?JobZoneType="+JobZoneType;
 		$.ajax({
 			url : saveUrl,
 			dataType: "json",

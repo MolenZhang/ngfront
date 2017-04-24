@@ -1,4 +1,4 @@
-/*var areaIP = "localhost";
+/*var areaIP = "192.168.19.128";
 var areaPort = "port";*/
 var areaIP = "";
 var areaPort = "";
