@@ -741,7 +741,6 @@ function areaRefresh(){
 }
 function clientsRefresh(){
 	location.href = "http://"+areaIP+":"+areaPort+"/ngfront/zone/clients?areaType="+JobZoneType;
-
 }	
 function watcherRefresh(){
 	location.href = "http://"+areaIP+":"+areaPort+"/ngfront/zone/clients/watcher?NodeIP="+NodeIPInfo+"&ClientID="+ClientIDInfo+"&areaType="+JobZoneType;

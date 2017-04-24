@@ -1555,12 +1555,10 @@ function areaRefresh(){
 }
 function clientsRefresh(){
 	location.href = "http://"+areaIP+":"+areaPort+"/ngfront/zone/clients?areaType="+JobZoneType;
-}
-
+}	
 function watcherRefresh(){
-location.href = "http://"+areaIP+":"+areaPort+"/ngfront/zone/clients/watcher?NodeIP="+NodeIP+"&ClientID="+ClientID+"&areaType="+JobZoneType+"&WatcherID="+WatcherID;
+	location.href = "http://"+areaIP+":"+areaPort+"/ngfront/zone/clients/watcher?NodeIP="+NodeIP+"&ClientID="+ClientID+"&areaType="+JobZoneType;
 }
-
 function nginxcfgRefresh(){
 	location.href = "http://"+areaIP+":"+areaPort+"/ngfront/zone/clients/watcher/nginxcfg?NodeIP="+NodeIP+"&ClientID="+ClientID+"&KubernetesMasterHost="+KubernetesMasterHost+"&KubernetesAPIVersion="+KubernetesAPIVersion+"&JobZoneType="+JobZoneType;
 }
