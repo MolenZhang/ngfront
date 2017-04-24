@@ -1,5 +1,5 @@
-/*var areaIP = "192.168.19.128";
-var areaPort = "8083";*/
+/*var areaIP = "localhost";
+var areaPort = "port";*/
 var areaIP = "";
 var areaPort = "";
  $(document).ready(function () {

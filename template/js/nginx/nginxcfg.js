@@ -845,8 +845,8 @@ function localRefreshNg(obj){
 	 * @param obj
 	 */
 	function findNgByOneApp(obj){
-		// var areaIP = "192.168.19.128";
-		// var areaPort = "8083";
+		// var areaIP = "localhost";
+		// var areaPort = "port";
 		//var area=$("#area").val();
 		var appName = $(obj).val();
 		var namespace= $(obj).parent().next().find("#search_user").val();
