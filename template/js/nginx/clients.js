@@ -294,7 +294,7 @@ function showWatcherHtml(data,ClientID,NodeIP){
                        +'<th>watcherID</th>'
                        +'<th>工作状态</th>'
                        +'<th>监控的租户</th>'
-                       +'<th>监控端口</th>'
+                       +'<th>代理端口</th>'
                        +'<th style="text-indent: 10px;">操作</th>'
                        +'</tr>';
     
@@ -1095,6 +1095,9 @@ function nginxTool(obj){
 	var ClientID = $(obj).parents("ul.nav").attr("ClientID");
 	var NodeIP = $(obj).parents("ul.nav").attr("NodeIP");
 	var nginxToolUrl = 'http://'+areaIP+':'+areaPort+'/tools?ClientID='+ClientID+'&NodeIP='+NodeIP;
+	var index = layer.load(1, {
+	  shade: [0.1,'#fff'] //0.1透明度的白色背景
+	});
 	$.ajax({
 		url: nginxToolUrl,
 		dataType: "json",
@@ -1106,6 +1109,7 @@ function nginxTool(obj){
 			"Accept": "application/json",
 		},
 		success:function(data){
+			layer.close(index);
 			var data=data;
 			if(data.Result==true){
 				layer.msg(data.NginxCmd+'-成功', {icon: 1});
