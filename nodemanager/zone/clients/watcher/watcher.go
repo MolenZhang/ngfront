@@ -239,8 +239,10 @@ func postWatcherInfo(request *restful.Request, response *restful.Response) {
 			"/" +
 			singleNodeInfo.Client.WatchManagerAPIServerPath
 
-		communicate.SendRequestByJSON(communicate.POST, createWatcherURL, webMsg.WatcherCfg)
-
+		respBody := ResponseBody{}
+		resp, _ := communicate.SendRequestByJSON(communicate.POST, createWatcherURL, webMsg.WatcherCfg)
+		json.Unmarshal(resp, &respBody)
+		logdebug.Println(logdebug.LevelDebug, respBody)
 		logdebug.Println(logdebug.LevelDebug, "前端创建watcher时发给kubeng的URL：", createWatcherURL)
 	}
 
