@@ -207,6 +207,7 @@ func (svc *ServiceInfo) updateNginxCfg(request *restful.Request, response *restf
 		}
 
 		appCfgURL, _ := getAppInfoURL(client, nginxCfg)
+		logdebug.Println(logdebug.LevelDebug, "更新一条nginx配置时，前端发来的URL", appCfgURL)
 
 		recvData, err := communicate.SendRequestByJSON(communicate.PUT, appCfgURL, kubeNGCfg)
 		if err != nil {
@@ -288,6 +289,8 @@ func (svc *ServiceInfo) deleteNginxCfg(request *restful.Request, response *restf
 
 		appCfgURL, _ := getAppInfoURL(client, nginxCfg)
 
+		logdebug.Println(logdebug.LevelDebug, "删除一条nginx配置时，前端发来的URL", appCfgURL)
+
 		recvData, err := communicate.SendRequestByJSON(communicate.DELETE, appCfgURL, kubeNGCfg)
 		if err != nil {
 			logdebug.Println(logdebug.LevelError, err)
@@ -328,6 +331,7 @@ func (svc *ServiceInfo) createNginxCfg(request *restful.Request, response *restf
 		}
 
 		_, nginxCfgURL := getAppInfoURL(client, nginxCfg)
+		logdebug.Println(logdebug.LevelDebug, "增加一条nginx配置时，前端发来的URL", nginxCfgURL)
 
 		recvData, err := communicate.SendRequestByJSON(communicate.POST, nginxCfgURL, kubeNGCfg)
 		if err != nil {

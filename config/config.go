@@ -50,7 +50,7 @@ func Init() {
 	flag.DurationVar(&NgFrontCfg.HeartCycle, "heartcycle", DefaultHeartCycle, "默认心跳间隔 单位/秒")
 	flag.StringVar(&NgFrontCfg.HeartServerAddr, "heartserveraddr", "http://localhost:8083"+DefaultHeartServerPath, "默认心跳服务器地址")
 	flag.StringVar(&NgFrontCfg.LogLevel, "loglevel", DefaultLogLevel, "默认日志级别，支持debug,info,warn,error,fatal")
-	flag.StringVar(&NgFrontCfg.TemplateDir, "", DefaultTemplateDir, "默认m模板路径")
+	flag.StringVar(&NgFrontCfg.TemplateDir, "", DefaultTemplateDir, "默认模板路径")
 	flag.Parse()
 
 	NgFrontCfg.HeartServerAddr = "http://" + NgFrontCfg.ListenIP + ":" + NgFrontCfg.ListenPort + DefaultHeartServerPath
@@ -70,20 +70,13 @@ func GetLogPrintLevel() string {
 }
 
 func createCfgForJS(IP, Port string) {
-	fout, _ := os.Create("/opt/ngfront/test.html")
-
-	cfgContent := fmt.Sprintf(`<!DOCTYPE html>
-<html>
-<head lang="en">
-<title></title>
-<meta charset="utf-8">
-
-</head>
-<body>
-	<div>areaip:<input type="text" value="%s" id="areaIP"></div>
-	<div>areaport:<input type="text" value="%s" id="areaPort"></div>
-</body>
-</html>`, IP, Port)
+	fout, _ := os.Create("template/js/customer/ipPort.js")
+	defer fout.Close()
+	cfgContent := fmt.Sprintf(`$(function(){
+	$("#areaIP").val("%s");
+	$("#areaPort").val("%s");
+});`, IP, Port)
 
 	fout.WriteString(cfgContent)
+	return
 }
