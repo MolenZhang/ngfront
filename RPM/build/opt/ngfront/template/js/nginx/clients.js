@@ -293,15 +293,17 @@ function showWatcherHtml(data,ClientID,NodeIP){
 					   +'<th colspan="2">&nbsp;</th>'
                        +'<th>watcherID</th>'
                        +'<th>工作状态</th>'
-                       +'<th colspan="2">监控的租户</th>'
+                       +'<th>监控的租户</th>'
+                       +'<th>代理端口</th>'
                        +'<th style="text-indent: 10px;">操作</th>'
                        +'</tr>';
     
 	for(var wNum=0; wNum<data.length;wNum++){
 		var WatcherID = data[wNum].WatcherID;
 		var K8sWatcherStatus = data[wNum].K8sWatcherStatus;
+		var NginxListenPort = data[wNum].NginxListenPort;
 		var K8sWatcherStatusHtml = "";
-		var WatchNamespaceSets = data[wNum].WatchNamespaceSets
+		var WatchNamespaceSets = data[wNum].WatchNamespaceSets;
 		if(K8sWatcherStatus == "stop"){
 			K8sWatcherStatusHtml = '<img src="../../images/stop.png" alt=""/>&nbsp;未工作';
 		}else{
@@ -311,7 +313,8 @@ function showWatcherHtml(data,ClientID,NodeIP){
 				    +'<td colspan="2">&nbsp;</td>'
 					+'<td>'+WatcherID+'</td>'
 					+'<td class="statusImg">'+K8sWatcherStatusHtml+'</td>'
-					+'<td colspan="2">'+WatchNamespaceSets+'</td>'
+					+'<td>'+WatchNamespaceSets+'</td>'
+					+'<td>'+NginxListenPort+'</td>'
 					+'<td class="operationBtns" WatcherID="'+WatcherID+'">'
 					+'<a onclick="stopOneWatcher(this)" class="'+K8sWatcherStatus+'_stopBtn"><i>停止</i></a>'
 					+'<a onclick="startOneWatcher(this)" class="'+K8sWatcherStatus+'_startBtn"><i>启动</i></a>'
@@ -325,6 +328,30 @@ function showWatcherHtml(data,ClientID,NodeIP){
 	
 }
 
+//创建监控-验证端口
+function checkPortFun(NginxListenPort){
+	var checkPortUrl = 'http://'+areaIP+':'+areaPort+'/watchers/portCheck?nginxListenPort='+NginxListenPort+'&jobZoneType='+JobZoneType;
+	var checkPortResult;
+	$.ajax({
+		url: checkPortUrl,
+		dataType: "json",
+		contentType: "text/html; charset=UTF-8",
+		type:"put",  
+		headers: {
+			"Content-Type": "application/json",
+			"Accept": "application/json",
+		},
+		success:function(data){
+			var data=data;
+			if(data.Result==true){
+				checkPortResult = true;
+			}else if(data.Result==false){
+				checkPortResult = false;
+			}
+			return checkPortResult;
+		}		
+    });  
+}
 /*新增*/
 function addOneWatcher(obj){
 	$("#addJobZoneTypeOldVal").empty().append(JobZoneType);
@@ -400,46 +427,45 @@ function addOneWatcher(obj){
 					"K8sWatcherStatus":K8sWatcherStatus
 					}
 			};
-
-			watchersUrl= 'http://'+areaIP+':'+areaPort+"/watchers";
-			
+			//验证端口
+			var checkPortUrl = 'http://'+areaIP+':'+areaPort+'/watchers/portCheck?nginxListenPort='+NginxListenPort+'&jobZoneType='+JobZoneType;
 			$.ajax({
-			    url : watchersUrl,
+				url: checkPortUrl,
 				dataType: "json",
 				contentType: "text/html; charset=UTF-8",
-				type: "post", 
+				type:"put",  
 				headers: {
 					"Content-Type": "application/json",
 					"Accept": "application/json",
 				},
-				data: JSON.stringify(addCfgInfo),
-				success :function(data){
+				success:function(data){
 					var data=data;
-					window.location.reload();
-					// $.ajax({
-					//     url : watchersUrl,
-					// 	dataType: "json",
-					// 	contentType: "text/html; charset=UTF-8",
-					// 	type: "get", 
-					// 	headers: {
-					// 		"Content-Type": "application/json",
-					// 		"Accept": "application/json",
-					// 	},
-					// 	//data: JSON.stringify(addCfgInfo),
-					// 	success :function(data){
-					// 		var data=data;
-					// 		// $(obj).parent().parent().parent().parent().children(".needHideWatcher").remove();
-					// 		// $(obj).parent().parent().find(".caretTd").empty().html('<a><i class="fa fa-caret-down" flag="2"></i></a>');
-					// 		// var watchersHtml2 = showWatcherHtml(data);
-					// 		// $(obj).parent().parent().after(watchersHtml2);
-					// 		window.location.reload();
-					// 	}
-							
-					// });
-				}
-					
-			});
-			layer.close(index);
+					if(data.Result==true){
+						watchersUrl= 'http://'+areaIP+':'+areaPort+"/watchers";
+						$.ajax({
+							url : watchersUrl,
+							dataType: "json",
+							contentType: "text/html; charset=UTF-8",
+							type: "post", 
+							headers: {
+								"Content-Type": "application/json",
+								"Accept": "application/json",
+							},
+							data: JSON.stringify(addCfgInfo),
+							success :function(data){
+								var data=data;
+								window.location.reload();
+							}
+									
+						});
+						layer.close(index);
+					}else{
+						layer.msg("端口已占用，请更换端口!", {icon: 2});
+						return false;
+					}
+				}		
+		    });  
+			
 		}
 	})
 }
@@ -1069,6 +1095,9 @@ function nginxTool(obj){
 	var ClientID = $(obj).parents("ul.nav").attr("ClientID");
 	var NodeIP = $(obj).parents("ul.nav").attr("NodeIP");
 	var nginxToolUrl = 'http://'+areaIP+':'+areaPort+'/tools?ClientID='+ClientID+'&NodeIP='+NodeIP;
+	var index = layer.load(1, {
+	  shade: [0.1,'#fff'] //0.1透明度的白色背景
+	});
 	$.ajax({
 		url: nginxToolUrl,
 		dataType: "json",
@@ -1080,6 +1109,7 @@ function nginxTool(obj){
 			"Accept": "application/json",
 		},
 		success:function(data){
+			layer.close(index);
 			var data=data;
 			if(data.Result==true){
 				layer.msg(data.NginxCmd+'-成功', {icon: 1});
@@ -1090,6 +1120,7 @@ function nginxTool(obj){
 			
     });	
 }
+
 
 function areaRefresh(){
 	location.href = "http://"+areaIP+":"+areaPort+"/ngfront";

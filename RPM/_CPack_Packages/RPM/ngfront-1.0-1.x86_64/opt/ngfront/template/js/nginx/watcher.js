@@ -124,7 +124,30 @@ $(document).ready(function () {
 	//nginx监听端口
 	$(document).on('click','#NginxListenPortSaveBtn',function(){
 		var changeVal = $("#NginxListenPortInfo").val();
-		$("#NginxListenPortOldVal").empty().append(changeVal);
+		//验证端口
+		var checkPortUrl = 'http://'+areaIP+':'+areaPort+'/watchers/portCheck?nginxListenPort='+changeVal+'&jobZoneType='+JobZoneType+'&watcherID='+WatcherID;
+		var thisObj = $(this);
+		$.ajax({
+			url: checkPortUrl,
+			dataType: "json",
+			contentType: "text/html; charset=UTF-8",
+			type:"put",  
+			headers: {
+				"Content-Type": "application/json",
+				"Accept": "application/json",
+			},
+			success:function(data){
+				var data=data;
+				if(data.Result==true){
+					thisObj.parent().hide();
+		 			thisObj.parent().prev().show();
+					$("#NginxListenPortOldVal").empty().append(changeVal);
+				}else{
+					layer.msg("端口已占用，请更换端口!", {icon: 2});
+					return false;
+				}
+			}
+		})	
 	});
 	
 	//nginx 重载命令 保存按钮
@@ -254,7 +277,7 @@ $(document).ready(function () {
 											'<td class="firstTd">nginx监听端口</td>'+
 											'<td><span id="NginxListenPortOldVal">'+NginxListenPort+'</span><i class="fa fa-edit fa-nodeEdit"></i></td>'+
 											'<td class="editItem"><input type="number" class="editInput" id="NginxListenPortInfo" type="text" value="'+NginxListenPort+'">'+
-											'<i class="fa fa-save fa-nodeSave" id="NginxListenPortSaveBtn"></i><i class="fa fa-times fa-nodeTimes"></i></td>'+
+											'<i class="fa fa-save fa-nodeSave1" id="NginxListenPortSaveBtn"></i><i class="fa fa-times fa-nodeTimes"></i></td>'+
 										'</tr>'+
 										'<tr>'+
 											'<td class="firstTd">监控租户集合</td>'+

@@ -479,7 +479,7 @@ function showNgsHtml(data){
 			+'</div>'
 			+'<div class="serverPartCon">'
 			+'<div class="nginx-label col-md-offset-1">'
-			+'<span>listen:</span><input type="text" id="ListenPort" class="ListenPort" name="ListenPort" value="'+ListenPort+'">;'
+			+'<span>listen:</span><input type="text" id="ListenPort" class="ListenPort" name="ListenPort" value="'+ListenPort+'" disabled>;'
 			+'</div>'
 			+'<div class="nginx-label col-md-offset-1">'
 			+'<span>server_name:</span><input type="text" id="ServerName" class="ServerName"  name="ServerName" value="'+ServerName+'" disabled>;'
@@ -1557,7 +1557,7 @@ function clientsRefresh(){
 	location.href = "http://"+areaIP+":"+areaPort+"/ngfront/zone/clients?areaType="+JobZoneType;
 }	
 function watcherRefresh(){
-	location.href = "http://"+areaIP+":"+areaPort+"/ngfront/zone/clients/watcher?NodeIP="+NodeIP+"&ClientID="+ClientID+"&areaType="+JobZoneType;
+	location.href = "http://"+areaIP+":"+areaPort+"/ngfront/zone/clients/watcher?NodeIP="+NodeIP+"&ClientID="+ClientID+"&areaType="+JobZoneType+"&WatcherID="+WatcherID;
 }
 function nginxcfgRefresh(){
 	location.href = "http://"+areaIP+":"+areaPort+"/ngfront/zone/clients/watcher/nginxcfg?NodeIP="+NodeIP+"&ClientID="+ClientID+"&KubernetesMasterHost="+KubernetesMasterHost+"&KubernetesAPIVersion="+KubernetesAPIVersion+"&JobZoneType="+JobZoneType;

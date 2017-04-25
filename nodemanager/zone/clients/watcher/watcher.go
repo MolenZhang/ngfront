@@ -224,11 +224,7 @@ func postWatcherInfo(request *restful.Request, response *restful.Response) {
 		return
 	}
 	logdebug.Println(logdebug.LevelDebug, "新增时 前端传来的数据：", webMsg)
-	/*
-		//保存前端传来的nginxListenPort
-		nginxListenPort := webMsg.WatcherCfg.NginxListenPort
-		addNginxListenPort(nginxListenPort)
-	*/
+
 	//给每一个client 发送watcher信息
 	allNodesInfo := nodes.GetAllNodesInfo()
 	for _, singleNodeInfo := range allNodesInfo {
@@ -255,29 +251,6 @@ func postWatcherInfo(request *restful.Request, response *restful.Response) {
 	return
 }
 
-/*
-var nginxListenPortSet []string
-
-//保存前端已经选择过的nginx监听端口
-func addNginxListenPort(port string) {
-	//	nginxListenPortSet = append(nginxListenPortSet, port)
-	fileDir := "/etc/ngfront"
-	if _, err := os.Stat(fileDir); err != nil {
-		if os.IsNotExist(err) == true {
-			os.MkdirAll(fileDir, os.ModePerm)
-		}
-	}
-	fileName := fileDir + "nginxListenPortSet"
-	file, err := os.OpenFile(fileName, os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0666)
-	if err != nil {
-		logdebug.Println(logdebug.LevelError, err)
-		return
-	}
-	defer file.Close()
-
-	file.WriteString(port)
-}
-*/
 //对应前端编辑按钮
 //putWatcherInfo 处理前端PUT过来的消息 更新
 func putWatcherInfoByID(request *restful.Request, response *restful.Response) {
