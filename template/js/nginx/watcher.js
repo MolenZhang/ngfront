@@ -125,7 +125,7 @@ $(document).ready(function () {
 	$(document).on('click','#NginxListenPortSaveBtn',function(){
 		var changeVal = $("#NginxListenPortInfo").val();
 		//验证端口
-		var checkPortUrl = 'http://'+areaIP+':'+areaPort+'/watchers/portCheck?nginxListenPort='+changeVal+'&jobZoneType='+JobZoneType'&watcherID='+WatcherID;
+		var checkPortUrl = 'http://'+areaIP+':'+areaPort+'/watchers/portCheck?nginxListenPort='+changeVal+'&jobZoneType='+JobZoneType+'&watcherID='+WatcherID;
 		var thisObj = $(this);
 		$.ajax({
 			url: checkPortUrl,

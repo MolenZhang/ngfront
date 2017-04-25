@@ -530,7 +530,11 @@ func checkNginxListenPort(request *restful.Request, response *restful.Response) 
 
 	request.Request.ParseForm()
 	jobZoneType := request.Request.Form.Get("jobZoneType")
+	nginxListenPort := request.Request.Form.Get("nginxListenPort")
+	watcherID := request.Request.Form.Get("watcherID")
+	intWatcherID, _ := strconv.Atoi(watcherID)
 
+	logdebug.Println(logdebug.LevelDebug, "前端传来的端口值:", nginxListenPort)
 	webResp := ResponseBody{}
 
 	logdebug.Println(logdebug.LevelDebug, "前端传来的工作区域:", jobZoneType)
@@ -538,8 +542,13 @@ func checkNginxListenPort(request *restful.Request, response *restful.Response) 
 	for _, nodeInfo := range nodes.GetAllNodesInfo() {
 		client := nodeInfo.Client
 		if client.JobZoneType == jobZoneType {
-			dealNginxPort(client, request, response)
+			if result := dealNginxPort(client, nginxListenPort, intWatcherID); result == false {
 
+				webResp.Result = false
+				webResp.ErrorMessage = "端口已占用，请更换端口"
+				response.WriteHeaderAndJson(200, webResp, "application/json")
+				return
+			}
 			break
 		}
 	}
@@ -549,15 +558,8 @@ func checkNginxListenPort(request *restful.Request, response *restful.Response) 
 	return
 }
 
-func dealNginxPort(client nodes.ClientInfo, request *restful.Request, response *restful.Response) {
+func dealNginxPort(client nodes.ClientInfo, nginxListenPort string, intWatcherID int) bool {
 
-	webResp := ResponseBody{}
-	request.Request.ParseForm()
-	nginxListenPort := request.Request.Form.Get("nginxListenPort")
-	watcherID := request.Request.Form.Get("watcherID")
-	intWatcherID, _ := strconv.Atoi(watcherID)
-
-	logdebug.Println(logdebug.LevelDebug, "前端传来的端口值:", nginxListenPort)
 	watcherURL := "http://" +
 		client.NodeIP +
 		client.APIServerPort +
@@ -577,17 +579,12 @@ func dealNginxPort(client nodes.ClientInfo, request *restful.Request, response *
 		}
 		if value.WatcherID == intWatcherID {
 			logdebug.Println(logdebug.LevelDebug, "更新的端口值与原端口相同")
-			webResp.Result = true
-			response.WriteHeaderAndJson(200, webResp, "application/json")
-			return
+			return true
 		}
-
-		webResp.Result = false
-		webResp.ErrorMessage = "端口已占用，请更换端口"
-		response.WriteHeaderAndJson(200, webResp, "application/json")
-		return
+		return false
 	}
 
+	return true
 }
 
 //Init 初始化函数
