@@ -276,10 +276,10 @@ i.fa-btn{
 	height: 17px;
 	display: inline-block;
 }
-i.fa-off{
+i.fa-false{
 	background-position: 7px 2px;
 }
-i.fa-on{
+i.fa-true{
 	background-position: 7px -16px;
 }
 .delPslCfg{

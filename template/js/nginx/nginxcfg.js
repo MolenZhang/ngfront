@@ -57,13 +57,13 @@
         	$(this).parents('table').find(".chkAll").prop('checked', $(this).is(":checked"));
         }
     });
-    $(document).on("click",".fa-off",function(){
-    	$(this).removeClass("fa-off").addClass("fa-on");
+    $(document).on("click",".fa-false",function(){
+    	$(this).removeClass("fa-false").addClass("fa-true");
     	$(this).next("span").css("color","#FF1C00");
     	sendNginxCfg(this);
     });
-    $(document).on("click",".fa-on",function(){
-    	$(this).removeClass("fa-on").addClass("fa-off");
+    $(document).on("click",".fa-true",function(){
+    	$(this).removeClass("fa-true").addClass("fa-false");
     	$(this).next("span").css("color","#676a6c")
     });
 
@@ -206,7 +206,7 @@ function showNgsHtml(data){
                                     +'<span title="保存"><i class="fa fa-save fa-one" onClick="saveSerPart(this)"></i></span>'
                                     +'<span title="删除"><i class="fa fa-trash fa-one" onClick="delOneSerPart(this)"></i></span>'
                                     +'<span class="hide" title="伸缩"><i class="fa fa-caret-down fa-one" onClick="toggleOneSerPart(this)"></i></span>'
-                                    +'<span class="delPslCfg"><i class="fa-btn fa-off"></i><span>删除服务的同时删除该个性化配置</span></span>'
+                                    +'<span class="delPslCfg"><i class="fa-btn fa-'+CfgsList.DeleteUserCfgs+'"></i><span>删除服务的同时删除该个性化配置</span></span>'
                                     +'<span class="ngConfigPartTit"></span>'
 									+'<div class="ngConfigPartCon">'
 									+'<form class="nginxForm '+IsDefaultCfgClass+'" method="post" action="" AppSrcType="'+nginxList.CfgType+'" IsDefaultCfg="'+CfgsList.IsDefaultCfg+'">'
@@ -1401,7 +1401,7 @@ function sendNginxCfg(obj){
 		var LogRuleName = ngConfigPart.find(".LogRuleName").val();
 		var LogFileDirPath = ngConfigPart.find(".LogFileDirPath").val();
 		var LogTemplateName = ngConfigPart.find(".LogTemplateName").val();
-		var DeleteUserCfgs = false;
+		var DeleteUserCfgs = true;
 		var IsDefaultCfg = false;
 		var AppSrcType = ngConfigPart.attr("AppSrcType");
 		
@@ -1436,9 +1436,9 @@ function sendNginxCfg(obj){
      };
 
 	
-	var saveUrl = "http://"+areaIP+":"+areaPort+"/nginxcfg/deleteUserCfgs";
+	var sendCfgUrl = "http://"+areaIP+":"+areaPort+"/nginxcfg/deleteUserCfgs?JobZoneType="+JobZoneType;
 	$.ajax({
-		url : saveUrl,
+		url : sendCfgUrl,
 		dataType: "json",
 		contentType: "text/html; charset=UTF-8",
     	type: "put",
