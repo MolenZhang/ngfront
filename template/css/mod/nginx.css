@@ -285,4 +285,9 @@ i.fa-true{
 .delPslCfg{
 	vertical-align: middle;
 }
-
+.text-false{
+	color:#676a6c;
+}
+.text-true{
+	color:#FF1C00;
+}
