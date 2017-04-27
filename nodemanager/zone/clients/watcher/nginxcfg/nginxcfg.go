@@ -371,7 +371,6 @@ func (svc *ServiceInfo) deleteUserCfgs(request *restful.Request, response *restf
 		logdebug.Println(logdebug.LevelError, err)
 		return
 	}
-	userNginxCfg.DeleteUserCfgs = true
 
 	nodesInfo := nodes.GetAllNodesInfo()
 	for _, nodeInfo := range nodesInfo {
