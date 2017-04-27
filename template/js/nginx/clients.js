@@ -96,7 +96,7 @@ function showClients(JobZoneType){
                                     '<td class="operationBtns" ClientID="'+ClientID+'" NodeIP="'+NodeIP+'">'+
                                     	'<a class="floatLeft" onclick="watcherNginxExport(this)"><i>下载配置</i></a>'+
                                     	'<a class="floatLeft" onclick="compareClient(this)" ClientID="'+ClientID+'" NodeIP="'+NodeIP+'"><i>对比</i></a>'+
-                                    	'<ul class="nav navbar-nav floatLeft">'+
+                                    	'<ul class="nav navbar-nav floatLeft" ClientID="'+ClientID+'" NodeIP="'+NodeIP+'">'+
                                     	'<li class="dropdown"><a class="dropdown-toggle nginxTools" data-toggle="dropdown"><em>Nginx工具</em><b class="caret"></b></a>'+
                                     	'<ul class="dropdown-menu">'+
                                     	'<li onclick="nginxTool(this)" status="start"><a>start</a></li>'+
@@ -1064,20 +1064,28 @@ function delWatcher(){
 }
 //nginx工具
 function nginxTool(obj){
-	var nginxTestTool = $(obj).val();
-	var nginxToolUrl = 'http://'+areaIP+':'+areaPort+'/tools';
+	var nginxToolVal = $(obj).attr("status");
+	var NginxCmdType = {"NginxCmdType":nginxToolVal};
+	var ClientID = $(obj).parents("ul.nav").attr("ClientID");
+	var NodeIP = $(obj).parents("ul.nav").attr("NodeIP");
+	var nginxToolUrl = 'http://'+areaIP+':'+areaPort+'/tools?ClientID='+ClientID+'&NodeIP='+NodeIP;
 	$.ajax({
 		url: nginxToolUrl,
 		dataType: "json",
 		contentType: "text/html; charset=UTF-8",
 		type:"post",  
-		data: nginxTestTool,         
+		data: JSON.stringify(NginxCmdType),         
 		headers: {
 			"Content-Type": "application/json",
 			"Accept": "application/json",
 		},
 		success:function(data){
 			var data=data;
+			if(data.Result==true){
+				layer.msg(data.NginxCmd+'-成功', {icon: 1});
+			}else if(data.Result==false){
+				layer.msg(data.NginxCmd+':'+data.ErrorMessage, {icon: 2});
+			}
 		}
 			
     });	
