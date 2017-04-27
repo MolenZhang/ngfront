@@ -60,11 +60,12 @@
     $(document).on("click",".fa-false",function(){
     	$(this).removeClass("fa-false").addClass("fa-true");
     	$(this).next("span").css("color","#FF1C00");
-    	sendNginxCfg(this);
+    	sendNginxCfgOn(this);
     });
     $(document).on("click",".fa-true",function(){
     	$(this).removeClass("fa-true").addClass("fa-false");
-    	$(this).next("span").css("color","#676a6c")
+    	$(this).next("span").css("color","#676a6c");
+    	sendNginxCfgOff(this);
     });
 
 	
@@ -1358,7 +1359,7 @@ function localRefreshNg(obj){
 	}
 
 //删除服务的同事删除该个性化配置
-function sendNginxCfg(obj){
+function sendNginxCfgOn(obj){
 	var ngConfigPart = $(obj).parent().parent().find('.nginxForm');
 		var ServerName = ngConfigPart.find("#ServerName").val();
 		var ListenPort = ngConfigPart.find("#ListenPort").val();
@@ -1403,6 +1404,101 @@ function sendNginxCfg(obj){
 		var LogFileDirPath = ngConfigPart.find(".LogFileDirPath").val();
 		var LogTemplateName = ngConfigPart.find(".LogTemplateName").val();
 		var DeleteUserCfgs = true;
+		var IsDefaultCfg = false;
+		var AppSrcType = ngConfigPart.attr("AppSrcType");
+		
+	var sendNginxCfgData = {
+      "ServerName": ServerName,
+      "ListenPort": ListenPort,
+      "RealServerPath": RealServerPath,
+      "Namespace": Namespace,
+      "AppName": AppName,
+      "Location": Location,
+      "ProxyRedirectSrcPath": ProxyRedirectSrcPath,
+      "ProxyRedirectDestPath": ProxyRedirectDestPath,
+      "IsUpstreamIPHash": IsUpstreamIPHash,
+      "OperationType": OperationType,
+      "UpstreamUserRules": {
+       "UserRuleSet": UpstreamUserRules
+      },
+      "ServerUserRules": {
+       "UserRuleSet": ServerUserRules
+      },
+      "LocationUserRules": {
+       "UserRuleSet": LocationUserRules
+      },
+      "LogRule": {
+       "LogRuleName": LogRuleName,
+       "LogFileDirPath": LogFileDirPath,
+       "LogTemplateName": LogTemplateName
+      },
+      "DeleteUserCfgs": DeleteUserCfgs,
+      "IsDefaultCfg": IsDefaultCfg,
+      "AppSrcType": AppSrcType
+     };
+
+	
+	var sendCfgUrl = "http://"+areaIP+":"+areaPort+"/nginxcfg/deleteUserCfgs?JobZoneType="+JobZoneType;
+	$.ajax({
+		url : sendCfgUrl,
+		dataType: "json",
+		contentType: "text/html; charset=UTF-8",
+    	type: "put",
+		headers: {
+			"Content-Type": "application/json",
+			"Accept": "application/json",
+		},
+		data: JSON.stringify(sendNginxCfgData),
+		success :function(data){
+			var data=data;
+		}
+	})
+}
+function sendNginxCfgOff(obj){
+	var ngConfigPart = $(obj).parent().parent().find('.nginxForm');
+		var ServerName = ngConfigPart.find("#ServerName").val();
+		var ListenPort = ngConfigPart.find("#ListenPort").val();
+		var RealServerPath = ngConfigPart.find(".RealServerPath").val();
+		var Namespace = ngConfigPart.find(".appNameAndNamespace").attr("namespace");
+		var AppName = ngConfigPart.find(".appNameAndNamespace").attr("appname");
+		var Location = ngConfigPart.find("#Location").val();
+		var ProxyRedirectSrcPath = ngConfigPart.find("#ProxyRedirectSrcPath").val();
+		var ProxyRedirectDestPath = ngConfigPart.find("#ProxyRedirectDestPath").val();
+		var IsUpstreamIPHash = ngConfigPart.find("#IsUpstreamIPHash").val();
+		if(IsUpstreamIPHash == "true"){
+			IsUpstreamIPHash = true;
+		}else{
+			IsUpstreamIPHash = false;
+		}
+		//OperationType 新建create 删除delete 更新update
+
+		var OperationType = "create";
+
+		var UpstreamUserRules = "";
+		if(ngConfigPart.find(".UpstreamUserRulesDiv")){
+			UpstreamUserRules = RulesData(ngConfigPart.find(".UpstreamUserRulesDiv"));
+		}else{
+			UpstreamUserRules = null;
+		}
+
+		var ServerUserRules = "";
+		if(ngConfigPart.find(".ServerUserRulesDiv")){
+			ServerUserRules = RulesData(ngConfigPart.find(".ServerUserRulesDiv"));
+		}else{
+			ServerUserRules = null;
+		}
+
+		var LocationUserRules ="";
+		if(ngConfigPart.find(".LocationUserRulesDiv")){
+			LocationUserRules = RulesData(ngConfigPart.find(".LocationUserRulesDiv"));
+		}else{
+			LocationUserRules = null;
+		}
+
+		var LogRuleName = ngConfigPart.find(".LogRuleName").val();
+		var LogFileDirPath = ngConfigPart.find(".LogFileDirPath").val();
+		var LogTemplateName = ngConfigPart.find(".LogTemplateName").val();
+		var DeleteUserCfgs = false;
 		var IsDefaultCfg = false;
 		var AppSrcType = ngConfigPart.attr("AppSrcType");
 		
