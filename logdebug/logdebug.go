@@ -103,8 +103,6 @@ func Printf(logLevel int, format string, v ...interface{}) {
 	f := runtime.FuncForPC(pc)
 
 	logContent := "[" + printLevelConvertMap[logLevel] + "]" + "[" + f.Name() + ":" + strconv.Itoa(line) + "]" + format
-
 	log.Printf(logContent, v)
-
 	return
 }

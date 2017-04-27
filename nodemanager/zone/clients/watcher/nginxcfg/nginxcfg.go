@@ -358,6 +358,34 @@ func (svc *ServiceInfo) createNginxCfg(request *restful.Request, response *restf
 	return
 }
 
+func (svc *ServiceInfo) deleteUserCfgs(request *restful.Request, response *restful.Response) {
+	logdebug.Println(logdebug.LevelDebug, "前端开始删除个性化配置")
+
+	request.Request.ParseForm()
+	jobZoneType := request.Request.Form.Get("JobZoneType")
+
+	userNginxCfg := WebConfig{}
+	if err := request.ReadEntity(&userNginxCfg); err != nil {
+		logdebug.Println(logdebug.LevelError, err)
+		return
+	}
+	userNginxCfg.DeleteUserCfgs = true
+
+	nodesInfo := nodes.GetAllNodesInfo()
+	for _, nodeInfo := range nodesInfo {
+		client := nodeInfo.Client
+		if client.JobZoneType != jobZoneType {
+			continue
+		}
+		appCfgURL, _ := getAppInfoURL(client, userNginxCfg)
+
+		communicate.SendRequestByJSON(communicate.PUT, appCfgURL, userNginxCfg)
+	}
+
+	return
+
+}
+
 //Init 初始化函数
 func (svc *ServiceInfo) Init() {
 	http.HandleFunc("/ngfront/zone/clients/watcher/nginxcfg", showNginxCfgPage)
@@ -422,6 +450,10 @@ func (svc *ServiceInfo) Init() {
 		Operation("downloadfile"))
 
 	ws.Route(ws.GET("/singleClientDownload/tarDownload").To(svc.realDownload).
+		Doc("download nginx config").
+		Operation("downloadfile"))
+
+	ws.Route(ws.PUT("/deleteUserCfgs").To(svc.deleteUserCfgs).
 		Doc("download nginx config").
 		Operation("downloadfile"))
 

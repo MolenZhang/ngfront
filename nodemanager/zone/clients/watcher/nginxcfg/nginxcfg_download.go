@@ -168,7 +168,6 @@ func (svc *ServiceInfo) realDownload(request *restful.Request, response *restful
 	response.AddHeader("Content-Type", "application/octet-stream")
 	response.AddHeader("content-disposition", "attachment; filename="+webDownloadFileName)
 	io.Copy(response.ResponseWriter, file)
-
 	logdebug.Println(logdebug.LevelDebug, "前端下载文件完成")
 
 	//下载完成后删除本地下载文件
