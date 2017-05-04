@@ -328,6 +328,30 @@ function showWatcherHtml(data,ClientID,NodeIP){
 	
 }
 
+//创建监控-验证端口
+function checkPortFun(NginxListenPort){
+	var checkPortUrl = 'http://'+areaIP+':'+areaPort+'/watchers/portCheck?nginxListenPort='+NginxListenPort+'&jobZoneType='+JobZoneType;
+	var checkPortResult;
+	$.ajax({
+		url: checkPortUrl,
+		dataType: "json",
+		contentType: "text/html; charset=UTF-8",
+		type:"put",  
+		headers: {
+			"Content-Type": "application/json",
+			"Accept": "application/json",
+		},
+		success:function(data){
+			var data=data;
+			if(data.Result==true){
+				checkPortResult = true;
+			}else if(data.Result==false){
+				checkPortResult = false;
+			}
+			return checkPortResult;
+		}		
+    });  
+}
 /*新增*/
 function addOneWatcher(obj){
 	$("#addJobZoneTypeOldVal").empty().append(JobZoneType);

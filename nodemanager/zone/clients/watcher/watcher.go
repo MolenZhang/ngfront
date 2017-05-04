@@ -490,16 +490,33 @@ func getNamespaceInfoByWatcherID(request *restful.Request, response *restful.Res
 type watcherInitInfoResp struct {
 	K8sMasterHost string
 	K8sAPIVersion string
+	//	NginxReloadCommand     string
+	//	NginxRealCfgDirPath    string
+	//	NginxTestCfgDirPath    string
+	//	DownloadCfgDirPath     string
+	//	DefaultNginxServerType string
+	//	DomainSuffix           string
+	//	WorkMode               string
+	//	NginxTestCommand       string
+	//	K8sWatcherStatus       string
 }
 
 func getWatcherInfo(request *restful.Request, response *restful.Response) {
 
+	logdebug.Println(logdebug.LevelDebug, "<<<<<<获取监视器初始化信息>>>>>>")
+
+	//	request.Request.ParseForm()
+	//	jobZoneType := request.Request.Form.Get("jobZoneType")
+
 	webResp := watcherInitInfoResp{}
 	allNodesInfo := nodes.GetAllNodesInfo()
 	for _, singleNodeInfo := range allNodesInfo {
-		webResp.K8sMasterHost = singleNodeInfo.Client.K8sMasterHost
-		webResp.K8sAPIVersion = singleNodeInfo.Client.K8sAPIVersion
+		client := singleNodeInfo.Client
+		//	if client.JobZoneType == jobZoneType {
+		webResp.K8sMasterHost = client.K8sMasterHost
+		webResp.K8sAPIVersion = client.K8sAPIVersion
 		break
+		//	}
 	}
 
 	logdebug.Println(logdebug.LevelDebug, "watcher 初始化信息 ", webResp)
