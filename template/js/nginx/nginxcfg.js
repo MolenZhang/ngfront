@@ -479,7 +479,7 @@ function showNgsHtml(data){
 			+'</div>'
 			+'<div class="serverPartCon">'
 			+'<div class="nginx-label col-md-offset-1">'
-			+'<span>listen:</span><input type="text" id="ListenPort" class="ListenPort" name="ListenPort" value="'+ListenPort+'">;'
+			+'<span>listen:</span><input type="text" id="ListenPort" class="ListenPort" name="ListenPort" value="'+ListenPort+'" disabled>;'
 			+'</div>'
 			+'<div class="nginx-label col-md-offset-1">'
 			+'<span>server_name:</span><input type="text" id="ServerName" class="ServerName"  name="ServerName" value="'+ServerName+'" disabled>;'
