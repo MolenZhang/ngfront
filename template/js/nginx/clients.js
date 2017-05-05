@@ -328,30 +328,6 @@ function showWatcherHtml(data,ClientID,NodeIP){
 	
 }
 
-//创建监控-验证端口
-function checkPortFun(NginxListenPort){
-	var checkPortUrl = 'http://'+areaIP+':'+areaPort+'/watchers/portCheck?nginxListenPort='+NginxListenPort+'&jobZoneType='+JobZoneType;
-	var checkPortResult;
-	$.ajax({
-		url: checkPortUrl,
-		dataType: "json",
-		contentType: "text/html; charset=UTF-8",
-		type:"put",  
-		headers: {
-			"Content-Type": "application/json",
-			"Accept": "application/json",
-		},
-		success:function(data){
-			var data=data;
-			if(data.Result==true){
-				checkPortResult = true;
-			}else if(data.Result==false){
-				checkPortResult = false;
-			}
-			return checkPortResult;
-		}		
-    });  
-}
 /*新增*/
 function addOneWatcher(obj){
 	$("#addJobZoneTypeOldVal").empty().append(JobZoneType);
@@ -379,10 +355,14 @@ function addOneWatcher(obj){
 		content: $("#addOneWatcherInfo"),
 		btn: ['确定','取消'],
 		yes: function(index,layero){
-			//var addUrl = "http://"+areaIP+":"+areaPort+"/watcher/all";
+			
+			//验证租户至少选择一个
+			var namespaceNum = $(".namespacesChk:checked").length;
+			if(namespaceNum==0){
+				layer.msg("至少选择一个租户!", {icon: 2});
+				return false;
+			}
 
-			//var KubernetesMasterHost = $("#addKubernetesMasterHostInfo").val();
-			//var KubernetesAPIVersion =$("#addKubernetesAPIVersionInfo").val();
 			var NginxReloadCommand = $("#addNginxReloadCommandInfo").val();
 			var NginxListenPort = $("#addNginxListenPortInfo").val();
 			var JobZoneType = $("#addJobZoneTypeOldVal").html();
