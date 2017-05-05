@@ -91,7 +91,7 @@ function showClients(JobZoneType){
                                     '<td onclick="watcherAll(this)" ClientID="'+ClientID+'" NodeIP="'+NodeIP+'" class="caretTd"><a><i class="fa fa-caret-right" flag="1"></i></a></td>'+
                                     '<td>'+ClientID+'</td>'+
                                     '<td>'+NodeName+'</td>'+
-                                    '<td>'+NodeIP+'</td>'+
+                                    '<td><span class="namespacesSpan">'+NodeIP+'</span></td>'+
                                     '<td>'+APIServerPort+'</td>'+
                                     '<td class="operationBtns" ClientID="'+ClientID+'" NodeIP="'+NodeIP+'">'+
                                     	'<a class="floatLeft" onclick="watcherNginxExport(this)"><i>下载配置</i></a>'+
@@ -293,7 +293,7 @@ function showWatcherHtml(data,ClientID,NodeIP){
 					   +'<th colspan="2">&nbsp;</th>'
                        +'<th>watcherID</th>'
                        +'<th>工作状态</th>'
-                       +'<th>监控的租户</th>'
+                       +'<th class="namespacesTd"><span class="namespacesSpan">监控的租户</span></th>'
                        +'<th>代理端口</th>'
                        +'<th style="text-indent: 10px;">操作</th>'
                        +'</tr>';
@@ -313,7 +313,7 @@ function showWatcherHtml(data,ClientID,NodeIP){
 				    +'<td colspan="2">&nbsp;</td>'
 					+'<td>'+WatcherID+'</td>'
 					+'<td class="statusImg">'+K8sWatcherStatusHtml+'</td>'
-					+'<td>'+WatchNamespaceSets+'</td>'
+					+'<td class="namespacesTd"><span class="namespacesSpan">'+WatchNamespaceSets+'<span></td>'
 					+'<td>'+NginxListenPort+'</td>'
 					+'<td class="operationBtns" WatcherID="'+WatcherID+'">'
 					+'<a onclick="stopOneWatcher(this)" class="'+K8sWatcherStatus+'_stopBtn"><i>停止</i></a>'
@@ -1009,7 +1009,7 @@ function delWatcher(){
 				var ewatcherID = data[wn].WatcherID;
 				var eWatchNamespaceSets = data[wn].WatchNamespaceSets;
 				watcherIDHtml += '<tr><td><input type="checkbox" class="chkItem chkWatcherItem" WatcherID="'+ewatcherID+'"></td>'
-		  							+'<td>'+ewatcherID+'</td><td>'+eWatchNamespaceSets+'</td></tr>';
+		  							+'<td>'+ewatcherID+'</td><td><span class="namespacesSpan">'+eWatchNamespaceSets+'</span></td></tr>';
 			}
 			$("#watcheridbody").empty().append(watcherIDHtml);
 		}		
