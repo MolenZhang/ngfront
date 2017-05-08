@@ -2,13 +2,11 @@ package nginxcfg
 
 import (
 	"encoding/json"
-	//"html/template"
-	//"net/http"
+	"github.com/emicklei/go-restful"
+
 	"ngfront/communicate"
 	"ngfront/logdebug"
 	"ngfront/nodemanager/nodes"
-
-	"github.com/emicklei/go-restful"
 )
 
 //UserDefinedNginxRules 用户自定义nginx规则

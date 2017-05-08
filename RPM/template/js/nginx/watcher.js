@@ -76,7 +76,8 @@ $(document).ready(function () {
 				$(this).parent().hide();
 				$(this).parent().prev().show();
 			}else{
-				alert("请选择租户");
+				layer.msg("至少选择一个租户!", {icon: 2});
+				return false;
 			}
 		
 		
@@ -283,7 +284,7 @@ $(document).ready(function () {
 											'<td class="firstTd">监控租户集合</td>'+
 											'<td><span id="WatchNamespaceSetsOldVal">'+WatchNamespaceSets+'</span><i class="fa fa-edit fa-nodeEdit" id="editNamespacesBtn"></i></td>'+
 											'<td class="editItem editNamespacesTd"><span id="namespacesInfo"></span>'+
-											'<i class="fa fa-save fa-nodeSave" id="watcherCfgHtmlSaveBtn"></i></i><i class="fa fa-times fa-nodeTimes"></i></td>'+
+											'<i class="fa fa-save fa-nodeSaveNamespace" id="watcherCfgHtmlSaveBtn"></i></i><i class="fa fa-times fa-nodeTimes"></i></td>'+
 										'</tr>'+
 										'<tr>'+
 											'<td class="firstTd">真实配置文件生成路径</td>'+

@@ -231,6 +231,12 @@ i.fa-one{
 	height: 35px;
 	line-height: 35px;
 }
+.editItem .editInputHalf{
+	border-radius: 4px;
+	width:44%;
+	height: 35px;
+	line-height: 35px;
+}
 .editItem select{
 	border-radius: 4px;
 	width:50%;

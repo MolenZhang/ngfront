@@ -9,15 +9,15 @@ package nginxcfg
 
 import (
 	"encoding/json"
-
 	"html/template"
 	"net/http"
+
+	"github.com/emicklei/go-restful"
+
 	"ngfront/communicate"
 	"ngfront/config"
 	"ngfront/logdebug"
 	"ngfront/nodemanager/nodes"
-
-	"github.com/emicklei/go-restful"
 )
 
 //AppSrcTypeKubernetes 服务源于k8s

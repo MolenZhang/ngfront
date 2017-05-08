@@ -332,7 +332,7 @@ function showWatcherHtml(data,ClientID,NodeIP){
 function addOneWatcher(obj){
 	$("#addJobZoneTypeOldVal").empty().append(JobZoneType);
 	var addwatcherUrl = 'http://'+areaIP+':'+areaPort+"/watchers/watcherInfo"
-	
+	var WorkDir = "";
 	$.ajax({
 		url : addwatcherUrl,
 		dataType: "json",
@@ -344,8 +344,12 @@ function addOneWatcher(obj){
 		},
 		success :function(data){
 			var data=data;
+			WorkDir = data.WorkDir;
 			$("#addKubernetesMasterHostInfo").val(data.K8sMasterHost);
 			$("#addKubernetesAPIVersionInfo").val(data.K8sAPIVersion);
+			$("#addNginxRealCfgDirPathInfo1").val(WorkDir);
+			$("#addNginxTestCfgDirPathInfo1").val(WorkDir);
+			$("#addDownloadCfgDirPathInfo1").val(WorkDir);
 		}
 	});
 	layer.open({
@@ -377,9 +381,9 @@ function addOneWatcher(obj){
 			}
 
 			var NginxReloadCommand = $("#NginxReloadCommandInfo").val();
-			var NginxRealCfgDirPath = $("#addNginxRealCfgDirPathInfo").val();
-			var NginxTestCfgDirPath = $("#addNginxTestCfgDirPathInfo").val();
-			var DownloadCfgDirPath = $("#addDownloadCfgDirPathInfo").val();
+			var NginxRealCfgDirPath = WorkDir+$("#addNginxRealCfgDirPathInfo2").val();
+			var NginxTestCfgDirPath = WorkDir+$("#addNginxTestCfgDirPathInfo2").val();
+			var DownloadCfgDirPath = WorkDir+$("#addDownloadCfgDirPathInfo2").val();
 			//var LogPrintLevel = $("#addLogPrintLevelInfo").val();
 			var DefaultNginxServerType = $("#addDefaultNginxServerTypeInfo").val();
 			var DomainSuffix = $("#addDomainSuffixInfo").val();

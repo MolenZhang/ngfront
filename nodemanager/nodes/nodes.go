@@ -5,12 +5,11 @@ package nodes
 //一个Node上 可以有多个kubeng 一个kubeng由client信息和watcherManagerCfg以及NginxCfg信息3个成员构成 目前仅实现了2个成员
 
 import (
-	//"fmt"
-	//"log"
-	"ngfront/config"
-	"ngfront/logdebug"
 	"sync"
 	"time"
+
+	"ngfront/config"
+	"ngfront/logdebug"
 )
 
 //WatchManagerCfg 监视器配置(kubeng 的一个功能 就是监视k8s)

@@ -89,15 +89,15 @@ func Init() {
 		}
 	}
 
-	templateDir := "./template/"
+	templateDir := "/opt/ngfront/template/"
 	cpCmd := "sudo cp -r " + templateDir + " " + NgFrontCfg.TemplateDir
 	fmt.Println("拷贝时的命令:", cpCmd)
 	cmd := exec.Command("bash", "-c", cpCmd)
 	cmd.Run()
 
 	chmodCmd := "sudo chmod 777 " + NgFrontCfg.TemplateDir + " -R"
-	cmd = exec.Command("bash", "-c", chmodCmd)
-	cmd.Run()
+	execCmd := exec.Command("bash", "-c", chmodCmd)
+	execCmd.Run()
 
 	//将工作信息传给js
 	createCfgForJS(NgFrontCfg.ListenIP, NgFrontCfg.ListenPort)

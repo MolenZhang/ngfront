@@ -1,15 +1,16 @@
 package nginxcfg
 
 import (
-	//"fmt"
 	"encoding/json"
 	"fmt"
-	"github.com/emicklei/go-restful"
 	"net/http"
+	"strings"
+
+	"github.com/emicklei/go-restful"
+
 	"ngfront/communicate"
 	"ngfront/logdebug"
 	"ngfront/nodemanager/nodes"
-	"strings"
 )
 
 //CompareResponse 前端界面对比接口返回消息结构

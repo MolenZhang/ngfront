@@ -11,16 +11,17 @@ package watcher
 //watcher页面 展示具体的某一台client下的监视器信息 可以编辑
 import (
 	"encoding/json"
-	"github.com/emicklei/go-restful"
 	"html/template"
 	"net/http"
+	"sort"
+	"strconv"
+
+	"github.com/emicklei/go-restful"
+
 	"ngfront/communicate"
 	"ngfront/config"
 	"ngfront/logdebug"
 	"ngfront/nodemanager/nodes"
-	//	"os"
-	"sort"
-	"strconv"
 )
 
 // 租户列表

@@ -3,16 +3,18 @@ package login
 
 import (
 	"encoding/json"
-	"github.com/emicklei/go-restful"
 	"net/http"
+	"sort"
+	"strconv"
+	"time"
+
+	"github.com/emicklei/go-restful"
+
 	"ngfront/communicate"
 	"ngfront/config"
 	"ngfront/logdebug"
 	"ngfront/nodemanager/nodes"
 	kubeNGCfg "ngfront/nodemanager/zone/clients/watcher/nginxcfg"
-	"sort"
-	"strconv"
-	"time"
 )
 
 //RequestBody 请求报文体

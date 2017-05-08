@@ -1,15 +1,17 @@
 package nginxcfg
 
 import (
-	"github.com/emicklei/go-restful"
 	"io"
 	"net/http"
-	"ngfront/communicate"
-	"ngfront/logdebug"
-	"ngfront/nodemanager/nodes"
 	"os"
 	"os/exec"
 	"time"
+
+	"github.com/emicklei/go-restful"
+
+	"ngfront/communicate"
+	"ngfront/logdebug"
+	"ngfront/nodemanager/nodes"
 )
 
 const (

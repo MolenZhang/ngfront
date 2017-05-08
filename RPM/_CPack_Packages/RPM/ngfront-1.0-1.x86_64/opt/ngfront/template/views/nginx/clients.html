@@ -81,7 +81,7 @@
 											<th>&nbsp;</th>
 											<th>客户端ID</th>
 											<th>节点名称</th>
-											<th>节点IP</th>
+											<th><span class="namespacesSpan">节点IP</span></th>
 											<th>APIServer端口</th>
 											<th style="text-indent: 10px;">操作</th>
 										</tr>
@@ -260,15 +260,24 @@
 					</tr>
 					<tr>
 						<td class="firstTd">真实配置文件生成路径</td>
-						<td class="editItem"><input class="editInput" id="addNginxRealCfgDirPathInfo" type="text" value="/etc/nginx/conf.d/real_cfg/"></td>
+						<td class="editItem">
+						<input class="editInputHalf" id="addNginxRealCfgDirPathInfo1" type="text" value="" disabled>
+						<input class="editInputHalf" id="addNginxRealCfgDirPathInfo2" type="text" value="/real_cfg/">
+						</td>
 					</tr>
 					<tr>
 						<td class="firstTd">测试配置文件生成路径</td>
-						<td class="editItem"><input class="editInput" id="addNginxTestCfgDirPathInfo" type="text" value="/etc/nginx/conf.d/test_cfg/"></td>
+						<td class="editItem">
+						<input class="editInputHalf" id="addNginxTestCfgDirPathInfo1" type="text" value="" disabled>
+						<input class="editInputHalf" id="addNginxTestCfgDirPathInfo2" type="text" value="/test_cfg/">
+						</td>
 					</tr>
 					<tr>
 						<td class="firstTd">配置下载路径</td>
-						<td class="editItem"><input class="editInput" id="addDownloadCfgDirPathInfo" type="text" value="/etc/nginx/conf.d/download_cfg/"></td>
+						<td class="editItem">
+						<input class="editInputHalf" id="addDownloadCfgDirPathInfo1" type="text" value=""  disabled>
+						<input class="editInputHalf" id="addDownloadCfgDirPathInfo2" type="text" value="/download_cfg/">
+						</td>
 					</tr>
 					<!-- <tr>
 						<td class="firstTd">日志打印级别</td>
