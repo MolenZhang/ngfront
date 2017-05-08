@@ -52,7 +52,7 @@ type ClientInfo struct {
 	JobZoneType               string
 	K8sMasterHost             string
 	K8sAPIVersion             string
-	//k8s api version and master
+	WorkDir                   string
 }
 
 //NodeInfo 单个节点的所有信息

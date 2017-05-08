@@ -233,6 +233,11 @@ func postWatcherInfo(request *restful.Request, response *restful.Response) {
 			continue
 		}
 
+		if singleNodeInfo.Client.WorkDir != "/root" {
+			webMsg.WatcherCfg.NginxReloadCommand = "sudo " + webMsg.WatcherCfg.NginxReloadCommand
+			webMsg.WatcherCfg.NginxTestCommand = "sudo " + webMsg.WatcherCfg.NginxTestCommand
+		}
+
 		createWatcherURL := "http://" +
 			singleNodeInfo.Client.NodeIP +
 			singleNodeInfo.Client.APIServerPort +
@@ -465,6 +470,7 @@ func getNamespaceInfoByWatcherID(request *restful.Request, response *restful.Res
 type watcherInitInfoResp struct {
 	K8sMasterHost string
 	K8sAPIVersion string
+	WorkDir       string
 	//	NginxReloadCommand     string
 	//	NginxRealCfgDirPath    string
 	//	NginxTestCfgDirPath    string
@@ -490,6 +496,7 @@ func getWatcherInfo(request *restful.Request, response *restful.Response) {
 		//	if client.JobZoneType == jobZoneType {
 		webResp.K8sMasterHost = client.K8sMasterHost
 		webResp.K8sAPIVersion = client.K8sAPIVersion
+		webResp.WorkDir = client.WorkDir + "/kubeng"
 		break
 		//	}
 	}

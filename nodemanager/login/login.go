@@ -29,6 +29,7 @@ type RequestBody struct {
 	JobZoneType               string
 	K8sMasterHost             string
 	K8sAPIVersion             string
+	WorkDir                   string
 }
 
 //RequestResult 回复成功与否报文原因
@@ -131,6 +132,7 @@ func (svc *ServiceInfo) login(request *restful.Request, response *restful.Respon
 		JobZoneType:               reqMsg.ReqBody.JobZoneType,
 		K8sMasterHost:             reqMsg.ReqBody.K8sMasterHost,
 		K8sAPIVersion:             reqMsg.ReqBody.K8sAPIVersion,
+		WorkDir:                   reqMsg.ReqBody.WorkDir,
 	}
 
 	//同步监控数据信息到新的client
@@ -160,6 +162,7 @@ func (svc *ServiceInfo) login(request *restful.Request, response *restful.Respon
 	}
 
 	logdebug.Println(logdebug.LevelDebug, "上线报文=", reqMsg)
+	logdebug.Println(logdebug.LevelDebug, "上线节点信息:", clientInfo)
 	response.WriteHeaderAndJson(200, reqMsg, "application/json")
 
 	return

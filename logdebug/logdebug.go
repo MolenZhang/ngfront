@@ -120,7 +120,7 @@ func Printf(logLevel int, format string, v ...interface{}) {
 
 func logPrintToFile(logContent string, v ...interface{}) {
 
-	//	logDir := "/opt/ngfront/log/"
+	//	logDir := "/home/zf/ngfront/log/"
 	logDir := config.NgFrontCfg.LogDir
 	if _, err := os.Stat(logDir); err != nil {
 		if os.IsNotExist(err) == true {
