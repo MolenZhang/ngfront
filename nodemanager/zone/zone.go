@@ -51,7 +51,7 @@ func convertZoneType(zoneType string) int {
 }
 
 func loadHomePage(w http.ResponseWriter, r *http.Request) {
-	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<<加载主页>>>>>>>>>>>>>")
+	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<<loadding the home page>>>>>>>>>>>>>")
 	templateDir := config.NgFrontCfg.TemplateDir
 	t, err := template.ParseFiles(templateDir + "template/views/nginx/area.html")
 	if err != nil {

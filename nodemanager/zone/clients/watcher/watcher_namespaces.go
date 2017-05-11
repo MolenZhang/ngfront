@@ -96,7 +96,7 @@ type namespacesUseMark struct {
 
 //从k8s获取集群namespaces
 func getNamespacesFromK8s(url string) (namespaces []string) {
-	logdebug.Println(logdebug.LevelDebug, "请求watcher 数据 url=", url)
+	logdebug.Println(logdebug.LevelDebug, "the URL of getting watcher info", url)
 
 	resp, err := http.Get(url)
 	if err != nil {
@@ -229,15 +229,15 @@ func initWebMsg(w http.ResponseWriter, r *http.Request, webAllNamespacesInfo *[]
 	r.ParseForm()
 	jobZoneType = r.Form.Get("JobZoneType")
 
-	logdebug.Println(logdebug.LevelDebug, "获取租户时发来的工作区域：", jobZoneType)
+	logdebug.Println(logdebug.LevelDebug, "the jobZoneType when getting namesapces info is ：", jobZoneType)
 	getNamespacesURL := kubernetesMasterHost +
 		"/" +
 		kubernetesAPIVersion +
 		"/namespaces"
 
-	logdebug.Println(logdebug.LevelDebug, "获取租户请求的URL", getNamespacesURL)
+	logdebug.Println(logdebug.LevelDebug, "the URL of getting namespace is:", getNamespacesURL)
 	allNamespacesDetailInfoFromK8s = getNamespacesDetailInfoFromK8s(getNamespacesURL, jobZoneType)
-	logdebug.Println(logdebug.LevelDebug, "从k8s获取租户信息", allNamespacesDetailInfoFromK8s)
+	logdebug.Println(logdebug.LevelDebug, "get namespacesInfo from k8s", allNamespacesDetailInfoFromK8s)
 
 	//init 将k8s获取到的所有租户信息 填充到将要发给web前端的数组中
 	for _, namespace := range allNamespacesDetailInfoFromK8s.NamespacesList {
@@ -272,7 +272,7 @@ func getWatchersInfoFromKubeNG(jobZoneType string) (allWatchersNamespacesInfo ma
 		break
 	}
 	if watcherURL == "" {
-		logdebug.Println(logdebug.LevelError, "未匹配工作区域", jobZoneType)
+		logdebug.Println(logdebug.LevelError, "can not match the jobZoneType", jobZoneType)
 		return
 	}
 
@@ -296,7 +296,7 @@ func markUsedNamesapces(webAllNamespacesInfo []NamespaceInfo, allWatchersNamespa
 		}
 	}
 
-	logdebug.Println(logdebug.LevelDebug, "******保存的租户信息并标记显示*****:", webAllNamespacesInfo)
+	logdebug.Println(logdebug.LevelDebug, "******the namespacesInfo which already marked*****:", webAllNamespacesInfo)
 
 	return
 }
@@ -325,14 +325,14 @@ func getWatchNamespacesDetailInfo(w http.ResponseWriter, r *http.Request) {
 
 	//初始化将要发给前端的所有租户的信息
 	namespacesDetail, jobZoneType := initWebMsg(w, r, &webAllNamespacesInfo)
-	logdebug.Println(logdebug.LevelDebug, "初始状态下的所有租户信息", webAllNamespacesInfo)
+	logdebug.Println(logdebug.LevelDebug, "all of namespacesInfo which is in init status", webAllNamespacesInfo)
 
 	//从kubeng获取已经被监视的租户信息
 	allWatchersNamespacesInfo = getWatchersInfoFromKubeNG(jobZoneType)
-	logdebug.Println(logdebug.LevelDebug, "前端已经使用的租户信息", allWatchersNamespacesInfo)
+	logdebug.Println(logdebug.LevelDebug, "the namespacesInfo which were used in web", allWatchersNamespacesInfo)
 
 	markUsedNamesapces(webAllNamespacesInfo, allWatchersNamespacesInfo)
-	logdebug.Println(logdebug.LevelDebug, "标记过后的所有租户信息", webAllNamespacesInfo)
+	logdebug.Println(logdebug.LevelDebug, "the namespacesInfo which were marked", webAllNamespacesInfo)
 
 	//将所有标记过的租户传给前端使用
 	respToWebFront(w, webAllNamespacesInfo, namespacesDetail)

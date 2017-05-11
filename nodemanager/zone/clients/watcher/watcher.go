@@ -102,7 +102,7 @@ func mapConvertToArray(kubengWatchersMap map[int]nodes.WatchManagerCfg) []nodes.
 
 //加载界面
 func loadWatcherPage(w http.ResponseWriter, r *http.Request) {
-	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<<加载watcher页面>>>>>>>>>>>>>")
+	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<<loading the page of watcher>>>>>>>>>>>>>")
 	//加载模板 显示内容是 批量操作client
 	templateDir := config.NgFrontCfg.TemplateDir
 	t, err := template.ParseFiles(templateDir + "template/views/nginx/watcher.html")
@@ -119,7 +119,7 @@ func loadWatcherPage(w http.ResponseWriter, r *http.Request) {
 
 //获取前端特指的某个监视器配置
 func getWatcherInfoByID(request *restful.Request, response *restful.Response) {
-	logdebug.Println(logdebug.LevelDebug, "根据前端提供的WatcherID获取相应监视器信息")
+	logdebug.Println(logdebug.LevelDebug, "get watcherInfo based on the WatcherID provided by the web")
 	watcherID := request.PathParameter("watcherID")
 
 	request.Request.ParseForm()
@@ -150,7 +150,7 @@ type deleteWatcherCfg struct {
 }
 
 func deleteWatcherInfo(request *restful.Request, response *restful.Response) {
-	logdebug.Println(logdebug.LevelDebug, "删除对应监视器信息")
+	logdebug.Println(logdebug.LevelDebug, "delete watcherInfo !")
 
 	reqMsg := deleteWatcherCfg{}
 	err := request.ReadEntity(&reqMsg)
@@ -189,7 +189,7 @@ func deleteWatcherInfo(request *restful.Request, response *restful.Response) {
 
 //处理前端的get请求
 func getAllWatcherInfo(request *restful.Request, response *restful.Response) {
-	logdebug.Println(logdebug.LevelDebug, "获取所有监视器信息")
+	logdebug.Println(logdebug.LevelDebug, "get all of the watcherInfo")
 
 	request.Request.ParseForm()
 	client := nodes.ClientInfo{
@@ -201,13 +201,13 @@ func getAllWatcherInfo(request *restful.Request, response *restful.Response) {
 
 	watcherAPIServerURL := "http://" + clientInfo.NodeIP + clientInfo.APIServerPort + "/" + clientInfo.WatchManagerAPIServerPath
 
-	logdebug.Println(logdebug.LevelDebug, "获取所有的监视器信息URL", watcherAPIServerURL)
+	logdebug.Println(logdebug.LevelDebug, "the URL of getting all of the watcherInfo", watcherAPIServerURL)
 	webMsg := nodes.WatchManagerCfgs
 	resp, _ := communicate.SendRequestByJSON(communicate.GET, watcherAPIServerURL, nil)
 	json.Unmarshal(resp, &webMsg)
 
 	respMsg := mapConvertToArray(webMsg)
-	logdebug.Println(logdebug.LevelDebug, "Arr 获取所有监视器信息：", respMsg)
+	logdebug.Println(logdebug.LevelDebug, "get all of the watcherInfo：", respMsg)
 	response.WriteHeaderAndJson(200, respMsg, "application/json")
 
 	return
@@ -216,7 +216,7 @@ func getAllWatcherInfo(request *restful.Request, response *restful.Response) {
 //createWatcherInfo 处理前端生成的信息 创建 自动同步配置给其他client
 func postWatcherInfo(request *restful.Request, response *restful.Response) {
 
-	logdebug.Println(logdebug.LevelDebug, "与kubeng通讯 创建watcherCfg")
+	logdebug.Println(logdebug.LevelDebug, "add one watcherCfg")
 
 	webMsg := CfgWebMsg{}
 	err := request.ReadEntity(&webMsg)
@@ -224,7 +224,7 @@ func postWatcherInfo(request *restful.Request, response *restful.Response) {
 		response.WriteError(http.StatusInternalServerError, err)
 		return
 	}
-	logdebug.Println(logdebug.LevelDebug, "新增时 前端传来的数据：", webMsg)
+	logdebug.Println(logdebug.LevelDebug, "the watcherCfg which exec add from web is ：", webMsg)
 
 	//给每一个client 发送watcher信息
 	allNodesInfo := nodes.GetAllNodesInfo()
@@ -249,7 +249,7 @@ func postWatcherInfo(request *restful.Request, response *restful.Response) {
 		resp, _ := communicate.SendRequestByJSON(communicate.POST, createWatcherURL, webMsg.WatcherCfg)
 		json.Unmarshal(resp, &respBody)
 		logdebug.Println(logdebug.LevelDebug, respBody)
-		logdebug.Println(logdebug.LevelDebug, "前端创建watcher时发给kubeng的URL：", createWatcherURL)
+		logdebug.Println(logdebug.LevelDebug, "the URL sendding to kubeng when adding watcherCfg is :", createWatcherURL)
 	}
 
 	respBody := ResponseBody{
@@ -262,7 +262,7 @@ func postWatcherInfo(request *restful.Request, response *restful.Response) {
 //对应前端编辑按钮
 //putWatcherInfo 处理前端PUT过来的消息 更新
 func putWatcherInfoByID(request *restful.Request, response *restful.Response) {
-	logdebug.Println(logdebug.LevelDebug, "与kubeng通讯 更新指定watcherID的状态")
+	logdebug.Println(logdebug.LevelDebug, "update the status of the watcher by watcherID")
 	watcherID := request.PathParameter("watcherID")
 
 	intTypeWatcherID, err := strconv.Atoi(watcherID)
@@ -310,7 +310,6 @@ func putWatcherInfoByID(request *restful.Request, response *restful.Response) {
 
 // 处理前端批量POST过来的消息
 func batchPostWatcherInfo(request *restful.Request, response *restful.Response) {
-	logdebug.Println(logdebug.LevelDebug, "与kubeng通讯 批量创建watcher状态")
 
 	webMsg := BatchWatcherWebMsg{}
 	err := request.ReadEntity(&webMsg)
@@ -318,8 +317,6 @@ func batchPostWatcherInfo(request *restful.Request, response *restful.Response) 
 		response.WriteError(http.StatusInternalServerError, err)
 		return
 	}
-
-	logdebug.Println(logdebug.LevelDebug, "前端watcher信息", webMsg)
 
 	for _, batchNodeInfo := range webMsg.BatchNodesInfo {
 
@@ -365,7 +362,7 @@ func getWatcherInfoCfg(request *restful.Request) (requestURL string, clientInfo 
 
 //对应前端 启动 按钮
 func changeWatcherManagerStatus(request *restful.Request, response *restful.Response) {
-	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<更改监视器状态>>>>>>>>")
+	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<update the status of watcher>>>>>>>>")
 
 	watcherStatus := request.PathParameter("status")
 
@@ -389,7 +386,7 @@ func changeWatcherManagerStatus(request *restful.Request, response *restful.Resp
 }
 
 func getSingleWatcherInfo(request *restful.Request, response *restful.Response) {
-	logdebug.Println(logdebug.LevelDebug, "获取具体watcherID监视器信息")
+	logdebug.Println(logdebug.LevelDebug, "get watcherInfo by the watcherID")
 
 	//watcher界面所需展示的数据较多 不止是watcher 还有client的部分信息
 	webMsg := watcherInfo{}
@@ -403,10 +400,9 @@ func getSingleWatcherInfo(request *restful.Request, response *restful.Response) 
 	respMsg := ResponseBody{}
 	resp, _ := communicate.SendRequestByJSON(communicate.GET, watcherAPIServerURL, nil)
 	json.Unmarshal(resp, &respMsg.WatcherCfg)
-	logdebug.Println(logdebug.LevelDebug, "kubng返回给的数据信息", respMsg.WatcherCfg)
+	logdebug.Println(logdebug.LevelDebug, "the message from kubeNg is :", respMsg.WatcherCfg)
 	webMsg.Watcher = respMsg.WatcherCfg
 
-	logdebug.Println(logdebug.LevelDebug, "getSingleWatcherInfo 获取前端数据：", webMsg)
 	response.WriteHeaderAndJson(200, webMsg, "application/json")
 
 	return
@@ -414,7 +410,7 @@ func getSingleWatcherInfo(request *restful.Request, response *restful.Response) 
 }
 
 func getNamespaceInfoByWatcherID(request *restful.Request, response *restful.Response) {
-	logdebug.Println(logdebug.LevelDebug, "<<<<<<根据watcherID获取租户信息和服务信息>>>>>>")
+	logdebug.Println(logdebug.LevelDebug, "<<<<<<get namespaceInfo by watcherID>>>>>>")
 
 	var (
 		watcherCfg           watcherNamespaceSets
@@ -426,7 +422,7 @@ func getNamespaceInfoByWatcherID(request *restful.Request, response *restful.Res
 	appInfoList := []AppInfo{}
 
 	namespacesURL, clientInfo := getWatcherInfoCfg(request)
-	logdebug.Println(logdebug.LevelDebug, "根据wacherID 获取租户信息的URL", namespacesURL)
+	logdebug.Println(logdebug.LevelDebug, "the URL of getting namespaceInfo by watcherID", namespacesURL)
 
 	kubernetesMasterHost := clientInfo.K8sMasterHost
 	kubernetesAPIVersion := clientInfo.K8sAPIVersion
@@ -437,7 +433,7 @@ func getNamespaceInfoByWatcherID(request *restful.Request, response *restful.Res
 
 	json.Unmarshal(resp, &watcherCfg)
 
-	logdebug.Println(logdebug.LevelDebug, "根据wacherID 获取的租户信息", watcherCfg)
+	logdebug.Println(logdebug.LevelDebug, "the namespaceInfo of one watcher", watcherCfg)
 
 	//根据各个租户信息获取每一个租户下的服务信息
 	for _, namespace := range watcherCfg.WatchNamespaceSets {
@@ -453,7 +449,7 @@ func getNamespaceInfoByWatcherID(request *restful.Request, response *restful.Res
 			namespace +
 			"/endpoints"
 
-		logdebug.Println(logdebug.LevelDebug, "根据namespace获取服务信息的URL", getEndpointsURL)
+		logdebug.Println(logdebug.LevelDebug, "the URL of get namespaceInfo", getEndpointsURL)
 		endpointList = getServiceFromK8s(getEndpointsURL)
 
 		appInfoList = getAppListFromEpList(endpointList, jobZoneType)
@@ -462,7 +458,7 @@ func getNamespaceInfoByWatcherID(request *restful.Request, response *restful.Res
 		namespaceAppInfoList.NamespaceAppsList = append(namespaceAppInfoList.NamespaceAppsList, namespaceAppsList)
 
 	}
-	logdebug.Println(logdebug.LevelDebug, "发给前端的租户以及服务信息", namespaceAppInfoList)
+	logdebug.Println(logdebug.LevelDebug, "the namespacesInfo and serverInfo for web", namespaceAppInfoList)
 	response.WriteHeaderAndJson(200, namespaceAppInfoList, "application/json")
 	return
 }
@@ -485,7 +481,7 @@ type watcherInitInfoResp struct {
 
 func getWatcherInfo(request *restful.Request, response *restful.Response) {
 
-	logdebug.Println(logdebug.LevelDebug, "<<<<<<获取监视器初始化信息>>>>>>")
+	logdebug.Println(logdebug.LevelDebug, "<<<<<<get the watcher init info>>>>>>")
 
 	//	request.Request.ParseForm()
 	//	jobZoneType := request.Request.Form.Get("jobZoneType")
@@ -502,14 +498,14 @@ func getWatcherInfo(request *restful.Request, response *restful.Response) {
 		//	}
 	}
 
-	logdebug.Println(logdebug.LevelDebug, "watcher 初始化信息 ", webResp)
+	logdebug.Println(logdebug.LevelDebug, "the init info of watcher ", webResp)
 	response.WriteHeaderAndJson(200, webResp, "application/json")
 	return
 
 }
 
 func checkNginxListenPort(request *restful.Request, response *restful.Response) {
-	logdebug.Println(logdebug.LevelDebug, "<<<<<<检查前端输入的nginx listen port>>>>>>")
+	logdebug.Println(logdebug.LevelDebug, "<<<<<<<check the nginx listen port of the web>>>>>>")
 
 	request.Request.ParseForm()
 	jobZoneType := request.Request.Form.Get("jobZoneType")
@@ -517,10 +513,10 @@ func checkNginxListenPort(request *restful.Request, response *restful.Response) 
 	watcherID := request.Request.Form.Get("watcherID")
 	intWatcherID, _ := strconv.Atoi(watcherID)
 
-	logdebug.Println(logdebug.LevelDebug, "前端传来的端口值:", nginxListenPort)
+	logdebug.Println(logdebug.LevelDebug, "listenPort from the web:", nginxListenPort)
 	webResp := ResponseBody{}
 
-	logdebug.Println(logdebug.LevelDebug, "前端传来的工作区域:", jobZoneType)
+	logdebug.Println(logdebug.LevelDebug, "jobZoneType from the web:", jobZoneType)
 
 	for _, nodeInfo := range nodes.GetAllNodesInfo() {
 		client := nodeInfo.Client
@@ -548,20 +544,20 @@ func dealNginxPort(client nodes.ClientInfo, nginxListenPort string, intWatcherID
 		client.APIServerPort +
 		"/" +
 		client.WatchManagerAPIServerPath
-	logdebug.Println(logdebug.LevelDebug, "获取端口时所需的watcherURL:", watcherURL)
+	logdebug.Println(logdebug.LevelDebug, "the watcherURL of getting listenPort:", watcherURL)
 
 	resp, _ := communicate.SendRequestByJSON(communicate.GET, watcherURL, nil)
 
 	nginxListenPortInWatchers := map[int]nodes.WatchManagerCfg{}
 	json.Unmarshal(resp, &nginxListenPortInWatchers)
-	logdebug.Println(logdebug.LevelDebug, "已经存在的监视计划信息:", nginxListenPortInWatchers)
+	logdebug.Println(logdebug.LevelDebug, "the watcherInfo which already exists:", nginxListenPortInWatchers)
 
 	for _, value := range nginxListenPortInWatchers {
 		if value.NginxListenPort != nginxListenPort {
 			continue
 		}
 		if value.WatcherID == intWatcherID {
-			logdebug.Println(logdebug.LevelDebug, "更新的端口值与原端口相同")
+			logdebug.Println(logdebug.LevelDebug, "the updated port is the same as the original port")
 			return true
 		}
 		return false

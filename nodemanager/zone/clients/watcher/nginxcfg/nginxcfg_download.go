@@ -48,7 +48,7 @@ type singleClientDownloadInfo struct {
 
 //下载单个节点上的所选watcherID的配置信息
 func downloadSingleClientNginxCfgsByWatcherIDs(request *restful.Request, response *restful.Response) {
-	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<根据指定watcherID下载配置信息>>>>>>>>>>>>")
+	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<download nginxCfg by watcherID from single client>>>>>>>>>>>>")
 	var (
 		downloadURL  string
 		clientInfo   nodes.ClientInfo
@@ -92,7 +92,7 @@ func downloadSingleClientNginxCfgsByWatcherIDs(request *restful.Request, respons
 
 //下载指定的部分clients中部分watcher的nginx配置
 func downloadClientsNginxCfgsByWatcherIDs(request *restful.Request, response *restful.Response) {
-	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<根据指定watcherID下载配置信息>>>>>>>>>>>>")
+	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<download nginxCfg by watcherID from clients which were chose>>>>>>>>>>>>")
 
 	reqDownloadInfo := allClientDownloadInfo{}
 	if err := request.ReadEntity(&reqDownloadInfo); err != nil {
@@ -161,7 +161,7 @@ func getDownloadURL(nodeIP, clientID, watcherID string) (nginxCfgDownloadURL str
 
 func (svc *ServiceInfo) realDownload(request *restful.Request, response *restful.Response) {
 
-	logdebug.Println(logdebug.LevelDebug, "<<<<<<前端开始下载>>>>>>")
+	logdebug.Println(logdebug.LevelDebug, "<<<<<<downloadding nginxCfg....>>>>>>")
 	//write to web
 	filePath := localDownloadFileName
 	file, _ := os.Open(filePath)
@@ -170,7 +170,7 @@ func (svc *ServiceInfo) realDownload(request *restful.Request, response *restful
 	response.AddHeader("Content-Type", "application/octet-stream")
 	response.AddHeader("content-disposition", "attachment; filename="+webDownloadFileName)
 	io.Copy(response.ResponseWriter, file)
-	logdebug.Println(logdebug.LevelDebug, "<<<<<<前端下载文件完成>>>>>>")
+	logdebug.Println(logdebug.LevelDebug, "<<<<<<nginxCfg was downloaded>>>>>>")
 
 	//下载完成后删除本地下载文件
 	fileDeleted(filePath)
@@ -239,8 +239,8 @@ func fileDeleted(filePath string) {
 	}
 
 	if err := os.Remove(filePath); err != nil {
-		logdebug.Println(logdebug.LevelDebug, "删除本地下载文件失败", err)
+		logdebug.Println(logdebug.LevelDebug, "failed to delete local download file!", err)
 	}
-	logdebug.Println(logdebug.LevelDebug, "删除本地下载文件成功")
+	logdebug.Println(logdebug.LevelDebug, "delete loacl download file success!")
 
 }

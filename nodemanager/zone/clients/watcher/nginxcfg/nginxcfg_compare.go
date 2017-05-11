@@ -242,7 +242,7 @@ func getNginxCfgByWatcherURL(clientsSet []string, watcherID string, request *res
 		"/watchers/" +
 		watcherID
 
-	logdebug.Println(logdebug.LevelDebug, "从kubeng获取ClientA的配置URL=", clientAURL)
+	logdebug.Println(logdebug.LevelDebug, "the URL of getting ClientA config from kubeng is:", clientAURL)
 
 	clientB := nodes.ClientInfo{
 		NodeIP:   request.Request.Form.Get("NodeIPB"),
@@ -262,7 +262,7 @@ func getNginxCfgByWatcherURL(clientsSet []string, watcherID string, request *res
 		"/watchers/" +
 		watcherID
 
-	logdebug.Println(logdebug.LevelDebug, "从kubeng获取ClientA的配置URL=", clientBURL)
+	logdebug.Println(logdebug.LevelDebug, "the URL of getting ClientB config from kubeng is:", clientBURL)
 
 	return
 }
@@ -283,7 +283,7 @@ func getAllWatcherURL(clientsSet []string, request *restful.Request, response *r
 		"/" +
 		clientInfo.WatchManagerAPIServerPath
 
-	logdebug.Println(logdebug.LevelDebug, "从kubeng获取ClientA的配置URL=", clientAURL)
+	logdebug.Println(logdebug.LevelDebug, "the URL of getting clientA config is :", clientAURL)
 
 	clientB := nodes.ClientInfo{
 		NodeIP:   request.Request.Form.Get("NodeIPB"),
@@ -299,7 +299,7 @@ func getAllWatcherURL(clientsSet []string, request *restful.Request, response *r
 		"/" +
 		clientInfo.WatchManagerAPIServerPath
 
-	logdebug.Println(logdebug.LevelDebug, "从kubeng获取ClientB的配置URL=", clientBURL)
+	logdebug.Println(logdebug.LevelDebug, "the URL of getting clientB config is:", clientBURL)
 
 	return
 }
@@ -311,7 +311,7 @@ func (svc *ServiceInfo) compareAllWatchersNginxCfgs(request *restful.Request, re
 
 	clientsSet = strings.Split(twoClientIDs, "-")
 
-	logdebug.Println(logdebug.LevelDebug, "对比的clientID = ", clientsSet)
+	logdebug.Println(logdebug.LevelDebug, "the clientIDSet which were compared: ", clientsSet)
 
 	clienAGetAllWatcherURL, clienBGetAllWatcherURL := getAllWatcherURL(clientsSet, request, response)
 
@@ -375,7 +375,7 @@ func (svc *ServiceInfo) compareAllWatchersNginxCfgs(request *restful.Request, re
 		responseMsg.Result = false
 	}
 
-	logdebug.Println(logdebug.LevelDebug, "对比结束", responseMsg.ErrorMsg)
+	logdebug.Println(logdebug.LevelDebug, "end of comparing", responseMsg.ErrorMsg)
 
 	response.WriteHeaderAndJson(200, responseMsg, "application/json")
 
@@ -389,11 +389,11 @@ func (svc *ServiceInfo) compareSingleWatchersNginxCfgs(request *restful.Request,
 
 	clientsSet = strings.Split(twoClientIDs, "-")
 
-	logdebug.Println(logdebug.LevelDebug, "对比的clientID = ", clientsSet)
+	logdebug.Println(logdebug.LevelDebug, "the clientIDSet which were compared: ", clientsSet)
 
 	watcherID := request.PathParameter("watcherID")
 
-	logdebug.Println(logdebug.LevelDebug, "对比的watcherID = ", watcherID)
+	logdebug.Println(logdebug.LevelDebug, "the clientID which were compared: ", watcherID)
 
 	clientANginxCfgURL, clientBNginxCfgURL := getNginxCfgByWatcherURL(clientsSet, watcherID, request, response)
 
@@ -407,8 +407,6 @@ func (svc *ServiceInfo) compareSingleWatchersNginxCfgs(request *restful.Request,
 	clientAMap := make(map[string]map[string]KubeNGConfig, 0)
 	json.Unmarshal(respA, &clientAMap)
 
-	//logdebug.Println(logdebug.LevelDebug, "根据watcherID获取的数据", clientAMap)
-
 	respB, errB := communicate.SendRequestByJSON(communicate.GET, clientBNginxCfgURL, nil)
 	if errB != nil {
 		response.WriteError(http.StatusInternalServerError, errB)
@@ -418,8 +416,6 @@ func (svc *ServiceInfo) compareSingleWatchersNginxCfgs(request *restful.Request,
 
 	clientBMap := make(map[string]map[string]KubeNGConfig, 0)
 	json.Unmarshal(respB, &clientBMap)
-
-	//logdebug.Println(logdebug.LevelDebug, "根据watcherID获取的数据", clientBMap)
 
 	responseMsg := CompareResponse{
 		Result:   true,

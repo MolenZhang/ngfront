@@ -5,21 +5,20 @@ import (
 	"flag"
 	"fmt"
 	"net"
-	"os"
-	"os/exec"
 	"os/user"
 	"time"
 )
 
 //NgFrontCfgInfo ngfront程序启动参数以及其他配置信息结构
 type NgFrontCfgInfo struct {
-	ListenIP        string
-	ListenPort      string
-	HeartCycle      time.Duration
-	HeartServerAddr string
-	LogLevel        string
-	TemplateDir     string
-	LogDir          string
+	ListenIP            string
+	ListenPort          string
+	HeartCycle          time.Duration
+	HeartServerAddr     string
+	LogLevel            string
+	TemplateDir         string
+	LogDir              string
+	TemDirForRPMInstall string
 	//nutexLock       *sync.Mutex
 }
 
@@ -63,7 +62,7 @@ func Init() {
 	flag.Parse()
 
 	if NgFrontCfg.ListenIP == "localhost" {
-		IPForKubeNg := convertLocalhostToRealIP()
+		IPForKubeNg := ConvertLocalhostToRealIP()
 		if IPForKubeNg == "" {
 			return
 		}
@@ -82,26 +81,6 @@ func Init() {
 	//默认模板路径
 	NgFrontCfg.TemplateDir = currentWorkDir.HomeDir + DefaultTemplateDir
 
-	//拷贝界面模板到部署所在用户
-	if _, err := os.Stat(NgFrontCfg.TemplateDir); err != nil {
-		if os.IsNotExist(err) == true {
-			os.MkdirAll(NgFrontCfg.TemplateDir, os.ModePerm)
-		}
-	}
-
-	templateDir := "/opt/ngfront/template/"
-	cpCmd := "sudo cp -r " + templateDir + " " + NgFrontCfg.TemplateDir
-	fmt.Println("拷贝时的命令:", cpCmd)
-	cmd := exec.Command("bash", "-c", cpCmd)
-	cmd.Run()
-
-	chmodCmd := "sudo chmod 777 " + NgFrontCfg.TemplateDir + " -R"
-	execCmd := exec.Command("bash", "-c", chmodCmd)
-	execCmd.Run()
-
-	//将工作信息传给js
-	createCfgForJS(NgFrontCfg.ListenIP, NgFrontCfg.ListenPort)
-
 	return
 }
 
@@ -114,46 +93,7 @@ func GetLogPrintLevel() string {
 	return logPrintlnLevel
 }
 
-func createCfgForJS(IP, Port string) {
-
-	fmt.Println("传给js时的IP：", IP)
-	fmt.Println("传给js时的Port：", Port)
-
-	//如果为localhost 则转换为js可识别的IP地址
-	jsIP := IP
-	if IP == "localhost" {
-		jsIP = convertLocalhostToRealIP()
-		if jsIP == "" {
-			return
-		}
-	}
-	templateDir := NgFrontCfg.TemplateDir
-	fmt.Println("修改JsIP时，模板路径:", templateDir)
-	if _, err := os.Stat(templateDir); err != nil {
-		if os.IsNotExist(err) == true {
-			os.MkdirAll(templateDir, os.ModePerm)
-		}
-	}
-
-	fout, err := os.Create(templateDir + "template/js/customer/ipPort.js")
-
-	if err != nil {
-		fmt.Println("创建ipPort.js出错:", err)
-		return
-	}
-	defer fout.Close()
-	fmt.Println("开始修改模板里的IP和Port")
-	cfgContent := fmt.Sprintf(`$(function(){
-	$("#areaIP").val("%s");
-	$("#areaPort").val("%s");
-});`, jsIP, Port)
-
-	fmt.Println("要修改的内容:", cfgContent)
-	fout.WriteString(cfgContent)
-	return
-}
-
-func convertLocalhostToRealIP() string {
+func ConvertLocalhostToRealIP() string {
 	addrs, err := net.InterfaceAddrs()
 
 	if err != nil {

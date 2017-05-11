@@ -48,7 +48,7 @@ type ResponseBody struct {
 
 //显示nginx配置主页
 func showNginxCfgPage(w http.ResponseWriter, r *http.Request) {
-	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<<加载nginx页面>>>>>>>>>>>>>")
+	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<<loadding nginx page>>>>>>>>>>>>>")
 	//加载模板 显示内容是 批量操作nginx配置
 	templateDir := config.NgFrontCfg.TemplateDir
 	t, err := template.ParseFiles(templateDir + "template/views/nginx/nginxcfg.html")
@@ -102,7 +102,7 @@ func getAppCfgsURL(request *restful.Request, response *restful.Response) (client
 
 //get all
 func (svc *ServiceInfo) getAllNginxCfgs(request *restful.Request, response *restful.Response) {
-	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<获取完整的app nginx配置集合!>>>>>>>>>")
+	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<getting all of the nginx config!>>>>>>>>>")
 
 	clientInfo, k8sAppCfgsURL, externAppCfgsURL := getAppCfgsURL(request, response)
 
@@ -166,8 +166,6 @@ func (svc *ServiceInfo) getSingleNginxCfg(request *restful.Request, response *re
 
 	resp.NginxList[0].CfgType = appSrcType
 
-	logdebug.Println(logdebug.LevelDebug, "获取单个的app nginx配置!-----appkey=", appKey, " appCfgURL = ", appCfgURL)
-
 	recvData, err := communicate.SendRequestByJSON(communicate.GET, appCfgURL, nil)
 	if err != nil {
 		logdebug.Println(logdebug.LevelError, err)
@@ -182,7 +180,7 @@ func (svc *ServiceInfo) getSingleNginxCfg(request *restful.Request, response *re
 
 	cfgsList := []WebConfig{}
 
-	logdebug.Println(logdebug.LevelDebug, "收到的数据流", kubeNGCfgsList)
+	logdebug.Println(logdebug.LevelDebug, "the message recieved is:", kubeNGCfgsList)
 
 	for _, kubeNGCfg := range kubeNGCfgsList {
 		webCfg := kubeNGCfg.convertToWebCfg()
@@ -199,7 +197,7 @@ func (svc *ServiceInfo) getSingleNginxCfg(request *restful.Request, response *re
 
 // put
 func (svc *ServiceInfo) updateNginxCfg(request *restful.Request, response *restful.Response) {
-	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<前端更新服务的一条nginx配置>>>>>>>>>")
+	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<update nginx config>>>>>>>>>")
 
 	nginxCfg, jobZoneType := getWebInfo(request, response)
 	kubeNGCfg := nginxCfg.convertToKubeNGCfg()
@@ -214,7 +212,7 @@ func (svc *ServiceInfo) updateNginxCfg(request *restful.Request, response *restf
 		}
 
 		appCfgURL, _ := getAppInfoURL(client, nginxCfg)
-		logdebug.Println(logdebug.LevelDebug, "更新一条nginx配置时，前端发来的URL", appCfgURL)
+		logdebug.Println(logdebug.LevelDebug, "when update nginx config,the URL from web is", appCfgURL)
 
 		recvData, err := communicate.SendRequestByJSON(communicate.PUT, appCfgURL, kubeNGCfg)
 		if err != nil {
@@ -281,7 +279,7 @@ func getAppInfoURL(client nodes.ClientInfo, nginxCfg WebConfig) (appCfgURL, ngin
 
 //delete
 func (svc *ServiceInfo) deleteNginxCfg(request *restful.Request, response *restful.Response) {
-	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<前端开始删除服务配置>>>>>>>>>")
+	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<delete nginx config>>>>>>>>>")
 
 	nginxCfg, jobZoneType := getWebInfo(request, response)
 	kubeNGCfg := nginxCfg.convertToKubeNGCfg()
@@ -297,7 +295,7 @@ func (svc *ServiceInfo) deleteNginxCfg(request *restful.Request, response *restf
 
 		appCfgURL, _ := getAppInfoURL(client, nginxCfg)
 
-		logdebug.Println(logdebug.LevelDebug, "删除一条nginx配置时，前端发来的URL", appCfgURL)
+		logdebug.Println(logdebug.LevelDebug, "when delete one nginx config, the URL is: ", appCfgURL)
 
 		recvData, err := communicate.SendRequestByJSON(communicate.DELETE, appCfgURL, kubeNGCfg)
 		if err != nil {
@@ -324,7 +322,7 @@ func (svc *ServiceInfo) deleteNginxCfg(request *restful.Request, response *restf
 
 //post
 func (svc *ServiceInfo) createNginxCfg(request *restful.Request, response *restful.Response) {
-	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<新增服务的一条nginx配置!>>>>>>>>>")
+	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<add one nginx config>>>>>>>>>")
 
 	nginxCfg, jobZoneType := getWebInfo(request, response)
 
@@ -339,7 +337,7 @@ func (svc *ServiceInfo) createNginxCfg(request *restful.Request, response *restf
 		}
 
 		_, nginxCfgURL := getAppInfoURL(client, nginxCfg)
-		logdebug.Println(logdebug.LevelDebug, "增加一条nginx配置时，前端发来的URL", nginxCfgURL)
+		logdebug.Println(logdebug.LevelDebug, "when add one nginx config, the URL is:", nginxCfgURL)
 
 		recvData, err := communicate.SendRequestByJSON(communicate.POST, nginxCfgURL, kubeNGCfg)
 		if err != nil {
@@ -368,7 +366,7 @@ func (svc *ServiceInfo) createNginxCfg(request *restful.Request, response *restf
 }
 
 func (svc *ServiceInfo) deleteUserCfgs(request *restful.Request, response *restful.Response) {
-	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<前端开始删除个性化配置>>>>>>>>>")
+	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<delete USER_NGINX config>>>>>>>>>")
 
 	request.Request.ParseForm()
 	jobZoneType := request.Request.Form.Get("JobZoneType")

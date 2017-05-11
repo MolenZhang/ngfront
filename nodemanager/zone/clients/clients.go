@@ -30,7 +30,7 @@ type webRespMsg struct {
 }
 
 func showClientsPage(w http.ResponseWriter, r *http.Request) {
-	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<<加载client页面>>>>>>>>>>>>>")
+	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<<<<<<loading the page of client>>>>>>>>>>>>>")
 
 	//加载模板 显示内容是 批量操作client
 	templateDir := config.NgFrontCfg.TemplateDir

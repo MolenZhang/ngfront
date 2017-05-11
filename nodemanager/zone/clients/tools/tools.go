@@ -40,7 +40,7 @@ type ServiceInfo struct {
 const nginxTestSuccessSymbol string = "successful\n"
 
 func (svc *ServiceInfo) execToolsCMD(request *restful.Request, response *restful.Response) {
-	logdebug.Println(logdebug.LevelDebug, "<<<<<<<前端测试nginx Tool>>>>>>>")
+	logdebug.Println(logdebug.LevelDebug, "<<<<<<<nginx tool test module....>>>>>>>")
 	nginxTestToolCMD := NginxTestToolInfo{}
 
 	err := request.ReadEntity(&nginxTestToolCMD)
@@ -50,7 +50,7 @@ func (svc *ServiceInfo) execToolsCMD(request *restful.Request, response *restful
 		return
 	}
 
-	logdebug.Println(logdebug.LevelDebug, "前端传来的nginx测试命令：", nginxTestToolCMD)
+	logdebug.Println(logdebug.LevelDebug, "the nginx tool command from web：", nginxTestToolCMD)
 
 	request.Request.ParseForm()
 	client := nodes.ClientInfo{

@@ -5,6 +5,10 @@ package nodes
 //一个Node上 可以有多个kubeng 一个kubeng由client信息和watcherManagerCfg以及NginxCfg信息3个成员构成 目前仅实现了2个成员
 
 import (
+	"fmt"
+	"os"
+	"os/exec"
+	"os/user"
 	"sync"
 	"time"
 
@@ -71,9 +75,72 @@ var allNodesInfo AllNodesInfo
 
 //Init 初始化NodesInfo
 func Init() {
+
+	//拷贝界面模板到部署所在用户
+	if _, err := os.Stat(config.NgFrontCfg.TemplateDir); err != nil {
+		if os.IsNotExist(err) == true {
+			os.MkdirAll(config.NgFrontCfg.TemplateDir, os.ModePerm)
+		}
+	}
+	templateDir := "/opt/ngfront/template/"
+
+	currentWorkDir, _ := user.Current()
+	currentUser := currentWorkDir.Username
+	logdebug.Println(logdebug.LevelDebug, "current user:", currentUser)
+
+	cpCmd := "cp -r " + templateDir + " " + config.NgFrontCfg.TemplateDir
+	chmodCmd := "chmod 777 " + config.NgFrontCfg.TemplateDir + " -R"
+	if currentUser != "root" {
+		cpCmd = "sudo cp -r " + templateDir + " " + config.NgFrontCfg.TemplateDir
+		chmodCmd = "sudo chmod 777 " + config.NgFrontCfg.TemplateDir + " -R"
+	}
+
+	logdebug.Println(logdebug.LevelDebug, "when exec copy,the cmd is:", cpCmd)
+	cmd := exec.Command("bash", "-c", cpCmd)
+	cmd.Run()
+
+	execCmd := exec.Command("bash", "-c", chmodCmd)
+	execCmd.Run()
+
+	//将工作信息传给js
+	createCfgForJS(config.NgFrontCfg.ListenIP, config.NgFrontCfg.ListenPort)
 	allNodesInfo.allNodesInfoMap = make(map[string]NodeInfo, 0)
 	allNodesInfo.mutexLock = new(sync.Mutex)
 
+	return
+}
+
+func createCfgForJS(IP, Port string) {
+
+	//如果为localhost 则转换为js可识别的IP地址
+	jsIP := IP
+	if IP == "localhost" {
+		jsIP = config.ConvertLocalhostToRealIP()
+		if jsIP == "" {
+			return
+		}
+	}
+	templateDir := config.NgFrontCfg.TemplateDir
+	logdebug.Println(logdebug.LevelDebug, "when change JSInfo the templateDir is:", templateDir)
+	if _, err := os.Stat(templateDir); err != nil {
+		if os.IsNotExist(err) == true {
+			os.MkdirAll(templateDir, os.ModePerm)
+		}
+	}
+
+	fout, err := os.Create(templateDir + "template/js/customer/ipPort.js")
+
+	if err != nil {
+		logdebug.Println(logdebug.LevelDebug, "error occured when create changeipPort.js:", err)
+		return
+	}
+	defer fout.Close()
+	cfgContent := fmt.Sprintf(`$(function(){
+	$("#areaIP").val("%s");
+	$("#areaPort").val("%s");
+});`, jsIP, Port)
+
+	fout.WriteString(cfgContent)
 	return
 }
 
@@ -107,7 +174,7 @@ func CheckClientInfo(client ClientInfo) bool {
 
 		delete(allNodesInfo.allNodesInfoMap, key)
 
-		logdebug.Println(logdebug.LevelInfo, "------心跳超时 删除客户端信息----key !", key)
+		logdebug.Println(logdebug.LevelInfo, "delete the key when heartbeat timeout !", key)
 
 		return
 	})
@@ -138,7 +205,7 @@ func AddClientData(client ClientInfo) {
 
 		delete(allNodesInfo.allNodesInfoMap, key)
 
-		logdebug.Println(logdebug.LevelInfo, "------心跳超时 删除客户端信息----key =!", key)
+		logdebug.Println(logdebug.LevelInfo, "heartbeat timeout and delete the key !", key)
 
 		return
 	})

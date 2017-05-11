@@ -110,7 +110,7 @@ func parseRespFromKubeNG(recvData []byte) ResponseBody {
 
 	respMsg.WebCfg = respMsg.NginxConf.convertToWebCfg()
 
-	logdebug.Println(logdebug.LevelDebug, "收到的数据流", respMsg)
+	logdebug.Println(logdebug.LevelDebug, "the message which recieved is:", respMsg)
 
 	return respMsg
 }

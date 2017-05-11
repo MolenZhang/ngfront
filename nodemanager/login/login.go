@@ -163,8 +163,8 @@ func (svc *ServiceInfo) login(request *restful.Request, response *restful.Respon
 		nodes.AddWatcherData(key, watcherCfgs)
 	}
 
-	logdebug.Println(logdebug.LevelDebug, "上线报文=", reqMsg)
-	logdebug.Println(logdebug.LevelDebug, "上线节点信息:", clientInfo)
+	logdebug.Println(logdebug.LevelDebug, "login message=", reqMsg)
+	logdebug.Println(logdebug.LevelDebug, "login clienInfo:", clientInfo)
 	response.WriteHeaderAndJson(200, reqMsg, "application/json")
 
 	return
@@ -192,7 +192,7 @@ func syncCfgInfoToNewClient(syncData syncCfgInfo) {
 				for watcherID := range newWatcherInfo {
 					newClientSingleWatcherURL := newClientWatcherURL + "/" + strconv.Itoa(watcherID)
 					communicate.SendRequestByJSON(communicate.DELETE, newClientSingleWatcherURL, nil)
-					logdebug.Println(logdebug.LevelDebug, "删除新上线节点的之前信息")
+					logdebug.Println(logdebug.LevelDebug, "delete new clientInfo of before")
 				}
 				break
 			}
@@ -204,7 +204,7 @@ func syncCfgInfoToNewClient(syncData syncCfgInfo) {
 		if nodeInfo.Client.JobZoneType != syncData.jobZoneType {
 			continue
 		}
-		logdebug.Println(logdebug.LevelDebug, "新上线节点 watcher URL", newClientWatcherURL)
+		logdebug.Println(logdebug.LevelDebug, "new login client watcher URL", newClientWatcherURL)
 		//同步watcher配置
 		addWatchersToNewClient(nodeInfo, syncData.jobZoneType, newClientWatcherURL)
 		//同步nginx配置
@@ -226,12 +226,12 @@ func syncNginxCfg(nodeInfo nodes.NodeInfo, syncData syncCfgInfo) {
 		"/" +
 		nodeInfo.Client.NginxCfgsAPIServerPath +
 		"/k8s"
-	logdebug.Println(logdebug.LevelDebug, "同步nginx操作时 获取同一区域下任一旧节点上所有的k8s服务URL", allK8sNginxCfgsURL)
+	logdebug.Println(logdebug.LevelDebug, "get the URL of all k8s server from one client which belong to the same area when sync nginxcfg", allK8sNginxCfgsURL)
 
 	resp, _ := communicate.SendRequestByJSON(communicate.GET, allK8sNginxCfgsURL, nil)
 	json.Unmarshal(resp, &allK8sNginxCfgs)
 
-	logdebug.Println(logdebug.LevelDebug, "所有的k8s服务", allK8sNginxCfgs)
+	logdebug.Println(logdebug.LevelDebug, "all k8s NginxCfgs ", allK8sNginxCfgs)
 
 	for _, nginxCfgMap := range allK8sNginxCfgs {
 		//更新新上线节点的nginx配置信息
@@ -266,7 +266,7 @@ func updateNginxcfgToNewclient(nginxCfgMap map[string]kubeNGCfg.KubeNGConfig, sy
 				":" +
 				nginxCfg.ListenPort
 				//http://192.168.85.130:7777/nginxcfgs/k8s/clyxys-usertoolvass/clyxys.yz.local:80
-			logdebug.Println(logdebug.LevelDebug, "同步nginx配置给新上线的节点时的URL", appCfgURL)
+			logdebug.Println(logdebug.LevelDebug, "the URL of nginxCfg for new client when exec sync ninxCfg ", appCfgURL)
 
 			_, err := communicate.SendRequestByJSON(communicate.PUT, appCfgURL, nginxCfg)
 			if err != nil {
@@ -298,10 +298,10 @@ func addWatchersToNewClient(nodeInfo nodes.NodeInfo, jobZoneType, newWatcherInfo
 
 	// 排序map的key值  同步时因map无序 导致节点之间的配置信息所对应的watcherID 不一致，因此需事先固定好顺序
 	sort.Ints(keyForMap)
-	logdebug.Println(logdebug.LevelDebug, "排序后的watcherID", keyForMap)
+	logdebug.Println(logdebug.LevelDebug, "watcherID after sorted", keyForMap)
 
 	for _, key := range keyForMap {
-		logdebug.Println(logdebug.LevelDebug, "同步增加时的URL:", newWatcherInfoURL, key)
+		logdebug.Println(logdebug.LevelDebug, "the URL for addCfg when exec eync:", newWatcherInfoURL, key)
 
 		communicate.SendRequestByJSON(communicate.POST, newWatcherInfoURL, syncWatcherInfo[key])
 	}
