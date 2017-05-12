@@ -36,12 +36,44 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="nginxcfg_compare.go" pinned="false" current-in-tab="true">
+      <file leaf-file-name="nginxcfg_compare.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg_compare.go">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="358">
               <caret line="188" column="46" lean-forward="false" selection-start-line="188" selection-start-column="46" selection-end-line="188" selection-end-column="46" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="watcher.go" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/watcher.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="199">
+              <caret line="220" column="21" lean-forward="false" selection-start-line="220" selection-start-column="21" selection-end-line="220" selection-end-column="21" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="clients.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/template/js/nginx/clients.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="434">
+              <caret line="379" column="44" lean-forward="true" selection-start-line="379" selection-start-column="44" selection-end-line="379" selection-end-column="44" />
+              <folding>
+                <marker date="1494556777245" expanded="true" signature="3204:3239" ph="..." />
+                <marker date="1494556777245" expanded="true" signature="9710:9754" ph="..." />
+                <marker date="1494556777245" expanded="true" signature="11388:11409" ph="..." />
+                <marker date="1494556777245" expanded="true" signature="11439:11445" ph=" " />
+                <marker date="1494556777245" expanded="true" signature="11711:11729" ph="..." />
+                <marker date="1494556777245" expanded="true" signature="12160:12166" ph=" " />
+                <marker date="1494556777245" expanded="true" signature="12252:12258" ph=" " />
+                <marker date="1494556777245" expanded="true" signature="12321:12342" ph="..." />
+                <marker date="1494556777245" expanded="true" signature="12416:12422" ph=" " />
+                <marker date="1494556777245" expanded="true" signature="21279:21297" ph="..." />
+                <marker date="1494556777245" expanded="true" signature="25486:25504" ph="..." />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -73,6 +105,7 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg_compare.go" />
+        <option value="$PROJECT_DIR$/template/js/nginx/clients.js" />
       </list>
     </option>
   </component>
@@ -112,6 +145,60 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="ngfront" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ngfront" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ngfront" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="template" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ngfront" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ngfront" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="template" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="js" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ngfront" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ngfront" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="template" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="js" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="nginx" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -308,6 +395,8 @@
   </component>
   <component name="PropertiesComponent">
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.path.for.package.jscs" value="project" />
+    <property name="node.js.selected.package.jscs" value="" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -386,6 +475,14 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg_compare.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="358">
+          <caret line="188" column="46" lean-forward="false" selection-start-line="188" selection-start-column="46" selection-end-line="188" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/nodemanager/nodes/nodes.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="171">
@@ -394,11 +491,31 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg_compare.go">
+    <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/watcher.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="358">
-          <caret line="188" column="46" lean-forward="false" selection-start-line="188" selection-start-column="46" selection-end-line="188" selection-end-column="46" />
+        <state relative-caret-position="199">
+          <caret line="220" column="21" lean-forward="false" selection-start-line="220" selection-start-column="21" selection-end-line="220" selection-end-column="21" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/template/js/nginx/clients.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="434">
+          <caret line="379" column="44" lean-forward="true" selection-start-line="379" selection-start-column="44" selection-end-line="379" selection-end-column="44" />
+          <folding>
+            <marker date="1494556777245" expanded="true" signature="3204:3239" ph="..." />
+            <marker date="1494556777245" expanded="true" signature="9710:9754" ph="..." />
+            <marker date="1494556777245" expanded="true" signature="11388:11409" ph="..." />
+            <marker date="1494556777245" expanded="true" signature="11439:11445" ph=" " />
+            <marker date="1494556777245" expanded="true" signature="11711:11729" ph="..." />
+            <marker date="1494556777245" expanded="true" signature="12160:12166" ph=" " />
+            <marker date="1494556777245" expanded="true" signature="12252:12258" ph=" " />
+            <marker date="1494556777245" expanded="true" signature="12321:12342" ph="..." />
+            <marker date="1494556777245" expanded="true" signature="12416:12422" ph=" " />
+            <marker date="1494556777245" expanded="true" signature="21279:21297" ph="..." />
+            <marker date="1494556777245" expanded="true" signature="25486:25504" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
