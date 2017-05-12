@@ -1,0 +1,31 @@
+<component name="libraryTable">
+  <library name="GOPATH &lt;ngfront&gt;">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../entry" />
+      <root url="file://$PROJECT_DIR$/../clusterhealthy" />
+      <root url="file://$PROJECT_DIR$/../nginxcfgbuilder" />
+      <root url="file://$PROJECT_DIR$/../github.com" />
+      <root url="file://$PROJECT_DIR$/../golang.org" />
+      <root url="file://$PROJECT_DIR$/../bkp" />
+      <root url="file://$PROJECT_DIR$/../test_fork" />
+      <root url="file://$PROJECT_DIR$/../localhealthy" />
+      <root url="file://$PROJECT_DIR$/../kubernetes" />
+      <root url="file://$PROJECT_DIR$/../test" />
+    </CLASSES>
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/../entry" />
+      <root url="file://$PROJECT_DIR$/../clusterhealthy" />
+      <root url="file://$PROJECT_DIR$/../nginxcfgbuilder" />
+      <root url="file://$PROJECT_DIR$/../github.com" />
+      <root url="file://$PROJECT_DIR$/../golang.org" />
+      <root url="file://$PROJECT_DIR$/../bkp" />
+      <root url="file://$PROJECT_DIR$/../test_fork" />
+      <root url="file://$PROJECT_DIR$/../localhealthy" />
+      <root url="file://$PROJECT_DIR$/../kubernetes" />
+      <root url="file://$PROJECT_DIR$/../test" />
+    </SOURCES>
+    <excluded>
+      <root url="file://$PROJECT_DIR$" />
+    </excluded>
+  </library>
+</component>

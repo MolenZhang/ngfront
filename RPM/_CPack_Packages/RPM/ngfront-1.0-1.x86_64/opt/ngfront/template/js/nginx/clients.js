@@ -1098,7 +1098,7 @@ function nginxTool(obj){
 			if(data.Result==true){
 				layer.msg(data.NginxCmd+'-成功', {icon: 1});
 			}else if(data.Result==false){
-				layer.msg(data.NginxCmd+':'+data.ErrorMessage, {icon: 2});
+				layer.alert(data.NginxCmd+':'+data.ErrorMessage, {icon: 2});
 			}
 		}
 			

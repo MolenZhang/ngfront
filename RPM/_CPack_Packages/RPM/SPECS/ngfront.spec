@@ -1,5 +1,5 @@
 # -*- rpm-spec -*-
-BuildRoot:      /opt/gocode/src/ngfront/RPM/_CPack_Packages/RPM/ngfront-1.0-1.x86_64
+BuildRoot:      /home/hyp/work/src/ngfront/RPM/_CPack_Packages/RPM/ngfront-1.0-1.x86_64
 Summary:        ngfront
 Name:           ngfront
 Version:        1.0
@@ -18,10 +18,10 @@ Vendor:         unknown
 
 
 
-%define _rpmdir /opt/gocode/src/ngfront/RPM/_CPack_Packages/RPM
+%define _rpmdir /home/hyp/work/src/ngfront/RPM/_CPack_Packages/RPM
 %define _rpmfilename ngfront-1.0-1.x86_64.rpm
 %define _unpackaged_files_terminate_build 0
-%define _topdir /opt/gocode/src/ngfront/RPM/_CPack_Packages/RPM
+%define _topdir /home/hyp/work/src/ngfront/RPM/_CPack_Packages/RPM
 
 
 
@@ -34,7 +34,7 @@ no package description available
 # We do only save CPack installed tree in _prepr
 # and then restore it in build.
 %prep
-mv $RPM_BUILD_ROOT "/opt/gocode/src/ngfront/RPM/_CPack_Packages/RPM/tmpBBroot"
+mv $RPM_BUILD_ROOT "/home/hyp/work/src/ngfront/RPM/_CPack_Packages/RPM/tmpBBroot"
 
 #p build
 
@@ -43,7 +43,7 @@ if [ -e $RPM_BUILD_ROOT ];
 then
   rm -rf $RPM_BUILD_ROOT
 fi
-mv "/opt/gocode/src/ngfront/RPM/_CPack_Packages/RPM/tmpBBroot" $RPM_BUILD_ROOT
+mv "/home/hyp/work/src/ngfront/RPM/_CPack_Packages/RPM/tmpBBroot" $RPM_BUILD_ROOT
 
 %clean
 
@@ -63,7 +63,6 @@ mv "/opt/gocode/src/ngfront/RPM/_CPack_Packages/RPM/tmpBBroot" $RPM_BUILD_ROOT
 %defattr(-,root,root,-)
 %dir "/opt"
 %dir "/opt/ngfront"
-"/opt/ngfront/ngfront.cfg"
 %dir "/opt/ngfront/template"
 %dir "/opt/ngfront/template/css"
 %dir "/opt/ngfront/template/css/core"
@@ -73,8 +72,8 @@ mv "/opt/gocode/src/ngfront/RPM/_CPack_Packages/RPM/tmpBBroot" $RPM_BUILD_ROOT
 "/opt/ngfront/template/css/core/jquery-ui.min.css"
 %dir "/opt/ngfront/template/css/mod"
 "/opt/ngfront/template/css/mod/awesome-bootstrap-checkbox.css"
-"/opt/ngfront/template/css/mod/watcher.css"
 "/opt/ngfront/template/css/mod/nginx.css"
+"/opt/ngfront/template/css/mod/watcher.css"
 %dir "/opt/ngfront/template/images"
 "/opt/ngfront/template/images/dashboard-bg.jpg"
 "/opt/ngfront/template/images/off_on.png"
@@ -89,9 +88,9 @@ mv "/opt/gocode/src/ngfront/RPM/_CPack_Packages/RPM/tmpBBroot" $RPM_BUILD_ROOT
 %dir "/opt/ngfront/template/js/nginx"
 "/opt/ngfront/template/js/nginx/area.js"
 "/opt/ngfront/template/js/nginx/nginxcfg1.js"
+"/opt/ngfront/template/js/nginx/clients.js"
 "/opt/ngfront/template/js/nginx/nginxcfg.js"
 "/opt/ngfront/template/js/nginx/watcher.js"
-"/opt/ngfront/template/js/nginx/clients.js"
 %dir "/opt/ngfront/template/js/plugins"
 "/opt/ngfront/template/js/plugins/codemirror.js"
 "/opt/ngfront/template/js/plugins/dataTables.bootstrap.js"
@@ -102,7 +101,56 @@ mv "/opt/gocode/src/ngfront/RPM/_CPack_Packages/RPM/tmpBBroot" $RPM_BUILD_ROOT
 "/opt/ngfront/template/js/plugins/jquery-ui.min.js"
 "/opt/ngfront/template/js/plugins/jquery.dataTables.js"
 %dir "/opt/ngfront/template/plugins"
+%dir "/opt/ngfront/template/plugins/Font-Awesome-master"
+"/opt/ngfront/template/plugins/Font-Awesome-master/CONTRIBUTING.md"
+"/opt/ngfront/template/plugins/Font-Awesome-master/_config.yml"
+"/opt/ngfront/template/plugins/Font-Awesome-master/bower.json"
+"/opt/ngfront/template/plugins/Font-Awesome-master/component.json"
+"/opt/ngfront/template/plugins/Font-Awesome-master/composer.json"
+%dir "/opt/ngfront/template/plugins/Font-Awesome-master/css"
+"/opt/ngfront/template/plugins/Font-Awesome-master/css/font-awesome.css"
+"/opt/ngfront/template/plugins/Font-Awesome-master/css/font-awesome.css.map"
+"/opt/ngfront/template/plugins/Font-Awesome-master/css/font-awesome.min.css"
+%dir "/opt/ngfront/template/plugins/Font-Awesome-master/fonts"
+"/opt/ngfront/template/plugins/Font-Awesome-master/fonts/FontAwesome.otf"
+"/opt/ngfront/template/plugins/Font-Awesome-master/fonts/fontawesome-webfont.eot"
+"/opt/ngfront/template/plugins/Font-Awesome-master/fonts/fontawesome-webfont.svg"
+"/opt/ngfront/template/plugins/Font-Awesome-master/fonts/fontawesome-webfont.ttf"
+"/opt/ngfront/template/plugins/Font-Awesome-master/fonts/fontawesome-webfont.woff"
+"/opt/ngfront/template/plugins/Font-Awesome-master/fonts/fontawesome-webfont.woff2"
+%dir "/opt/ngfront/template/plugins/Font-Awesome-master/less"
+"/opt/ngfront/template/plugins/Font-Awesome-master/less/animated.less"
+"/opt/ngfront/template/plugins/Font-Awesome-master/less/bordered-pulled.less"
+"/opt/ngfront/template/plugins/Font-Awesome-master/less/core.less"
+"/opt/ngfront/template/plugins/Font-Awesome-master/less/fixed-width.less"
+"/opt/ngfront/template/plugins/Font-Awesome-master/less/font-awesome.less"
+"/opt/ngfront/template/plugins/Font-Awesome-master/less/icons.less"
+"/opt/ngfront/template/plugins/Font-Awesome-master/less/larger.less"
+"/opt/ngfront/template/plugins/Font-Awesome-master/less/list.less"
+"/opt/ngfront/template/plugins/Font-Awesome-master/less/mixins.less"
+"/opt/ngfront/template/plugins/Font-Awesome-master/less/path.less"
+"/opt/ngfront/template/plugins/Font-Awesome-master/less/rotated-flipped.less"
+"/opt/ngfront/template/plugins/Font-Awesome-master/less/stacked.less"
+"/opt/ngfront/template/plugins/Font-Awesome-master/less/variables.less"
+"/opt/ngfront/template/plugins/Font-Awesome-master/package.json"
+%dir "/opt/ngfront/template/plugins/Font-Awesome-master/scss"
+"/opt/ngfront/template/plugins/Font-Awesome-master/scss/_animated.scss"
+"/opt/ngfront/template/plugins/Font-Awesome-master/scss/_bordered-pulled.scss"
+"/opt/ngfront/template/plugins/Font-Awesome-master/scss/_core.scss"
+"/opt/ngfront/template/plugins/Font-Awesome-master/scss/_fixed-width.scss"
+"/opt/ngfront/template/plugins/Font-Awesome-master/scss/_icons.scss"
+"/opt/ngfront/template/plugins/Font-Awesome-master/scss/_larger.scss"
+"/opt/ngfront/template/plugins/Font-Awesome-master/scss/_list.scss"
+"/opt/ngfront/template/plugins/Font-Awesome-master/scss/_mixins.scss"
+"/opt/ngfront/template/plugins/Font-Awesome-master/scss/_path.scss"
+"/opt/ngfront/template/plugins/Font-Awesome-master/scss/_rotated-flipped.scss"
+"/opt/ngfront/template/plugins/Font-Awesome-master/scss/_stacked.scss"
+"/opt/ngfront/template/plugins/Font-Awesome-master/scss/_variables.scss"
+"/opt/ngfront/template/plugins/Font-Awesome-master/scss/font-awesome.scss"
 %dir "/opt/ngfront/template/plugins/bootstrap-3.3.5"
+"/opt/ngfront/template/plugins/bootstrap-3.3.5/Gruntfile.js"
+"/opt/ngfront/template/plugins/bootstrap-3.3.5/LICENSE"
+"/opt/ngfront/template/plugins/bootstrap-3.3.5/_config.yml"
 "/opt/ngfront/template/plugins/bootstrap-3.3.5/bower.json"
 "/opt/ngfront/template/plugins/bootstrap-3.3.5/composer.json"
 %dir "/opt/ngfront/template/plugins/bootstrap-3.3.5/dist"
@@ -137,7 +185,6 @@ mv "/opt/gocode/src/ngfront/RPM/_CPack_Packages/RPM/tmpBBroot" $RPM_BUILD_ROOT
 "/opt/ngfront/template/plugins/bootstrap-3.3.5/grunt/bs-raw-files-generator.js"
 "/opt/ngfront/template/plugins/bootstrap-3.3.5/grunt/configBridge.json"
 "/opt/ngfront/template/plugins/bootstrap-3.3.5/grunt/sauce_browsers.yml"
-"/opt/ngfront/template/plugins/bootstrap-3.3.5/Gruntfile.js"
 %dir "/opt/ngfront/template/plugins/bootstrap-3.3.5/js"
 "/opt/ngfront/template/plugins/bootstrap-3.3.5/js/.jscsrc"
 "/opt/ngfront/template/plugins/bootstrap-3.3.5/js/.jshintrc"
@@ -152,8 +199,8 @@ mv "/opt/gocode/src/ngfront/RPM/_CPack_Packages/RPM/tmpBBroot" $RPM_BUILD_ROOT
 "/opt/ngfront/template/plugins/bootstrap-3.3.5/js/scrollspy.js"
 "/opt/ngfront/template/plugins/bootstrap-3.3.5/js/tab.js"
 %dir "/opt/ngfront/template/plugins/bootstrap-3.3.5/js/tests"
-"/opt/ngfront/template/plugins/bootstrap-3.3.5/js/tests/index.html"
 "/opt/ngfront/template/plugins/bootstrap-3.3.5/js/tests/README.md"
+"/opt/ngfront/template/plugins/bootstrap-3.3.5/js/tests/index.html"
 %dir "/opt/ngfront/template/plugins/bootstrap-3.3.5/js/tests/unit"
 "/opt/ngfront/template/plugins/bootstrap-3.3.5/js/tests/unit/.jshintrc"
 "/opt/ngfront/template/plugins/bootstrap-3.3.5/js/tests/unit/affix.js"
@@ -209,6 +256,7 @@ mv "/opt/gocode/src/ngfront/RPM/_CPack_Packages/RPM/tmpBBroot" $RPM_BUILD_ROOT
 "/opt/ngfront/template/plugins/bootstrap-3.3.5/less/labels.less"
 "/opt/ngfront/template/plugins/bootstrap-3.3.5/less/list-group.less"
 "/opt/ngfront/template/plugins/bootstrap-3.3.5/less/media.less"
+"/opt/ngfront/template/plugins/bootstrap-3.3.5/less/mixins.less"
 %dir "/opt/ngfront/template/plugins/bootstrap-3.3.5/less/mixins"
 "/opt/ngfront/template/plugins/bootstrap-3.3.5/less/mixins/alerts.less"
 "/opt/ngfront/template/plugins/bootstrap-3.3.5/less/mixins/background-variant.less"
@@ -240,7 +288,6 @@ mv "/opt/gocode/src/ngfront/RPM/_CPack_Packages/RPM/tmpBBroot" $RPM_BUILD_ROOT
 "/opt/ngfront/template/plugins/bootstrap-3.3.5/less/mixins/text-emphasis.less"
 "/opt/ngfront/template/plugins/bootstrap-3.3.5/less/mixins/text-overflow.less"
 "/opt/ngfront/template/plugins/bootstrap-3.3.5/less/mixins/vendor-prefixes.less"
-"/opt/ngfront/template/plugins/bootstrap-3.3.5/less/mixins.less"
 "/opt/ngfront/template/plugins/bootstrap-3.3.5/less/modals.less"
 "/opt/ngfront/template/plugins/bootstrap-3.3.5/less/navbar.less"
 "/opt/ngfront/template/plugins/bootstrap-3.3.5/less/navs.less"
@@ -262,56 +309,8 @@ mv "/opt/gocode/src/ngfront/RPM/_CPack_Packages/RPM/tmpBBroot" $RPM_BUILD_ROOT
 "/opt/ngfront/template/plugins/bootstrap-3.3.5/less/utilities.less"
 "/opt/ngfront/template/plugins/bootstrap-3.3.5/less/variables.less"
 "/opt/ngfront/template/plugins/bootstrap-3.3.5/less/wells.less"
-"/opt/ngfront/template/plugins/bootstrap-3.3.5/LICENSE"
 "/opt/ngfront/template/plugins/bootstrap-3.3.5/package.js"
 "/opt/ngfront/template/plugins/bootstrap-3.3.5/package.json"
-"/opt/ngfront/template/plugins/bootstrap-3.3.5/_config.yml"
-%dir "/opt/ngfront/template/plugins/Font-Awesome-master"
-"/opt/ngfront/template/plugins/Font-Awesome-master/bower.json"
-"/opt/ngfront/template/plugins/Font-Awesome-master/component.json"
-"/opt/ngfront/template/plugins/Font-Awesome-master/composer.json"
-"/opt/ngfront/template/plugins/Font-Awesome-master/CONTRIBUTING.md"
-%dir "/opt/ngfront/template/plugins/Font-Awesome-master/css"
-"/opt/ngfront/template/plugins/Font-Awesome-master/css/font-awesome.css"
-"/opt/ngfront/template/plugins/Font-Awesome-master/css/font-awesome.css.map"
-"/opt/ngfront/template/plugins/Font-Awesome-master/css/font-awesome.min.css"
-%dir "/opt/ngfront/template/plugins/Font-Awesome-master/fonts"
-"/opt/ngfront/template/plugins/Font-Awesome-master/fonts/fontawesome-webfont.eot"
-"/opt/ngfront/template/plugins/Font-Awesome-master/fonts/fontawesome-webfont.svg"
-"/opt/ngfront/template/plugins/Font-Awesome-master/fonts/fontawesome-webfont.ttf"
-"/opt/ngfront/template/plugins/Font-Awesome-master/fonts/fontawesome-webfont.woff"
-"/opt/ngfront/template/plugins/Font-Awesome-master/fonts/fontawesome-webfont.woff2"
-"/opt/ngfront/template/plugins/Font-Awesome-master/fonts/FontAwesome.otf"
-%dir "/opt/ngfront/template/plugins/Font-Awesome-master/less"
-"/opt/ngfront/template/plugins/Font-Awesome-master/less/animated.less"
-"/opt/ngfront/template/plugins/Font-Awesome-master/less/bordered-pulled.less"
-"/opt/ngfront/template/plugins/Font-Awesome-master/less/core.less"
-"/opt/ngfront/template/plugins/Font-Awesome-master/less/fixed-width.less"
-"/opt/ngfront/template/plugins/Font-Awesome-master/less/font-awesome.less"
-"/opt/ngfront/template/plugins/Font-Awesome-master/less/icons.less"
-"/opt/ngfront/template/plugins/Font-Awesome-master/less/larger.less"
-"/opt/ngfront/template/plugins/Font-Awesome-master/less/list.less"
-"/opt/ngfront/template/plugins/Font-Awesome-master/less/mixins.less"
-"/opt/ngfront/template/plugins/Font-Awesome-master/less/path.less"
-"/opt/ngfront/template/plugins/Font-Awesome-master/less/rotated-flipped.less"
-"/opt/ngfront/template/plugins/Font-Awesome-master/less/stacked.less"
-"/opt/ngfront/template/plugins/Font-Awesome-master/less/variables.less"
-"/opt/ngfront/template/plugins/Font-Awesome-master/package.json"
-%dir "/opt/ngfront/template/plugins/Font-Awesome-master/scss"
-"/opt/ngfront/template/plugins/Font-Awesome-master/scss/font-awesome.scss"
-"/opt/ngfront/template/plugins/Font-Awesome-master/scss/_animated.scss"
-"/opt/ngfront/template/plugins/Font-Awesome-master/scss/_bordered-pulled.scss"
-"/opt/ngfront/template/plugins/Font-Awesome-master/scss/_core.scss"
-"/opt/ngfront/template/plugins/Font-Awesome-master/scss/_fixed-width.scss"
-"/opt/ngfront/template/plugins/Font-Awesome-master/scss/_icons.scss"
-"/opt/ngfront/template/plugins/Font-Awesome-master/scss/_larger.scss"
-"/opt/ngfront/template/plugins/Font-Awesome-master/scss/_list.scss"
-"/opt/ngfront/template/plugins/Font-Awesome-master/scss/_mixins.scss"
-"/opt/ngfront/template/plugins/Font-Awesome-master/scss/_path.scss"
-"/opt/ngfront/template/plugins/Font-Awesome-master/scss/_rotated-flipped.scss"
-"/opt/ngfront/template/plugins/Font-Awesome-master/scss/_stacked.scss"
-"/opt/ngfront/template/plugins/Font-Awesome-master/scss/_variables.scss"
-"/opt/ngfront/template/plugins/Font-Awesome-master/_config.yml"
 %dir "/opt/ngfront/template/plugins/layer"
 "/opt/ngfront/template/plugins/layer/demo.html"
 %dir "/opt/ngfront/template/plugins/layer/extend"
@@ -336,12 +335,13 @@ mv "/opt/gocode/src/ngfront/RPM/_CPack_Packages/RPM/tmpBBroot" $RPM_BUILD_ROOT
 "/opt/ngfront/template/views/nginx/nginxcfg.html"
 "/opt/ngfront/template/views/nginx/watcher.html"
 "/opt/ngfront/template/views/nginx/clients.html"
-%dir "/usr/local"
-%dir "/usr/local/bin"
-"/usr/local/bin/ngfront"
+"/opt/ngfront/ngfront.cfg"
 %dir "/usr/lib/systemd"
 %dir "/usr/lib/systemd/system"
 "/usr/lib/systemd/system/ngfront.service"
+%dir "/usr/local"
+%dir "/usr/local/bin"
+"/usr/local/bin/ngfront"
 
 
 
