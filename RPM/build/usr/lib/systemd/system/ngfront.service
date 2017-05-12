@@ -6,9 +6,7 @@ EnvironmentFile=-/opt/ngfront/ngfront.cfg
 ExecStart=/usr/local/bin/ngfront \
 	$NGFRONT_IP \
 	$NGFRONT_PORT \
-	$NGFRONT_LOGLEVEL \
-	$NGFRONT_LOGDIR \
-	$NGFRONT_TEMPLATEDIR 
+	$NGFRONT_LOGLEVEL
 
 [Install]
 WantedBy=multi-user.target
