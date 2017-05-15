@@ -649,7 +649,7 @@ function localRefreshNg(obj){
      };
 
 	var AppNameAndNamespace = Namespace+'-'+AppName;
-	var saveUrl = "http://"+areaIP+":"+areaPort+"/nginxcfg?JobZoneType="+JobZoneType;
+	var saveUrl = "http://"+areaIP+":"+areaPort+"/nginxcfg?JobZoneType="+JobZoneType+"&WatcherID="+WatcherID;
 	$.ajax({
 		url : saveUrl,
 		dataType: "json",
@@ -1030,7 +1030,7 @@ function localRefreshNg(obj){
 	     	$(".IsDefaultCfg-true").parent().parent().remove();
 	    }
 		
-		var saveUrl = "http://"+areaIP+":"+areaPort+"/nginxcfg?JobZoneType="+JobZoneType;
+		var saveUrl = "http://"+areaIP+":"+areaPort+"/nginxcfg?JobZoneType="+JobZoneType+"&WatcherID="+WatcherID;
 		$.ajax({
 			url : saveUrl,
 			dataType: "json",
