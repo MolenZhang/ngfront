@@ -201,6 +201,7 @@ func (svc *ServiceInfo) updateNginxCfg(request *restful.Request, response *restf
 	request.Request.ParseForm()
 	watcherID := request.Request.Form.Get("WatcherID")
 
+	logdebug.Println(logdebug.LevelDebug, "WatcherID is :", watcherID)
 	nginxCfg, jobZoneType := getWebInfo(request, response)
 	kubeNGCfg := nginxCfg.convertToKubeNGCfg()
 
@@ -224,9 +225,9 @@ func (svc *ServiceInfo) updateNginxCfg(request *restful.Request, response *restf
 		watcherCfg := nodes.WatchManagerCfg{}
 
 		json.Unmarshal(respData, &watcherCfg)
+		logdebug.Println(logdebug.LevelDebug, "watcherCfg is :", watcherCfg)
 
 		appCfgURL, _ := getAppInfoURL(client, nginxCfg)
-		logdebug.Println(logdebug.LevelDebug, "when update nginx config,the URL from web is", appCfgURL)
 		if watcherCfg.DefaultNginxServerType == "ip" {
 			nginxCfgURL := "http://" +
 				client.NodeIP +
@@ -247,6 +248,7 @@ func (svc *ServiceInfo) updateNginxCfg(request *restful.Request, response *restf
 				nginxCfg.ListenPort
 		}
 
+		logdebug.Println(logdebug.LevelDebug, "when update nginx config,the URL from web is", appCfgURL)
 		recvData, err := communicate.SendRequestByJSON(communicate.PUT, appCfgURL, kubeNGCfg)
 		if err != nil {
 			logdebug.Println(logdebug.LevelError, err)
@@ -383,8 +385,8 @@ func (svc *ServiceInfo) createNginxCfg(request *restful.Request, response *restf
 		json.Unmarshal(respData, &watcherCfg)
 
 		_, nginxCfgURL := getAppInfoURL(client, nginxCfg)
-		logdebug.Println(logdebug.LevelDebug, "when add one nginx config, the URL is:", nginxCfgURL)
 
+		logdebug.Println(logdebug.LevelDebug, "when add one nginx config, the URL is:", nginxCfgURL)
 		if watcherCfg.DefaultNginxServerType == "ip" {
 			kubeNGCfg.ServerName = client.NodeIP
 		}
