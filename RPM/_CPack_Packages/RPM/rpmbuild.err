@@ -1,0 +1,25 @@
++ umask 022
++ cd /opt/gocode/src/ngfront/RPM/_CPack_Packages/RPM/BUILD
++ mv /opt/gocode/src/ngfront/RPM/_CPack_Packages/RPM/ngfront-1.0-1.x86_64 /opt/gocode/src/ngfront/RPM/_CPack_Packages/RPM/tmpBBroot
++ exit 0
++ umask 022
++ cd /opt/gocode/src/ngfront/RPM/_CPack_Packages/RPM/BUILD
++ '[' /opt/gocode/src/ngfront/RPM/_CPack_Packages/RPM/ngfront-1.0-1.x86_64 '!=' / ']'
++ rm -rf /opt/gocode/src/ngfront/RPM/_CPack_Packages/RPM/ngfront-1.0-1.x86_64
+++ dirname /opt/gocode/src/ngfront/RPM/_CPack_Packages/RPM/ngfront-1.0-1.x86_64
++ mkdir -p /opt/gocode/src/ngfront/RPM/_CPack_Packages/RPM
++ mkdir /opt/gocode/src/ngfront/RPM/_CPack_Packages/RPM/ngfront-1.0-1.x86_64
++ '[' -e /opt/gocode/src/ngfront/RPM/_CPack_Packages/RPM/ngfront-1.0-1.x86_64 ']'
++ rm -rf /opt/gocode/src/ngfront/RPM/_CPack_Packages/RPM/ngfront-1.0-1.x86_64
++ mv /opt/gocode/src/ngfront/RPM/_CPack_Packages/RPM/tmpBBroot /opt/gocode/src/ngfront/RPM/_CPack_Packages/RPM/ngfront-1.0-1.x86_64
++ /usr/lib/rpm/check-buildroot
++ /usr/lib/rpm/redhat/brp-compress
++ /usr/lib/rpm/redhat/brp-strip /usr/bin/strip
++ /usr/lib/rpm/redhat/brp-strip-comment-note /usr/bin/strip /usr/bin/objdump
++ /usr/lib/rpm/redhat/brp-strip-static-archive /usr/bin/strip
++ /usr/lib/rpm/brp-python-bytecompile /usr/bin/python 1
++ /usr/lib/rpm/redhat/brp-python-hardlink
++ /usr/lib/rpm/redhat/brp-java-repack-jars
++ umask 022
++ cd /opt/gocode/src/ngfront/RPM/_CPack_Packages/RPM/BUILD
++ exit 0

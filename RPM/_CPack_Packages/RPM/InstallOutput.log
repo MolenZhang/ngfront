@@ -1,4 +1,0 @@
-# Run command: cp /opt/gocode/src/ngfront/RPM/opt/gocode/src/ngfront/RPM/ngfront //opt/gocode/src/ngfront/RPM/build/usr/local/bin/
-# Output:
-cp: 无法获取"/opt/gocode/src/ngfront/RPM/opt/gocode/src/ngfront/RPM/ngfront" 的文件状态(stat): 没有那个文件或目录
-

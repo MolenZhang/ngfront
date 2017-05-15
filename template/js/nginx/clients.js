@@ -380,7 +380,7 @@ function addOneWatcher(obj){
 				WatchNamespaceSets= ["all"];
 			}
 
-			var NginxReloadCommand = $("#NginxReloadCommandInfo").val();
+			var NginxReloadCommand = $("#addNginxReloadCommandInfo").val();
 			var NginxRealCfgDirPath = WorkDir+$("#addNginxRealCfgDirPathInfo2").val();
 			var NginxTestCfgDirPath = WorkDir+$("#addNginxTestCfgDirPathInfo2").val();
 			var DownloadCfgDirPath = WorkDir+$("#addDownloadCfgDirPathInfo2").val();

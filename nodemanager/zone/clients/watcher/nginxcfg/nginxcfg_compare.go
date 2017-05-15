@@ -138,11 +138,11 @@ func deepCompareContent(cfgA, cfgB KubeNGConfig) (bool, string) {
 		}
 	}
 
-	if cfgA.LogRule.LogFileDirPath != cfgB.LogRule.LogFileDirPath {
-		errMsg = fmt.Sprintf(`LogRule规则不一致:%s<====>%s`, cfgA.LogRule, cfgB.LogRule)
-
-		return false, errMsg
-	}
+	//if cfgA.LogRule.LogFileDirPath != cfgB.LogRule.LogFileDirPath {
+	//	errMsg = fmt.Sprintf(`LogRule规则不一致:%s<====>%s`, cfgA.LogRule, cfgB.LogRule)
+	//
+	//	return false, errMsg
+	//}
 
 	if cfgA.LogRule.LogRuleName != cfgB.LogRule.LogRuleName {
 		errMsg = fmt.Sprintf(`LogRule规则不一致:%s<====>%s`, cfgA.LogRule, cfgB.LogRule)
@@ -165,12 +165,58 @@ func deepCompareContent(cfgA, cfgB KubeNGConfig) (bool, string) {
 	return true, ""
 }
 
-func deepCompare(appAllCfgsA, appAllCfgsB map[string]KubeNGConfig) (bool, string) {
+func deepCompareIPServerType(
+	appAllCfgsA,
+	appAllCfgsB map[string]KubeNGConfig,
+	clientBNodeIP,
+	clientBListenPort,
+	appKey string,
+) (bool, string) {
+
+	errMsg := ""
+	result := true
+
+	//配置个数一致 比较内容s
+	for _, appCfg := range appAllCfgsA {
+		clientBAppServerKey := appKey + "-" + clientBNodeIP + ":" + clientBListenPort
+		if _, ok := appAllCfgsB[clientBAppServerKey]; !ok {
+			errMsg = fmt.Sprintf(`配置B中没有appServerKey=%s`, clientBAppServerKey)
+
+			return false, errMsg
+		}
+
+		//appServer表项都有值 比较内容
+		result, errMsg = deepCompareContent(appCfg, appAllCfgsB[clientBAppServerKey])
+		if result != true {
+			return false, errMsg
+		}
+	}
+
+	return true, ""
+}
+
+func deepCompare(
+	appAllCfgsA,
+	appAllCfgsB map[string]KubeNGConfig,
+	clientBNodeIP,
+	clientBListenPort,
+	clientAWatcherServerType,
+	clientBWatcherServerType,
+	appKey string,
+) (bool, string) {
 	errMsg := ""
 	result := true
 
 	if len(appAllCfgsA) != len(appAllCfgsB) {
 		return false, "同一app的配置个数不一致"
+	}
+
+	if clientAWatcherServerType != clientBWatcherServerType {
+		return false, "2个wathcer代理方式不一致"
+	}
+
+	if clientAWatcherServerType == "ip" {
+		return deepCompareIPServerType(appAllCfgsA, appAllCfgsB, clientBNodeIP, clientBListenPort, appKey)
 	}
 
 	//配置个数一致 比较内容s
@@ -191,7 +237,13 @@ func deepCompare(appAllCfgsA, appAllCfgsB map[string]KubeNGConfig) (bool, string
 	return true, ""
 }
 
-func compareContent(clientA, clientB map[string]map[string]KubeNGConfig) (bool, string) {
+func compareContent(clientA,
+	clientB map[string]map[string]KubeNGConfig,
+	clientBNodeIP,
+	clientBListenPort,
+	clientAWatcherServerType,
+	clientBWatcherServerType string,
+) (bool, string) {
 	errMsg := ""
 	result := true
 
@@ -208,7 +260,15 @@ func compareContent(clientA, clientB map[string]map[string]KubeNGConfig) (bool, 
 			return false, errMsg
 		}
 		//appKey表项都有值 则比较appServerKey
-		result, errMsg = deepCompare(appAllCfgs, clientB[appKey])
+		result, errMsg = deepCompare(
+			appAllCfgs,
+			clientB[appKey],
+			clientBNodeIP,
+			clientBListenPort,
+			clientAWatcherServerType,
+			clientBWatcherServerType,
+			appKey,
+		)
 		if result != true {
 			return false, errMsg
 		}
@@ -220,7 +280,35 @@ func compareContent(clientA, clientB map[string]map[string]KubeNGConfig) (bool, 
 	return true, errMsg
 }
 
-func getNginxCfgByWatcherURL(clientsSet []string, watcherID string, request *restful.Request, response *restful.Response) (clientAURL string, clientBURL string) {
+func getClientWatcherNginxInfo(clientInfo nodes.ClientInfo, watcherID string) (string, string) {
+	watcher := nodes.WatchManagerCfg{}
+
+	getWatcherURL := "http://" +
+		clientInfo.NodeIP +
+		clientInfo.APIServerPort +
+		"/" +
+		clientInfo.WatchManagerAPIServerPath +
+		"/" +
+		watcherID
+
+	resp, _ := communicate.SendRequestByJSON(communicate.GET, getWatcherURL, nil)
+
+	json.Unmarshal(resp, &watcher)
+
+	logdebug.Println(logdebug.LevelDebug, "----从kubeng获取watcher信息-----", watcher)
+
+	return watcher.DefaultNginxServerType, watcher.NginxListenPort
+}
+
+func getNginxCfgByWatcherURL(clientsSet []string, watcherID string, request *restful.Request) (
+	clientAURL string,
+	clientBURL string,
+	clientBNodeIP string,
+	clientBListenPort string,
+	clientAWatcherServerType string,
+	clientBWatcherServerType string,
+) {
+
 	request.Request.ParseForm()
 	clientA := nodes.ClientInfo{
 		NodeIP:   request.Request.Form.Get("NodeIPA"),
@@ -242,6 +330,8 @@ func getNginxCfgByWatcherURL(clientsSet []string, watcherID string, request *res
 		"/watchers/" +
 		watcherID
 
+	clientAWatcherServerType, _ = getClientWatcherNginxInfo(clientInfo, watcherID)
+
 	logdebug.Println(logdebug.LevelDebug, "the URL of getting ClientA config from kubeng is:", clientAURL)
 
 	clientB := nodes.ClientInfo{
@@ -251,6 +341,7 @@ func getNginxCfgByWatcherURL(clientsSet []string, watcherID string, request *res
 
 	key = clientB.CreateKey()
 	clientInfo = nodes.GetClientInfo(key)
+	clientBNodeIP = clientInfo.NodeName
 
 	clientBURL = "http://" +
 		clientInfo.NodeIP +
@@ -263,6 +354,8 @@ func getNginxCfgByWatcherURL(clientsSet []string, watcherID string, request *res
 		watcherID
 
 	logdebug.Println(logdebug.LevelDebug, "the URL of getting ClientB config from kubeng is:", clientBURL)
+
+	clientBWatcherServerType, clientBListenPort = getClientWatcherNginxInfo(clientInfo, watcherID)
 
 	return
 }
@@ -349,7 +442,7 @@ func (svc *ServiceInfo) compareAllWatchersNginxCfgs(request *restful.Request, re
 	}
 
 	for watcherID := range clientAWatchers {
-		clientANginxCfgURL, clientBNginxCfgURL := getNginxCfgByWatcherURL(clientsSet, watcherID, request, response)
+		clientANginxCfgURL, clientBNginxCfgURL, clientBNodeIP, clientBListenPort, clientAWatcherServerType, clientBWatcherServerType := getNginxCfgByWatcherURL(clientsSet, watcherID, request)
 
 		respA, _ := communicate.SendRequestByJSON(communicate.GET, clientANginxCfgURL, nil)
 		clientAMap := make(map[string]map[string]KubeNGConfig, 0)
@@ -361,7 +454,7 @@ func (svc *ServiceInfo) compareAllWatchersNginxCfgs(request *restful.Request, re
 
 		newErrMsg := ""
 		errMsg := ""
-		responseMsg.Result, errMsg = compareContent(clientAMap, clientBMap)
+		responseMsg.Result, errMsg = compareContent(clientAMap, clientBMap, clientBNodeIP, clientBListenPort, clientAWatcherServerType, clientBWatcherServerType)
 		if responseMsg.Result != true {
 			//responseMsg.ErrorMsg = responseMsg.ErrorMsg + "[watcherID] = " + watcherID + "\n"
 			newErrMsg = newErrMsg + "[watcherID] = " + watcherID + "配置不一致 \n "
@@ -395,7 +488,7 @@ func (svc *ServiceInfo) compareSingleWatchersNginxCfgs(request *restful.Request,
 
 	logdebug.Println(logdebug.LevelDebug, "the clientID which were compared: ", watcherID)
 
-	clientANginxCfgURL, clientBNginxCfgURL := getNginxCfgByWatcherURL(clientsSet, watcherID, request, response)
+	clientANginxCfgURL, clientBNginxCfgURL, clientBNodeIP, clientBListenPort, clientAWatcherServerType, clientBWatcherServerType := getNginxCfgByWatcherURL(clientsSet, watcherID, request)
 
 	respA, errA := communicate.SendRequestByJSON(communicate.GET, clientANginxCfgURL, nil)
 	if errA != nil {
@@ -422,7 +515,7 @@ func (svc *ServiceInfo) compareSingleWatchersNginxCfgs(request *restful.Request,
 		ErrorMsg: "",
 	}
 
-	responseMsg.Result, responseMsg.ErrorMsg = compareContent(clientAMap, clientBMap)
+	responseMsg.Result, responseMsg.ErrorMsg = compareContent(clientAMap, clientBMap, clientBNodeIP, clientBListenPort, clientAWatcherServerType, clientBWatcherServerType)
 
 	response.WriteHeaderAndJson(200, responseMsg, "application/json")
 

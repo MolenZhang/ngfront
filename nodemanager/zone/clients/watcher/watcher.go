@@ -229,14 +229,15 @@ func postWatcherInfo(request *restful.Request, response *restful.Response) {
 	//给每一个client 发送watcher信息
 	allNodesInfo := nodes.GetAllNodesInfo()
 	for _, singleNodeInfo := range allNodesInfo {
+		newWebMsg := webMsg
 
-		if singleNodeInfo.Client.JobZoneType != webMsg.WatcherCfg.JobZoneType {
+		if singleNodeInfo.Client.JobZoneType != newWebMsg.WatcherCfg.JobZoneType {
 			continue
 		}
 
 		if singleNodeInfo.Client.WorkDir != "/root" {
-			webMsg.WatcherCfg.NginxReloadCommand = "sudo " + webMsg.WatcherCfg.NginxReloadCommand
-			webMsg.WatcherCfg.NginxTestCommand = "sudo " + webMsg.WatcherCfg.NginxTestCommand
+			newWebMsg.WatcherCfg.NginxReloadCommand = "sudo " + newWebMsg.WatcherCfg.NginxReloadCommand
+			newWebMsg.WatcherCfg.NginxTestCommand = "sudo " + newWebMsg.WatcherCfg.NginxTestCommand
 		}
 
 		createWatcherURL := "http://" +
@@ -246,7 +247,7 @@ func postWatcherInfo(request *restful.Request, response *restful.Response) {
 			singleNodeInfo.Client.WatchManagerAPIServerPath
 
 		respBody := ResponseBody{}
-		resp, _ := communicate.SendRequestByJSON(communicate.POST, createWatcherURL, webMsg.WatcherCfg)
+		resp, _ := communicate.SendRequestByJSON(communicate.POST, createWatcherURL, newWebMsg.WatcherCfg)
 		json.Unmarshal(resp, &respBody)
 		logdebug.Println(logdebug.LevelDebug, respBody)
 		logdebug.Println(logdebug.LevelDebug, "the URL sendding to kubeng when adding watcherCfg is :", createWatcherURL)
