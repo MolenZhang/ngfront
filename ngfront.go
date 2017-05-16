@@ -2,9 +2,12 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
+
 	"ngfront/config"
+	"ngfront/logdebug"
 	"ngfront/nodemanager/heart"
 	"ngfront/nodemanager/login"
 	"ngfront/nodemanager/nodes"
@@ -51,6 +54,13 @@ func init() {
 }
 
 func main() {
+
+	logLevel := logdebug.CheckLogLevel(config.NgFrontCfg.LogLevel)
+	if logLevel != true {
+		fmt.Println("日志级别设置不合法！")
+		return
+	}
+
 	showStartCfgInfo()
 	err := http.ListenAndServe(":"+config.NgFrontCfg.ListenPort, nil)
 	if err != nil {

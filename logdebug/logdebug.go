@@ -17,11 +17,11 @@ import (
 
 //LevelInfo 提示级别
 const (
-	LevelInfo  = 5 //提示级别
-	LevelDebug = 4 //调试级别
+	LevelInfo  = 1 //提示级别
+	LevelDebug = 2 //调试级别
 	LevelWarn  = 3 //警告级别
-	LevelError = 2 //错误级别
-	LevelFatal = 1 //致命级别
+	LevelError = 4 //错误级别
+	LevelFatal = 5 //致命级别
 )
 
 var printLevelConvertMap = map[int]string{
@@ -55,22 +55,26 @@ func CheckLogLevel(logLevelString string) bool {
 }
 
 //Println 打印log
-func Println(logLevel int, v ...interface{}) {
-	//userLevel := printLevelConvertMap[logLevel]
-	var currentLevel int
+func Println(currentLevel int, v ...interface{}) {
 
+	//配置中的打印级别
+	var logLevel int
+
+	//获取配置文件中的日志级别
 	printLevelString := config.GetLogPrintLevel()
 	printLevelString = strings.ToUpper(printLevelString)
 
-	for key, currentLevelString := range printLevelConvertMap {
-		if currentLevelString == printLevelString {
-			currentLevel = key
+	// 遍历日志级别表，并找出相应日志级别
+	for key, logLevelString := range printLevelConvertMap {
+
+		if printLevelString == logLevelString {
+			logLevel = key
 
 			break
 		}
 	}
 
-	//当前打印级别高于用户打印级别 则打印用户Log, 反之则不打印
+	//当前日志打印级别 低于 配置文件中的日志打印级别则 不打印，反之打印日志
 	if currentLevel < logLevel {
 		return
 	}
@@ -79,7 +83,7 @@ func Println(logLevel int, v ...interface{}) {
 
 	f := runtime.FuncForPC(pc)
 
-	logContent := "[" + printLevelConvertMap[logLevel] + "]" + "[" + f.Name() + ":" + strconv.Itoa(line) + "]"
+	logContent := "[" + printLevelConvertMap[currentLevel] + "]" + "[" + f.Name() + ":" + strconv.Itoa(line) + "]"
 
 	//	log.Println(logContent, v)
 	logPrintToFile(logContent, v)
@@ -88,21 +92,21 @@ func Println(logLevel int, v ...interface{}) {
 }
 
 //Printf 格式化打印log
-func Printf(logLevel int, format string, v ...interface{}) {
-	var currentLevel int
+func Printf(currentLevel int, format string, v ...interface{}) {
+	var configLogLevel int
 
 	printLevelString := config.GetLogPrintLevel()
 	printLevelString = strings.ToUpper(printLevelString)
 
-	for key, currentLevelString := range printLevelConvertMap {
-		if currentLevelString == printLevelString {
-			currentLevel = key
+	for key, conifgLogLevelString := range printLevelConvertMap {
+		if conifgLogLevelString == printLevelString {
+			configLogLevel = key
 			break
 		}
 	}
 
-	//当前打印级别高于用户打印级别 则打印用户Log
-	if currentLevel < logLevel {
+	//当前打印级别 低于 配置级别，则不打印 反之打印
+	if currentLevel < configLogLevel {
 		return
 	}
 
@@ -110,7 +114,7 @@ func Printf(logLevel int, format string, v ...interface{}) {
 
 	f := runtime.FuncForPC(pc)
 
-	logContent := "[" + printLevelConvertMap[logLevel] + "]" + "[" + f.Name() + ":" + strconv.Itoa(line) + "]" + format
+	logContent := "[" + printLevelConvertMap[currentLevel] + "]" + "[" + f.Name() + ":" + strconv.Itoa(line) + "]" + format
 
 	//	log.Println(logContent, v)
 	logPrintToFile(logContent, v)

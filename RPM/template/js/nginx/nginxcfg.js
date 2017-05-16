@@ -900,7 +900,7 @@ function localRefreshNg(obj){
 		  "AppSrcType": AppSrcType
 	    };
 
-		var deleteUrl = "http://"+areaIP+":"+areaPort+"/nginxcfg?NodeIP="+NodeIP+"&ClientID="+ClientID+"&JobZoneType="+JobZoneType;
+		var deleteUrl = "http://"+areaIP+":"+areaPort+"/nginxcfg?JobZoneType="+JobZoneType+"&WatcherID="+WatcherID;
 
 	    layer.open({
 			title: "删除", //不显示标题
