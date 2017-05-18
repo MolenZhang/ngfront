@@ -567,6 +567,70 @@ func dealNginxPort(client nodes.ClientInfo, nginxListenPort string, intWatcherID
 	return true
 }
 
+//根据租户信息返回相关监控信息
+type respServerInfo struct {
+	Result                 bool
+	WatcherID              int
+	DomainSuffix           string
+	NginxListenPort        string
+	DefaultNginxServerType string
+}
+
+//根据租户信息返回相关监控信息
+func getServerInfo(request *restful.Request, response *restful.Response) {
+	logdebug.Println(logdebug.LevelDebug, "<<<<<<get server info>>>>>>")
+
+	request.Request.ParseForm()
+	namespace := request.Request.Form.Get("Namespace")
+	jobZoneType := request.Request.Form.Get("JobZoneType")
+
+	nodesInfo := nodes.GetAllNodesInfo()
+	watcherCfgs := map[int]nodes.WatchManagerCfg{}
+	for _, nodeInfo := range nodesInfo {
+		client := nodeInfo.Client
+		if jobZoneType != client.JobZoneType {
+			continue
+		}
+		getWatcherInfoURL := "http://" +
+			client.NodeIP +
+			client.APIServerPort +
+			"/" +
+			client.WatchManagerAPIServerPath
+		logdebug.Println(logdebug.LevelDebug, "get watcherInfo URL:", getWatcherInfoURL)
+		resp, _ := communicate.SendRequestByJSON(communicate.GET, getWatcherInfoURL, nil)
+		json.Unmarshal(resp, &watcherCfgs)
+
+		respInfo := getWatcherDetailInfo(watcherCfgs, namespace)
+
+		response.WriteHeaderAndJson(200, respInfo, "application/json")
+		return
+
+	}
+}
+
+func getWatcherDetailInfo(watcherCfgs map[int]nodes.WatchManagerCfg, namespace string) (respInfo respServerInfo) {
+	for _, watcherCfg := range watcherCfgs {
+		for _, watcherNamespace := range watcherCfg.WatchNamespaceSets {
+			if watcherNamespace == namespace {
+				respInfo = respServerInfo{
+					Result:                 true,
+					WatcherID:              watcherCfg.WatcherID,
+					DomainSuffix:           watcherCfg.DomainSuffix,
+					NginxListenPort:        watcherCfg.NginxListenPort,
+					DefaultNginxServerType: watcherCfg.DefaultNginxServerType,
+				}
+				logdebug.Println(logdebug.LevelDebug, "respInfo", respInfo)
+				return
+			}
+		}
+	}
+	respInfo = respServerInfo{
+		Result: false,
+	}
+	logdebug.Println(logdebug.LevelDebug, "respInfo", respInfo)
+	return
+}
+
 //Init 初始化函数
 func (svc *ServiceInfo) Init() {
 	http.HandleFunc("/ngfront/zone/clients/watcher", loadWatcherPage)
@@ -646,6 +710,10 @@ func (svc *ServiceInfo) Init() {
 		Doc("check nginx listen port").
 		Operation("checkNginxListenPort"))
 	//	Reads(BatchWatcherWebMsg{})) // from the request
+
+	ws.Route(ws.GET("/ServerInfo").To(getServerInfo).
+		Doc("get server info").
+		Operation("getServerInfo"))
 
 	restful.Add(ws)
 
