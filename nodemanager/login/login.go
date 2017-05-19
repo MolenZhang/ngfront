@@ -186,6 +186,7 @@ func syncCfgInfoToNewClient(syncData syncCfgInfo) {
 
 	allNodesInfo := nodes.GetAllNodesInfo()
 
+	//如果上线的节点为同一节点，则删除原来的配置信息，以新上线的为准
 	nodes.DeleteNode(syncData.nodeIP)
 	//如果集群中没有节点信息 则添加 不删除
 	if 0 != len(allNodesInfo) {

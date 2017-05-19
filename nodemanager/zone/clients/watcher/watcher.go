@@ -569,8 +569,8 @@ func dealNginxPort(client nodes.ClientInfo, nginxListenPort string, intWatcherID
 
 //根据租户信息返回相关监控信息
 type respServerInfo struct {
-	Result                 bool
-	WatcherID              int
+	Result bool
+	//	WatcherID              int
 	DomainSuffix           string
 	NginxListenPort        string
 	DefaultNginxServerType string
@@ -596,6 +596,7 @@ func getServerInfo(request *restful.Request, response *restful.Response) {
 			client.APIServerPort +
 			"/" +
 			client.WatchManagerAPIServerPath
+
 		logdebug.Println(logdebug.LevelDebug, "get watcherInfo URL:", getWatcherInfoURL)
 		resp, _ := communicate.SendRequestByJSON(communicate.GET, getWatcherInfoURL, nil)
 		json.Unmarshal(resp, &watcherCfgs)
@@ -614,7 +615,6 @@ func getWatcherDetailInfo(watcherCfgs map[int]nodes.WatchManagerCfg, namespace s
 			if watcherNamespace == namespace {
 				respInfo = respServerInfo{
 					Result:                 true,
-					WatcherID:              watcherCfg.WatcherID,
 					DomainSuffix:           watcherCfg.DomainSuffix,
 					NginxListenPort:        watcherCfg.NginxListenPort,
 					DefaultNginxServerType: watcherCfg.DefaultNginxServerType,
