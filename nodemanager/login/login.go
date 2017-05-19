@@ -185,6 +185,8 @@ func syncCfgInfoToNewClient(syncData syncCfgInfo) {
 	json.Unmarshal(resp, &newWatcherInfo)
 
 	allNodesInfo := nodes.GetAllNodesInfo()
+
+	nodes.DeleteNode(syncData.nodeIP)
 	//如果集群中没有节点信息 则添加 不删除
 	if 0 != len(allNodesInfo) {
 		for _, singleNodeInfo := range allNodesInfo {

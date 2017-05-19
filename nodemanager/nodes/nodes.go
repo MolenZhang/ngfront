@@ -216,6 +216,20 @@ func AddClientData(client ClientInfo) {
 	return
 }
 
+func DeleteNode(nodeIP string) {
+	for key, nodeInfo := range allNodesInfo.allNodesInfoMap {
+		if nodeInfo.Client.NodeIP == nodeIP {
+			allNodesInfo.mutexLock.Lock()
+
+			defer allNodesInfo.mutexLock.Unlock()
+
+			delete(allNodesInfo.allNodesInfoMap, key)
+			return
+		}
+	}
+
+}
+
 //AddWatcherData 保存监视器配置数据
 func AddWatcherData(key string, watcher map[int]WatchManagerCfg) {
 	allNodesInfo.mutexLock.Lock()
