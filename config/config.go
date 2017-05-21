@@ -19,6 +19,7 @@ type NgFrontCfgInfo struct {
 	TemplateDir         string
 	LogDir              string
 	TemDirForRPMInstall string
+	LogFileSize         int64
 	//nutexLock       *sync.Mutex
 }
 
@@ -32,22 +33,25 @@ const DefaultHeartCycle = 5
 const DefaultHeartTimeout = DefaultHeartCycle * 3
 
 //DefaultHeartServerPath 默认心跳服务器path
-const DefaultHeartServerPath = "/ngfront/heart"
+const DefaultHeartServerPath string = "/ngfront/heart"
 
 //DefaultListenIP 默认的监控IP
-const DefaultListenIP = "localhost"
+const DefaultListenIP string = "localhost"
 
 //DefaultListenPort 默认监听端口
-const DefaultListenPort = "8083"
+const DefaultListenPort string = "8083"
 
 //DefaultLogLevel 默认日志级别
-const DefaultLogLevel = "debug"
+const DefaultLogLevel string = "debug"
 
 //DefaultTemplateDir 默认模板路径
-const DefaultTemplateDir = "/ngfront/"
+const DefaultTemplateDir string = "/ngfront/"
 
 //DefaultLogDir 默认日志文件保存路径
-const DefaultLogDir = "/ngfront/log/"
+const DefaultLogDir string = "/ngfront/log/"
+
+//DefaultLogFileSize 默认日志大小
+const DefaultLogFileSize int64 = 100
 
 // Init 初始配置参数
 func Init() {
@@ -58,6 +62,7 @@ func Init() {
 	flag.StringVar(&NgFrontCfg.LogLevel, "loglevel", DefaultLogLevel, "默认日志级别，支持debug,info,warn,error,fatal")
 	flag.StringVar(&NgFrontCfg.TemplateDir, "templatedir", DefaultTemplateDir, "默认模板路径")
 	flag.StringVar(&NgFrontCfg.LogDir, "logdir", DefaultLogDir, "默认日志文件保存路径")
+	flag.Int64Var(&NgFrontCfg.LogFileSize, "logfilesize", DefaultLogFileSize, "默认日志文件大小")
 
 	flag.Parse()
 

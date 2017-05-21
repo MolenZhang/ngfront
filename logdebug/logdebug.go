@@ -133,10 +133,33 @@ func logPrintToFile(logContent string, v ...interface{}) {
 	}
 
 	logFileName := logDir + "ngfront.log"
+
+	// 判断文件内容大小
+	// 超过设定值大小 则写入新的文件
+	// 新文件命名方式：ngfront_date_time.log
+
 	logFile, err := os.OpenFile(logFileName, os.O_RDWR|os.O_APPEND|os.O_CREATE, 0754)
 	if err != nil {
 		log.Println(err)
 		return
+	}
+
+	fi, _ := logFile.Stat()
+	logFileSize := fi.Size()
+
+	maxLogFileSize := config.NgFrontCfg.LogFileSize
+
+	if logFileSize >= maxLogFileSize {
+		logFile.Close()
+
+		os.Remove(logFileName)
+
+		logFile, err = os.OpenFile(logFileName, os.O_RDWR|os.O_APPEND|os.O_CREATE, 0754)
+		if err != nil {
+			log.Println(err)
+			return
+		}
+
 	}
 	defer logFile.Close()
 

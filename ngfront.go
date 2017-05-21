@@ -81,5 +81,6 @@ func showStartCfgInfo() {
 	log.Println("[Ngfront 模板路径]:          ", config.NgFrontCfg.TemplateDir)
 	log.Println("[Ngfront 心跳周期]:          ", config.NgFrontCfg.HeartCycle)
 	log.Println("[Ngfront 心跳地址]:          ", config.NgFrontCfg.HeartServerAddr)
+	log.Println("[Ngfront 日志大小]:          ", config.NgFrontCfg.LogFileSize)
 	log.Println("*****************************************************************\n\n")
 }
