@@ -169,7 +169,7 @@ func logPrintToFile(logContent string, v ...interface{}) {
 	}
 
 	fileAndStdoutWriter := io.MultiWriter(writers...)
-	gLogger := log.New(fileAndStdoutWriter, "\n", log.Ldate|log.Ltime|log.Lshortfile)
+	gLogger := log.New(fileAndStdoutWriter, "\n", log.Ldate|log.Ltime)
 
 	gLogger.Println(logContent, v)
 	return
