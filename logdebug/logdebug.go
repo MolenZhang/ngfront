@@ -79,11 +79,11 @@ func Println(currentLevel int, v ...interface{}) {
 		return
 	}
 
-	pc, _, line, _ := runtime.Caller(1) //1层调用栈
+	_, fileName, line, _ := runtime.Caller(1) //1层调用栈
 
-	f := runtime.FuncForPC(pc)
+	//	f := runtime.FuncForPC(pc)
 
-	logContent := "[" + printLevelConvertMap[currentLevel] + "]" + "[" + f.Name() + ":" + strconv.Itoa(line) + "]"
+	logContent := "[" + printLevelConvertMap[currentLevel] + "]" + "[" + fileName + ":" + strconv.Itoa(line) + "]"
 
 	//	log.Println(logContent, v)
 	logPrintToFile(logContent, v)
@@ -110,11 +110,11 @@ func Printf(currentLevel int, format string, v ...interface{}) {
 		return
 	}
 
-	pc, _, line, _ := runtime.Caller(1) //1层调用栈
+	_, fileName, line, _ := runtime.Caller(1) //1层调用栈
 
-	f := runtime.FuncForPC(pc)
+	//f := runtime.FuncForPC(pc)
 
-	logContent := "[" + printLevelConvertMap[currentLevel] + "]" + "[" + f.Name() + ":" + strconv.Itoa(line) + "]" + format
+	logContent := "[" + printLevelConvertMap[currentLevel] + "]" + "[" + fileName + ":" + strconv.Itoa(line) + "]" + format
 
 	//	log.Println(logContent, v)
 	logPrintToFile(logContent, v)

@@ -36,6 +36,7 @@ type WatchManagerCfg struct {
 	StandbyUpstreamNodes   []string
 	K8sWatcherStatus       string
 	WatcherID              int
+	IsDefaultWatcher       bool
 }
 
 //WatchManagerCfgs 保存上线的监控信息

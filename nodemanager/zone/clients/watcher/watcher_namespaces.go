@@ -76,6 +76,7 @@ type PortsObject struct {
 type SaveNamespaceInfo struct {
 	WatchNamespaceSets []string
 	WatcherID          int
+	IsDefaultWatcher   bool
 }
 
 // NamespaceInfo 租户信息
@@ -205,7 +206,8 @@ func getServiceFromK8s(url string) (epList EndpointsList) {
 
 func (watcherNamespacesInfo *SaveNamespaceInfo) isNamespaceInSet(namespace string) bool {
 	for _, usedNamespace := range watcherNamespacesInfo.WatchNamespaceSets {
-		if usedNamespace == namespace {
+		// 其他监视器 已经包含此租户 且 此租户 不是 默认监视器下的租户 则不可被其他监视器再次添加
+		if usedNamespace == namespace && watcherNamespacesInfo.IsDefaultWatcher == false {
 			return true
 		}
 		continue
@@ -283,8 +285,9 @@ func getWatchersInfoFromKubeNG(jobZoneType string) (allWatchersNamespacesInfo ma
 }
 
 func markUsedNamesapces(webAllNamespacesInfo []NamespaceInfo, allWatchersNamespacesInfo map[int]SaveNamespaceInfo) {
-
+	//from kubeNg which watched is true
 	for _, watcherNamespacesInfo := range allWatchersNamespacesInfo {
+		// all namespaces marked false excepted watched
 		for index, namespaceInfo := range webAllNamespacesInfo {
 			//	for _, namespaceInfo := range webAllNamespacesInfo {
 			if watcherNamespacesInfo.isNamespaceInSet(namespaceInfo.Namespace) {
@@ -323,14 +326,15 @@ func getWatchNamespacesDetailInfo(w http.ResponseWriter, r *http.Request) {
 	var webAllNamespacesInfo []NamespaceInfo                //from k8s ....modify(填充) ..... to web front
 	var allWatchersNamespacesInfo map[int]SaveNamespaceInfo // from kubeng already be watched 租户
 
-	//初始化将要发给前端的所有租户的信息
+	//初始化将要发给前端的所有租户的信息 将所有租户 的初始化状态信息 标记为false
 	namespacesDetail, jobZoneType := initWebMsg(w, r, &webAllNamespacesInfo)
 	logdebug.Println(logdebug.LevelDebug, "all of namespacesInfo which is in init status", webAllNamespacesInfo)
 
-	//从kubeng获取已经被监视的租户信息
+	//从kubeng获取已经被监视的租户信息 即 每一个watcherID下所监视的租户集合
 	allWatchersNamespacesInfo = getWatchersInfoFromKubeNG(jobZoneType)
 	logdebug.Println(logdebug.LevelDebug, "the namespacesInfo which were used in web", allWatchersNamespacesInfo)
 
+	//将 已经存在监视器里的租户 置其标记位为 true
 	markUsedNamesapces(webAllNamespacesInfo, allWatchersNamespacesInfo)
 	logdebug.Println(logdebug.LevelDebug, "the namespacesInfo which were marked", webAllNamespacesInfo)
 

@@ -151,6 +151,7 @@ type deleteWatcherCfg struct {
 
 func deleteWatcherInfo(request *restful.Request, response *restful.Response) {
 	logdebug.Println(logdebug.LevelDebug, "delete watcherInfo !")
+	webRespMsg := ResponseBody{}
 
 	reqMsg := deleteWatcherCfg{}
 	err := request.ReadEntity(&reqMsg)
@@ -158,7 +159,6 @@ func deleteWatcherInfo(request *restful.Request, response *restful.Response) {
 		response.WriteError(http.StatusInternalServerError, err)
 		return
 	}
-
 	for _, watcherID := range reqMsg.WatcherIDSet {
 
 		allNodesInfo := nodes.GetAllNodesInfo()
@@ -175,11 +175,17 @@ func deleteWatcherInfo(request *restful.Request, response *restful.Response) {
 				singleNodeInfo.Client.WatchManagerAPIServerPath +
 				"/" +
 				watcherID
-			communicate.SendRequestByJSON(communicate.DELETE, deleteWatcherURL, nil)
+			respData, _ := communicate.SendRequestByJSON(communicate.DELETE, deleteWatcherURL, nil)
+			json.Unmarshal(respData, &webRespMsg)
+			if webRespMsg.Result == false {
+				response.WriteHeaderAndJson(200, webRespMsg, "application/json")
+				logdebug.Println(logdebug.LevelError, "删除失败：", webRespMsg.ErrorMessage)
+				return
+			}
 		}
 	}
 
-	webRespMsg := ResponseBody{
+	webRespMsg = ResponseBody{
 		Result: true,
 	}
 	response.WriteHeaderAndJson(200, webRespMsg, "application/json")

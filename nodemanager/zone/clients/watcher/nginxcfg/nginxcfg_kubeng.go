@@ -45,6 +45,9 @@ type KubeNGConfig struct {
 	DeleteUserCfgs        bool                  //应用停止时 是否删除个性化配置
 	IsDefaultCfg          bool                  //本条配置是否是默认配置
 	AppSrcType            string                //服务来源类型 k8s 或者 extern 根据访问的路径填充(暂未启用)
+	UpstreamUserText      []string              //保留字段 用于用户自定义nginx规则
+	ServerUserText        []string              //保留字段 用于用户自定义nginx规则
+	LocationUserText      []string              //保留字段 用于用户自定义nginx规则
 }
 
 //构造与kubeng通讯的信息
@@ -136,6 +139,9 @@ func (kubeNGCfg *KubeNGConfig) convertToWebCfg() (webCfg WebConfig) {
 		DeleteUserCfgs:        kubeNGCfg.DeleteUserCfgs,
 		IsDefaultCfg:          kubeNGCfg.IsDefaultCfg,
 		AppSrcType:            kubeNGCfg.AppSrcType,
+		UpstreamUserText:      kubeNGCfg.UpstreamUserText,
+		ServerUserText:        kubeNGCfg.ServerUserText,
+		LocationUserText:      kubeNGCfg.LocationUserText,
 	}
 
 	for ruleCMD, ruleParams := range kubeNGCfg.UpstreamUserRules.RulesSet {

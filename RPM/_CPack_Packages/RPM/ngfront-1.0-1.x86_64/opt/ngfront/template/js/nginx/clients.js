@@ -1061,7 +1061,8 @@ function delWatcher(){
 			            layer.alert(data.ErrorMsg, {
 							icon: 2,
 							title:"删除失败！",
-							skin: 'layer-ext-moon'
+							skin: 'layer-ext-moon',
+							content:data.ErrorMessage
 						})
 			        }
 			    }
