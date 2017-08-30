@@ -210,7 +210,6 @@ func (watcherNamespacesInfo *SaveNamespaceInfo) isNamespaceInSet(namespace strin
 		if usedNamespace == namespace && watcherNamespacesInfo.IsDefaultWatcher == false {
 			return true
 		}
-		continue
 	}
 	return false
 }

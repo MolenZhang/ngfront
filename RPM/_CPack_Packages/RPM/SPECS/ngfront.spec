@@ -92,6 +92,7 @@ mv "/opt/gocode/src/ngfront/RPM/_CPack_Packages/RPM/tmpBBroot" $RPM_BUILD_ROOT
 "/opt/ngfront/template/js/nginx/watcher.js"
 "/opt/ngfront/template/js/nginx/nginxcfg.js"
 "/opt/ngfront/template/js/nginx/clients.js"
+"/opt/ngfront/template/js/nginx/nginxcfg.jscd"
 %dir "/opt/ngfront/template/js/plugins"
 "/opt/ngfront/template/js/plugins/codemirror.js"
 "/opt/ngfront/template/js/plugins/dataTables.bootstrap.js"

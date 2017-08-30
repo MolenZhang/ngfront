@@ -305,7 +305,11 @@ func addWatchersToNewClient(nodeInfo nodes.NodeInfo, jobZoneType, newWatcherInfo
 
 	for _, key := range keyForMap {
 		logdebug.Println(logdebug.LevelDebug, "the URL for addCfg when exec eync:", newWatcherInfoURL, key)
+		if syncWatcherInfo[key].IsDefaultWatcher == true {
+			continue
+		}
 
 		communicate.SendRequestByJSON(communicate.POST, newWatcherInfoURL, syncWatcherInfo[key])
+
 	}
 }

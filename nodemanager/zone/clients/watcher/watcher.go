@@ -372,6 +372,7 @@ func changeWatcherManagerStatus(request *restful.Request, response *restful.Resp
 	logdebug.Println(logdebug.LevelDebug, "<<<<<<<<update the status of watcher>>>>>>>>")
 
 	watcherStatus := request.PathParameter("status")
+	watcherID := request.PathParameter("watcherID")
 
 	changeWatcherStatusURL, _ := getWatcherInfoCfg(request)
 
@@ -383,10 +384,35 @@ func changeWatcherManagerStatus(request *restful.Request, response *restful.Resp
 	json.Unmarshal(resp, &respMsg.WatcherCfg)
 	respMsg.WatcherCfg.K8sWatcherStatus = watcherStatus
 
-	//put 更新监控状态位 并发给k8s
-	respWeb, _ := communicate.SendRequestByJSON(communicate.PUT, changeWatcherStatusURL, respMsg.WatcherCfg)
-	json.Unmarshal(respWeb, &respMsg)
+	allNodesInfo := nodes.GetAllNodesInfo()
+	for _, singleNodeInfo := range allNodesInfo {
+		client := singleNodeInfo.Client
 
+		if client.JobZoneType != respMsg.WatcherCfg.JobZoneType {
+			continue
+		}
+
+		updateWatcherCfg := ResponseBody{}
+
+		updateWatcherCfgURL := "http://" +
+			client.NodeIP +
+			client.APIServerPort +
+			"/" +
+			client.WatchManagerAPIServerPath +
+			"/" +
+			watcherID
+
+		//put 更新监控状态位 并发给k8s
+		respWeb, _ := communicate.SendRequestByJSON(communicate.PUT, updateWatcherCfgURL, respMsg.WatcherCfg)
+		json.Unmarshal(respWeb, &updateWatcherCfg)
+		logdebug.Println(logdebug.LevelDebug, "更新后返回值 updateWatcherCfg is  :", updateWatcherCfg)
+
+		if updateWatcherCfg.Result == false {
+			response.WriteHeaderAndJson(200, updateWatcherCfg, "application/json")
+			return
+		}
+	}
+	respMsg.Result = true
 	response.WriteHeaderAndJson(200, respMsg, "application/json")
 
 	return

@@ -204,6 +204,8 @@ func (svc *ServiceInfo) updateNginxCfg(request *restful.Request, response *restf
 
 	logdebug.Println(logdebug.LevelDebug, "WatcherID is :", watcherID)
 	nginxCfg, jobZoneType := getWebInfo(request, response)
+
+	logdebug.Println(logdebug.LevelDebug, "UPATE INFO :", nginxCfg)
 	kubeNGCfg := nginxCfg.convertToKubeNGCfg()
 
 	nodesInfo := nodes.GetAllNodesInfo()

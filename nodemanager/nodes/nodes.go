@@ -83,11 +83,17 @@ func Init() {
 			os.MkdirAll(config.NgFrontCfg.TemplateDir, os.ModePerm)
 		}
 	}
+
 	templateDir := "/opt/ngfront/template/"
 
 	currentWorkDir, _ := user.Current()
 	currentUser := currentWorkDir.Username
 	logdebug.Println(logdebug.LevelDebug, "current user:", currentUser)
+
+	//删除 旧模板文件
+	rmOldTempfile := "rm -rf " + config.NgFrontCfg.TemplateDir + "template/*"
+	rmCmd := exec.Command("bash", "-c", rmOldTempfile)
+	rmCmd.Run()
 
 	cpCmd := "cp -r " + templateDir + " " + config.NgFrontCfg.TemplateDir
 	chmodCmd := "chmod 777 " + config.NgFrontCfg.TemplateDir + " -R"

@@ -50,8 +50,10 @@ const DefaultTemplateDir string = "/ngfront/"
 //DefaultLogDir 默认日志文件保存路径
 const DefaultLogDir string = "/ngfront/log/"
 
-//DefaultLogFileSize 默认日志大小
+//DefaultLogFileSize 默认日志大小 100(KB) * 1024 * 1024 MB
 const DefaultLogFileSize int64 = 100
+
+const LogSize1MB = 1024 * 1024
 
 // Init 初始配置参数
 func Init() {
@@ -86,6 +88,8 @@ func Init() {
 	//默认模板路径
 	NgFrontCfg.TemplateDir = currentWorkDir.HomeDir + DefaultTemplateDir
 
+	//日志以MB为单位
+	NgFrontCfg.LogFileSize = NgFrontCfg.LogFileSize * LogSize1MB
 	return
 }
 
