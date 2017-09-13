@@ -90,6 +90,7 @@ func (webCfg *WebConfig) convertToKubeNGCfg() (kubeNGCfg KubeNGConfig) {
 		UpstreamUserText: webCfg.UpstreamUserText,
 		ServerUserText:   webCfg.ServerUserText,
 		LocationUserText: webCfg.LocationUserText,
+		AccessServerName: webCfg.ServerName,
 	}
 
 	kubeNGCfg.UpstreamUserRules.RulesSet = make(map[string][]string, 0)

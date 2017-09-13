@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<title>nginx配置</title>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css"
+	href="/plugins/bootstrap-3.3.5/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css"
+	href="/plugins/Font-Awesome-master/css/font-awesome.css" />
+<link rel="stylesheet" type="text/css"
+	href="/css/core/base.css" />
+<link rel="stylesheet" type="text/css"
+	href="/css/mod/nginx.css" />
+</head>
+<body>
+	<header class="header">
+	    <div class="navbar navbar-fixed-top">
+	        <div class="container">
+	            <div class="navbar-header">
+	                <a href="javascript:void(0);">
+	                    <h2>KubeNG管理</h2>
+	                </a>
+	            </div>
+	            
+	        </div>
+	    </div>
+	</header>
+	
+	<div class="page-container">
+		<article>
+			<div class="page-main">
+				<div class="contentMain">
+					<aside class="aside-btn">
+	                    <div class="btns-group">
+	                        <a class="Record action" onclick="areaRefresh()">
+	                        <i class="fa fa-home"></i>nginx代理区域
+	                        </a> > 
+	                        <a class="Record action" onclick="clientsRefresh()">节点管理</a> > 
+	                        <a class="Record action" onclick="watcherRefresh()">KubeNG监视器管理</a> > 
+	                        <a class="Record action" onclick="nginxcfgRefresh()">nginx配置管理</a>
+	                    </div>
+	                    <div class="searchFun" style="float: left; text-align: center; margin: 0px 10px; margin-top:20px; float: right"
+	                                     align="right">
+	                            <label style="line-height: 35px">服务名:</label>
+	                            <select name="search_service" id="search_service" onchange="findNgByOneApp(this)"
+	                                        style="height: 30px;display: inline; width: 140px; border-radius: 5px; ">
+	                            </select>
+	                    </div>
+	                    <div class="searchFun" style="float: left; text-align: center; margin: 0px 10px; margin-top:20px; float: right"
+	                                 align="right">
+	                            <a class="fa fa-repeat" onclick="refreshNg(this)"></a>
+	                                &nbsp;&nbsp;&nbsp;
+	                            <label style="line-height: 35px">租户:</label>
+	                            <select name="search_user" id="search_user" onchange="searchByUser(this)"
+	                                    style="height: 30px;display: inline; width: 140px; border-radius: 5px; ">
+	                                    <option value="all">All</option>
+	                            </select>
+	                    </div>
+	                </aside>
+	                
+					<div class="item-obj">
+						<div id="nginxCfgCheckInfo">
+							
+						</div>
+						<div class="nginxCfgBtns">
+							<a class="hide" onclick="nginxExport(this)" tooltype="test" title="导出配置文件信息"><i class="fa fa-download"></i>
+							</a>
+							<a class="hide" onclick="nginxCfgToolMore(this)" tooltype="test" title="批量nginx -t检测">
+							 <i class="fa fa-bug"></i>
+							</a>
+			                <a class="hide" onclick="nginxCfgToolMore(this)" tooltype="start" title="批量启动nginx服务">
+			                  <i class="fa fa-play"></i>
+			                </a>
+			                <a class="hide" onclick="nginxCfgToolMore(this)" tooltype="stop" title="批量停止nginx服务">
+			                  <i class="fa fa-power-off"></i>
+			                </a>
+		                </div>
+						<div class="addNginxCfg">
+							<div class="row addNginxStepRow ">
+									<div class="col-sm-12" id="nginxCfgHtml">
+										<div class="ibox float-e-margins hide">
+											<div class="ibox-title">
+												<h5>示例配置 ${ngCfgs.namespace} ${ngCfgs.appName} ${ngCfgs.serverName }:${ngCfgs.listenPort }</h5>
+												<div class="ibox-tools">
+													<a class="" onclick="nginxFormCommOfNode(this)">
+						                                <i class="fa fa-save" ></i>
+						                            </a>
+												    <a class="" onclick="" index="index"
+												    appName="${ngCfgs.appName}" namespace="${ngCfgs.namespace}" serverName="${ngCfgs.serverName }:${ngCfgs.listenPort }"  flag=0 >
+                                                        <i class="fa fa-trash" ></i>
+                                                    </a>
+													<a class="collapse-link" index="index"
+													appName="${ngCfgs.appName}" namespace="${ngCfgs.namespace}" serverName="${ngCfgs.serverName }:${ngCfgs.listenPort }"  flag=0 >
+						                                <i class="fa fa-chevron-up"></i>
+						                            </a>
+												</div>
+											</div>
+
+											<div class="ibox-content" style="display:block">
+											<div class="ngConfigPartList">
+											<div class="ngConfigPart">
+											<input type="checkbox" class="ngConfigCheckbox"/>
+											<span><i class="fa fa-plus fa-serverPlus" onClick="addOneSerPart(this)"></i></span>
+                                              <span><i class="fa fa-openid" onClick="sendSerPart(this)"></i></span>
+                                              <span><i class="fa fa-trash" onClick="delOneSerPart(this)"></i></span>
+                                              <span><i class="fa fa-caret-down" onClick="toggleOneSerPart(this)"></i></span>
+                                              <span class="ngConfigPartTit"></span>
+												 <div class="ngConfigPartCon">
+												 <form class="nginxForm" id="nginxForm" method="post" action="<%=path%>/saveNginxForm">
+													<div class="nginx-label">
+														<span class="upstreamPartTit">upstream</span><input type="text" class="appNameAndNamespace" name="appNameAndNamespace" value="demo-testbonc" disabled>{
+													</div>
+													<div class="nginx-label col-md-offset-1">
+														<select id="IsUpstreamIPHash" name="IsUpstreamIPHash">
+															<option value="0">none</option>
+															<option value="1">ip_hash</option>
+														</select>;
+													</div>
+													<div id="nginx-sers"><div class="nginx-label col-md-offset-1">
+														<span>server:</span><input type="text" class="ipAndUpstreamPort" name="ipAndUpstreamPort" value="192.168.0.81:31586">;<i class="fa fa-plus addSerBtn"></i><i class="fa fa-minus delSerBtn"></i>
+													</div></div>
+													<div class="nginx-label">
+														<span>}</span>
+													</div>
+													<div class="serverPartList">
+														<div class="serverPart">
+															<div class="nginx-label">
+																<span class="serverPartTit">server{</span>
+															</div>
+															<div class="serverPartCon">
+																<div class="nginx-label col-md-offset-1">
+																	<span>listen:</span><input type="text" id="ListenPort" name="ListenPort" value="80">;
+																</div>
+																<div class="nginx-label col-md-offset-1">
+																	<span>server_name:</span><input type="text" id="serverName"  name="serverName" value="192.168.252.133">;
+																</div>
+																<div class="nginx-label col-md-offset-1">
+																	<span>location:</span><input type="text" id="Location" name="Location" value="/testbonc/demo">{
+																</div>
+																<div class="nginx-label col-md-offset-2">
+																	<span>proxy_pass:</span><input type="text" id="proxy_pass" name="" value="" disabled><input type="text" id="" name="" value="/demo/">;
+																</div>
+																<div class="nginx-label col-md-offset-2">
+																	<span>proxy_set_header Host $host:</span><input type="text" class="sameToListenPort" name="" value="" disabled>;
+																</div>
+																<div class="nginx-label col-md-offset-2">
+																	<span>proxy_set_header X-Real-IP $remote_addr:</span><input type="text" class="sameToListenPort" id="" name="" value="" disabled>;
+																</div>
+																<div class="nginx-label col-md-offset-2">
+																	<span>proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for</span>;
+																</div>
+																<div class="nginx-label col-md-offset-2">
+																	<span>proxy_redirect:</span><input type="text" id="ProxyRedirectSrcPath" name="ProxyRedirectSrcPath" value="http://demo:8080/demo">
+																	<input type="text" id="ProxyRedirectDestPath" name="ProxyRedirectDestPath" value="/testbonc/demo">;
+																</div>
+																<div class="nginx-label col-md-offset-1">
+																	<span>}</span>
+																</div>
+																<div class="nginx-label">
+																	<span>}</span>
+																</div>
+															</div>
+														</div>
+													</div>
+													
+												</form> 
+												</div>
+												</div>
+												</div>
+											</div>
+
+											<div class="ibox-content" style="display:block">
+											<div class="ngConfigPartList">
+											<div class="ngConfigPart">
+											<input type="checkbox" class="ngConfigCheckbox"/>
+											<span><i class="fa fa-plus fa-serverPlus" onClick="addOneSerPart(this)"></i></span>
+                                              <span><i class="fa fa-openid" onClick="sendSerPart(this)"></i></span>
+                                              <span><i class="fa fa-trash" onClick="delOneSerPart(this)"></i></span>
+                                              <span><i class="fa fa-caret-down" onClick="toggleOneSerPart(this)"></i></span>
+                                              <span class="ngConfigPartTit"></span>
+												 <div class="ngConfigPartCon">
+												 <form class="nginxForm" id="nginxForm" method="post" action="<%=path%>/saveNginxForm">
+													<div class="nginx-label">
+														<span class="upstreamPartTit">upstream</span><input type="text" class="appNameAndNamespace" name="appNameAndNamespace" value="demo-testbonc" disabled>{
+													</div>
+													<div class="nginx-label col-md-offset-1">
+														<select id="IsUpstreamIPHash" name="IsUpstreamIPHash">
+															<option value="0">none</option>
+															<option value="1">ip_hash</option>
+														</select>;
+													</div>
+													<div id="nginx-sers"><div class="nginx-label col-md-offset-1">
+														<span>server:</span><input type="text" class="ipAndUpstreamPort" name="ipAndUpstreamPort" value="192.168.0.81:31586">;<i class="fa fa-plus addSerBtn"></i><i class="fa fa-minus delSerBtn"></i>
+													</div></div>
+													<div class="nginx-label">
+														<span>}</span>
+													</div>
+													<div class="serverPartList">
+														<div class="serverPart">
+															<div class="nginx-label">
+																<span class="serverPartTit">server{</span>
+															</div>
+															<div class="serverPartCon">
+																<div class="nginx-label col-md-offset-1">
+																	<span>listen:</span><input type="text" id="ListenPort" name="ListenPort" value="80">;
+																</div>
+																<div class="nginx-label col-md-offset-1">
+																	<span>server_name:</span><input type="text" id="serverName"  name="serverName" value="192.168.252.133">;
+																</div>
+																<div class="nginx-label col-md-offset-1">
+																	<span>location:</span><input type="text" id="Location" name="Location" value="/testbonc/demo">{
+																</div>
+																<div class="nginx-label col-md-offset-2">
+																	<span>proxy_pass:</span><input type="text" id="proxy_pass" name="" value="" disabled><input type="text" id="" name="" value="/demo/">;
+																</div>
+																<div class="nginx-label col-md-offset-2">
+																	<span>proxy_set_header Host $host:</span><input type="text" class="sameToListenPort" name="" value="" disabled>;
+																</div>
+																<div class="nginx-label col-md-offset-2">
+																	<span>proxy_set_header X-Real-IP $remote_addr:</span><input type="text" class="sameToListenPort" id="" name="" value="" disabled>;
+																</div>
+																<div class="nginx-label col-md-offset-2">
+																	<span>proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for</span>;
+																</div>
+																<div class="nginx-label col-md-offset-2">
+																	<span>proxy_redirect:</span><input type="text" id="ProxyRedirectSrcPath" name="ProxyRedirectSrcPath" value="http://demo:8080/demo">
+																	<input type="text" id="ProxyRedirectDestPath" name="ProxyRedirectDestPath" value="/testbonc/demo">;
+																</div>
+																<div class="nginx-label col-md-offset-1">
+																	<span>}</span>
+																</div>
+																<div class="nginx-label">
+																	<span>}</span>
+																</div>
+															</div>
+														</div>
+													</div>
+													
+												</form> 
+												</div>
+												</div>
+												</div>
+											</div>
+										</div>
+										
+						</div>
+                    </div>
+				</div>
+			</div>
+		</article>
+	</div>
+	
+	<div id="sendSerSelect" style="display: none;">
+        <form>
+             <table class="table enabled" style="padding: 5px; margin: 10px">
+             	<thead>
+             	</thead>
+                <tbody class="BORDER" id="tbody">
+                </tbody>
+             </table>
+        </form>
+    </div>
+    <div id="nginxToolSelect" style="display: none;">
+        <form>
+             <table class="table enabled" style="padding: 5px; margin: 10px">
+                <thead>
+                </thead>
+                <tbody class="BORDER" id="tbody">
+               
+                </tbody>
+             </table>
+        </form>
+    </div>
+    <div id="nginxCompareSelect" style="display: none;">
+        <form>
+             <table class="table enabled" style="padding: 5px; margin: 10px">
+                <thead>
+                </thead>
+                <tbody class="BORDER" id="tbody">
+               
+                </tbody>
+             </table>
+        </form>
+    </div>
+    <div id="issuedCfgIps" style="display: none">
+		<div class="cfgTable">
+			<table class="table">
+				<thead>
+					<tr>
+						<th style="text-indent: 30px;"><input type="checkbox" class="chkAll"></th>
+						<th>节点IP</th>
+						<th>端口</th>
+						<th>ClientID</th>
+					</tr>
+				</thead>
+				<tbody id="cfgTbody">
+					<!-- <tr>
+						<td><input type="checkbox"></td>
+						<td>192.168.2.2</td>
+						<td>11111</td>
+					</tr>
+					<tr>
+						<td><input type="checkbox"></td>
+						<td>192.168.2.2</td>
+						<td>2222</td>
+					</tr> -->
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<input type="hidden" value="" id="areaIP">
+	<input type="hidden" value="" id="areaPort">
+    <script type="text/javascript" src="/js/plugins/jquery-1.11.3.js"></script>
+	<script type="text/javascript" src="/plugins/bootstrap-3.3.5/dist/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="/plugins/layer/layer.js"></script>
+	<script type="text/javascript" src="/js/customer/custom.js"></script>
+	<script type="text/javascript" src="/js/customer/ipPort.js"></script>
+    <script type="text/javascript" src="/js/nginx/nginxcfg.js"></script>
+</body>
+</html> 

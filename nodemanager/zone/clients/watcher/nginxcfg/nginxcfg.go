@@ -185,6 +185,8 @@ func (svc *ServiceInfo) getSingleNginxCfg(request *restful.Request, response *re
 	for _, kubeNGCfg := range kubeNGCfgsList {
 		webCfg := kubeNGCfg.convertToWebCfg()
 
+		logdebug.Println(logdebug.LevelDebug, "get单个nginx配置时发给前端的nginx配置是:", webCfg)
+
 		cfgsList = append(cfgsList, webCfg)
 	}
 
@@ -194,6 +196,41 @@ func (svc *ServiceInfo) getSingleNginxCfg(request *restful.Request, response *re
 
 	return
 }
+
+func getServerName(watcherID, jobZoneType, ns string) string {
+
+	nodesInfo := nodes.GetAllNodesInfo()
+	for _, nodeInfo := range nodesInfo {
+
+		client := nodeInfo.Client
+
+		if client.JobZoneType != jobZoneType {
+			continue
+		}
+		requestURL := "http://" +
+			client.NodeIP +
+			client.APIServerPort +
+			"/" +
+			client.WatchManagerAPIServerPath +
+			"/" +
+			watcherID
+		respData, _ := communicate.SendRequestByJSON(communicate.GET, requestURL, nil)
+		watcherCfg := nodes.WatchManagerCfg{}
+
+		json.Unmarshal(respData, &watcherCfg)
+
+		if watcherCfg.DefaultNginxServerType == domain {
+			return ns + "." + watcherCfg.DomainSuffix
+		}
+		return ""
+	}
+	return ""
+}
+
+const (
+	domain string = "domain"
+	ip     string = "ip"
+)
 
 // put
 func (svc *ServiceInfo) updateNginxCfg(request *restful.Request, response *restful.Response) {
@@ -206,7 +243,10 @@ func (svc *ServiceInfo) updateNginxCfg(request *restful.Request, response *restf
 	nginxCfg, jobZoneType := getWebInfo(request, response)
 
 	logdebug.Println(logdebug.LevelDebug, "UPATE INFO :", nginxCfg)
+
 	kubeNGCfg := nginxCfg.convertToKubeNGCfg()
+
+	kubeNGCfg.ServerName = getServerName(watcherID, jobZoneType, kubeNGCfg.Namespace)
 
 	nodesInfo := nodes.GetAllNodesInfo()
 	for _, nodeInfo := range nodesInfo {
@@ -217,6 +257,7 @@ func (svc *ServiceInfo) updateNginxCfg(request *restful.Request, response *restf
 			continue
 		}
 
+		nginxCfg.ServerName = kubeNGCfg.ServerName
 		appCfgURL, _, serverType := getAppInfo(client, nginxCfg, watcherID)
 
 		if serverType == "ip" {
@@ -243,6 +284,8 @@ func (svc *ServiceInfo) updateNginxCfg(request *restful.Request, response *restf
 
 		logdebug.Println(logdebug.LevelDebug, "when update nginx config,the URL from web is", appCfgURL)
 		recvData, err := communicate.SendRequestByJSON(communicate.PUT, appCfgURL, kubeNGCfg)
+
+		logdebug.Println(logdebug.LevelDebug, "更新时 发给后端的nginx配置是:", kubeNGCfg)
 		if err != nil {
 			logdebug.Println(logdebug.LevelError, err)
 
@@ -350,7 +393,10 @@ func (svc *ServiceInfo) deleteNginxCfg(request *restful.Request, response *restf
 	watcherID := request.Request.Form.Get("WatcherID")
 
 	nginxCfg, jobZoneType := getWebInfo(request, response)
+
 	kubeNGCfg := nginxCfg.convertToKubeNGCfg()
+
+	kubeNGCfg.ServerName = getServerName(watcherID, jobZoneType, kubeNGCfg.Namespace)
 
 	allNodesInfo := nodes.GetAllNodesInfo()
 	for _, singleNodeInfo := range allNodesInfo {
@@ -361,6 +407,7 @@ func (svc *ServiceInfo) deleteNginxCfg(request *restful.Request, response *restf
 			continue
 		}
 
+		nginxCfg.ServerName = kubeNGCfg.ServerName
 		appCfgURL, _, serverType := getAppInfo(client, nginxCfg, watcherID)
 		if serverType == "ip" {
 			nginxCfgURL := "http://" +

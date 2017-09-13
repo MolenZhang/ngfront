@@ -7,6 +7,7 @@ var ClientIDInfo = "";
 var WatcherID = "";
 var areaIP = "";
 var areaPort = "";
+var startable = true;
 $(document).ready(function () {
 	var locationUrl = window.location;
 	//http://172.16.13.110:8083/ngfront/zone/clients/watcher?NodeIP=10.10.3.9&ClientID=21343&areaType=user
@@ -44,7 +45,15 @@ $(document).ready(function () {
 	 });
 	//开始监控按钮
 	$(document).on('click','.btn-start',function(){
-		 var startSrc = '/images/running.gif';
+		if(!startable){
+			layer.alert('正在重启！');
+			return;	
+		}
+		layer.load(1, {
+			shade: [0.5,'#fff'] //1透明度的白色背景
+		});
+        startable = false;
+		var startSrc = '/images/running.gif';
 		 $(this).parent().find("img").attr("src",startSrc);
 		 $(this).empty().html("重新监控");
 		 $(".btn-stop").attr("disabled",false);
@@ -644,6 +653,7 @@ function watcherSubmit(NodeIPInfo,ClientIDInfo){
     		success : function(data) {
 				var data =  data ;
 				if(data.Result == true){
+					startable = true;
 					layer.msg('启动成功', {icon: 1});
 					setTimeout("window.location.reload()", 1500 );
 				}	

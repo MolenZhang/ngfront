@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<title>nginx代理区域</title>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css"
+	href="/plugins/bootstrap-3.3.5/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css"
+	href="/plugins/Font-Awesome-master/css/font-awesome.css" />
+<link rel="stylesheet" type="text/css"
+	href="/css/core/base.css" />
+<link rel="stylesheet" type="text/css"
+	href="/css/mod/nginx.css" />
+</head>
+<body>
+	<header class="header">
+	    <div class="navbar navbar-fixed-top">
+	        <div class="container">
+	            <div class="navbar-header">
+	                <a href="javascript:void(0);">
+	                    <h2>KubeNG管理</h2>
+	                </a>
+	            </div>
+	            
+	        </div>
+	    </div>
+	</header>
+	
+	<div class="page-container">
+		<article>
+			<div class="page-main">
+				
+				<div class="contentMain">
+	                <aside class="aside-btn">
+	                    <div class="btns-group">
+	                        <a id="clusterResource" class="Record action" onclick="areaRefresh()">
+	                        <i class="fa fa-home"></i>nginx代理区域
+	                        </a>
+	                    </div>
+	                </aside>  
+	                <div class="item-obj">
+	                	<div id="areas"></div>
+		                <div class="areasTable">
+		                	<div class="table-titleInfo">
+		                		<div class="table-title table-tdFirst center">nginx代理区域</div>
+		                		<div class="table-title table-tdSec">IP</div>
+		                	</div>
+		                	<div id="areaNodesTbody">
+		                	<!-- <table class="table" >
+		                		<tbody >
+		                			<tr>
+		                				<td class="center table-tdFirst" rowspan="5">user</td>
+		                				<td class="table-tdSec"><a>192.168.1.2</a></td>
+		                			</tr>
+		                			<tr>
+		                				<td class="table-tdSec"><a>192.168.1.2</a></td>
+		                			</tr>
+		                			<tr>
+		                				<td class="table-tdSec"><a>192.168.1.2</a></td>
+		                			</tr>
+		                			<tr>
+		                				<td class="table-tdSec"><a>192.168.1.2</a></td>
+		                			</tr>
+		                			<tr>
+		                				<td class="table-tdSec"><a>192.168.1.2</a></td>
+		                			</tr>
+		                			
+		                		</tbody>
+		                	</table> -->
+		                	</div>
+		                </div>
+	            	</div> 
+	            </div>
+			</div>
+		</article>
+		
+	</div>
+	<input type="hidden" value="" id="areaIP">
+	<input type="hidden" value="" id="areaPort">
+	<script type="text/javascript" src="/js/plugins/jquery-1.11.3.js"></script>
+	<script type="text/javascript" src="/plugins/bootstrap-3.3.5/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/plugins/echarts.common.min.js"></script>
+    <script type="text/javascript" src="/plugins/nicescroll/jquery.nicescroll.js"></script>
+    <script type="text/javascript" src="/js/customer/ipPort.js"></script>
+    <script type="text/javascript" src="/js/nginx/area.js"></script>
+</body>
+</html> 

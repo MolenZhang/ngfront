@@ -9,14 +9,13 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file leaf-file-name="logdebug.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/logdebug/logdebug.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2204">
-              <caret line="125" column="47" lean-forward="false" selection-start-line="125" selection-start-column="47" selection-end-line="125" selection-end-column="47" />
+            <state relative-caret-position="0">
+              <caret line="125" column="0" lean-forward="false" selection-start-line="125" selection-start-column="0" selection-end-line="125" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -27,10 +26,7 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="3021">
               <caret line="173" column="5" lean-forward="false" selection-start-line="173" selection-start-column="5" selection-end-line="173" selection-end-column="5" />
-              <folding>
-                <marker date="1494552016074" expanded="true" signature="2279:4434" ph="{...}" />
-                <marker date="1494552016074" expanded="true" signature="8663:8785" ph="{...}" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -38,8 +34,8 @@
       <file leaf-file-name="nginxcfg_compare.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg_compare.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3363">
-              <caret line="188" column="46" lean-forward="false" selection-start-line="188" selection-start-column="46" selection-end-line="188" selection-end-column="46" />
+            <state relative-caret-position="19">
+              <caret line="418" column="34" lean-forward="false" selection-start-line="418" selection-start-column="34" selection-end-line="418" selection-end-column="34" />
               <folding />
             </state>
           </provider>
@@ -49,8 +45,47 @@
         <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/watcher.go">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="10621">
-              <caret line="572" column="46" lean-forward="false" selection-start-line="572" selection-start-column="46" selection-end-line="572" selection-end-column="46" />
-              <folding />
+              <caret line="572" column="31" lean-forward="false" selection-start-line="572" selection-start-column="31" selection-end-line="572" selection-end-column="31" />
+              <folding>
+                <marker date="1505284603702" expanded="true" signature="8397:8925" ph="{...}" />
+                <marker date="1505284603702" expanded="true" signature="8445:8801" ph="{...}" />
+                <marker date="1505284603702" expanded="true" signature="8539:8556" ph="{...}" />
+                <marker date="1505284603702" expanded="true" signature="9026:9734" ph="{...}" />
+                <marker date="1505284603702" expanded="true" signature="9112:9184" ph="{...}" />
+                <marker date="1505284603702" expanded="true" signature="9239:9724" ph="{...}" />
+                <marker date="1505284603702" expanded="true" signature="9270:9347" ph="{...}" />
+                <marker date="1505284603702" expanded="true" signature="9834:10268" ph="{...}" />
+                <marker date="1505284603702" expanded="true" signature="9942:10044" ph="{...}" />
+                <marker date="1505284603702" expanded="true" signature="10369:11822" ph="{...}" />
+                <marker date="1505284603702" expanded="true" signature="11027:11725" ph="{...}" />
+                <marker date="1505284603702" expanded="true" signature="11122:11139" ph="{...}" />
+                <marker date="1505284603702" expanded="true" signature="11633:11722" ph="{...}" />
+                <marker date="1505284603702" expanded="true" signature="11904:12586" ph="{...}" />
+                <marker date="1505284603702" expanded="true" signature="12675:14383" ph="{...}" />
+                <marker date="1505284603702" expanded="true" signature="12768:12890" ph="(...)" />
+                <marker date="1505284603702" expanded="true" signature="13582:14191" ph="{...}" />
+                <marker date="1505284603702" expanded="true" signature="14452:14827" ph="{...}" />
+                <marker date="1505284603702" expanded="true" signature="14903:15589" ph="{...}" />
+                <marker date="1505284603702" expanded="true" signature="15199:15437" ph="{...}" />
+                <marker date="1505284603702" expanded="true" signature="15671:16680" ph="{...}" />
+                <marker date="1505284603702" expanded="true" signature="16258:16583" ph="{...}" />
+                <marker date="1505284603702" expanded="true" signature="16327:16580" ph="{...}" />
+                <marker date="1505284603702" expanded="true" signature="16415:16567" ph="{...}" />
+                <marker date="1505284603702" expanded="true" signature="16773:17579" ph="{...}" />
+                <marker date="1505284603702" expanded="true" signature="17328:17563" ph="{...}" />
+                <marker date="1505284603702" expanded="true" signature="17376:17393" ph="{...}" />
+                <marker date="1505284603702" expanded="true" signature="17431:17545" ph="{...}" />
+                <marker date="1505284603702" expanded="true" signature="17625:17765" ph="{...}" />
+                <marker date="1505284603702" expanded="true" signature="17857:18747" ph="{...}" />
+                <marker date="1505284603702" expanded="true" signature="18190:18745" ph="{...}" />
+                <marker date="1505284603702" expanded="true" signature="18259:18276" ph="{...}" />
+                <marker date="1505284603702" expanded="true" signature="18862:19463" ph="{...}" />
+                <marker date="1505284603702" expanded="true" signature="18904:19344" ph="{...}" />
+                <marker date="1505284603702" expanded="true" signature="18971:19341" ph="{...}" />
+                <marker date="1505284603702" expanded="true" signature="19009:19337" ph="{...}" />
+                <marker date="1505284603702" expanded="true" signature="19040:19257" ph="{...}" />
+                <marker date="1505284603702" expanded="true" signature="19509:22301" ph="{...}" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -58,32 +93,19 @@
       <file leaf-file-name="watcher_namespaces.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/watcher_namespaces.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="351">
+            <state relative-caret-position="5643">
               <caret line="305" column="53" lean-forward="false" selection-start-line="305" selection-start-column="53" selection-end-line="305" selection-end-column="53" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="nginxcfg.go" pinned="false" current-in-tab="false">
+      <file leaf-file-name="nginxcfg.go" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-386">
-              <caret line="397" column="1" lean-forward="true" selection-start-line="397" selection-start-column="1" selection-end-line="397" selection-end-column="1" />
+            <state relative-caret-position="373">
+              <caret line="210" column="0" lean-forward="false" selection-start-line="210" selection-start-column="0" selection-end-line="210" selection-end-column="0" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="nginxcfg.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/template/js/nginx/nginxcfg.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="205">
-              <caret line="1022" column="50" lean-forward="true" selection-start-line="1022" selection-start-column="50" selection-end-line="1022" selection-end-column="50" />
-              <folding>
-                <marker date="1494818921146" expanded="true" signature="7507:7520" ph="..." />
-                <marker date="1494818921146" expanded="true" signature="58993:59011" ph="..." />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -91,31 +113,31 @@
       <file leaf-file-name="nginxcfg_web.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg_web.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="118">
-              <caret line="14" column="5" lean-forward="false" selection-start-line="14" selection-start-column="5" selection-end-line="14" selection-end-column="5" />
-              <folding />
+            <state relative-caret-position="110">
+              <caret line="68" column="25" lean-forward="false" selection-start-line="68" selection-start-column="25" selection-end-line="68" selection-end-column="25" />
+              <folding>
+                <marker date="1505283987273" expanded="true" signature="2024:2066" ph="{...}" />
+                <marker date="1505283987273" expanded="true" signature="2126:2226" ph="{...}" />
+                <marker date="1505283987273" expanded="true" signature="2294:2490" ph="{...}" />
+                <marker date="1505283987273" expanded="true" signature="2348:2419" ph="{...}" />
+                <marker date="1505283987273" expanded="true" signature="2388:2416" ph="{...}" />
+                <marker date="1505283987273" expanded="true" signature="2594:4451" ph="{...}" />
+                <marker date="1505283987273" expanded="true" signature="2621:3595" ph="{...}" />
+                <marker date="1505283987273" expanded="true" signature="2996:3088" ph="/.../" />
+                <marker date="1505283987273" expanded="true" signature="3731:3880" ph="{...}" />
+                <marker date="1505283987273" expanded="true" signature="4011:4156" ph="{...}" />
+                <marker date="1505283987273" expanded="true" signature="4291:4440" ph="{...}" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="clients.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/template/js/nginx/clients.js">
+      <file leaf-file-name="nginxcfg_kubeng.go" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg_kubeng.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="7657">
-              <caret line="403" column="62" lean-forward="false" selection-start-line="403" selection-start-column="62" selection-end-line="403" selection-end-column="62" />
-              <folding>
-                <marker date="1494556777245" expanded="true" signature="3204:3239" ph="..." />
-                <marker date="1494556777245" expanded="true" signature="9710:9754" ph="..." />
-                <marker date="1494556777245" expanded="true" signature="11388:11409" ph="..." />
-                <marker date="1494556777245" expanded="true" signature="11439:11445" ph=" " />
-                <marker date="1494556777245" expanded="true" signature="11711:11729" ph="..." />
-                <marker date="1494556777245" expanded="true" signature="12160:12166" ph=" " />
-                <marker date="1494556777245" expanded="true" signature="12252:12258" ph=" " />
-                <marker date="1494556777245" expanded="true" signature="12321:12342" ph="..." />
-                <marker date="1494556777245" expanded="true" signature="12416:12422" ph=" " />
-                <marker date="1494556777245" expanded="true" signature="21279:21297" ph="..." />
-                <marker date="1494556777245" expanded="true" signature="25486:25504" ph="..." />
-              </folding>
+            <state relative-caret-position="90">
+              <caret line="25" column="5" lean-forward="false" selection-start-line="25" selection-start-column="5" selection-end-line="25" selection-end-column="5" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -123,8 +145,8 @@
       <file leaf-file-name="nodes.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/nodemanager/nodes/nodes.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="374">
-              <caret line="256" column="48" lean-forward="true" selection-start-line="256" selection-start-column="48" selection-end-line="256" selection-end-column="48" />
+            <state relative-caret-position="171">
+              <caret line="19" column="5" lean-forward="false" selection-start-line="19" selection-start-column="5" selection-end-line="19" selection-end-column="5" />
               <folding />
             </state>
           </provider>
@@ -137,11 +159,13 @@
       <find>getClientWatcherServerType</find>
       <find>saveSerPart</find>
       <find>nginxFormCommOne</find>
+      <find>get</find>
     </findStrings>
     <replaceStrings>
       <replace>getClientWatcherNginxInfo</replace>
     </replaceStrings>
   </component>
+  <component name="GOROOT" path="D:/Go" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -150,8 +174,10 @@
       <list>
         <option value="$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg_compare.go" />
         <option value="$PROJECT_DIR$/template/js/nginx/clients.js" />
-        <option value="$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg.go" />
         <option value="$PROJECT_DIR$/template/js/nginx/nginxcfg.js" />
+        <option value="$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg_kubeng.go" />
+        <option value="$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg_web.go" />
+        <option value="$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg.go" />
       </list>
     </option>
   </component>
@@ -161,9 +187,9 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds">
+  <component name="ProjectFrameBounds" extendedState="1">
     <option name="x" value="-8" />
-    <option name="width" value="1610" />
+    <option name="width" value="1460" />
     <option name="height" value="860" />
   </component>
   <component name="ProjectView">
@@ -182,267 +208,61 @@
     </navigator>
     <panes>
       <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ngfront" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ngfront" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ngfront" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ngfront" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="template" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ngfront" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ngfront" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="template" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="js" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ngfront" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ngfront" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="template" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="js" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="nginx" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ngfront" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ngfront" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="nodemanager" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="zone" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ngfront" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ngfront" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="nodemanager" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="zone" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="clients" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ngfront" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ngfront" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="nodemanager" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="zone" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="clients" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="watcher" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ngfront" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ngfront" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="nodemanager" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="zone" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="clients" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="watcher" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="nginxcfg" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ngfront" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ngfront" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="nodemanager" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="zone" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="clients" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="tools" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ngfront" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ngfront" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="nodemanager" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="nodes" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ngfront" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ngfront" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="nodemanager" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="login" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ngfront" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ngfront" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="nodemanager" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ngfront" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ngfront" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="logdebug" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
+          <expand>
+            <path>
+              <item name="ngfront" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ngfront" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ngfront" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ngfront" type="462c0819:PsiDirectoryNode" />
+              <item name="nodemanager" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ngfront" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ngfront" type="462c0819:PsiDirectoryNode" />
+              <item name="nodemanager" type="462c0819:PsiDirectoryNode" />
+              <item name="zone" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ngfront" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ngfront" type="462c0819:PsiDirectoryNode" />
+              <item name="nodemanager" type="462c0819:PsiDirectoryNode" />
+              <item name="zone" type="462c0819:PsiDirectoryNode" />
+              <item name="clients" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ngfront" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ngfront" type="462c0819:PsiDirectoryNode" />
+              <item name="nodemanager" type="462c0819:PsiDirectoryNode" />
+              <item name="zone" type="462c0819:PsiDirectoryNode" />
+              <item name="clients" type="462c0819:PsiDirectoryNode" />
+              <item name="watcher" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ngfront" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ngfront" type="462c0819:PsiDirectoryNode" />
+              <item name="nodemanager" type="462c0819:PsiDirectoryNode" />
+              <item name="zone" type="462c0819:PsiDirectoryNode" />
+              <item name="clients" type="462c0819:PsiDirectoryNode" />
+              <item name="watcher" type="462c0819:PsiDirectoryNode" />
+              <item name="nginxcfg" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.path.for.package.jscs" value="project" />
     <property name="node.js.selected.package.jscs" value="" />
+    <property name="go.vendoring.notification.had.been.shown" value="true" />
+    <property name="node.js.detected.package.jscs" value="true" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -463,13 +283,6 @@
       <go_parameters value="-i" />
       <filePath value="$PROJECT_DIR$/" />
       <kind value="FILE" />
-      <method />
-    </configuration>
-    <configuration default="true" type="GoRunFileConfiguration" factoryName="Go Single File">
-      <module name="ngfront" />
-      <working_directory value="$PROJECT_DIR$/" />
-      <filePath value="$PROJECT_DIR$/" />
-      <method />
     </configuration>
     <configuration default="true" type="GoTestRunConfiguration" factoryName="Go Test">
       <module name="ngfront" />
@@ -477,6 +290,19 @@
       <go_parameters value="-i" />
       <framework value="gotest" />
       <kind value="DIRECTORY" />
+    </configuration>
+    <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <gulpfile />
+      <tasks />
+      <arguments />
+      <envs />
+    </configuration>
+    <configuration default="true" type="GoRunFileConfiguration" factoryName="Go Single File">
+      <module name="ngfront" />
+      <working_directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/" />
       <method />
     </configuration>
     <configuration default="true" type="JavaScriptTestRunnerJest" factoryName="Jest">
@@ -495,15 +321,6 @@
     <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
       <method />
     </configuration>
-    <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
-      <node-interpreter>project</node-interpreter>
-      <node-options />
-      <gulpfile />
-      <tasks />
-      <arguments />
-      <envs />
-      <method />
-    </configuration>
     <configuration default="true" type="js.build_tools.npm" factoryName="npm">
       <command value="run" />
       <scripts />
@@ -516,14 +333,13 @@
     <option name="remove_strategy" value="false" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="0" width="1610" height="860" extended-state="0" />
+    <frame x="-8" y="0" width="1460" height="860" extended-state="1" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25031367" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33195022" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32882273" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -535,11 +351,12 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33195022" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="processedProjectFiles" value="true" />
+    <option name="version" value="1" />
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
@@ -552,6 +369,165 @@
     <entry file="file://$PROJECT_DIR$/logdebug/logdebug.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2204">
+          <caret line="125" column="0" lean-forward="true" selection-start-line="125" selection-start-column="0" selection-end-line="125" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/nodemanager/login/login.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3021">
+          <caret line="173" column="5" lean-forward="false" selection-start-line="173" selection-start-column="5" selection-end-line="173" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg_compare.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3363">
+          <caret line="188" column="46" lean-forward="false" selection-start-line="188" selection-start-column="46" selection-end-line="188" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/watcher.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="10621">
+          <caret line="572" column="31" lean-forward="true" selection-start-line="572" selection-start-column="31" selection-end-line="572" selection-end-column="31" />
+          <folding>
+            <marker date="1505284603702" expanded="true" signature="8397:8925" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="8445:8801" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="8539:8556" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="9026:9734" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="9112:9184" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="9239:9724" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="9270:9347" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="9834:10268" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="9942:10044" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="10369:11822" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="11027:11725" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="11122:11139" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="11633:11722" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="11904:12586" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="12675:14383" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="12768:12890" ph="(...)" />
+            <marker date="1505284603702" expanded="true" signature="13582:14191" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="14452:14827" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="14903:15589" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="15199:15437" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="15671:16680" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="16258:16583" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="16327:16580" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="16415:16567" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="16773:17579" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="17328:17563" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="17376:17393" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="17431:17545" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="17625:17765" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="17857:18747" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="18190:18745" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="18259:18276" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="18862:19463" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="18904:19344" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="18971:19341" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="19009:19337" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="19040:19257" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="19509:22301" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/watcher_namespaces.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5643">
+          <caret line="305" column="53" lean-forward="false" selection-start-line="305" selection-start-column="53" selection-end-line="305" selection-end-column="53" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="7334">
+          <caret line="397" column="1" lean-forward="true" selection-start-line="397" selection-start-column="1" selection-end-line="397" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg_web.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="266">
+          <caret line="14" column="5" lean-forward="false" selection-start-line="14" selection-start-column="5" selection-end-line="14" selection-end-column="5" />
+          <folding>
+            <marker date="1505283987273" expanded="true" signature="2024:2066" ph="{...}" />
+            <marker date="1505283987273" expanded="true" signature="2126:2226" ph="{...}" />
+            <marker date="1505283987273" expanded="true" signature="2294:2490" ph="{...}" />
+            <marker date="1505283987273" expanded="true" signature="2348:2419" ph="{...}" />
+            <marker date="1505283987273" expanded="true" signature="2388:2416" ph="{...}" />
+            <marker date="1505283987273" expanded="true" signature="2594:4451" ph="{...}" />
+            <marker date="1505283987273" expanded="true" signature="2621:3595" ph="{...}" />
+            <marker date="1505283987273" expanded="true" signature="2996:3088" ph="/.../" />
+            <marker date="1505283987273" expanded="true" signature="3731:3880" ph="{...}" />
+            <marker date="1505283987273" expanded="true" signature="4011:4156" ph="{...}" />
+            <marker date="1505283987273" expanded="true" signature="4291:4440" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/template/js/nginx/clients.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="7657">
+          <caret line="403" column="62" lean-forward="false" selection-start-line="403" selection-start-column="62" selection-end-line="403" selection-end-column="62" />
+          <folding>
+            <marker date="1501834054225" expanded="true" signature="3204:3239" ph="..." />
+            <marker date="1501834054225" expanded="true" signature="9710:9754" ph="..." />
+            <marker date="1501834054225" expanded="true" signature="11388:11409" ph="..." />
+            <marker date="1501834054225" expanded="true" signature="11439:11445" ph=" " />
+            <marker date="1501834054225" expanded="true" signature="11711:11729" ph="..." />
+            <marker date="1501834054225" expanded="true" signature="12160:12166" ph=" " />
+            <marker date="1501834054225" expanded="true" signature="12252:12258" ph=" " />
+            <marker date="1501834054225" expanded="true" signature="12321:12342" ph="..." />
+            <marker date="1501834054225" expanded="true" signature="12416:12422" ph=" " />
+            <marker date="1501834054225" expanded="true" signature="21279:21297" ph="..." />
+            <marker date="1501834054225" expanded="true" signature="25486:25504" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/nodemanager/nodes/nodes.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4674">
+          <caret line="256" column="33" lean-forward="true" selection-start-line="256" selection-start-column="33" selection-end-line="256" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/template/js/nginx/nginxcfg.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="19418">
+          <caret line="1022" column="50" lean-forward="true" selection-start-line="1022" selection-start-column="50" selection-end-line="1022" selection-end-column="50" />
+          <folding>
+            <marker date="1505285347615" expanded="true" signature="7507:7520" ph="..." />
+            <marker date="1505285347615" expanded="true" signature="8040:8054" ph="..." />
+            <marker date="1505285347615" expanded="true" signature="12791:12811" ph="..." />
+            <marker date="1505285347615" expanded="true" signature="12955:12984" ph="..." />
+            <marker date="1505285347615" expanded="true" signature="18188:18208" ph="..." />
+            <marker date="1505285347615" expanded="true" signature="18352:18381" ph="..." />
+            <marker date="1505285347615" expanded="true" signature="20336:20356" ph="..." />
+            <marker date="1505285347615" expanded="true" signature="20500:20529" ph="..." />
+            <marker date="1505285347615" expanded="true" signature="21955:21975" ph="..." />
+            <marker date="1505285347615" expanded="true" signature="22107:22136" ph="..." />
+            <marker date="1505285347615" expanded="true" signature="23312:23332" ph="..." />
+            <marker date="1505285347615" expanded="true" signature="23464:23493" ph="..." />
+            <marker date="1505285347615" expanded="true" signature="24621:24641" ph="..." />
+            <marker date="1505285347615" expanded="true" signature="24773:24802" ph="..." />
+            <marker date="1505285347615" expanded="true" signature="66699:66717" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/logdebug/logdebug.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2204">
           <caret line="125" column="47" lean-forward="false" selection-start-line="125" selection-start-column="47" selection-end-line="125" selection-end-column="47" />
           <folding />
         </state>
@@ -561,10 +537,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3021">
           <caret line="173" column="5" lean-forward="false" selection-start-line="173" selection-start-column="5" selection-end-line="173" selection-end-column="5" />
-          <folding>
-            <marker date="1494552016074" expanded="true" signature="2279:4434" ph="{...}" />
-            <marker date="1494552016074" expanded="true" signature="8663:8785" ph="{...}" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -580,7 +553,46 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="10621">
           <caret line="572" column="46" lean-forward="true" selection-start-line="572" selection-start-column="46" selection-end-line="572" selection-end-column="46" />
-          <folding />
+          <folding>
+            <marker date="1505284603702" expanded="true" signature="8397:8925" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="8445:8801" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="8539:8556" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="9026:9734" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="9112:9184" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="9239:9724" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="9270:9347" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="9834:10268" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="9942:10044" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="10369:11822" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="11027:11725" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="11122:11139" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="11633:11722" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="11904:12586" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="12675:14383" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="12768:12890" ph="(...)" />
+            <marker date="1505284603702" expanded="true" signature="13582:14191" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="14452:14827" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="14903:15589" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="15199:15437" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="15671:16680" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="16258:16583" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="16327:16580" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="16415:16567" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="16773:17579" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="17328:17563" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="17376:17393" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="17431:17545" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="17625:17765" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="17857:18747" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="18190:18745" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="18259:18276" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="18862:19463" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="18904:19344" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="18971:19341" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="19009:19337" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="19040:19257" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="19509:22301" ph="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -589,17 +601,17 @@
         <state relative-caret-position="7657">
           <caret line="403" column="62" lean-forward="true" selection-start-line="403" selection-start-column="62" selection-end-line="403" selection-end-column="62" />
           <folding>
-            <marker date="1494556777245" expanded="true" signature="3204:3239" ph="..." />
-            <marker date="1494556777245" expanded="true" signature="9710:9754" ph="..." />
-            <marker date="1494556777245" expanded="true" signature="11388:11409" ph="..." />
-            <marker date="1494556777245" expanded="true" signature="11439:11445" ph=" " />
-            <marker date="1494556777245" expanded="true" signature="11711:11729" ph="..." />
-            <marker date="1494556777245" expanded="true" signature="12160:12166" ph=" " />
-            <marker date="1494556777245" expanded="true" signature="12252:12258" ph=" " />
-            <marker date="1494556777245" expanded="true" signature="12321:12342" ph="..." />
-            <marker date="1494556777245" expanded="true" signature="12416:12422" ph=" " />
-            <marker date="1494556777245" expanded="true" signature="21279:21297" ph="..." />
-            <marker date="1494556777245" expanded="true" signature="25486:25504" ph="..." />
+            <marker date="1501834054225" expanded="true" signature="3204:3239" ph="..." />
+            <marker date="1501834054225" expanded="true" signature="9710:9754" ph="..." />
+            <marker date="1501834054225" expanded="true" signature="11388:11409" ph="..." />
+            <marker date="1501834054225" expanded="true" signature="11439:11445" ph=" " />
+            <marker date="1501834054225" expanded="true" signature="11711:11729" ph="..." />
+            <marker date="1501834054225" expanded="true" signature="12160:12166" ph=" " />
+            <marker date="1501834054225" expanded="true" signature="12252:12258" ph=" " />
+            <marker date="1501834054225" expanded="true" signature="12321:12342" ph="..." />
+            <marker date="1501834054225" expanded="true" signature="12416:12422" ph=" " />
+            <marker date="1501834054225" expanded="true" signature="21279:21297" ph="..." />
+            <marker date="1501834054225" expanded="true" signature="25486:25504" ph="..." />
           </folding>
         </state>
       </provider>
@@ -630,8 +642,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/logdebug/logdebug.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2204">
-          <caret line="125" column="47" lean-forward="false" selection-start-line="125" selection-start-column="47" selection-end-line="125" selection-end-column="47" />
+        <state relative-caret-position="0">
+          <caret line="125" column="0" lean-forward="false" selection-start-line="125" selection-start-column="0" selection-end-line="125" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -640,89 +652,158 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3021">
           <caret line="173" column="5" lean-forward="false" selection-start-line="173" selection-start-column="5" selection-end-line="173" selection-end-column="5" />
-          <folding>
-            <marker date="1494552016074" expanded="true" signature="2279:4434" ph="{...}" />
-            <marker date="1494552016074" expanded="true" signature="8663:8785" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg_compare.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3363">
-          <caret line="188" column="46" lean-forward="false" selection-start-line="188" selection-start-column="46" selection-end-line="188" selection-end-column="46" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/template/js/nginx/clients.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="7657">
-          <caret line="403" column="62" lean-forward="false" selection-start-line="403" selection-start-column="62" selection-end-line="403" selection-end-column="62" />
-          <folding>
-            <marker date="1494556777245" expanded="true" signature="3204:3239" ph="..." />
-            <marker date="1494556777245" expanded="true" signature="9710:9754" ph="..." />
-            <marker date="1494556777245" expanded="true" signature="11388:11409" ph="..." />
-            <marker date="1494556777245" expanded="true" signature="11439:11445" ph=" " />
-            <marker date="1494556777245" expanded="true" signature="11711:11729" ph="..." />
-            <marker date="1494556777245" expanded="true" signature="12160:12166" ph=" " />
-            <marker date="1494556777245" expanded="true" signature="12252:12258" ph=" " />
-            <marker date="1494556777245" expanded="true" signature="12321:12342" ph="..." />
-            <marker date="1494556777245" expanded="true" signature="12416:12422" ph=" " />
-            <marker date="1494556777245" expanded="true" signature="21279:21297" ph="..." />
-            <marker date="1494556777245" expanded="true" signature="25486:25504" ph="..." />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/watcher.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="10621">
-          <caret line="572" column="46" lean-forward="false" selection-start-line="572" selection-start-column="46" selection-end-line="572" selection-end-column="46" />
-          <folding />
+          <caret line="572" column="31" lean-forward="false" selection-start-line="572" selection-start-column="31" selection-end-line="572" selection-end-column="31" />
+          <folding>
+            <marker date="1505284603702" expanded="true" signature="8397:8925" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="8445:8801" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="8539:8556" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="9026:9734" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="9112:9184" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="9239:9724" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="9270:9347" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="9834:10268" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="9942:10044" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="10369:11822" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="11027:11725" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="11122:11139" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="11633:11722" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="11904:12586" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="12675:14383" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="12768:12890" ph="(...)" />
+            <marker date="1505284603702" expanded="true" signature="13582:14191" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="14452:14827" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="14903:15589" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="15199:15437" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="15671:16680" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="16258:16583" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="16327:16580" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="16415:16567" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="16773:17579" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="17328:17563" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="17376:17393" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="17431:17545" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="17625:17765" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="17857:18747" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="18190:18745" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="18259:18276" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="18862:19463" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="18904:19344" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="18971:19341" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="19009:19337" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="19040:19257" ph="{...}" />
+            <marker date="1505284603702" expanded="true" signature="19509:22301" ph="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/watcher_namespaces.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="351">
+        <state relative-caret-position="5643">
           <caret line="305" column="53" lean-forward="false" selection-start-line="305" selection-start-column="53" selection-end-line="305" selection-end-column="53" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg_web.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="118">
-          <caret line="14" column="5" lean-forward="false" selection-start-line="14" selection-start-column="5" selection-end-line="14" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/nodemanager/nodes/nodes.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="256" column="48" lean-forward="true" selection-start-line="256" selection-start-column="48" selection-end-line="256" selection-end-column="48" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-386">
-          <caret line="397" column="1" lean-forward="true" selection-start-line="397" selection-start-column="1" selection-end-line="397" selection-end-column="1" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/template/js/nginx/nginxcfg.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="205">
-          <caret line="1022" column="50" lean-forward="true" selection-start-line="1022" selection-start-column="50" selection-end-line="1022" selection-end-column="50" />
+        <state relative-caret-position="659">
+          <caret line="1022" column="50" lean-forward="false" selection-start-line="1022" selection-start-column="50" selection-end-line="1022" selection-end-column="50" />
           <folding>
-            <marker date="1494818921146" expanded="true" signature="7507:7520" ph="..." />
-            <marker date="1494818921146" expanded="true" signature="58993:59011" ph="..." />
+            <marker date="1505285347615" expanded="true" signature="7507:7520" ph="..." />
+            <marker date="1505285347615" expanded="true" signature="8040:8054" ph="..." />
+            <marker date="1505285347615" expanded="true" signature="12791:12811" ph="..." />
+            <marker date="1505285347615" expanded="true" signature="12955:12984" ph="..." />
+            <marker date="1505285347615" expanded="true" signature="18188:18208" ph="..." />
+            <marker date="1505285347615" expanded="true" signature="18352:18381" ph="..." />
+            <marker date="1505285347615" expanded="true" signature="20336:20356" ph="..." />
+            <marker date="1505285347615" expanded="true" signature="20500:20529" ph="..." />
+            <marker date="1505285347615" expanded="true" signature="21955:21975" ph="..." />
+            <marker date="1505285347615" expanded="true" signature="22107:22136" ph="..." />
+            <marker date="1505285347615" expanded="true" signature="23312:23332" ph="..." />
+            <marker date="1505285347615" expanded="true" signature="23464:23493" ph="..." />
+            <marker date="1505285347615" expanded="true" signature="24621:24641" ph="..." />
+            <marker date="1505285347615" expanded="true" signature="24773:24802" ph="..." />
+            <marker date="1505285347615" expanded="true" signature="66699:66717" ph="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/template/js/nginx/clients.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="635">
+          <caret line="403" column="62" lean-forward="false" selection-start-line="403" selection-start-column="62" selection-end-line="403" selection-end-column="62" />
+          <folding>
+            <marker date="1501834054225" expanded="true" signature="3204:3239" ph="..." />
+            <marker date="1501834054225" expanded="true" signature="9710:9754" ph="..." />
+            <marker date="1501834054225" expanded="true" signature="11388:11409" ph="..." />
+            <marker date="1501834054225" expanded="true" signature="11439:11445" ph=" " />
+            <marker date="1501834054225" expanded="true" signature="11711:11729" ph="..." />
+            <marker date="1501834054225" expanded="true" signature="12160:12166" ph=" " />
+            <marker date="1501834054225" expanded="true" signature="12252:12258" ph=" " />
+            <marker date="1501834054225" expanded="true" signature="12321:12342" ph="..." />
+            <marker date="1501834054225" expanded="true" signature="12416:12422" ph=" " />
+            <marker date="1501834054225" expanded="true" signature="21279:21297" ph="..." />
+            <marker date="1501834054225" expanded="true" signature="25486:25504" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/nodemanager/nodes/nodes.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="171">
+          <caret line="19" column="5" lean-forward="false" selection-start-line="19" selection-start-column="5" selection-end-line="19" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg_kubeng.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="25" column="5" lean-forward="false" selection-start-line="25" selection-start-column="5" selection-end-line="25" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg_compare.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="19">
+          <caret line="418" column="34" lean-forward="false" selection-start-line="418" selection-start-column="34" selection-end-line="418" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg_web.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="110">
+          <caret line="68" column="25" lean-forward="false" selection-start-line="68" selection-start-column="25" selection-end-line="68" selection-end-column="25" />
+          <folding>
+            <marker date="1505283987273" expanded="true" signature="2024:2066" ph="{...}" />
+            <marker date="1505283987273" expanded="true" signature="2126:2226" ph="{...}" />
+            <marker date="1505283987273" expanded="true" signature="2294:2490" ph="{...}" />
+            <marker date="1505283987273" expanded="true" signature="2348:2419" ph="{...}" />
+            <marker date="1505283987273" expanded="true" signature="2388:2416" ph="{...}" />
+            <marker date="1505283987273" expanded="true" signature="2594:4451" ph="{...}" />
+            <marker date="1505283987273" expanded="true" signature="2621:3595" ph="{...}" />
+            <marker date="1505283987273" expanded="true" signature="2996:3088" ph="/.../" />
+            <marker date="1505283987273" expanded="true" signature="3731:3880" ph="{...}" />
+            <marker date="1505283987273" expanded="true" signature="4011:4156" ph="{...}" />
+            <marker date="1505283987273" expanded="true" signature="4291:4440" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/nodemanager/zone/clients/watcher/nginxcfg/nginxcfg.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="373">
+          <caret line="210" column="0" lean-forward="false" selection-start-line="210" selection-start-column="0" selection-end-line="210" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>

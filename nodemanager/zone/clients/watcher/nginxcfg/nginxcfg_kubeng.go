@@ -48,6 +48,7 @@ type KubeNGConfig struct {
 	UpstreamUserText      []string              //保留字段 用于用户自定义nginx规则
 	ServerUserText        []string              //保留字段 用于用户自定义nginx规则
 	LocationUserText      []string              //保留字段 用于用户自定义nginx规则
+	AccessServerName      string
 }
 
 //构造与kubeng通讯的信息
@@ -142,6 +143,10 @@ func (kubeNGCfg *KubeNGConfig) convertToWebCfg() (webCfg WebConfig) {
 		UpstreamUserText:      kubeNGCfg.UpstreamUserText,
 		ServerUserText:        kubeNGCfg.ServerUserText,
 		LocationUserText:      kubeNGCfg.LocationUserText,
+	}
+
+	if kubeNGCfg.AccessServerName != "" {
+		webCfg.ServerName = kubeNGCfg.AccessServerName
 	}
 
 	for ruleCMD, ruleParams := range kubeNGCfg.UpstreamUserRules.RulesSet {

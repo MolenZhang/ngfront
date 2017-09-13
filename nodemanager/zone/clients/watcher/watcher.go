@@ -266,12 +266,43 @@ func postWatcherInfo(request *restful.Request, response *restful.Response) {
 	return
 }
 
+//获取默认监视器字段
+func getIsDefaultWatcherParam(allNodesInfo map[string]nodes.NodeInfo, watcherID string, webMsg CfgWebMsg) bool {
+
+	var getWatcherCfgURL string
+	currentWebMsg := CfgWebMsg{}
+	//获取是否为默认监视器
+	for _, singleNodeInfo := range allNodesInfo {
+
+		client := singleNodeInfo.Client
+		if client.JobZoneType != webMsg.WatcherCfg.JobZoneType {
+			continue
+		}
+		getWatcherCfgURL = "http://" +
+			client.NodeIP +
+			client.APIServerPort +
+			"/" +
+			client.WatchManagerAPIServerPath +
+			"/" +
+			watcherID
+		break
+	}
+
+	resp, _ := communicate.SendRequestByJSON(communicate.GET, getWatcherCfgURL, nil)
+	json.Unmarshal(resp, &currentWebMsg.WatcherCfg)
+
+	return currentWebMsg.WatcherCfg.IsDefaultWatcher
+}
+
 //对应前端编辑按钮
 //putWatcherInfo 处理前端PUT过来的消息 更新
 func putWatcherInfoByID(request *restful.Request, response *restful.Response) {
 	logdebug.Println(logdebug.LevelDebug, "update the status of the watcher by watcherID")
 	watcherID := request.PathParameter("watcherID")
 
+	webMsg := CfgWebMsg{}
+
+	allNodesInfo := nodes.GetAllNodesInfo()
 	intTypeWatcherID, err := strconv.Atoi(watcherID)
 
 	if err != nil {
@@ -279,8 +310,6 @@ func putWatcherInfoByID(request *restful.Request, response *restful.Response) {
 		response.WriteError(http.StatusInternalServerError, err)
 		return
 	}
-
-	webMsg := CfgWebMsg{}
 
 	err = request.ReadEntity(&webMsg)
 	if err != nil {
@@ -290,7 +319,8 @@ func putWatcherInfoByID(request *restful.Request, response *restful.Response) {
 	}
 	webMsg.WatcherCfg.WatcherID = intTypeWatcherID
 
-	allNodesInfo := nodes.GetAllNodesInfo()
+	webMsg.WatcherCfg.IsDefaultWatcher = getIsDefaultWatcherParam(allNodesInfo, watcherID, webMsg)
+
 	for _, singleNodeInfo := range allNodesInfo {
 
 		client := singleNodeInfo.Client
